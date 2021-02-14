@@ -1,0 +1,73 @@
+{
+  "name": "byhealth-immediate-delivery",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.4.0",
+    "@rematch/core": "^2.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react-dom": "^16.9.8",
+    "antd": "^4.12.3",
+    "classnames": "^2.2.6",
+    "compressorjs": "^1.0.7",
+    "dayjs": "^1.10.4",
+    "extend": "^3.0.2",
+    "koa-compose": "^4.1.0",
+    "query-string": "^6.13.8",
+    "rc-form": "^2.4.12",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "npm run build:uat",
+    "build:uat": "env-cmd -f .env.uat react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.11",
+    "@types/extend": "^3.0.1",
+    "@types/react": "^16.14.2",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "autoprefixer": "^10.2.3",
+    "babel-plugin-import": "^1.13.3",
+    "customize-cra": "^1.0.0",
+    "env-cmd": "^10.1.0",
+    "less": "^4.1.0",
+    "less-loader": "^7.3.0",
+    "react-app-rewire-multiple-entry": "^2.2.1",
+    "react-app-rewired": "^2.1.8",
+    "text-transform-loader": "^2.0.0",
+    "typescript-plugin-css-modules": "^3.1.0"
+  },
+  "proxy": "http://wx-test1.by-health.com"
+}
