@@ -1,0 +1,15 @@
+.row {
+    align-items: center;
+    :global {
+        .ant-radio-button-wrapper {
+            padding: 0 10px;
+        }
+        .ant-input-number{
+            width: 100%;
+        }
+    }
+
+    .label {
+        text-align: right;
+    }
+}

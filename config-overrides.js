@@ -6,7 +6,7 @@ const { override, fixBabelImports, addLessLoader, setWebpackPublicPath, addWebpa
 
 const multipleEntry = require('react-app-rewire-multiple-entry')([
   {
-    entry: 'src/dashboard/index.ts',
+    entry: 'src/dashboard/index.tsx',
     outPath: '/dashboard.html'
   },
   {

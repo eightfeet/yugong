@@ -1,0 +1,77 @@
+.row {
+    align-items: center;
+
+    .label {
+        text-align: right;
+    }
+}
+
+.uploadicon {
+    width: 25px;
+    height: 25px;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+}
+
+.button {
+    padding: 2px;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.empty {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    color: gray;
+    line-height: 24px;
+}
+
+.delete {
+    color: rgba(255, 0, 0, 0.466);;
+}
+
+.flid {
+    // background-color: rgba(255, 0, 0, 0.466);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.view {
+    color: gray !important;
+}
+
+.ref {
+    text-align: center;
+    img {
+        max-width: 400px;
+        max-height: 500px;
+    }
+}
+
+.imgtemp {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    height: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 18px;
+    margin-left: -9px;
+    margin-top: -9px;
+    color: #eee;
+}

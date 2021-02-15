@@ -1,0 +1,94 @@
+{
+    "backgroundCommon": {
+        "imageUrl": "http://www.by-health.com/static/index/tvc-jld.png",
+        "position": "leftTop",
+        "positionX": 0,
+        "positionY": 50,
+        "backgroundColor": "#fee",
+        "repeat": "no-repeat",
+        "sizeX": 100,
+        "sizeY": 100
+    },
+    "backgroundGradient": {
+        "gradient": [
+            {
+                "color": "#f00",
+                "transition": 1
+            },
+            {
+                "color": "#ff0",
+                "transition": 100
+            }
+        ],
+        "gradientDirections": "-45deg"
+    },
+    "border": {
+        "radius": 20,
+        "radiusTopLeft": 20,
+        "radiusTopRight": 30,
+        "radiusBottomLeft": 40,
+        "radiusBottomRight": 50,
+        "borderColor": "#f00",
+        "borderPosition": "Left",
+        "borderStyle": "solid",
+        "borderWidth": 2
+    },
+    "boxShadow": [
+        {
+            "shiftRight": 1,
+            "shiftDown": 2,
+            "spread": 3,
+            "blur": 3,
+            "inset": "inset",
+            "color": "rgba(30,30,30,0.1)"
+        },
+        {
+            "shiftRight": 10,
+            "shiftDown": 10,
+            "spread": 10,
+            "blur": 10,
+            "color": "rgba(0,0,0,0.2)"
+        }
+    ],
+    "textShadow": [{
+        "shiftRight": 12,
+        "shiftDown": 12,
+        "blur": 21,
+        "color": "#444"
+    },{
+        "shiftRight": 12,
+        "shiftDown": 12,
+        "blur": 21,
+        "color": "#444"
+    }],
+    "font": {
+        "fontSize": 20,
+        "lineHeight": 20,
+        "color": "#F00",
+        "letterSP": 20,
+        "wordSp": -10,
+        "fontWeight": "bold",
+        "decoration": "line-through",
+        "fontStyle": "italic",
+        "align": "center"
+    },
+    "display": {
+        "width": 100,
+        "height": 100,
+        "zIndex": 100,
+        "position": "absolute",
+        "left": 10,
+        "right": 10,
+        "top": 10,
+        "bottom": 10,
+        "xxx": 5
+    },
+    "transform": {
+        "scale": 1.2,
+        "rotate": 30,
+        "translateX": 20,
+        "translateY": 20,
+        "skewX": 10,
+        "skewY": 10
+    }
+}

@@ -1,0 +1,29 @@
+.root {
+    width: 100%;
+    max-width: 550px;
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    right:0;
+    z-index: 1000;
+    border: 1px solid #eee;
+    background-color: #eee;
+    display: flex;
+    transition: all .5s;
+}
+
+
+.menu {
+    width: 80px;
+}
+
+.menuicon {
+    width: 100%;
+}
+
+.dashboard {
+    width: 550-80px;
+    flex-shrink:0;
+    max-height: 400px;
+    overflow-y: auto;
+}

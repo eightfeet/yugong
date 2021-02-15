@@ -1,0 +1,103 @@
+#root {
+  background-color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.app {
+  flex: auto;
+  background-color: #ccc;
+}
+
+#guiwrap {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  overflow-x: hidden;
+  min-height: 200px;
+}
+#bodyroot {
+  .dg.main.taller-than-window .close-button {
+    border-top: 1px solid #ddd;
+  }
+
+  .dg.main .close-button {
+    background-color: #e8e8e8;
+    display: none;
+  }
+
+  .dg.main .close-button:hover {
+    background-color: #ddd;
+  }
+
+  .dg {
+    color: #555;
+    text-shadow: none !important;
+  }
+
+  .dg.main::-webkit-scrollbar {
+    background: #fafafa;
+  }
+
+  .dg.main::-webkit-scrollbar-thumb {
+    background: #bbb;
+  }
+
+  .dg li:not(.folder) {
+    background: #fafafa;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .dg li.save-row .button {
+    text-shadow: none !important;
+  }
+
+  .dg li.title {
+    background: #e8e8e8
+      url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==)
+      6px 10px no-repeat;
+  }
+
+  .dg .cr.function:hover,
+  .dg .cr.boolean:hover {
+    background: #fff;
+  }
+
+  .dg .c input[type="text"] {
+    background: #e9e9e9;
+  }
+
+  .dg .c input[type="text"]:hover {
+    background: #eee;
+  }
+
+  .dg .c input[type="text"]:focus {
+    background: #eee;
+    color: #555;
+  }
+
+  .dg .c .slider {
+    background: #e9e9e9;
+  }
+
+  .dg .c .slider:hover {
+    background: #eee;
+  }
+
+  .dg .c {
+    width: 75%;
+  }
+
+  .dg .c select {
+    border-color: #CCC;
+    width: 100%;
+  }
+
+  .dg .property-name{
+    width: 25%;
+    text-align: center;
+  }
+}

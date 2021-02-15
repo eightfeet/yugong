@@ -1,0 +1,104 @@
+
+$primary: rgba(92, 165, 255, 1);
+$gray: rgb(204, 204, 204);
+
+.firstnemu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >div{
+        background-color: #fff;
+        border-bottom: 2px solid $gray;
+        flex:auto;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+    
+    .selected {
+        border-color: $primary;
+    }
+}
+
+.secondmenu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    >div{
+        background-color: #fff;
+        margin-top: 10px;
+        border: 1px solid $gray;
+        text-align: center;
+        height: 25px;
+        line-height: 25px;
+        padding: 5px 20px;
+    }
+
+    .selected {
+        border-color: $primary;
+    }
+}
+
+.stage0 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    >div{
+        background-color: #fff;
+        border-bottom: 2px solid $gray;
+        flex:auto;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 10px;
+    }
+    
+    .selected {
+        border-color: $primary;
+    }
+}
+
+
+
+.stage1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >div{
+        background-color: #fff;
+        border: 1px solid $gray;
+        flex:auto;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 10px;
+    }
+    
+    .selected {
+        border-color: $primary;
+    }
+}
+
+.stage2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    >div{
+        background-color: $gray;
+        text-align: center;
+        height: 20px;
+        line-height: 20px;
+        border-radius: 4px;
+        margin: 0 auto;
+        padding: 0 5px;
+        flex-wrap: wrap;
+    }
+    
+    .selected {
+        background-color: $primary;
+        color: #fff
+    }
+}

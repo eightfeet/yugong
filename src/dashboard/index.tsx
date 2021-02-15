@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
 import 'antd/dist/antd.css';
-import App from '~/components/App';
 import reportWebVitals from '~/reportWebVitals';
+import Layout from '~/components/Layout';
+import Responsive from '~/components/Responsive'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Layout >
+      <Responsive />
+    </Layout>
   </React.StrictMode>,
   document.getElementById('root')
 );

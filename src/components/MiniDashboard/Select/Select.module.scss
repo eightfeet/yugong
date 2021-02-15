@@ -1,0 +1,12 @@
+.row {
+    align-items: center;
+    :global {
+        .ant-select{
+            width: 100%;
+        }
+    }
+
+    .label {
+        text-align: right;
+    }
+}

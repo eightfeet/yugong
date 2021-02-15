@@ -1,0 +1,39 @@
+.row {
+    align-items: baseline;
+    :global {
+        .ant-radio-button-wrapper {
+            padding: 0 10px;
+        }
+        .ant-input-number{
+            width: 100%;
+        }
+    }
+
+    .label {
+        text-align: right;
+    }
+}
+
+.quad {
+    display: flex;
+    flex-wrap: wrap;
+    width: 25*3 + 2px;
+    border-left: 1px solid #d9d9d9;
+    border-top: 1px solid #d9d9d9;
+    >span {
+        flex: auto;
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+        border-right: 1px solid #d9d9d9;
+        border-bottom: 1px solid #d9d9d9;
+        box-sizing: border-box;
+        line-height: 25px;
+        color: #ddd;
+    }
+    >span.selected {
+        color: rgb(88, 88, 88)
+    }
+}
