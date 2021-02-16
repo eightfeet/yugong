@@ -14,7 +14,7 @@ interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const style = useSelector((state: RootState) => state.activationItem.style);
+  const style = useSelector((state: RootState) => state.activationItem.style) || {};
   const moduleId = useSelector((state: RootState) => state.activationItem.moduleId);
 
   const [stylePath, setStylePath] = useState('');
