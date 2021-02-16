@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import GridLayout, { Layout as LayoutDataType } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import s from './Layout.module.scss';
+import s from './AppLayout.module.scss';
 import GridLine from '~/components/GridLine';
 import Elements from '~/components/Elements';
 import classNames from 'classnames';
