@@ -1,33 +1,14 @@
-import IframeResizer, { IFrameComponent } from "iframe-resizer-react";
-import React, { useRef, useState } from "react";
-import MiniDashboard from "../MiniDashboard";
-import MessageData from "./MessageData";
+/**
+ * 包含模式设置、响应式编辑通信iframe、与样式编辑面板MiniDashboard
+ *
+ */
 
-interface DataParames {
-  iframe: IFrameComponent;
-  height?: number;
-  width?: number;
-  type?: string;
-  message?: any;
-  [keys: string]: any;
-}
+import React, { useState } from "react";
+import MiniDashboard from "../MiniDashboard";
 
 interface Props {}
-
 const Responsive: React.FC<Props> = () => {
-  const iframeRef = useRef<any>(null);
-  const [messageData, setMessageData] = useState<any>();
   const [designModal, setDesignModal] = useState(false);
-
-  const onResized = (data: DataParames) => setMessageData(data);
-
-  const onMessage = (data: DataParames) => {
-    setMessageData(data);
-    if (iframeRef.current) {
-      iframeRef.current!.sendMessage("Hello back from the parent page");
-    }
-  };
-
   return (
     <>
       <span>

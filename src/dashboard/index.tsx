@@ -1,3 +1,8 @@
+/**
+ * 这里采用多入口打包，分离App端与管理端，
+ * 二者代码更纯粹，同时也方便前后台的可扩展性
+ * 后台包含App端数据模型，数据编辑时，同步更改
+ */
 import React from "react";
 import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
@@ -5,7 +10,7 @@ import reportWebVitals from "~/reportWebVitals";
 import Layout from "~/components/Layout";
 import Responsive from "~/components/Responsive";
 import { Provider } from "react-redux";
-import { store } from "~/redux/store";
+import { store } from "~/redux/dashboardStore";
 
 ReactDOM.render(
   <React.StrictMode>
