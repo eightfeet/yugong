@@ -17,7 +17,7 @@ interface Props {}
 const Responsive: React.FC<Props> = () => {
   const iframeRef = useRef<any>(null);
   const [messageData, setMessageData] = useState<any>();
-  const [designModal, setDesignModal] = useState(false)
+  const [designModal, setDesignModal] = useState(false);
 
   const onResized = (data: DataParames) => setMessageData(data);
 
@@ -39,11 +39,7 @@ const Responsive: React.FC<Props> = () => {
         {designModal ? "预览模式" : "设计模式"}
       </button>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button
-        
-      >
-        保存
-      </button>
+      <button>保存</button>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <button
         onClick={() => {
@@ -53,15 +49,14 @@ const Responsive: React.FC<Props> = () => {
       >
         重置
       </button>
-      <IframeResizer
-        forwardRef={iframeRef}
-        heightCalculationMethod="lowestElement"
-        inPageLinks
-        log
-        onMessage={onMessage}
-        onResized={onResized}
+      <iframe
+        title="tms"
         src="/?isEditing=true"
-        style={{ width: "1px", minWidth: "100%", minHeight: `${window.innerHeight}px` }}
+        style={{
+          width: "1px",
+          minWidth: "100%",
+          minHeight: `${window.innerHeight}px`,
+        }}
       />
       <MiniDashboard />
     </>

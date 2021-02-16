@@ -7,6 +7,8 @@ import GridLine from '~/components/GridLine';
 import Elements from '~/components/Elements';
 import classNames from 'classnames';
 import { AppDataListTypes } from '~/types/appData';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/redux/store';
 
 interface LayoutProps {
     /**
@@ -39,15 +41,6 @@ interface LayoutProps {
      * @memberof LayoutProps
      */
     height?: number;
-    /**
-     * 编辑器数据
-     * @type {{
-     *     layout: GridLayout.Layout;
-     *     config: any
-     *   }[]}
-     * @memberof LayoutProps
-     */
-    data: AppDataListTypes;
     onChange?: (layout: LayoutDataType[]) => void;
     onClick?:(item: any) => void;
     /**
@@ -71,13 +64,14 @@ const Layout: React.FC<LayoutProps> = ({
     cols,
     width,
     height,
-    data,
     designModal,
     onChange,
     onClick
 }) => {
     const [wrapWidth, setWrapWidth] = useState(0);
     const [wrapHeight, setWrapHeight] = useState(0);
+    const appData = useSelector((state: RootState) => state.appData)
+
     const ref = useRef(null);
     
     const setSize = useCallback(() => {
@@ -116,7 +110,7 @@ const Layout: React.FC<LayoutProps> = ({
                     width={window.innerWidth}
                     cols={cols}
                     rowHeight={rowHeight}
-                    height={wrapHeight}
+                    height={document.body.scrollHeight}
                     space={10}
                 />
             ) : null}
@@ -124,10 +118,10 @@ const Layout: React.FC<LayoutProps> = ({
                 onLayoutChange={onLayoutChange}
                 cols={cols}
                 rowHeight={rowHeight}
-                width={wrapWidth}
+                width={document.body.scrollWidth}
                 autoSize
             >
-                {data.map((item) => (
+                {appData.map((item) => (
                     <div
                         id={`wrap-${item.layout.i}`}
                         className={classNames(

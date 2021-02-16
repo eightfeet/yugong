@@ -15,7 +15,6 @@ const isEditing = search.isEditing === "true";
 const App: React.FC<Props> = () => {
   const showEditor = useSelector((state: RootState) => state.controller.isEditing)
   const activationItem = useSelector((state: RootState) => state.activationItem)
-  const appData = useSelector((state: RootState) => state.appData)
 
   const getAppDatd = useDispatch<Dispatch>().appData.getAppData;
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
@@ -43,7 +42,6 @@ const App: React.FC<Props> = () => {
         rowHeight={20}
         cols={12}
         width={window.innerWidth}
-        data={appData}
       />
     </div>
     {showEditor && designModal && activationItem.moduleId ? <div style={{height: '400px'}}><MiniDashboard /></div> : null}
