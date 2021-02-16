@@ -1,3 +1,6 @@
+/**
+ * App入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
+ */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";

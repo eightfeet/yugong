@@ -1,3 +1,7 @@
+/**
+ * AppLayout，应用端通过懒加按需加载模块以保证性能，
+ * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
+ */
 import React, { useCallback, useMemo, useRef } from "react";
 import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
@@ -44,6 +48,7 @@ const AppLayout: React.FC<LayoutProps> = ({
     
   const ref = useRef(null);
 
+  // 数据初始化，
   useMemo(() => {
     getAppDatd(localStoreData);
   }, [getAppDatd, localStoreData]);
