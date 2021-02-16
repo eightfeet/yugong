@@ -1,55 +1,28 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import GridLayout, { Layout as LayoutDataType } from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-import s from './AppLayout.module.scss';
-import GridLine from '~/components/GridLine';
-import Elements from '~/components/Elements';
-import classNames from 'classnames';
-import { AppDataListTypes } from '~/types/appData';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
+import React, { useCallback, useMemo, useRef } from "react";
+import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import s from "./AppLayout.module.scss";
+import GridLine from "~/components/GridLine";
+import Elements from "~/components/Elements";
+import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, Dispatch } from "~/redux/store";
+import useLocalStorage from "~/hooks/useLocalStorage";
 
 interface LayoutProps {
-    /**
-     * 页面是否正在编辑
-     * @type {boolean}
-     * @memberof LayoutProps
-     */
-    isEditing?: boolean;
-    /**
-     * 单行高度
-     * @type {number}
-     * @memberof LayoutProps
-     */
-    rowHeight: number;
-    /**
-     * 布局列数
-     * @type {number}
-     * @memberof LayoutProps
-     */
-    cols: number;
-    /**
-     * 宽度
-     * @type {number}
-     * @memberof LayoutProps
-     */
-    width?: number;
-    /**
-     * 高度
-     * @type {number}
-     * @memberof LayoutProps
-     */
-    height?: number;
-    onChange?: (layout: LayoutDataType[]) => void;
-    onClick?:(item: any) => void;
-    /**
-     * 设计模式 | 预览模式
-     * true | false 
-     * @type {boolean}
-     * @memberof LayoutProps
-     */
-    designModal?: boolean;
+  /**
+   * 单行高度
+   * @type {number}
+   * @memberof LayoutProps
+   */
+  rowHeight: number;
+  /**
+   * 布局列数
+   * @type {number}
+   * @memberof LayoutProps
+   */
+  cols: number;
 }
 
 /**
@@ -58,88 +31,71 @@ interface LayoutProps {
  * @param {LayoutProps} { isEditing, rowHeight, cols, width, height, data}
  * @return {*}
  */
-const Layout: React.FC<LayoutProps> = ({
-    isEditing,
-    rowHeight,
-    cols,
-    width,
-    height,
-    designModal,
-    onChange,
-    onClick
+const AppLayout: React.FC<LayoutProps> = ({
+  rowHeight,
+  cols,
 }) => {
-    const [wrapWidth, setWrapWidth] = useState(0);
-    const [wrapHeight, setWrapHeight] = useState(0);
-    const appData = useSelector((state: RootState) => state.appData)
-
-    const ref = useRef(null);
+  const getAppDatd = useDispatch<Dispatch>().appData.getAppData;
+  const appData = useSelector((state: RootState) => state.appData);
+  const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  const isEditing = useSelector((state: RootState) => state.controller.isEditing)
+  
+  const [localStoreData, setLocalStorage] = useLocalStorage("appData", null);
     
-    const setSize = useCallback(() => {
-        let height = 0;
-        let width = 0;
-        if (ref !== null) {
-            if (!ref.current) {
-                return;
+  const ref = useRef(null);
+
+  useMemo(() => {
+    getAppDatd(localStoreData);
+  }, [getAppDatd, localStoreData]);
+
+  // 更新GridLine布局数据
+  const onLayoutChange = useCallback((layout: LayoutDataType[]) => {
+    appData.forEach(item => {
+        layout.forEach(element => {
+            if(item.moduleId === element.i) {
+                item.layout = element
             }
-            height = (ref.current as any).scrollHeight;
-            width = (ref.current as any).scrollWidth;
-            setWrapHeight(height);
-            setWrapWidth(width);
-        }
-    }, []);
+        })
+    })
+    updateAppData(appData);
+    setLocalStorage(appData)
+  }, [appData, setLocalStorage, updateAppData]);
 
-    useEffect(() => {
-        setSize();
-    }, [width, height, setSize]);
-
-
-    const onLayoutChange = useCallback(
-        (layout: LayoutDataType[]) => {
-            if (onChange instanceof Function) {
-                onChange(layout);
-            }
-            setSize();
-        },
-        [onChange, setSize]
-    );
-
-    return (
-        <div className={s.layout} ref={ref}>
-            {designModal ? (
-                <GridLine
-                    width={window.innerWidth}
-                    cols={cols}
-                    rowHeight={rowHeight}
-                    height={document.body.scrollHeight}
-                    space={10}
-                />
-            ) : null}
-            <GridLayout
-                onLayoutChange={onLayoutChange}
-                cols={cols}
-                rowHeight={rowHeight}
-                width={document.body.scrollWidth}
-                autoSize
-            >
-                {appData.map((item) => (
-                    <div
-                        id={`wrap-${item.layout.i}`}
-                        className={classNames(
-                            s.block,
-                            !designModal ? null : s.modify
-                        )}
-                        key={item.layout.i}
-                        data-grid={{
-                            ...(item.layout),
-                            static: !isEditing,
-                        }}
-                    >
-                        <Elements id={item.layout.i} {...item} />
-                    </div>
-                ))}
-            </GridLayout>
-        </div>
-    );
+  return (
+    <div className={s.layout} ref={ref}>
+      {isEditing ? (
+        <GridLine
+          width={window.innerWidth}
+          cols={cols}
+          rowHeight={rowHeight}
+          height={document.body.scrollHeight}
+          space={10}
+        />
+      ) : null}
+      <GridLayout
+        onLayoutChange={onLayoutChange}
+        cols={cols}
+        rowHeight={rowHeight}
+        width={document.body.scrollWidth}
+        autoSize
+      >
+        {appData.map((item) => (
+          <div
+            id={`wrap-${item.layout.i}`}
+            className={classNames(s.block, isEditing === false ? null : s.modify)}
+            key={item.layout.i}
+            data-grid={{
+              ...item.layout,
+              // 编辑模式或预览模式定义为不可编辑
+              static: isEditing !== undefined && isEditing !== false,
+            }}
+          >
+            <Elements id={item.layout.i} {...item} />
+          </div>
+        ))}
+      </GridLayout>
+    </div>
+  );
 };
 
-export default Layout;
+export default AppLayout;
