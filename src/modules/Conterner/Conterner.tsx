@@ -24,7 +24,7 @@ const Conterner: React.FC<paraments> = ({
 
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
 
-  const controller = useSelector((state: RootState) => state.controller);
+  const isEditing = useSelector((state: RootState) => state.controller.isEditing);
 
   const sendMessage = usePostMessage(()=> {})
 
@@ -42,11 +42,11 @@ const Conterner: React.FC<paraments> = ({
    * 图层被触发
    */
   const onLayoutClick = useCallback(() => {
-    if(!controller.isEditing) return;
+    if(!isEditing) return;
     setEditingId(id)
     // 向父级窗口通知当前激活Id
     sendMessage({tag: 'id', value: id}, window.top)
-  }, [controller.isEditing, id, sendMessage, setEditingId]);
+  }, [isEditing, id, sendMessage, setEditingId]);
 
   return (
     <div
