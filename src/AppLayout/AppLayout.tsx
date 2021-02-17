@@ -56,7 +56,7 @@ const AppLayout: React.FC<LayoutProps> = ({
 
   // 向父级同步数据
   useSendMessage({
-    tag: 'updateAppDate',
+    tag: 'updateAppData',
     value: appData
   }, window.top);
 
