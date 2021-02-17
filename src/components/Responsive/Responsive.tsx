@@ -11,70 +11,75 @@ import MiniDashboard from "../MiniDashboard";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
-
   /**
    * ----------
    * 定义编辑模式
    * ----------
    */
-  const isEditing = useSelector((state: RootState) => state.controller.isEditing);
-  const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
-  useEffect(() => {
-    setIsEditing(true)
-  }, [setIsEditing])
-  
-  const ref = useRef(null)
+  const isEditing = useSelector(
+    (state: RootState) => state.controller.isEditing
+  );
 
-  // 创建postmessage通信
+  const appData = useSelector((state: RootState) => state.appData);
+
+  const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
+  const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  const updateActivationItem = useDispatch<Dispatch>().activationItem
+    .updateActivationItem;
+
+  useEffect(() => {
+    setIsEditing(true);
+  }, [setIsEditing]);
+
+  const ref = useRef(null);
+
+  // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
     switch (tag) {
-      case 'setIsEditing':
-        setIsEditing(value)
+      case "setIsEditing":
+        setIsEditing(value);
+        break;
+      case "updateAppData":
+        updateAppData(value);
+        break;
+      case "updateActivationItem":
+        updateActivationItem(value);
         break;
       default:
         break;
     }
   });
-  
+
   // 收发处理，子窗口onload时向子窗口发送信息, 通知当前正处于编辑模式下，
-  const win: Window | null = ref.current ? (ref.current as any).contentWindow : null;
+  const win: Window | null = ref.current
+    ? (ref.current as any).contentWindow
+    : null;
   useEffect(() => {
     if (win) {
       win.onload = () => {
-        sendMessage({tag: 'setIsEditing', value: true}, win)
-      }
+        sendMessage({ tag: "setIsEditing", value: true }, win);
+      };
     }
   }, [isEditing, sendMessage, setIsEditing, win]);
 
   // 切换编辑视图
-  const setEditing = useCallback(
-    () => {
-      if (win) {  
-        win.postMessage({tag: 'setIsEditing', value: !isEditing}, window.location.origin)
-      }
-      setIsEditing(!isEditing)
-    },
-    [isEditing, setIsEditing, win],
-  )
+  const setEditing = useCallback(() => {
+    if (win) {
+      sendMessage({ tag: "setIsEditing", value: true }, win);
+    }
+    setIsEditing(!isEditing);
+  }, [isEditing, sendMessage, setIsEditing, win]);
 
-  // useSendMessage({
-  //   tag: 'setIsEditing',
-  //   value: true
-  // }, win)
-
-  // useSendMessage({
-  //   tag: 'updateAppData',
-  //   value: appData
-  // }, win)
-
-  // useSendMessage({
-  //   tag: 'updateActivationItem',
-  //   value: activationItem
-  // }, win)
-
-  // 收发处理，接收子窗口信息
-  
-  
+  // 收发处理，编辑完数据后通过sendMessage向子窗口发送最新数据。
+  useEffect(() => {
+    sendMessage(
+      {
+        tag: "updateAppData",
+        value: appData,
+      },
+      win
+    );
+  }, [sendMessage, win, appData]);
 
   return (
     <>

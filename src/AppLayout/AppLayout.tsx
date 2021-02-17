@@ -60,8 +60,21 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {
     const { tag, value } = data;
-    if (tag === 'setIsEditing') {
-      setIsEditing(value)
+    switch (tag) {
+      case "setIsEditing":
+        setIsEditing(value);
+        break;
+      case "updateAppData":
+        if (JSON.stringify(appData) !== JSON.stringify(value)) {
+          console.log('编辑器修改', value)
+          // updateAppData(value);
+        }
+        break;
+      case "updateActivationItem":
+        // updateActivationItem(value);
+        break;
+      default:
+        break;
     }
   })
 
