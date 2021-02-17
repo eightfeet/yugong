@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 interface Result {
-    tag: 'updateAppData' | 'updateActivationItem';
+    tag: 'updateAppData' | 'updateActivationItem' | 'setIsEditing';
     value: any;
 }
 
@@ -28,8 +28,11 @@ export const useSetMessageReceiver = (fn: (result: Result) => void) => {
  * @param data 推送标签与值{tag, value}
  * @param wind 目标窗口
  */
-export const useSendMessage = ({tag, value}: Result, wind: Window) => {
+export const useSendMessage = ({tag, value}: Result, wind: Window | null) => {
   useEffect(() => {
-    wind.postMessage({tag, value}, window.location.origin);
+    console.log('wind', wind)
+    if (wind) {
+      wind.postMessage({tag, value}, window.location.origin);
+    }
   }, [tag, value, wind])
 }

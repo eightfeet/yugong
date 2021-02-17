@@ -13,7 +13,7 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
-import { useSendMessage } from "~/hooks/usePostMessage";
+import { useSendMessage, useSetMessageReceiver } from "~/hooks/usePostMessage";
 
 interface LayoutProps {
   /**
@@ -36,21 +36,32 @@ interface LayoutProps {
  * @param {LayoutProps} { isEditing, rowHeight, cols, width, height, data}
  * @return {*}
  */
-const AppLayout: React.FC<LayoutProps> = ({
-  rowHeight,
-  cols,
-}) => {
+const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const getAppDatd = useDispatch<Dispatch>().appData.getAppData;
   const appData = useSelector((state: RootState) => state.appData);
-  const activationItem = useSelector((state: RootState) => state.activationItem);
+  const activationItem = useSelector(
+    (state: RootState) => state.activationItem
+  );
 
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
-  const isEditing = useSelector((state: RootState) => state.controller.isEditing);
-
+  const isEditing = useSelector(
+    (state: RootState) => state.controller.isEditing
+  );
   
   const [localStoreData, setLocalStorage] = useLocalStorage("appData", null);
-    
+
   const ref = useRef(null);
+  // 收发处理，接收子窗口信息
+  const actions: any = {
+    updateAppData: useDispatch<Dispatch>().appData.updateAppData,
+    updateActivationItem: useDispatch<Dispatch>().activationItem
+      .updateActivationItem,
+  };
+  useSetMessageReceiver(({ tag, value }) => {
+    if (tag) {
+      actions[tag](value);
+    }
+  });
 
   // 数据初始化，
   useMemo(() => {
@@ -59,28 +70,37 @@ const AppLayout: React.FC<LayoutProps> = ({
 
   // 向父级同步数据
   // app数据
-  useSendMessage({
-    tag: 'updateAppData',
-    value: appData
-  }, window.top);
+  useSendMessage(
+    {
+      tag: "updateAppData",
+      value: appData,
+    },
+    window.top
+  );
   // 当前被激活项数据
-  useSendMessage({
-    tag: 'updateActivationItem',
-    value: activationItem
-  }, window.top);
+  useSendMessage(
+    {
+      tag: "updateActivationItem",
+      value: activationItem,
+    },
+    window.top
+  );
 
   // 更新GridLine布局数据
-  const onLayoutChange = useCallback((layout: LayoutDataType[]) => {
-    appData.forEach(item => {
-        layout.forEach(element => {
-            if(item.moduleId === element.i) {
-                item.layout = element
-            }
-        })
-    })
-    updateAppData(appData);
-    setLocalStorage(appData)
-  }, [appData, setLocalStorage, updateAppData]);
+  const onLayoutChange = useCallback(
+    (layout: LayoutDataType[]) => {
+      appData.forEach((item) => {
+        layout.forEach((element) => {
+          if (item.moduleId === element.i) {
+            item.layout = element;
+          }
+        });
+      });
+      updateAppData(appData);
+      setLocalStorage(appData);
+    },
+    [appData, setLocalStorage, updateAppData]
+  );
 
   return (
     <div className={s.layout} ref={ref}>
@@ -103,7 +123,10 @@ const AppLayout: React.FC<LayoutProps> = ({
         {appData.map((item) => (
           <div
             id={`wrap-${item.layout.i}`}
-            className={classNames(s.block, isEditing === false ? null : s.modify)}
+            className={classNames(
+              s.block,
+              isEditing === false ? null : s.modify
+            )}
             key={item.layout.i}
             data-grid={{
               ...item.layout,
