@@ -2,7 +2,7 @@
  * AppLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -37,25 +37,16 @@ interface LayoutProps {
  * @return {*}
  */
 const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
-  const getAppDatd = useDispatch<Dispatch>().appData.getAppData;
+  const getAppData = useDispatch<Dispatch>().appData.getAppData;
+  const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const appData = useSelector((state: RootState) => state.appData);
-  const activationItem = useSelector(
-    (state: RootState) => state.activationItem
-  );
 
   const ref = useRef(null);
 
-  const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
-
-  // 数据初始化，获取页面数据
-  const [localStoreData, setLocalStorage] = useLocalStorage("appData", null);
-  useMemo(() => {
-    getAppDatd(localStoreData);
-  }, [getAppDatd, localStoreData]);
 
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {
@@ -65,36 +56,27 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
         setIsEditing(value);
         break;
       case "updateAppData":
-        if (JSON.stringify(appData) !== JSON.stringify(value)) {
-          console.log('编辑器修改', value)
-          // updateAppData(value);
-        }
-        break;
-      case "updateActivationItem":
-        // updateActivationItem(value);
+        updateAppData(value);
         break;
       default:
         break;
     }
-  })
+  });
 
-  // 向父级同步数据
-  // app数据
-  sendMessage(
-    {
-      tag: "updateAppData",
-      value: appData,
-    },
-    window.top
-  );
-  // 当前被激活项数据
-  sendMessage(
-    {
-      tag: "updateActivationItem",
-      value: activationItem,
-    },
-    window.top
-  );
+  // 数据初始化，获取页面数据
+  const [localStoreData] = useLocalStorage("appData", null);
+  useMemo(() => {
+    getAppData(localStoreData).then((res) => {
+      // 获取数据后 发送一份到父级窗口作为编辑数据
+      sendMessage(
+        {
+          tag: "updateAppData",
+          value: res,
+        },
+        window.top
+      );
+    });
+  }, [getAppData, localStoreData, sendMessage]);
 
   // 更新GridLine布局数据
   const onLayoutChange = useCallback(
@@ -106,10 +88,16 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
           }
         });
       });
-      updateAppData(appData);
-      setLocalStorage(appData);
+      // 通知父级窗口变更数据
+      sendMessage(
+        {
+          tag: "updateAppData",
+          value: appData,
+        },
+        window.top
+      );
     },
-    [appData, setLocalStorage, updateAppData]
+    [appData, sendMessage]
   );
 
   return (

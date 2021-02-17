@@ -4,6 +4,7 @@ import { Dispatch, RootState } from "~/redux/store";
 import { AppDataElementsTypes } from "~/types/appData";
 import styleCompiler from "~/compiler";
 import s from "./Conterner.module.less";
+import usePostMessage from "~/hooks/usePostMessage";
 
 interface paraments extends AppDataElementsTypes {
   id: string;
@@ -19,19 +20,14 @@ const Conterner: React.FC<paraments> = ({
    * Conterner 自身的样式
    */
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
-  /**
-   * 获取全部数据
-   * appData（运行时数据）、activationItem（被激活数据）、controller（控制状态）
-   */
-  const appData = useSelector((state: RootState) => state.appData);
-  const activationItem = useSelector((state: RootState) => state.activationItem);
+  const actId = useSelector((state: RootState) => state.controller.editingId);
+
+  const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
+
   const controller = useSelector((state: RootState) => state.controller);
 
-  const dispatch:Dispatch = useDispatch<Dispatch>();
-  /**
-   * 更新当前激活项
-   */
-  const { updateActivationItem } = dispatch.activationItem
+  const sendMessage = usePostMessage(()=> {})
+
   useEffect(() => {
     const { basic } = style;
     setBasicStyle(styleCompiler(basic));
@@ -47,16 +43,10 @@ const Conterner: React.FC<paraments> = ({
    */
   const onLayoutClick = useCallback(() => {
     if(!controller.isEditing) return;
-    // 禁止重复设置当前编辑项
-    if (activationItem.moduleId === id) return;
-    for (let index = 0; index < appData.length; index++) {
-      const element = appData[index];
-      if (element.moduleId === id) {
-        updateActivationItem({ ...element });
-        break;
-      }
-    }
-  }, [activationItem.moduleId, appData, controller.isEditing, id, updateActivationItem]);
+    setEditingId(id)
+    // 向父级窗口通知当前激活Id
+    sendMessage({tag: 'id', value: id}, window.top)
+  }, [controller.isEditing, id, sendMessage, setEditingId]);
 
   return (
     <div
@@ -64,7 +54,7 @@ const Conterner: React.FC<paraments> = ({
       onTouchStart={onLayoutClick}
       onMouseDown={onLayoutClick}
     >
-      {activationItem.moduleId === id ? <div className={s.actwrap} /> : null}
+      {actId === id ? <div className={s.actwrap} /> : null}
       <div id={id} style={basicStyle.style}>
         {children || content.text}
       </div>

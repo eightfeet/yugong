@@ -21,6 +21,9 @@ const Responsive: React.FC<Props> = () => {
   );
 
   const appData = useSelector((state: RootState) => state.appData);
+  const activationItem = useSelector(
+    (state: RootState) => state.activationItem
+  );
 
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
@@ -42,8 +45,17 @@ const Responsive: React.FC<Props> = () => {
       case "updateAppData":
         updateAppData(value);
         break;
-      case "updateActivationItem":
-        updateActivationItem(value);
+      case "id":
+        // 设置当前项正在被编辑
+        // 禁止重复设置当前编辑项
+        if (activationItem.moduleId === value) return;
+        for (let index = 0; index < appData.length; index++) {
+          const element = appData[index];
+          if (element.moduleId === value) {
+            updateActivationItem({ ...element });
+            break;
+          }
+        }
         break;
       default:
         break;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 interface Result {
-    tag: 'updateAppData' | 'updateActivationItem' | 'setIsEditing';
+    tag: 'id' | 'updateAppData' | 'setIsEditing';
     value: any;
 }
 

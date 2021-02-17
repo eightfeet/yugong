@@ -28,6 +28,7 @@ export const appData = createModel<RootModel>()({
                     data = await getAppData(mockAppData)
                 }
                 updateAppData(data)
+                return data;
             }
         }
     }
