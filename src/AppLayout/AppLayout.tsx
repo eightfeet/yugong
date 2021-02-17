@@ -13,6 +13,7 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
+import { useSendMessage } from "~/hooks/usePostMessage";
 
 interface LayoutProps {
   /**
@@ -52,6 +53,12 @@ const AppLayout: React.FC<LayoutProps> = ({
   useMemo(() => {
     getAppDatd(localStoreData);
   }, [getAppDatd, localStoreData]);
+
+  // 向父级同步数据
+  useSendMessage({
+    tag: 'updateAppDate',
+    value: appData
+  }, window.top);
 
   // 更新GridLine布局数据
   const onLayoutChange = useCallback((layout: LayoutDataType[]) => {

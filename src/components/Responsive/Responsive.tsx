@@ -4,11 +4,21 @@
  */
 
 import React, { useState } from "react";
+import { useSetMessageReceiver } from "~/hooks/usePostMessage";
 import MiniDashboard from "../MiniDashboard";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
   const [designModal, setDesignModal] = useState(false);
+  /**
+   * 收发处理
+   */
+  useSetMessageReceiver(({tag, value}) => {
+    if (tag) {
+      console.log(tag)
+      console.log(value)
+    }
+  })
   return (
     <>
       <span>
