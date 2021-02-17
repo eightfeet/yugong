@@ -2,7 +2,7 @@
  * AppLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -13,7 +13,7 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
-import { useSendMessage, useSetMessageReceiver } from "~/hooks/usePostMessage";
+import usePostMessage from "~/hooks/usePostMessage";
 
 interface LayoutProps {
   /**
@@ -43,34 +43,31 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     (state: RootState) => state.activationItem
   );
 
+  const ref = useRef(null);
+
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
-  
+
+  // 数据初始化，获取页面数据
   const [localStoreData, setLocalStorage] = useLocalStorage("appData", null);
-
-  const ref = useRef(null);
-  // 收发处理，接收子窗口信息
-  const actions: any = {
-    updateAppData: useDispatch<Dispatch>().appData.updateAppData,
-    updateActivationItem: useDispatch<Dispatch>().activationItem
-      .updateActivationItem,
-  };
-  useSetMessageReceiver(({ tag, value }) => {
-    if (tag) {
-      actions[tag](value);
-    }
-  });
-
-  // 数据初始化，
   useMemo(() => {
     getAppDatd(localStoreData);
   }, [getAppDatd, localStoreData]);
 
+  // 接收与处理message
+  const sendMessage = usePostMessage((data) => {
+    const { tag, value } = data;
+    if (tag === 'setIsEditing') {
+      setIsEditing(value)
+    }
+  })
+
   // 向父级同步数据
   // app数据
-  useSendMessage(
+  sendMessage(
     {
       tag: "updateAppData",
       value: appData,
@@ -78,7 +75,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     window.top
   );
   // 当前被激活项数据
-  useSendMessage(
+  sendMessage(
     {
       tag: "updateActivationItem",
       value: activationItem,
