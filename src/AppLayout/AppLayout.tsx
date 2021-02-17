@@ -42,8 +42,11 @@ const AppLayout: React.FC<LayoutProps> = ({
 }) => {
   const getAppDatd = useDispatch<Dispatch>().appData.getAppData;
   const appData = useSelector((state: RootState) => state.appData);
+  const activationItem = useSelector((state: RootState) => state.activationItem);
+
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
-  const isEditing = useSelector((state: RootState) => state.controller.isEditing)
+  const isEditing = useSelector((state: RootState) => state.controller.isEditing);
+
   
   const [localStoreData, setLocalStorage] = useLocalStorage("appData", null);
     
@@ -55,9 +58,15 @@ const AppLayout: React.FC<LayoutProps> = ({
   }, [getAppDatd, localStoreData]);
 
   // 向父级同步数据
+  // app数据
   useSendMessage({
     tag: 'updateAppData',
     value: appData
+  }, window.top);
+  // 当前被激活项数据
+  useSendMessage({
+    tag: 'updateActivationItem',
+    value: activationItem
   }, window.top);
 
   // 更新GridLine布局数据

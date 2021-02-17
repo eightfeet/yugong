@@ -33,7 +33,7 @@ const App: React.FC<Props> = () => {
         cols={parseInt(process.env.REACT_APP_APPLAYOUT_COLS || '0')}
       />
     </div>
-    {showEditor && activationItem.moduleId ? <div style={{height: '400px'}}><MiniDashboard /></div> : null}
+    {/* {showEditor && activationItem.moduleId ? <div style={{height: '400px'}}><MiniDashboard /></div> : null} */}
     </>
   );
 };

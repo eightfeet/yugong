@@ -4,21 +4,29 @@
  */
 
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSetMessageReceiver } from "~/hooks/usePostMessage";
+import { Dispatch } from "~/redux/dashboardStore";
 import MiniDashboard from "../MiniDashboard";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
   const [designModal, setDesignModal] = useState(false);
+
+  const actions = {
+    updateAppData: useDispatch<Dispatch>().appData.updateAppData,
+    updateActivationItem: useDispatch<Dispatch>().activationItem.updateActivationItem
+  } 
+
   /**
    * 收发处理
    */
   useSetMessageReceiver(({tag, value}) => {
     if (tag) {
-      console.log(tag)
-      console.log(value)
+      actions[tag](value)
     }
   })
+  
   return (
     <>
       <span>

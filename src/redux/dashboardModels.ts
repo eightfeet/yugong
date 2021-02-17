@@ -1,9 +1,6 @@
-/**
- * 独立dashboard数据模型，包含app端数据模型
- */
-import { models as AppModels, RootModel } from './models'
+import { Models } from '@rematch/core'
 
-export interface RootModelDashboard extends RootModel {
+export interface DashboardModel extends Models<DashboardModel> {
 }
 
-export const models: RootModelDashboard = { ...AppModels }
+export const dashboardModels: DashboardModel = {  }

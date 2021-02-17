@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 
 interface Result {
-    tag: string;
+    tag: 'updateAppData' | 'updateActivationItem';
     value: any;
 }
 
-// 处理消息推送
+/**
+ * 处理消息推送
+ * @param fn Function
+ */
 export const useSetMessageReceiver = (fn: (result: Result) => void) => {
     useEffect(() => {
         const handler = (event: { data: any; }) => {
