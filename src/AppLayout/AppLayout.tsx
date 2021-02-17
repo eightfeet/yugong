@@ -15,6 +15,9 @@ import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 
+// 当前是否被ifream引用
+const visualSense = (window.self === window.top);
+
 interface LayoutProps {
   /**
    * 单行高度
@@ -40,13 +43,14 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const getAppData = useDispatch<Dispatch>().appData.getAppData;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const appData = useSelector((state: RootState) => state.appData);
-
   const ref = useRef(null);
 
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
+
+  const [, setLocalStorage] = useLocalStorage("appData", null);
 
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {
@@ -96,9 +100,37 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
         },
         window.top
       );
+      setLocalStorage(appData);
     },
-    [appData, sendMessage]
+    [appData, sendMessage, setLocalStorage]
   );
+
+  const renderGridLayout = () => (<GridLayout
+    onLayoutChange={onLayoutChange}
+    cols={cols}
+    rowHeight={rowHeight}
+    width={document.body.scrollWidth}
+    autoSize
+  >
+    {appData.map((item) => (
+      <div
+        id={`wrap-${item.layout.i}`}
+        className={classNames(
+          s.block,
+          isEditing === false ? null : s.modify
+        )}
+        key={item.layout.i}
+        data-grid={{
+          ...item.layout,
+          // 编辑模式或预览模式定义为不可编辑
+          // GridLayout data-grid未能热更新，这里用visualSense来确定当前是否在编辑模式下
+          static: visualSense,
+        }}
+      >
+        <Elements id={item.layout.i} {...item} />
+      </div>
+    ))}
+  </GridLayout>)
 
   return (
     <div className={s.layout} ref={ref}>
@@ -111,31 +143,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
           space={10}
         />
       ) : null}
-      <GridLayout
-        onLayoutChange={onLayoutChange}
-        cols={cols}
-        rowHeight={rowHeight}
-        width={document.body.scrollWidth}
-        autoSize
-      >
-        {appData.map((item) => (
-          <div
-            id={`wrap-${item.layout.i}`}
-            className={classNames(
-              s.block,
-              isEditing === false ? null : s.modify
-            )}
-            key={item.layout.i}
-            data-grid={{
-              ...item.layout,
-              // 编辑模式或预览模式定义为不可编辑
-              static: isEditing !== undefined && isEditing !== false,
-            }}
-          >
-            <Elements id={item.layout.i} {...item} />
-          </div>
-        ))}
-      </GridLayout>
+      {isEditing ? renderGridLayout() : renderGridLayout()}
     </div>
   );
 };

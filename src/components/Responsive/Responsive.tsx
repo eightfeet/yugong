@@ -77,7 +77,7 @@ const Responsive: React.FC<Props> = () => {
   // 切换编辑视图
   const setEditing = useCallback(() => {
     if (win) {
-      sendMessage({ tag: "setIsEditing", value: true }, win);
+      sendMessage({ tag: "setIsEditing", value: !isEditing }, win);
     }
     setIsEditing(!isEditing);
   }, [isEditing, sendMessage, setIsEditing, win]);
