@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
 import { Dispatch, RootState } from "~/redux/dashboardStore";
 import MiniDashboard from "../MiniDashboard";
+import s from './Responsive.module.less'
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -114,17 +115,20 @@ const Responsive: React.FC<Props> = () => {
       >
         重置
       </button>
-      <iframe
-        ref={ref}
-        title="wrapiframe"
-        src="/?isEditing=true"
-        style={{
-          width: "1px",
-          minWidth: "100%",
-          minHeight: `${window.innerHeight}px`,
-        }}
-      />
-      <MiniDashboard />
+      <div className={s.iframebox}>
+        <iframe
+          ref={ref}
+          title="wrapiframe"
+          src="/?isEditing=true"
+          style={{
+            width: "1px",
+            border: 'none',
+            minWidth: "100%",
+            minHeight: `${window.innerHeight}px`,
+          }}
+        />
+        <MiniDashboard />
+      </div>
     </>
   );
 };
