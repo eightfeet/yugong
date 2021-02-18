@@ -94,7 +94,12 @@ const appData: AppDataListTypes = [
                 backgroundCommon: {
                     backgroundColor: 'yellow',
                 },
-            }
+            },
+            content: {},
+            header: {},
+            footer: {},
+            article: {},
+            close: {},
         },
         content: { text: 'b' },
         event: {},
