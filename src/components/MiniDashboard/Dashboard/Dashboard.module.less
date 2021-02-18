@@ -8,15 +8,19 @@
     top: 0;
     right:0;
     z-index: 1000;
-    border: 1px solid #eee;
+    border: 1px solid @border-color-base;
     background-color: @layout-body-background;
     display: flex;
     transition: all .5s;
+    box-sizing: border-box;
 }
 
 .dashboardwrap {
     width: 100%;
     overflow: hidden;
+}
+
+.dashboardstylewrap {
     display: flex;
 }
 
@@ -39,4 +43,9 @@
     width: 550-80px;
     flex-shrink:0;
     overflow-y: auto;
+}
+
+.contentmenu {
+    background-color: #eee;
+    border-bottom: 1px solid @border-color-base;
 }

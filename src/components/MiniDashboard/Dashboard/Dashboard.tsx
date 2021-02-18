@@ -2,7 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import Controller from "./../Controller";
 import s from "./Dashboard.module.less";
 import { Menu, Button } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  ControlOutlined,
+  FormatPainterOutlined,
+  MailOutlined,
+  SettingOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 const { Item } = Menu;
@@ -54,22 +61,40 @@ const Dashboard: React.FC<Props> = () => {
         <SettingOutlined />
       </Button>
       <div className={s.dashboardwrap}>
-        <div className={s.menu}>
-          <Menu
-            className={s.tab}
-            selectedKeys={[stylePath]}
-            mode="inline"
-            inlineCollapsed={collapsed}
-            onSelect={onSelectStylePath}
-          >
-            {Object.keys(style).map((key: string) => (
-              <Item key={key}>{key}</Item>
-            ))}
-          </Menu>
-        </div>
-        <div className={s.dashboard}>
-          <Controller path={stylePath} />
-        </div>
+        <Menu
+          onClick={() => {}}
+          selectedKeys={["mail"]}
+          mode="horizontal"
+          className={s.contentmenu}
+        >
+          <Menu.Item key="mail" icon={<FormatPainterOutlined />}>
+            风格
+          </Menu.Item>
+          <Menu.Item key="app" icon={<ToolOutlined />}>
+            配置
+          </Menu.Item>
+        </Menu>
+        {/* style dashboard */}
+        {
+          <div className={s.dashboardstylewrap}>
+            <div className={s.menu}>
+              <Menu
+                className={s.tab}
+                selectedKeys={[stylePath]}
+                mode="inline"
+                inlineCollapsed={collapsed}
+                onSelect={onSelectStylePath}
+              >
+                {Object.keys(style).map((key: string) => (
+                  <Item key={key}>{key}</Item>
+                ))}
+              </Menu>
+            </div>
+            <div className={s.dashboard}>
+              <Controller path={stylePath} />
+            </div>
+          </div>
+        }
       </div>
     </div>
   );
