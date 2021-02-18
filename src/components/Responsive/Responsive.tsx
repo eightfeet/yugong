@@ -3,12 +3,13 @@
  *
  */
 
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
 import { Dispatch, RootState } from "~/redux/dashboardStore";
 import MiniDashboard from "../MiniDashboard";
-import s from './Responsive.module.less'
+import s from "./Responsive.module.less";
+import Ruler from "./Ruler";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -25,7 +26,10 @@ const Responsive: React.FC<Props> = () => {
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
+  const stateTag = useSelector((state: RootState) => state.controller.stateTag);
 
+  const forceUpdateByStateTag = useDispatch<Dispatch>().controller
+    .forceUpdateByStateTag;
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
@@ -36,6 +40,8 @@ const Responsive: React.FC<Props> = () => {
   }, [setIsEditing]);
 
   const ref = useRef(null);
+
+  const [iframeWidth, setIframeWidth] = useState();
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -94,8 +100,13 @@ const Responsive: React.FC<Props> = () => {
     );
   }, [sendMessage, win, appData]);
 
+  const onChangeRule = (width: any) => {
+    setIframeWidth(width);
+    forceUpdateByStateTag();
+  };
+
   return (
-    <>
+    <div className={s.main}>
       <span>
         视图模式：{isEditing === true ? "设计模式" : "预览模式"}
         视图
@@ -115,21 +126,30 @@ const Responsive: React.FC<Props> = () => {
       >
         重置
       </button>
-      <div className={s.iframebox}>
-        <iframe
-          ref={ref}
-          title="wrapiframe"
-          src="/?isEditing=true"
-          style={{
-            width: "1px",
-            border: 'none',
-            minWidth: "100%",
-            minHeight: `${window.innerHeight}px`,
-          }}
-        />
+      <Ruler onChange={onChangeRule} />
+
+      <div className={s.box}>
+        {!stateTag ? (
+          <div
+            className={s.iframebox}
+            style={iframeWidth ? { width: iframeWidth } : {}}
+          >
+            <iframe
+              ref={ref}
+              title="wrapiframe"
+              src="/?isEditing=true"
+              style={{
+                width: "1px",
+                border: "none",
+                minWidth: "100%",
+                minHeight: `${window.innerHeight}px`,
+              }}
+            />
+          </div>
+        ) : null}
         <MiniDashboard />
       </div>
-    </>
+    </div>
   );
 };
 

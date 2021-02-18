@@ -52,7 +52,7 @@ const Modal: React.FC<paraments> = (props) => {
   return (
     <Conterner {...props}>
       <div style={styleCompiler(trigger).style} onClick={onClick}>
-        按钮
+        {props.content.text}
       </div>
     </Conterner>
   );

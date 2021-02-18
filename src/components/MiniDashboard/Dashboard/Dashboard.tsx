@@ -44,7 +44,7 @@ const Dashboard: React.FC<Props> = () => {
   return (
     <div
       className={s.root}
-      style={collapsed ? { width: "0px" } : {}}
+      style={collapsed ? { width: "0px", border: "0 solid #eee" } : {}}
     >
       <Button
         className={s.menuicon}

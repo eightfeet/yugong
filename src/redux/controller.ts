@@ -27,4 +27,15 @@ export const controller = createModel<RootModel>()({
             return { ...state, unit: payload };
         }
     },
+    effects: (dispatch) => {
+        return {
+            forceUpdateByStateTag: async () => {
+                await new Promise<void>(resolve => setTimeout(() => {
+                    dispatch.controller.setStateTag(true);
+                    resolve();
+                }))
+                dispatch.controller.setStateTag(false);
+            }
+        }
+    }
 });

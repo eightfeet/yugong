@@ -44,14 +44,12 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const appData = useSelector((state: RootState) => state.appData);
   const ref = useRef(null);
-
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
 
   const [, setLocalStorage] = useLocalStorage("appData", null);
-
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {
     const { tag, value } = data;
