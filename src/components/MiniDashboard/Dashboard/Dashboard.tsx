@@ -10,7 +10,6 @@ const { Item } = Menu;
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
-
   // 菜单数据源
   const style =
     useSelector((state: RootState) => state.activationItem.style) || {};
@@ -27,7 +26,7 @@ const Dashboard: React.FC<Props> = () => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapsed = useCallback(() => {
     if (!moduleId) {
-      return
+      return;
     }
     setCollapsed(!collapsed);
   }, [collapsed, moduleId]);
@@ -39,13 +38,13 @@ const Dashboard: React.FC<Props> = () => {
 
   // 更换模板时初始化选择
   useEffect(() => {
-    setStylePath("");
+    setStylePath("basic");
   }, [moduleId]);
 
   return (
     <div
       className={s.root}
-      style={collapsed ? { width: "0px" } : { width: "550px" }}
+      style={collapsed ? { width: "0px" } : {}}
     >
       <Button
         className={s.menuicon}
@@ -54,21 +53,23 @@ const Dashboard: React.FC<Props> = () => {
       >
         <SettingOutlined />
       </Button>
-      <div className={s.menu}>
-        <Menu
-          className={s.tab}
-          selectedKeys={[stylePath]}
-          mode="inline"
-          inlineCollapsed={collapsed}
-          onSelect={onSelectStylePath}
-        >
-          {Object.keys(style).map((key: string) => (
-            <Item key={key}>{key}</Item>
-          ))}
-        </Menu>
-      </div>
-      <div className={s.dashboard}>
-        <Controller path={stylePath} />
+      <div className={s.dashboardwrap}>
+        <div className={s.menu}>
+          <Menu
+            className={s.tab}
+            selectedKeys={[stylePath]}
+            mode="inline"
+            inlineCollapsed={collapsed}
+            onSelect={onSelectStylePath}
+          >
+            {Object.keys(style).map((key: string) => (
+              <Item key={key}>{key}</Item>
+            ))}
+          </Menu>
+        </div>
+        <div className={s.dashboard}>
+          <Controller path={stylePath} />
+        </div>
       </div>
     </div>
   );
