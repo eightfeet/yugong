@@ -3,10 +3,7 @@ import Controller from "./../Controller";
 import s from "./Dashboard.module.less";
 import { Menu, Button } from "antd";
 import {
-  AppstoreOutlined,
-  ControlOutlined,
   FormatPainterOutlined,
-  MailOutlined,
   SettingOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
@@ -20,6 +17,9 @@ const Dashboard: React.FC<Props> = () => {
   // 菜单数据源
   const style =
     useSelector((state: RootState) => state.activationItem.style) || {};
+  // 菜单类型
+  const type =
+    useSelector((state: RootState) => state.activationItem.type);
 
   // 模板ID
   const moduleId = useSelector(
@@ -61,19 +61,24 @@ const Dashboard: React.FC<Props> = () => {
         <SettingOutlined />
       </Button>
       <div className={s.dashboardwrap}>
-        <Menu
-          onClick={() => {}}
-          selectedKeys={["mail"]}
-          mode="horizontal"
-          className={s.contentmenu}
-        >
-          <Menu.Item key="mail" icon={<FormatPainterOutlined />}>
-            风格
-          </Menu.Item>
-          <Menu.Item key="app" icon={<ToolOutlined />}>
-            配置
-          </Menu.Item>
-        </Menu>
+        <div className={s.headtab}>
+          <Menu
+            onClick={() => {}}
+            selectedKeys={["mail"]}
+            mode="horizontal"
+            className={s.contentmenu}
+          >
+            <Menu.Item key="mail" className={s.discfirstitem} disabled>
+              {type}
+            </Menu.Item>
+            <Menu.Item key="mail" icon={<FormatPainterOutlined />}>
+              样式风格
+            </Menu.Item>
+            <Menu.Item key="app" icon={<ToolOutlined />}>
+              数据配置
+            </Menu.Item>
+          </Menu>
+        </div>
         {/* style dashboard */}
         {
           <div className={s.dashboardstylewrap}>
