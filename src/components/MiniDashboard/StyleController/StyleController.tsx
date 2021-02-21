@@ -82,28 +82,28 @@ const StyleController: React.FC<Props> = ({ path }) => {
     <div className={s.root}>
       {path ? (
         <Collapse bordered={false}>
-          <Panel header="布局" key="1">
+          <Panel header="布局" key="display">
             <Display
               unit={unit}
               onChange={onChangeDisplay}
               defaultData={selected?.style?.[path]?.display || {}}
             />
           </Panel>
-          <Panel header="文字" key="2">
+          <Panel header="文字" key="font">
             <Font
               unit={unit}
               onChange={onChangeFont}
               defaultData={selected?.style?.[path]?.font || {}}
             />
           </Panel>
-          <Panel header="圆角与描边" key="3">
+          <Panel header="圆角与描边" key="border">
             <Border
               unit={unit}
               onChange={onChangeBorder}
               defaultDate={selected?.style?.[path]?.border || {}}
             />
           </Panel>
-          <Panel header="投影" key="4">
+          <Panel header="投影" key="textShadow_boxShadow">
             <Shadow
               unit={unit}
               onChange={onChangeShadow}
@@ -113,7 +113,7 @@ const StyleController: React.FC<Props> = ({ path }) => {
               }}
             />
           </Panel>
-          <Panel header="背景" key="5">
+          <Panel header="背景" key="backgroundCommon_backgroundGradient">
             <Background
               unit={unit}
               onChange={onChangeBackgroundCommon}
@@ -125,7 +125,7 @@ const StyleController: React.FC<Props> = ({ path }) => {
               }
             />
           </Panel>
-          <Panel header="变换" key="6">
+          <Panel header="变换" key="transform">
             <Transform
               unit={unit}
               onChange={onChangeTransfrom}
