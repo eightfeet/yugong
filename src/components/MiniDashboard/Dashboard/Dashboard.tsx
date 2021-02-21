@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import StyleController from "~/components/MiniDashboard/StyleController";
+import StyleSheetPanel from "~/components/MiniDashboard/StyleSheetPanel";
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from "./Dashboard.module.less";
 import { Menu, Button } from "antd";
@@ -108,7 +108,7 @@ const Dashboard: React.FC<Props> = () => {
               </Menu>
             </div>
             <div className={s.dashboard}>
-              <StyleController path={stylePath} />
+              <StyleSheetPanel path={stylePath} />
             </div>
           </div>
         ) : null}
