@@ -8,7 +8,7 @@ import Font from "../Font";
 import Background from "../Background";
 
 import useMergeAppData from "~/hooks/useMergeAppData";
-import s from "./Controller.module.scss";
+import s from "./StyleController.module.scss";
 import Shadow from "../Shadow";
 import Border from "../Border";
 import Transform from "../Transfrom";
@@ -19,7 +19,7 @@ interface Props {
   path: string;
 }
 
-const Controller: React.FC<Props> = ({ path }) => {
+const StyleController: React.FC<Props> = ({ path }) => {
   const selected = useSelector((state: RootState) => state.activationItem);
   const unit = useSelector((state: RootState) => state.controller.unit);
   const update = useMergeAppData();
@@ -138,4 +138,4 @@ const Controller: React.FC<Props> = ({ path }) => {
   );
 };
 
-export default Controller;
+export default StyleController;

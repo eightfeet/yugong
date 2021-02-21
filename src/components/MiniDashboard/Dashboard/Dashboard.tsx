@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Controller from "./../Controller";
+import StyleController from "~/components/MiniDashboard/StyleController";
+import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from "./Dashboard.module.less";
 import { Menu, Button } from "antd";
 import {
@@ -18,8 +19,7 @@ const Dashboard: React.FC<Props> = () => {
   const style =
     useSelector((state: RootState) => state.activationItem.style) || {};
   // 菜单类型
-  const type =
-    useSelector((state: RootState) => state.activationItem.type);
+  const type = useSelector((state: RootState) => state.activationItem.type);
 
   // 模板ID
   const moduleId = useSelector(
@@ -29,7 +29,7 @@ const Dashboard: React.FC<Props> = () => {
   // 当前编辑路径
   const [stylePath, setStylePath] = useState("");
 
-  // 面板开关
+  // 面板收起与展开开关
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapsed = useCallback(() => {
     if (!moduleId) {
@@ -48,6 +48,12 @@ const Dashboard: React.FC<Props> = () => {
     setStylePath("basic");
   }, [moduleId]);
 
+  // 样式与设置菜单面板
+  const [mainTag, setMainTag] = useState("style");
+  const onSelectMainTag = useCallback((e) => {
+    setMainTag(e.key);
+  }, []);
+
   return (
     <div
       className={s.root}
@@ -63,24 +69,30 @@ const Dashboard: React.FC<Props> = () => {
       <div className={s.dashboardwrap}>
         <div className={s.headtab}>
           <Menu
-            onClick={() => {}}
-            selectedKeys={["mail"]}
+            onClick={() => setMainTag("style")}
+            onSelect={onSelectMainTag}
+            selectedKeys={[mainTag]}
             mode="horizontal"
             className={s.contentmenu}
           >
-            <Menu.Item key="mail" className={s.discfirstitem} disabled>
-              {type}{'（未标题）'}
+            <Menu.Item
+              key={`title-${type}`}
+              className={s.discfirstitem}
+              disabled
+            >
+              {type}
+              {"（未标题）"}
             </Menu.Item>
-            <Menu.Item key="mail" icon={<FormatPainterOutlined />}>
+            <Menu.Item key="style" icon={<FormatPainterOutlined />}>
               样式
             </Menu.Item>
-            <Menu.Item key="app" icon={<ToolOutlined />}>
+            <Menu.Item key="config" icon={<ToolOutlined />}>
               设置
             </Menu.Item>
           </Menu>
         </div>
         {/* style dashboard */}
-        {
+        {mainTag === "style" ? (
           <div className={s.dashboardstylewrap}>
             <div className={s.menu}>
               <Menu
@@ -90,15 +102,18 @@ const Dashboard: React.FC<Props> = () => {
                 inlineCollapsed={collapsed}
                 onSelect={onSelectStylePath}
               >
-                {Object.keys(style).map((key: string) => (
+                {Object.keys(style).map((key: string, index: number) => (
                   <Item key={key}>{key}</Item>
                 ))}
               </Menu>
             </div>
             <div className={s.dashboard}>
-              <Controller path={stylePath} />
+              <StyleController path={stylePath} />
             </div>
           </div>
+        ) : null}
+        {
+          mainTag === "config" ? <ConfigurationController /> : null
         }
       </div>
     </div>
