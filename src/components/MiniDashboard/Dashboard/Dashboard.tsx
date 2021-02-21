@@ -69,13 +69,13 @@ const Dashboard: React.FC<Props> = () => {
             className={s.contentmenu}
           >
             <Menu.Item key="mail" className={s.discfirstitem} disabled>
-              {type}
+              {type}{'（未标题）'}
             </Menu.Item>
             <Menu.Item key="mail" icon={<FormatPainterOutlined />}>
-              样式风格
+              样式
             </Menu.Item>
             <Menu.Item key="app" icon={<ToolOutlined />}>
-              数据配置
+              设置
             </Menu.Item>
           </Menu>
         </div>
