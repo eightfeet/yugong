@@ -103,6 +103,10 @@ const Responsive: React.FC<Props> = () => {
 
   const onChangeRule = (width: any) => {
     setIframeWidth(width);
+    if (win) {
+      sendMessage({ tag: "setIsEditing", value: true }, win);
+    }
+    setIsEditing(true);
     forceUpdateByStateTag();
   };
 
