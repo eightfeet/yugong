@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import StyleSheetPanel from "~/components/MiniDashboard/StyleSheetPanel";
-import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
+import React, { useCallback, useState } from "react";
+import ConfigurationController from "~/components/MiniDashboard/ConfigurationController";
 import s from "./Dashboard.module.less";
 import { Menu, Button } from "antd";
 import {
@@ -10,14 +9,11 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-const { Item } = Menu;
+import StyleController from "../StyleController";
 
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
-  // 菜单数据源
-  const style =
-    useSelector((state: RootState) => state.activationItem.style) || {};
   // 菜单类型
   const type = useSelector((state: RootState) => state.activationItem.type);
 
@@ -25,9 +21,6 @@ const Dashboard: React.FC<Props> = () => {
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId
   );
-
-  // 当前编辑路径
-  const [stylePath, setStylePath] = useState("");
 
   // 面板收起与展开开关
   const [collapsed, setCollapsed] = useState(true);
@@ -37,16 +30,6 @@ const Dashboard: React.FC<Props> = () => {
     }
     setCollapsed(!collapsed);
   }, [collapsed, moduleId]);
-
-  // 设置当前编辑路径
-  const onSelectStylePath = useCallback((e) => {
-    setStylePath(e.key);
-  }, []);
-
-  // 更换模板时初始化选择
-  useEffect(() => {
-    setStylePath("basic");
-  }, [moduleId]);
 
   // 样式与设置菜单面板
   const [mainTag, setMainTag] = useState("style");
@@ -91,30 +74,12 @@ const Dashboard: React.FC<Props> = () => {
             </Menu.Item>
           </Menu>
         </div>
-        {/* style dashboard */}
-        {mainTag === "style" ? (
-          <div className={s.dashboardstylewrap}>
-            <div className={s.menu}>
-              <Menu
-                className={s.tab}
-                selectedKeys={[stylePath]}
-                mode="inline"
-                inlineCollapsed={collapsed}
-                onSelect={onSelectStylePath}
-              >
-                {Object.keys(style).map((key: string, index: number) => (
-                  <Item key={key}>{key}</Item>
-                ))}
-              </Menu>
-            </div>
-            <div className={s.dashboard}>
-              <StyleSheetPanel path={stylePath} />
-            </div>
-          </div>
-        ) : null}
-        {
-          mainTag === "config" ? <ConfigurationController /> : null
-        }
+        <div className={s.controllerwrap} style={{display: mainTag === "style" ? 'block' : 'none'}}>
+          <StyleController /> 
+        </div>
+        <div className={s.controllerwrap} style={{display: mainTag === "config" ? 'block' : 'none'}}>
+          <ConfigurationController /> 
+        </div>
       </div>
     </div>
   );
