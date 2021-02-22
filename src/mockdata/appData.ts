@@ -3,6 +3,84 @@ import { AppDataListTypes } from "~/types/appData";
 const appData: AppDataListTypes = [
   {
     moduleId: "a",
+    style: {
+      basic: {
+        display: { width: 200, height: 200, zIndex: 20, position: "relative" },
+        border: {
+          radiusTopLeft: 100,
+          radiusTopRight: 100,
+          radiusBottomLeft: 100,
+          radiusBottomRight: 100,
+        },
+        backgroundGradient: {
+          gradient: [
+            { color: "rgba(150, 233, 8, 1)", transition: 31 },
+            { color: "rgb(94, 201, 130)", transition: 59 },
+            { color: "rgb(133, 249, 203)", transition: 100 },
+          ],
+          gradientDirections: "center",
+        },
+        textShadow: [
+          {
+            shiftDown: 1,
+            color: "rgba(184, 233, 134, 1 )",
+            shiftRight: 1,
+          },
+          {
+            color: "rgba(19, 92, 1, 1 )",
+            shiftRight: -1,
+            shiftDown: -1,
+          },
+        ],
+        font: {
+          align: "center",
+          fontSize: 90,
+          lineHeight: 200,
+          fontWeight: "bold",
+          color: "rgba(65, 117, 5, 1)",
+        },
+        boxShadow: [
+          {
+            inset: true,
+            spread: 20,
+            color: "rgba(65, 117, 5, 0.47 )",
+            blur: 8,
+          },
+          {
+            color: "rgba(65, 117, 5, 0.58 )",
+            inset: true,
+            blur: 2,
+            spread: 8,
+          },
+          {
+            inset: true,
+            color: "rgba(235, 234, 242, 0.21 )",
+            shiftRight: 4,
+            shiftDown: 56,
+            spread: -20,
+          },
+          {
+            color: "rgba(250, 249, 253, 1 )",
+            inset: true,
+            spread: 4,
+          },
+          {
+            inset: true,
+            color: "rgba(79, 51, 192, 0.08 )",
+            spread: -3,
+            shiftDown: -103,
+          },
+          { blur: 20, color: "rgba(43, 67, 17, 0.35 )" },
+        ],
+      },
+      content: {},
+    },
+    content: {},
+    event: {},
+    type: "Root",
+  },
+  {
+    moduleId: "a",
     layout: { w: 10, h: 7, x: 1, y: 0, i: "a", moved: false, static: false },
     style: {
       basic: {

@@ -4,7 +4,7 @@ export interface AnyObjectType {
   [keys: string]: any;
 }
 
-export type AppDataModuleTypes = "Conterner" | "Modal";
+export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
@@ -15,7 +15,7 @@ export interface AppDataElementsTypes {
 }
 
 export interface AppDataLayoutItemTypes extends AppDataElementsTypes {
-  layout: Layout;
+  layout?: Layout;
 }
 
 export interface StyleItemsTypes {
