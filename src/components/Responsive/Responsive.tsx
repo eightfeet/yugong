@@ -3,6 +3,7 @@
  *
  */
 
+import { Button } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -107,27 +108,34 @@ const Responsive: React.FC<Props> = () => {
 
   return (
     <div className={s.main}>
-      <span>
-        视图模式：{isEditing === true ? "设计模式" : "预览模式"}
-        视图
-      </span>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button onClick={setEditing}>
-        {isEditing === true ? "预览模式" : "设计模式"}
-      </button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button>保存</button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button
-        onClick={() => {
-          window.localStorage.clear();
-          window.location.reload();
-        }}
-      >
-        重置
-      </button>
+      <div className={s.menu}>
+        <div className={s.lefttitle}>
+          标题：
+        </div>
+        <div className={s.rightbtn}>
+          {isEditing === true ? (
+            <Button type="default" size="small" onClick={setEditing}>
+              设计模式
+            </Button>
+          ) : (
+            <Button type="default" size="small" onClick={setEditing}>
+              预览模式
+            </Button>
+          )}
+          &nbsp;
+          <Button
+            type="default"
+            size="small"
+            onClick={() => {
+              window.localStorage.clear();
+              window.location.reload();
+            }}
+          >
+            重置
+          </Button>
+        </div>
+      </div>
       <Ruler onChange={onChangeRule} />
-
       <div className={s.box}>
         {!stateTag ? (
           <div
