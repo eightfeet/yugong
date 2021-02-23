@@ -112,12 +112,12 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   >
     {appData.map((item) => (
       <div
-        id={`wrap-${item.layout.i}`}
+        id={`wrap-${item.layout?.i}`}
         className={classNames(
           s.block,
           isEditing === false ? null : s.modify
         )}
-        key={item.layout.i}
+        key={item.layout?.i}
         data-grid={{
           ...item.layout,
           // 编辑模式或预览模式定义为不可编辑
@@ -125,7 +125,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
           static: visualSense,
         }}
       >
-        <Elements id={item.layout.i} {...item} />
+        <Elements id={item.layout?.i} {...item} />
       </div>
     ))}
   </GridLayout>)

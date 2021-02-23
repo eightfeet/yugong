@@ -1,7 +1,7 @@
 import { AppDataListTypes } from "~/types/appData";
 
 const appData: AppDataListTypes = [
-  {
+  /*{
     moduleId: "a",
     style: {
       basic: {
@@ -78,7 +78,7 @@ const appData: AppDataListTypes = [
     content: {},
     event: {},
     type: "Root",
-  },
+  },*/
   {
     moduleId: "a",
     layout: { w: 10, h: 7, x: 1, y: 0, i: "a", moved: false, static: false },
@@ -154,7 +154,7 @@ const appData: AppDataListTypes = [
       },
       content: {},
     },
-    content: { text: "禅" },
+    content: { text: "将" },
     event: {},
     type: "Conterner",
   },

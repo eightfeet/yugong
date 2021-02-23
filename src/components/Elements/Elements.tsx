@@ -12,8 +12,8 @@ import LazyLoader from '~/components/LazyLoader';
  * @extends {AppDataElementsTypes}
  */
 interface ElementsProps extends AppDataElementsTypes {
-    id: string;
-    layout: {
+    id?: string;
+    layout?: {
         [keys: string]:any
     }
 }
