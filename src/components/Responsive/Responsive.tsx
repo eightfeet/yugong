@@ -148,6 +148,7 @@ const Responsive: React.FC<Props> = () => {
           >
             <iframe
               ref={ref}
+              id="wrapiframe"
               title="wrapiframe"
               src="/?isEditing=true"
               style={{

@@ -42,11 +42,16 @@ interface LayoutProps {
 const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const getAppData = useDispatch<Dispatch>().appData.getAppData;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
   const appData = useSelector((state: RootState) => state.appData);
   const ref = useRef(null);
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
+  );
+
+  const activationItem = useSelector(
+    (state: RootState) => state.activationItem
   );
 
   const [, setLocalStorage] = useLocalStorage("appData", null);
@@ -59,6 +64,9 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
         break;
       case "updateAppData":
         updateAppData(value);
+        break;
+      case "id":
+        setEditingId(value)
         break;
       default:
         break;

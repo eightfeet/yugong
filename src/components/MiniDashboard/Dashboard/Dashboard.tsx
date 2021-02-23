@@ -7,9 +7,10 @@ import {
   SettingOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, Dispatch } from "~/redux/store";
 import StyleController from "../StyleController";
+import usePostMessage from "~/hooks/usePostMessage";
 
 interface Props {}
 
@@ -21,6 +22,11 @@ const Dashboard: React.FC<Props> = () => {
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId
   );
+
+  const activationItem = useSelector((state: RootState) => state.activationItem);
+
+  const updateActivationItem = useDispatch<Dispatch>().activationItem
+    .updateActivationItem;
 
   // 面板收起与展开开关
   const [collapsed, setCollapsed] = useState(true);
@@ -37,12 +43,31 @@ const Dashboard: React.FC<Props> = () => {
     setMainTag(e.key);
   }, []);
 
+  const sendMessage = usePostMessage(() => {
+
+  });
   // 
+  // 收发处理，子窗口onload时向子窗口发送信息, 通知当前正处于编辑模式下，
+  
   const onChangeSelect = useCallback(
     (e) => {
-      console.log(33333, e)
+      if (activationItem.moduleId === e) return;
+        for (let index = 0; index < appData.length; index++) {
+          const element = appData[index];
+          if (element.moduleId === e) {
+            const value = { ...element }
+            updateActivationItem(value);
+            const win = (document.getElementById('wrapiframe') as HTMLIFrameElement).contentWindow;
+            console.log(win)
+            if (win) {
+              sendMessage({tag: 'id', value: element.moduleId}, win)
+            }
+            break;
+          }
+        }
+        
     },
-    [],
+    [activationItem.moduleId, appData, sendMessage, updateActivationItem],
   )
 
   return (
@@ -62,9 +87,9 @@ const Dashboard: React.FC<Props> = () => {
           <div className={s.moduleselect}>
             <Select onChange={onChangeSelect} className={s.select} value={moduleId}>
               {appData.map((item) => (
-                <Select.Option value={item.moduleId}>
+                <Select.Option value={item.moduleId} key={item.moduleId}>
                   {item.type}
-                  {"（未标题）（未标题）（未标题）"}
+                  {"（未标题）"}
                 </Select.Option>
               ))}
             </Select>
