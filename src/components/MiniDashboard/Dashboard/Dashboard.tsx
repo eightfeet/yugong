@@ -23,7 +23,9 @@ const Dashboard: React.FC<Props> = () => {
     (state: RootState) => state.activationItem.moduleId
   );
 
-  const activationItem = useSelector((state: RootState) => state.activationItem);
+  const activationItem = useSelector(
+    (state: RootState) => state.activationItem
+  );
 
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
@@ -43,32 +45,31 @@ const Dashboard: React.FC<Props> = () => {
     setMainTag(e.key);
   }, []);
 
-  const sendMessage = usePostMessage(() => {
-
-  });
-  // 
+  const sendMessage = usePostMessage(() => {});
+  //
   // 收发处理，子窗口onload时向子窗口发送信息, 通知当前正处于编辑模式下，
-  
+
   const onChangeSelect = useCallback(
     (e) => {
       if (activationItem.moduleId === e) return;
-        for (let index = 0; index < appData.length; index++) {
-          const element = appData[index];
-          if (element.moduleId === e) {
-            const value = { ...element }
-            updateActivationItem(value);
-            const win = (document.getElementById('wrapiframe') as HTMLIFrameElement).contentWindow;
-            console.log(win)
-            if (win) {
-              sendMessage({tag: 'id', value: element.moduleId}, win)
-            }
-            break;
+      for (let index = 0; index < appData.length; index++) {
+        const element = appData[index];
+        if (element.moduleId === e) {
+          const value = { ...element };
+          updateActivationItem(value);
+          const win = (document.getElementById(
+            "wrapiframe"
+          ) as HTMLIFrameElement).contentWindow;
+          console.log(win);
+          if (win) {
+            sendMessage({ tag: "id", value: element.moduleId }, win);
           }
+          break;
         }
-        
+      }
     },
-    [activationItem.moduleId, appData, sendMessage, updateActivationItem],
-  )
+    [activationItem.moduleId, appData, sendMessage, updateActivationItem]
+  );
 
   return (
     <div
@@ -85,11 +86,28 @@ const Dashboard: React.FC<Props> = () => {
       <div className={s.dashboardwrap}>
         <div className={s.headtab}>
           <div className={s.moduleselect}>
-            <Select onChange={onChangeSelect} className={s.select} value={moduleId}>
+            <Select
+              onChange={onChangeSelect}
+              className={s.select}
+              value={moduleId}
+              showSearch
+              placeholder="请选择编辑模块"
+              optionFilterProp="children"
+              filterOption={
+                (input, option) => {
+                  const str = option?.children.join('').toLowerCase();
+                  if (str.indexOf(input) !== -1) {
+                    return true
+                  }
+                  return false
+                }
+                // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
               {appData.map((item) => (
                 <Select.Option value={item.moduleId} key={item.moduleId}>
                   {item.type}
-                  {"（未标题）"}
+                  （{item.name || '未标题'}-{item.moduleId}）
                 </Select.Option>
               ))}
             </Select>

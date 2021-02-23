@@ -12,6 +12,7 @@ export interface AppDataElementsTypes {
   event: any;
   type: AppDataModuleTypes;
   moduleId: string;
+  name?: string;
 }
 
 export interface AppDataLayoutItemTypes extends AppDataElementsTypes {
