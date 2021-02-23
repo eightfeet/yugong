@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import ConfigurationController from "~/components/MiniDashboard/ConfigurationController";
 import s from "./Dashboard.module.less";
-import { Menu, Button } from "antd";
+import { Menu, Button, Select } from "antd";
 import {
   FormatPainterOutlined,
   SettingOutlined,
@@ -14,8 +14,8 @@ import StyleController from "../StyleController";
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
-  // 菜单类型
-  const type = useSelector((state: RootState) => state.activationItem.type);
+  // appdata
+  const appData = useSelector((state: RootState) => state.appData);
 
   // 模板ID
   const moduleId = useSelector(
@@ -37,6 +37,14 @@ const Dashboard: React.FC<Props> = () => {
     setMainTag(e.key);
   }, []);
 
+  // 
+  const onChangeSelect = useCallback(
+    (e) => {
+      console.log(33333, e)
+    },
+    [],
+  )
+
   return (
     <div
       className={s.root}
@@ -51,6 +59,17 @@ const Dashboard: React.FC<Props> = () => {
       </Button>
       <div className={s.dashboardwrap}>
         <div className={s.headtab}>
+          <div className={s.moduleselect}>
+            <Select onChange={onChangeSelect} className={s.select} value={moduleId}>
+              {appData.map((item) => (
+                <Select.Option value={item.moduleId}>
+                  {item.type}
+                  {"（未标题）（未标题）（未标题）"}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
           <Menu
             onClick={() => setMainTag("style")}
             onSelect={onSelectMainTag}
@@ -58,14 +77,6 @@ const Dashboard: React.FC<Props> = () => {
             mode="horizontal"
             className={s.contentmenu}
           >
-            <Menu.Item
-              key={`title-${type}`}
-              className={s.discfirstitem}
-              disabled
-            >
-              {type}
-              {"（未标题）"}
-            </Menu.Item>
             <Menu.Item key="style" icon={<FormatPainterOutlined />}>
               样式
             </Menu.Item>
@@ -74,11 +85,17 @@ const Dashboard: React.FC<Props> = () => {
             </Menu.Item>
           </Menu>
         </div>
-        <div className={s.controllerwrap} style={{display: mainTag === "style" ? 'block' : 'none'}}>
-          <StyleController /> 
+        <div
+          className={s.controllerwrap}
+          style={{ display: mainTag === "style" ? "block" : "none" }}
+        >
+          <StyleController />
         </div>
-        <div className={s.controllerwrap} style={{display: mainTag === "config" ? 'block' : 'none'}}>
-          <ConfigurationController /> 
+        <div
+          className={s.controllerwrap}
+          style={{ display: mainTag === "config" ? "block" : "none" }}
+        >
+          <ConfigurationController />
         </div>
       </div>
     </div>

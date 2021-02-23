@@ -36,17 +36,37 @@
 
 .contentmenu {
   background-color: #eee;
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 .headtab {
   border-bottom: 1px solid @border-color-base;
   width: 100%;
+  display: flex;
+  background-color: #eee;
+  align-items: center;
+}
+
+.moduleselect {
+  margin-left: 10px;
 }
 
 .discfirstitem {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .controllerwrap {
   height: 100%;
+}
+
+.select {
+  background-color: #eee;
+  min-width: 120px;
+  :global {
+    .ant-select-selector {
+      background-color: #eee !important;
+      border: none !important;
+    }
+  }
 }
