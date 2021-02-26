@@ -155,7 +155,9 @@ const appData: AppDataListTypes = [
       content: {},
     },
     content: { text: "将" },
-    event: {},
+    event: {
+      onClick: "b/show",
+    },
     type: "Conterner",
   },
   {

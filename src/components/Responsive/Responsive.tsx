@@ -7,7 +7,7 @@ import { Button } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
-import { Dispatch, RootState } from "~/redux/dashboardStore";
+import { Dispatch, RootState } from "~/redux/store";
 import MiniDashboard from "../MiniDashboard";
 import s from "./Responsive.module.less";
 import Ruler from "./Ruler";

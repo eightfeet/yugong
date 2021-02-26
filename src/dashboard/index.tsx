@@ -10,7 +10,7 @@ import reportWebVitals from "~/reportWebVitals";
 import Layout from "~/components/Layout";
 import Responsive from "~/components/Responsive";
 import { Provider } from "react-redux";
-import { store } from "~/redux/dashboardStore";
+import { store } from "~/redux/store";
 
 ReactDOM.render(
   <React.StrictMode>
