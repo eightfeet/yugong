@@ -40,7 +40,7 @@ const Dashboard: React.FC<Props> = () => {
   }, [collapsed, moduleId]);
 
   // 样式与设置菜单面板
-  const [mainTag, setMainTag] = useState("style");
+  const [mainTag, setMainTag] = useState("config");
   const onSelectMainTag = useCallback((e) => {
     setMainTag(e.key);
   }, []);

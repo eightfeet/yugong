@@ -1,9 +1,10 @@
 import React from 'react'
+import EventsSetting from '../EventsSetting'
 
 const ConfigurationController = () => {
     return (
         <div>
-            配置设置
+            <EventsSetting />
         </div>
     )
 }
