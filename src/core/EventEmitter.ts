@@ -70,7 +70,14 @@ class EventEmitter {
     };
   }
 
-  public clear(id: string) {}
+  public clear(id: string) {
+    for (const eventName in this.events) {
+      if (Object.prototype.hasOwnProperty.call(this.events, eventName)) {
+        const element = this.events[eventName];
+        console.log('清除', element)
+      }
+    }
+  }
 }
 
 export default EventEmitter;

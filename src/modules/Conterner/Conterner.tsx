@@ -35,10 +35,9 @@ const Conterner: Props<paraments> = (props) => {
 };
 
 Conterner.exposeEvents = [{
-  onClick: {
-
-  }
-}, 'bbb', 'ccc']
+  name: 'onClick',
+  description: '点击'
+}]
 
 export default Conterner;
 
