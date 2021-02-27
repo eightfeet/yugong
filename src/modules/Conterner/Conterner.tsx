@@ -1,67 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, RootState } from "~/redux/store";
+import React from "react";
+import Wrapper from "./../Wrapper";
 import { AppDataElementsTypes } from "~/types/appData";
-import styleCompiler from "~/compiler";
-import s from "./Conterner.module.less";
-import usePostMessage from "~/hooks/usePostMessage";
+import EventEmitter from "~/core/EventEmitter";
 
 interface paraments extends AppDataElementsTypes {
   id: string;
+  eventEmitter: EventEmitter
 }
 
-const Conterner: React.FC<paraments> = ({
-  id,
-  style,
-  children,
-  content,
-}) => {
-  /**
-   * Conterner 自身的样式
-   */
-  const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
-  const actId = useSelector((state: RootState) => state.controller.editingId);
-
-  const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
-
-  const isEditing = useSelector((state: RootState) => state.controller.isEditing);
-
-  const sendMessage = usePostMessage(()=> {})
-
-  useEffect(() => {
-    const { basic } = style;
-    setBasicStyle(styleCompiler(basic));
-    if (basic.display?.zIndex !== undefined) {
-      document.getElementById(
-        `wrap-${id}`
-      )!.style.zIndex = `${basic.display.zIndex}`;
+const Conterner: React.FC<paraments> = (props) => {
+  const { eventEmitter, events } = props;
+  console.log('events', events)
+  for (const key in events) {
+    if (Object.prototype.hasOwnProperty.call(events, key)) {
+      const event = events[key];
+      console.log(`${props.moduleId}/${key}`, event)
     }
-  }, [id, style]);
-
-  /**
-   * 图层被触发
-   */
-  const onLayoutClick = useCallback(() => {
-    if(!isEditing) return;
-    setEditingId(id)
-    // 向父级窗口通知当前激活Id
-    sendMessage({tag: 'id', value: id}, window.top)
-  }, [isEditing, id, sendMessage, setEditingId]);
+  }
 
   return (
-    <div
-      className={s.touchwrap}
-      onTouchStart={onLayoutClick}
-      onMouseDown={onLayoutClick}
-    >
-      {actId === id ? <div className={s.actwrap} /> : null}
-      <div id={id} style={basicStyle.style}>
-        {children || content.text}
-      </div>
-    </div>
+    <Wrapper {...props}>
+      {props.content.text}
+    </Wrapper>
   );
 };
-
-
 
 export default Conterner;

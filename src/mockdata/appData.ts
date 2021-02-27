@@ -76,7 +76,7 @@ const appData: AppDataListTypes = [
       content: {},
     },
     content: {},
-    event: {},
+    events: {},
     type: "Root",
   },*/
   {
@@ -155,7 +155,7 @@ const appData: AppDataListTypes = [
       content: {},
     },
     content: { text: "将" },
-    event: {
+    events: {
       onClick: "b/show",
     },
     type: "Conterner",
@@ -212,7 +212,7 @@ const appData: AppDataListTypes = [
       close: {},
     },
     content: { text: "这是一个弹窗" },
-    event: {},
+    events: {},
     type: "Modal",
   },
   {
@@ -249,7 +249,9 @@ const appData: AppDataListTypes = [
       },
     },
     content: { text: "c" },
-    event: {},
+    events: {
+      onClick: "b/show",
+    },
     type: "Conterner",
   },
 ];

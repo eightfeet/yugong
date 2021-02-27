@@ -9,7 +9,7 @@ export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
   content: AnyObjectType;
-  event: any;
+  events: AnyObjectType;
   type: AppDataModuleTypes;
   moduleId: string;
   name?: string;

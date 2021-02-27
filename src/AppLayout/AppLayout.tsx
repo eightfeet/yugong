@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
+import EventEmitter from "~/core/EventEmitter";
 
 // 当前是否被ifream引用
 const visualSense = (window.self === window.top);
@@ -111,6 +112,10 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     [appData, sendMessage, setLocalStorage]
   );
 
+  const eventEmitter = useMemo(() => {
+    return new EventEmitter()
+  }, [appData])
+
   const renderGridLayout = () => (<GridLayout
     onLayoutChange={onLayoutChange}
     cols={cols}
@@ -118,24 +123,27 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     width={document.body.scrollWidth}
     autoSize
   >
-    {appData.map((item) => (
-      <div
-        id={`wrap-${item.layout?.i}`}
-        className={classNames(
-          s.block,
-          isEditing === false ? null : s.modify
-        )}
-        key={item.layout?.i}
-        data-grid={{
-          ...item.layout,
-          // 编辑模式或预览模式定义为不可编辑
-          // GridLayout data-grid未能热更新，这里用visualSense来确定当前是否在编辑模式下
-          static: visualSense,
-        }}
-      >
-        <Elements id={item.layout?.i} {...item} />
-      </div>
-    ))}
+    {appData.map((item) => {
+      const itemMerge = {eventEmitter: eventEmitter.bind(item.moduleId), ...item};
+      return (
+        <div
+          id={`wrap-${item.layout?.i}`}
+          className={classNames(
+            s.block,
+            isEditing === false ? null : s.modify
+          )}
+          key={item.layout?.i}
+          data-grid={{
+            ...item.layout,
+            // 编辑模式或预览模式定义为不可编辑
+            // GridLayout data-grid未能热更新，这里用visualSense来确定当前是否在编辑模式下
+            static: visualSense,
+          }}
+        >
+          <Elements id={item.layout?.i} {...itemMerge} />
+        </div>
+      )
+    })}
   </GridLayout>)
 
   return (

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import Conterner from "./../Conterner";
+import Wrapper from "./../Wrapper";
 import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
@@ -50,11 +50,11 @@ const Modal: React.FC<paraments> = (props) => {
   }, []);
 
   return (
-    <Conterner {...props}>
+    <Wrapper {...props}>
       <div style={styleCompiler(trigger).style} onClick={onClick}>
         {props.content.text}
       </div>
-    </Conterner>
+    </Wrapper>
   );
 };
 
