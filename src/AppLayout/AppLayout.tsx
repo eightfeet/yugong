@@ -114,7 +114,9 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
 
   const eventEmitter = useMemo(() => {
     return new EventEmitter()
-  }, [appData])
+  }, [appData]);
+
+  (window.top as any).eventEmitter = (window as any).eventEmitter = eventEmitter;
 
   const renderGridLayout = () => (<GridLayout
     onLayoutChange={onLayoutChange}

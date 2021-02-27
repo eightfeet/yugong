@@ -15,6 +15,7 @@ const Wrapper: React.FC<paraments> = ({
   style,
   children,
 }) => {
+  
   /**
    * Wrapper 自身的样式
    */

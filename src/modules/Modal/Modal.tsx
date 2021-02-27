@@ -1,26 +1,43 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import Wrapper from "./../Wrapper";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
+import EventEmitter from "~/core/EventEmitter";
 
 interface paraments extends AppDataElementsTypes {
   id: string;
+  eventEmitter: EventEmitter;
 }
 
 const Modal: React.FC<paraments> = (props) => {
+  const { style, eventEmitter } = props;
+
+  const show = useCallback(() => {
+    if (!ref.current) return;
+    ref.current.create({
+      header: "弹窗标题",
+      article: "弹窗文案",
+      footer: "底部",
+    });
+  }, []);
+
+  const hide = useCallback(() => {
+    if (!ref.current) return;
+    ref.current.remove();
+  }, []);
+
+  
+  const ref = useRef<Core>();
   const {
-    trigger,
     overlay,
     header,
     footer,
     content,
     article,
     close,
-  } = props.style;
-  const ref = useRef<Core>();
-
+  } = style;
   useEffect(() => {
+    // 创建弹窗
     ref.current = new Core({
       style: {
         overlay: styleCompiler(overlay).style as any,
@@ -32,6 +49,9 @@ const Modal: React.FC<paraments> = (props) => {
       },
       shouldCloseOnOverlayClick: true,
     });
+
+    // 事件订阅
+
     return () => {
       if (ref.current) {
         if (!document.querySelector(`#${ref.current.state.id}`)) return
@@ -40,22 +60,19 @@ const Modal: React.FC<paraments> = (props) => {
     };
   }, [article, close, content, footer, header, overlay]);
 
-  const onClick = useCallback(() => {
-    if (!ref.current) return;
-    ref.current.create({
-      header: "弹窗标题",
-      article: "弹窗文案",
-      footer: "底部",
-    });
-  }, []);
+  useMemo(() => {
+    eventEmitter.addEventListener('show', show);
+    eventEmitter.addEventListener('hide', hide);
+  }, [eventEmitter, hide, show])
 
-  return (
-    <Wrapper {...props}>
-      <div style={styleCompiler(trigger).style} onClick={onClick}>
-        {props.content.text}
-      </div>
-    </Wrapper>
-  );
+  return null;
+  // return (
+  //   <Wrapper {...props}>
+  //     <div style={styleCompiler(trigger).style} onClick={onClick}>
+  //       {props.content.text}
+  //     </div>
+  //   </Wrapper>
+  // );
 };
 
 export default Modal;

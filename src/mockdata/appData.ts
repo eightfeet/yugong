@@ -156,7 +156,11 @@ const appData: AppDataListTypes = [
     },
     content: { text: "将" },
     events: {
-      onClick: "b/show",
+      onClick: [
+        { name: "b/show", arguments: [] },
+        { name: "hourglass", arguments: [3000] },
+        { name: "b/hide", arguments: [] },
+      ],
     },
     type: "Conterner",
   },
@@ -250,7 +254,9 @@ const appData: AppDataListTypes = [
     },
     content: { text: "c" },
     events: {
-      onClick: "b/show",
+      onClick: [
+        { name: "b/show", arguments: [] },
+      ],
     },
     type: "Conterner",
   },
