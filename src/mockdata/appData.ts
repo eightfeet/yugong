@@ -81,6 +81,7 @@ const appData: AppDataListTypes = [
   },*/
   {
     moduleId: "a",
+    moduleName: "盒子1",
     layout: { w: 10, h: 7, x: 1, y: 0, i: "a", moved: false, static: false },
     style: {
       basic: {
@@ -166,6 +167,7 @@ const appData: AppDataListTypes = [
   },
   {
     moduleId: "b",
+    moduleName: "弹窗",
     layout: { w: 8, h: 2, x: 2, y: 7, i: "b", moved: false, static: false },
     style: {
       basic: {
@@ -221,6 +223,7 @@ const appData: AppDataListTypes = [
   },
   {
     moduleId: "c",
+    moduleName: "盒子2",
     layout: { w: 4, h: 11, x: 4, y: 9, i: "c", moved: false, static: false },
     style: {
       basic: {

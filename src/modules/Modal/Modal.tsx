@@ -17,8 +17,6 @@ interface EventEmitterExpose {
   description: string;
 }
 
-
-
 /**
  * Extends FC with custom static methods
  * 静态属性仅用于 dashboard 配置使用
@@ -85,7 +83,16 @@ const Modal: Props<paraments> = (props) => {
   return null;
 };
 
-Modal.exposeFunctions = [];
+Modal.exposeFunctions = [
+  {
+    name: "show",
+    description: "显示弹窗",
+  },
+  {
+    name: "hide",
+    description: "隐藏弹窗",
+  },
+];
 Modal.exposeEvents = [
   {
     name: "onClose",

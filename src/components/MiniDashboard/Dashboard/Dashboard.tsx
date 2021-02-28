@@ -107,7 +107,7 @@ const Dashboard: React.FC<Props> = () => {
               {appData.map((item) => (
                 <Select.Option value={item.moduleId} key={item.moduleId}>
                   {item.type}
-                  （{item.name || '未标题'}-{item.moduleId}）
+                  （{item.moduleName || '未标题'}-{item.moduleId}）
                 </Select.Option>
               ))}
             </Select>
