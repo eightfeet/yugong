@@ -51,10 +51,6 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     (state: RootState) => state.controller.isEditing
   );
 
-  const activationItem = useSelector(
-    (state: RootState) => state.activationItem
-  );
-
   const [, setLocalStorage] = useLocalStorage("appData", null);
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {

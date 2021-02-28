@@ -12,10 +12,18 @@ interface EventEmitterExpose {
   description: string;
 }
 
+interface EventEmitterEventData {
+  name: string;
+  arguments: any[];
+}
+
 interface Props {
   eventType: EventEmitterExpose;
-  eventData: EventEmitterExpose[];
-  onChange: (eventType: EventEmitterExpose, data: EventEmitterExpose[]) => void;
+  eventData: EventEmitterEventData[];
+  onChange: (
+    eventType: EventEmitterExpose,
+    data: EventEmitterEventData[]
+  ) => void;
 }
 
 interface EventDataList {
@@ -31,8 +39,8 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
     const eventDataList = eventData.map((event) => {
       const selectData = event.name.split("/");
       const result = {
-        moduleValue: selectData.length > 1 ? selectData[0] : "globalModule",
-        functionValue: selectData[1] || selectData[0],
+        moduleValue: selectData[0],
+        functionValue: selectData[1],
       };
       return result;
     });
@@ -48,11 +56,13 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
   }, []);
 
   const onChangeItem = useCallback(
-    (data) => {
-      console.log('data', data)
+    (index: number) => (data: string[]) => {
+      const operateData = [...eventData];
+      operateData[index] = { name: `${data[0]}/${data[1]}`, arguments: [] };
+      onChange(eventType, operateData);
     },
-    [],
-  )
+    [eventData, eventType, onChange]
+  );
 
   return (
     <>
@@ -62,7 +72,7 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
           <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
         </div>
       </div>
-      {selectedModule.map((event) => {
+      {selectedModule.map((event, index) => {
         return (
           <Row
             className={s.row}
@@ -72,7 +82,7 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
             <EventItem
               moduleValue={event.moduleValue}
               functionValue={event.functionValue}
-              onChange={onChangeItem}
+              onChange={onChangeItem(index)}
             />
             <Col span={2} className={s.minuswrap}>
               <Button size="small" icon={<MinusOutlined onClick={onMinus} />} />

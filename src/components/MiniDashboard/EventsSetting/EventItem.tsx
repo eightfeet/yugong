@@ -3,6 +3,7 @@ import { Col, Select } from "antd";
 import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import { globalOption, globalExposeFunctions } from '~/core/globalEvents';
 
 /**
  * 事件描述
@@ -24,13 +25,20 @@ interface ModuleListItem extends FunctionListItem {
 interface Props {
   moduleValue: string;
   functionValue: string;
-  onChange: (data: {
-    type: "moduleValue" | "functionValue";
-    value: any
-  }) => void;
+  onChange: (data: string[]) => void;
 }
 
-const EventItem: React.FC<Props> = ({ moduleValue, functionValue }) => {
+const EventItem: React.FC<Props> = ({
+  moduleValue,
+  functionValue,
+  onChange,
+}) => {
+  const [selectItem, setSelectItem] = useState<any[]>([]);
+
+  useEffect(() => {
+    setSelectItem([moduleValue, functionValue]);
+  }, [moduleValue, functionValue]);
+
   const appData = useSelector((state: RootState) => state.appData);
   // 模块options清单
   const [moduleList, setModuleList] = useState<ModuleListItem[]>([]);
@@ -40,21 +48,23 @@ const EventItem: React.FC<Props> = ({ moduleValue, functionValue }) => {
   const getFunctionOptionsList = useCallback(
     // 根据被选模块获取模块方法清单
     (moduleValue: string) => {
-      console.log("moduleValue", moduleValue);
       // 获取模块type
       const result: ModuleListItem | undefined = moduleList.find(
         (item) => item.value === moduleValue
       );
-
-      if (result && result.value !== "globalModule") {
-        const exposeFunctions: EventEmitterExpose[] = require(`~/modules/${result.type}`)
+      if (!result) return;
+      let exposeFunctions: EventEmitterExpose[] = [];
+      if (result.type !== 'global') {
+        exposeFunctions = require(`~/modules/${result.type}`)
           .default.exposeFunctions;
-          setFunctionList(exposeFunctions)
-        console.log("result.value, exposeFunctions", exposeFunctions);
+      } else  {
+        exposeFunctions = globalExposeFunctions;
       }
+      setFunctionList(exposeFunctions);
     },
     [moduleList]
   );
+
   useEffect(() => {
     const data: ModuleListItem[] = [];
     for (let index = 0; index < appData.length; index++) {
@@ -70,30 +80,42 @@ const EventItem: React.FC<Props> = ({ moduleValue, functionValue }) => {
         });
       }
     }
-    data.push({
-      name: "全局",
-      value: "globalModule",
-      type: "global",
-    });
+    // 全局数据
+    data.push(globalOption);
     setModuleList(data);
   }, [appData]);
 
   useEffect(() => {
-    getFunctionOptionsList(moduleValue)
+    getFunctionOptionsList(moduleValue);
   }, [getFunctionOptionsList, moduleValue]);
 
-  const onDataChange = useCallback((type) => (data: any) => {
-    console.log(type, data);
-  }, []);
+  /**
+   * 事件对应模块被修改时，模块对应的方法要做同步修改
+   */  
+  const onChangeModuleValue = useCallback((data: string) => {
+    const operateData = [...selectItem];
+    operateData[0] = data;
+    operateData[1] = null;
+    getFunctionOptionsList(data);
+    setSelectItem(operateData);
+  }, [selectItem, getFunctionOptionsList]);
 
+  const onChangeFunctionValue = useCallback((data: string) => {
+    const operateData = [...selectItem];
+    operateData[1] = data;
+    setSelectItem(operateData);
+    if (onChange instanceof Function) {
+      onChange(operateData)
+    }
+  }, [selectItem, onChange]);
 
   return (
     <>
       <Col span={11}>
         <Select
-          value={moduleValue}
+          value={selectItem[0]}
           className={s.selecter}
-          onChange={onDataChange('moduleValue')}
+          onChange={onChangeModuleValue}
           placeholder="请选择要操作的模块"
         >
           {moduleList.map((item) => (
@@ -105,10 +127,10 @@ const EventItem: React.FC<Props> = ({ moduleValue, functionValue }) => {
       </Col>
       <Col span={11}>
         <Select
-          value={functionValue}
+          value={selectItem[1]}
           className={s.selecter}
           placeholder="请选择方法"
-          onChange={onDataChange('functionValue')}
+          onChange={onChangeFunctionValue}
         >
           {functionList.map((item) => (
             <Select.Option value={item.name}>{item.description}</Select.Option>

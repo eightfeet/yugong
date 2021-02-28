@@ -1,3 +1,4 @@
+import defaultEvents from './globalEvents'
 interface EventEmitterEvents {
   [key: string]: Function;
 }
@@ -18,8 +19,7 @@ class EventEmitter {
   public events: EventEmitterEvents;
   constructor(events?: EventEmitterEvents) {
     this.events = events || {
-      hourglass: (times: number) =>
-        new Promise((res) => setTimeout(() => res(""), times || 1000)),
+      ...defaultEvents
     };
   }
 

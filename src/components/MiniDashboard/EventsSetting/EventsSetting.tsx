@@ -11,6 +11,12 @@ interface EventEmitterExpose {
   name: string;
   description: string;
 }
+
+interface EventEmitterEventData {
+  name: string;
+  arguments: any[];
+}
+
 interface Props {}
 
 const EventsSetting: React.FC<Props> = () => {
@@ -18,6 +24,11 @@ const EventsSetting: React.FC<Props> = () => {
     (state: RootState) => state.activationItem
   );
   if (!moduleId) return null;
+
+  const onChange = (type: EventEmitterExpose, data: EventEmitterEventData[]) => {
+    console.log(555, type, data)
+  }
+
   // 当前激活项是否有事件导出，
   const exposeEvents: EventEmitterExpose[] = require(`~/modules/${type}`).default.exposeEvents;
   // 无事件导清除当前模块
@@ -31,7 +42,7 @@ const EventsSetting: React.FC<Props> = () => {
             key={eventTypeName}
             eventData={events[eventTypeName]}
             eventType={eventType}
-            onChange={() => {}}
+            onChange={onChange}
           />
         );
       })}
