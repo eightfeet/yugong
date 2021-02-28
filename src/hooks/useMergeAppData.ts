@@ -1,6 +1,6 @@
 import set from 'lodash/set';
 import cloneDeep from 'lodash/cloneDeep';
-import { AppDataElementsStyleTypes } from "types/appData";
+import { AppDataElementsStyleTypes, EventsTypeItem } from "types/appData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from '~/redux/store';
 import { useCallback } from 'react';
@@ -19,8 +19,7 @@ const useMergeAppData = () => {
     const [, setLocalStorage] = useLocalStorage("appData", null);
     
     const update = useCallback(
-        (data: AppDataElementsStyleTypes, path: string) => {
-            
+        (data: AppDataElementsStyleTypes | EventsTypeItem[], path: string) => {
             // 合并数据
             set(nextActivationItem, path, data);
 

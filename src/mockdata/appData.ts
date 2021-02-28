@@ -167,7 +167,7 @@ const appData: AppDataListTypes = [
   },
   {
     moduleId: "b",
-    moduleName: "弹窗",
+    moduleName: "b弹窗",
     layout: { w: 8, h: 2, x: 2, y: 7, i: "b", moved: false, static: false },
     style: {
       basic: {

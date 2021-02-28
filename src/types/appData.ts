@@ -4,12 +4,21 @@ export interface AnyObjectType {
   [keys: string]: any;
 }
 
+export interface EventsTypeItem {
+  name: string;
+  arguments: any[]
+}
+
+export interface EventsType {
+  [key: string]: EventsTypeItem[]
+}
+
 export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
   content: AnyObjectType;
-  events: AnyObjectType;
+  events: EventsType;
   type: AppDataModuleTypes;
   moduleId: string;
   moduleName?: string;

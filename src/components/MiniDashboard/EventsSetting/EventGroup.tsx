@@ -77,7 +77,7 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
           <Row
             className={s.row}
             gutter={4}
-            key={`${event.moduleValue}${event.functionValue}`}
+            key={`${index}${event.moduleValue}${event.functionValue}`}
           >
             <EventItem
               moduleValue={event.moduleValue}

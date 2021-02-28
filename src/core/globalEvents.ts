@@ -1,7 +1,7 @@
 const hourglass = (times: number) =>
   new Promise((res) => setTimeout(() => res(""), times || 1000));
 
-const fn = () => console.log("other effect！");
+const fn = () => console.log("fn other effect！");
 
 const defaultFn = {
   "globalEffect/hourglass": hourglass,

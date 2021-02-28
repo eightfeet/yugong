@@ -133,7 +133,7 @@ const EventItem: React.FC<Props> = ({
           onChange={onChangeFunctionValue}
         >
           {functionList.map((item) => (
-            <Select.Option value={item.name}>{item.description}</Select.Option>
+            <Select.Option key={item.name} value={item.name}>{item.description}</Select.Option>
           ))}
         </Select>
       </Col>
