@@ -95,10 +95,13 @@ const EventItem: React.FC<Props> = ({
   const onChangeModuleValue = useCallback((data: string) => {
     const operateData = [...selectItem];
     operateData[0] = data;
-    operateData[1] = null;
     getFunctionOptionsList(data);
+    operateData[1] = '';
     setSelectItem(operateData);
-  }, [selectItem, getFunctionOptionsList]);
+    if (onChange instanceof Function) {
+      onChange(operateData)
+    }
+  }, [selectItem, getFunctionOptionsList, onChange]);
 
   const onChangeFunctionValue = useCallback((data: string) => {
     const operateData = [...selectItem];
@@ -113,7 +116,7 @@ const EventItem: React.FC<Props> = ({
     <>
       <Col span={11}>
         <Select
-          value={selectItem[0]}
+          value={selectItem[0] || null}
           className={s.selecter}
           onChange={onChangeModuleValue}
           placeholder="请选择要操作的模块"
@@ -127,7 +130,7 @@ const EventItem: React.FC<Props> = ({
       </Col>
       <Col span={11}>
         <Select
-          value={selectItem[1]}
+          value={selectItem[1] || null}
           className={s.selecter}
           placeholder="请选择方法"
           onChange={onChangeFunctionValue}

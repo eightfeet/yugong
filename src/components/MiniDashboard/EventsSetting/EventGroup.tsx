@@ -47,14 +47,33 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
     setSelectedModule(eventDataList);
   }, [eventData]);
 
+  // state to appdata
+  const stateToAppdata = useCallback(
+    (data: EventDataList[]) => {
+      const result = data.map((item) => ({ name: `${item.moduleValue}/${item.functionValue}`, arguments: [] }))
+      onChange(eventType, result);
+    },
+    [eventType, onChange],
+  )
+
   const onPlus = useCallback(() => {
-    console.log("plus");
-  }, []);
+    const newItem: any = {
+      moduleValue: '',
+      functionValue: '',
+    };
+    selectedModule.push(newItem);
+    setSelectedModule([...selectedModule]);
+    stateToAppdata(selectedModule);
+  }, [selectedModule, stateToAppdata]);
 
-  const onMinus = useCallback(() => {
-    console.log("minus");
-  }, []);
+  // 整租数据的更新
+  const onMinus = useCallback((index:number) => () => {
+    const data = selectedModule.filter((el,i) => i !== index)
+    setSelectedModule([...data]);
+    stateToAppdata(data);
+  }, [selectedModule, stateToAppdata]);
 
+  // 单项数据的更新
   const onChangeItem = useCallback(
     (index: number) => (data: string[]) => {
       const operateData = [...eventData];
@@ -85,7 +104,7 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
               onChange={onChangeItem(index)}
             />
             <Col span={2} className={s.minuswrap}>
-              <Button size="small" icon={<MinusOutlined onClick={onMinus} />} />
+              <Button size="small" icon={<MinusOutlined onClick={onMinus(index)} />} />
             </Col>
           </Row>
         );
