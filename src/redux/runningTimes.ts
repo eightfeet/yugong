@@ -10,7 +10,10 @@ interface RunningTimesItem {
  */
 export const runningTimes = createModel<RootModel>()({
     state: {
-        searchs: {}
+        searchs: {},
+        aaa: {
+            b: 555
+        },
     } as {
         [keys: string]: RunningTimesItem;
     }, 
@@ -19,14 +22,5 @@ export const runningTimes = createModel<RootModel>()({
         setRunningTimes(state, payload: RunningTimesItem) {
             return { ...state, ...payload };
         },
-    },
-
-    effects: (dispatch) => {
-        return {
-            useRunningTimes: () => {
-                // to do...
-                // 
-            }
-        }
     }
 });
