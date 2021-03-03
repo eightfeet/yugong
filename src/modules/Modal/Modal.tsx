@@ -3,6 +3,7 @@ import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
+import useRunningTime from "~/hooks/useRunningTime";
 
 interface paraments extends AppDataElementsTypes {
   id: string;
@@ -34,15 +35,15 @@ interface Props<TProps> extends React.FC<TProps> {
 
 const Modal: Props<paraments> = (props) => {
   const { style, eventEmitter } = props;
-
+  const getResult = useRunningTime();
   const show = useCallback(() => {
     if (!ref.current) return;
     ref.current.create({
-      header: "弹窗标题",
-      article: "弹窗文案",
-      footer: "底部",
+      header: getResult('search.h'),
+      article: getResult('search.c'),
+      footer: getResult('search.b'),
     });
-  }, []);
+  }, [getResult]);
 
   const hide = useCallback(() => {
     if (!ref.current) return;

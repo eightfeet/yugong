@@ -1,6 +1,9 @@
 import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 
+const queryString = require('query-string');
+const parsed = queryString.parse(window.location.search);
+
 interface RunningTimesItem {
     [keys: string]: any;
 }
@@ -10,10 +13,7 @@ interface RunningTimesItem {
  */
 export const runningTimes = createModel<RootModel>()({
     state: {
-        searchs: {},
-        aaa: {
-            b: 555
-        },
+        search: parsed,
     } as {
         [keys: string]: RunningTimesItem;
     }, 

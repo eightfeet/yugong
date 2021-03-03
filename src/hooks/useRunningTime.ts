@@ -13,7 +13,7 @@ function useRunningTime() {
       const value = get(runningTimes, key);
       result = result.replace(item, `${value || ""}`);
     });
-
+    
     return result;
   };
 

@@ -21,7 +21,7 @@
     "extend": "^3.0.2",
     "iframe-resizer-react": "^1.1.0",
     "koa-compose": "^4.1.0",
-    "query-string": "^6.13.8",
+    "query-string": "^6.14.1",
     "rc-form": "^2.4.12",
     "react": "^17.0.1",
     "react-color": "^2.19.3",
