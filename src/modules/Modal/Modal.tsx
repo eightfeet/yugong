@@ -39,9 +39,9 @@ const Modal: Props<paraments> = (props) => {
   const show = useCallback(() => {
     if (!ref.current) return;
     ref.current.create({
-      header: getResult('search.h'),
-      article: getResult('search.c'),
-      footer: getResult('search.b'),
+      header: getResult('{{search.h}}'),
+      article: getResult('{{search.c}}'),
+      footer: getResult('{{search.b}}'),
     });
   }, [getResult]);
 
