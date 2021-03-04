@@ -4,6 +4,8 @@ import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import { globalOption, globalExposeFunctions } from '~/core/globalEvents';
+import { ArgumentsItem } from "~/types/appData";
+import { ExposeFunctions } from "~/types/modules";
 
 /**
  * 事件描述
@@ -23,14 +25,19 @@ interface ModuleListItem extends FunctionListItem {
 }
 
 interface Props {
+  /**
+   * 
+   */
   moduleValue: string;
   functionValue: string;
   onChange: (data: string[]) => void;
+  argumentList: ArgumentsItem[]
 }
 
 const EventItem: React.FC<Props> = ({
   moduleValue,
   functionValue,
+  argumentList,
   onChange,
 }) => {
   const [selectItem, setSelectItem] = useState<any[]>([]);
@@ -43,7 +50,7 @@ const EventItem: React.FC<Props> = ({
   // 模块options清单
   const [moduleList, setModuleList] = useState<ModuleListItem[]>([]);
   // 方法清单
-  const [functionList, setFunctionList] = useState<EventEmitterExpose[]>([]);
+  const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
   // 收集方法清单
   const getFunctionOptionsList = useCallback(
     // 根据被选模块获取模块方法清单
@@ -114,7 +121,7 @@ const EventItem: React.FC<Props> = ({
 
   return (
     <>
-      <Col span={11}>
+      <Col span={9}>
         <Select
           value={selectItem[0] || null}
           className={s.selecter}
@@ -128,7 +135,7 @@ const EventItem: React.FC<Props> = ({
           ))}
         </Select>
       </Col>
-      <Col span={11}>
+      <Col span={9}>
         <Select
           value={selectItem[1] || null}
           className={s.selecter}

@@ -159,7 +159,12 @@ const appData: AppDataListTypes = [
     events: {
       onClick: [
         { name: "b/show", arguments: [] },
-        { name: "globalEffect/hourglass", arguments: [3000] },
+        { name: "globalEffect/hourglass", arguments: [{
+          type: 'number',
+          name: '延时',
+          describe: '等待3秒',
+          data: 3000
+        }] },
         { name: "b/hide", arguments: [] },
       ],
     },

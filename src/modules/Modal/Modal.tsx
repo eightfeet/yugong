@@ -1,39 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import useRunningTime from "~/hooks/useRunningTime";
+import { ModulesProps } from "~/types/modules";
 
-interface paraments extends AppDataElementsTypes {
+interface Props extends AppDataElementsTypes {
   id: string;
   eventEmitter: EventEmitter;
 }
 
-/**
- * 事件描述
- */
-interface EventEmitterExpose {
-  name: string;
-  description: string;
-}
-
-/**
- * Extends FC with custom static methods
- * 静态属性仅用于 dashboard 配置使用
- */
-interface Props<TProps> extends React.FC<TProps> {
-  /**
-   * 事件名称与描述
-   */
-  exposeEvents: EventEmitterExpose[];
-  /**
-   * 方法名称与描述
-   */
-  exposeFunctions: EventEmitterExpose[];
-}
-
-const Modal: Props<paraments> = (props) => {
+const Modal: ModulesProps<Props> = (props) => {
   const { style, eventEmitter } = props;
   const getResult = useRunningTime();
   const show = useCallback(() => {
@@ -94,6 +72,7 @@ Modal.exposeFunctions = [
     description: "隐藏弹窗",
   },
 ];
+
 Modal.exposeEvents = [
   {
     name: "onClose",

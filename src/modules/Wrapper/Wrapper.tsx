@@ -6,11 +6,11 @@ import styleCompiler from "~/compiler";
 import s from "./Wrapper.module.less";
 import usePostMessage from "~/hooks/usePostMessage";
 
-interface paraments extends AppDataElementsTypes {
+interface Props extends AppDataElementsTypes {
   id: string;
 }
 
-const Wrapper: React.FC<paraments> = ({
+const Wrapper: React.FC<Props> = ({
   id,
   style,
   children,

@@ -4,15 +4,96 @@ export interface AnyObjectType {
   [keys: string]: any;
 }
 
+/**
+ * 模块事件项引用的全局方法以及参数
+ * @member name 引用方法名（模块名/方法名）
+ * @member arguments 引用方法关联的参数与描述信息
+ */
 export interface EventsTypeItem {
   name: string;
-  arguments: any[]
+  arguments: ArgumentsItem[];
 }
 
+/**
+ * 参数
+ */
+export type ArgumentsItem = (
+  | ArgumentsObject
+  | ArgumentsArray
+  | ArgumentsBoolean
+  | ArgumentsString
+  | ArgumentsNumber
+);
+
+/**
+ * 参数基本
+ */
+interface ArgumentBase<T> {
+  /**
+   * 参数中文名
+   */
+  name: string;
+  /**
+   * 参数描述
+   */
+  describe?: string;
+  /**
+   * 参数字段名
+   */
+  fieldName?: string;
+  /**
+   * 参数类型
+   */
+  type: T;
+}
+
+/**
+ * 对象参数
+ */
+export interface ArgumentsObject extends ArgumentBase<"object"> {
+  data: {
+    [keys: string]: any;
+  };
+}
+
+/**
+ * 数组参数
+ */
+export interface ArgumentsArray extends ArgumentBase<"array"> {
+  data: any[];
+}
+
+/**
+ * 布尔参数
+ */
+export interface ArgumentsBoolean extends ArgumentBase<"boolean"> {
+  data: boolean;
+}
+
+/**
+ * 文本参数
+ */
+export interface ArgumentsString extends ArgumentBase<"string"> {
+  data: string;
+}
+
+/**
+ * 数字参数
+ */
+export interface ArgumentsNumber extends ArgumentBase<"number"> {
+  data: number;
+}
+
+/**
+ * 事件类型清单
+ */
 export interface EventsType {
-  [key: string]: EventsTypeItem[]
+  [key: string]: EventsTypeItem[];
 }
 
+/**
+ * 模块类型
+ */
 export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 
 export interface AppDataElementsTypes {

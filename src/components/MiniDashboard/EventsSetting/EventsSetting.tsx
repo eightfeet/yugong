@@ -1,57 +1,56 @@
-import React from "react";
+import React, { useCallback } from "react";
 import s from "./EventsSetting.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import EventGroup from "./EventGroup";
 import useMergeAppData from "~/hooks/useMergeAppData";
+import { ExposeEvents } from "~/types/modules";
+import { EventsTypeItem } from "~/types/appData";
 
-/**
- * 事件描述
- */
-interface EventEmitterExpose {
-  name: string;
-  description: string;
-}
-
-interface EventEmitterEventData {
-  name: string;
-  arguments: any[];
-}
 
 interface Props {}
 
 const EventsSetting: React.FC<Props> = () => {
+
   const { events, type, moduleId } = useSelector(
     (state: RootState) => state.activationItem
   );
+
   const update = useMergeAppData();
 
-  if (!moduleId) return null;
-  const onChange = (
-    type: EventEmitterExpose,
-    data: EventEmitterEventData[]
-  ) => {
-    const path = `events.${type.name}`;
-    update(data, path);
-  };
+  const onChangeEventGroup = useCallback(
+    (
+      type: ExposeEvents,
+      data: EventsTypeItem[]
+    ) => {
+      const path = `events.${type.name}`;
+      update(data, path);
+    },
+    [update],
+  );
 
-  // 当前激活项是否有事件导出，
-  const exposeEvents: EventEmitterExpose[] = require(`~/modules/${type}`)
+  if (!moduleId) return null;
+
+  // 当前激活项模块是否向全局发布事件，
+  const exposeEvents: ExposeEvents[] = require(`~/modules/${type}`)
     .default.exposeEvents;
-  // 无事件导清除当前模块
+  // 检查当前激活项模块无事件发布不做渲染，有则渲染事件编辑设置面板
   if (exposeEvents.length === 0) return null;
+  // 遍历当前激活项保存的事件对象数据
   return (
     <div className={s.root}>
-      {Object.keys(events).map((eventTypeName) => {
-        const eventType =
-          exposeEvents.filter((element) => element.name === eventTypeName)[0] ||
+      {Object.keys(events).map((eventName) => {
+        // 获取当前事件描述
+        const eventDescribe =
+          exposeEvents.filter((exposeEvent) => exposeEvent.name === eventName)[0] ||
           {};
+          console.log('eventDescribe', eventDescribe)
         return (
           <EventGroup
-            key={eventTypeName}
-            eventData={events[eventTypeName]}
-            eventType={eventType}
-            onChange={onChange}
+            key={eventName}
+            eventData={events[eventName]}
+            eventDescribe={eventDescribe}
+            onChange={onChangeEventGroup}
           />
         );
       })}

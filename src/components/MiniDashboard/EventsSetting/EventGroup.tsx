@@ -1,37 +1,28 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Button } from "antd";
 import s from "./EventGroup.module.less";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusOutlined, PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import EventItem from "./EventItem";
+import { ArgumentsItem, EventsTypeItem } from "~/types/appData";
+import { ExposeEvents } from "~/types/modules";
 
-/**
- * 事件描述
- */
-interface EventEmitterExpose {
-  name: string;
-  description: string;
-}
-
-interface EventEmitterEventData {
-  name: string;
-  arguments: any[];
-}
 
 interface Props {
-  eventType: EventEmitterExpose;
-  eventData: EventEmitterEventData[];
+  eventDescribe: ExposeEvents;
+  eventData: EventsTypeItem[];
   onChange: (
-    eventType: EventEmitterExpose,
-    data: EventEmitterEventData[]
+    eventDescribe: ExposeEvents,
+    data: EventsTypeItem[]
   ) => void;
 }
 
 interface EventDataList {
   moduleValue: string;
   functionValue: string;
+  arguments?: ArgumentsItem[];
 }
 
-const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
+const EventGroup: React.FC<Props> = ({ eventDescribe, eventData, onChange }) => {
   const [selectedModule, setSelectedModule] = useState<EventDataList[]>([]);
 
   // 收集当前模块已选择数据
@@ -41,6 +32,7 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
       const result = {
         moduleValue: selectData[0],
         functionValue: selectData[1],
+        arguments: event.arguments
       };
       return result;
     });
@@ -51,9 +43,9 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
   const stateToAppdata = useCallback(
     (data: EventDataList[]) => {
       const result = data.map((item) => ({ name: `${item.moduleValue}/${item.functionValue}`, arguments: [] }))
-      onChange(eventType, result);
+      onChange(eventDescribe, result);
     },
-    [eventType, onChange],
+    [eventDescribe, onChange],
   )
 
   const onPlus = useCallback(() => {
@@ -78,15 +70,15 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
     (index: number) => (data: string[]) => {
       const operateData = [...eventData];
       operateData[index] = { name: `${data[0]}/${data[1]}`, arguments: [] };
-      onChange(eventType, operateData);
+      onChange(eventDescribe, operateData);
     },
-    [eventData, eventType, onChange]
+    [eventData, eventDescribe, onChange]
   );
 
   return (
     <>
       <div className={s.divide}>
-        <div className={s.title}>{eventType.description}</div>
+        <div className={s.title}>{eventDescribe.description}</div>
         <div className={s.menu}>
           <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
         </div>
@@ -101,8 +93,12 @@ const EventGroup: React.FC<Props> = ({ eventType, eventData, onChange }) => {
             <EventItem
               moduleValue={event.moduleValue}
               functionValue={event.functionValue}
+              argumentList={event.arguments || []}
               onChange={onChangeItem(index)}
             />
+            <Col span={4} className={s.minuswrap}>
+              <Button icon={<SettingOutlined />} onClick={() => console.log(event.arguments)}>参数</Button>
+            </Col>
             <Col span={2} className={s.minuswrap}>
               <Button size="small" icon={<MinusOutlined onClick={onMinus(index)} />} />
             </Col>

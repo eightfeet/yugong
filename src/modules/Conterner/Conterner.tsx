@@ -1,22 +1,19 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import Wrapper from "./../Wrapper";
 import { AppDataElementsTypes } from "~/types/appData";
 import EventEmitter from "~/core/EventEmitter";
+import { ModulesProps } from "~/types/modules";
 
-interface paraments extends AppDataElementsTypes {
+interface Props extends AppDataElementsTypes {
   id: string;
   eventEmitter: EventEmitter;
 }
 
-// Extends FC with custom static methods
-interface Props<TProps> extends React.FC<TProps> {
-  exposeEvents: any[]
-}
-
-const Conterner: Props<paraments> = (props) => {
+/**
+ * 容器
+ */
+const Conterner: ModulesProps<Props> = (props) => {
   const { eventEmitter, events } = props;
-
-
 
   const onClick = useCallback(
     () => {
