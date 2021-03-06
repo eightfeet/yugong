@@ -14,12 +14,17 @@ interface Props extends AppDataElementsTypes {
 const Modal: ModulesProps<Props> = (props) => {
   const { style, eventEmitter } = props;
   const getResult = useRunningTime();
-  const show = useCallback(() => {
+  const show = useCallback((parames) => {
+    const {
+      header,
+      article,
+      footer
+    } = parames || {};
     if (!ref.current) return;
     ref.current.create({
-      header: getResult('{{search.h}}'),
-      article: getResult('{{search.c}}'),
-      footer: getResult('{{search.b}}'),
+      header: getResult(header),
+      article: getResult(article),
+      footer: getResult(footer),
     });
   }, [getResult]);
 
@@ -66,6 +71,16 @@ Modal.exposeFunctions = [
   {
     name: "show",
     description: "显示弹窗",
+    arguments: [{
+      type: 'object',
+      name: '弹窗内容',
+      describe: 'header：头部，article：内容，footer：底部',
+      data: {
+        header: '<h3>header</h3>',
+        article: '<p>article</p>',
+        footer: '<p>footer</p>'
+      }
+    }]
   },
   {
     name: "hide",

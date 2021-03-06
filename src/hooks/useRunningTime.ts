@@ -6,6 +6,9 @@ function useRunningTime() {
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
 
   const getDataFromRunningTime = (data: string) => {
+    if (typeof data !== 'string') {
+      return data
+    }
     let result = data;
     const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
     ruleList?.forEach((item) => {

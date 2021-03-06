@@ -1,110 +1,242 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Button } from "antd";
 import s from "./EventGroup.module.less";
-import { MinusOutlined, PlusOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  MinusOutlined,
+  PlusOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import EventItem from "./EventItem";
 import { ArgumentsItem, EventsTypeItem } from "~/types/appData";
-import { ExposeEvents } from "~/types/modules";
-
+import { ExposeEvents, ExposeFunctions } from "~/types/modules";
+import ArgumentsSetting from "../ArgumentsSetting";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 interface Props {
-  eventDescribe: ExposeEvents;
-  eventData: EventsTypeItem[];
+  curentEventInfomation: ExposeEvents;
+  curentEvent: EventsTypeItem[];
   onChange: (
-    eventDescribe: ExposeEvents,
+    curentEventInfomation: ExposeEvents,
     data: EventsTypeItem[]
   ) => void;
 }
 
 interface EventDataList {
   moduleValue: string;
-  functionValue: string;
+  dispatchedFunctions: string;
   arguments?: ArgumentsItem[];
 }
 
-const EventGroup: React.FC<Props> = ({ eventDescribe, eventData, onChange }) => {
-  const [selectedModule, setSelectedModule] = useState<EventDataList[]>([]);
+interface ArgParames {
+  /**
+   * appdata数据参数
+   */
+  argumentList: ArgumentsItem[];
+  /**
+   * appdata数据参数索引
+   */
+  index: number;
+  /**
+   * 引用方法名
+   */
+  functionName: string;
+  /**
+   * 方法默认参数
+   */
+  functionArgumentList: ArgumentsItem[];
+}
 
-  // 收集当前模块已选择数据
+const EventGroup: React.FC<Props> = ({
+  curentEventInfomation,
+  curentEvent,
+  onChange,
+}) => {
+  const [currentModuleEvents, setCurrentModuleEvents] = useState<
+    EventDataList[]
+  >([]);
+  const [argumentsVisible, setArgumentsVisible] = useState(false);
+  const [currentArgument, setCurrentArgument] = useState<ArgParames>();
+
+  const appData = useSelector((state: RootState) => state.appData);
+
+  // 收集当前已选择模块的事件数据
   useEffect(() => {
-    const eventDataList = eventData.map((event) => {
+    const eventDataList = curentEvent.map((event) => {
       const selectData = event.name.split("/");
       const result = {
         moduleValue: selectData[0],
-        functionValue: selectData[1],
-        arguments: event.arguments
+        dispatchedFunctions: selectData[1],
+        arguments: event.arguments || [],
       };
       return result;
     });
-    setSelectedModule(eventDataList);
-  }, [eventData]);
+    setCurrentModuleEvents(eventDataList);
+  }, [curentEvent]);
 
   // state to appdata
   const stateToAppdata = useCallback(
     (data: EventDataList[]) => {
-      const result = data.map((item) => ({ name: `${item.moduleValue}/${item.functionValue}`, arguments: [] }))
-      onChange(eventDescribe, result);
+      const result = data.map((item) => {
+        const data = {
+          name: `${item.moduleValue}/${item.dispatchedFunctions}`,
+          arguments: item.arguments || [],
+        };
+        return data;
+      });
+      onChange(curentEventInfomation, result);
     },
-    [eventDescribe, onChange],
-  )
+    [curentEventInfomation, onChange]
+  );
 
   const onPlus = useCallback(() => {
     const newItem: any = {
-      moduleValue: '',
-      functionValue: '',
+      moduleValue: "",
+      dispatchedFunctions: "",
     };
-    selectedModule.push(newItem);
-    setSelectedModule([...selectedModule]);
-    stateToAppdata(selectedModule);
-  }, [selectedModule, stateToAppdata]);
+    currentModuleEvents.push(newItem);
+    setCurrentModuleEvents([...currentModuleEvents]);
+    stateToAppdata(currentModuleEvents);
+  }, [currentModuleEvents, stateToAppdata]);
 
   // 整租数据的更新
-  const onMinus = useCallback((index:number) => () => {
-    const data = selectedModule.filter((el,i) => i !== index)
-    setSelectedModule([...data]);
-    stateToAppdata(data);
-  }, [selectedModule, stateToAppdata]);
+  const onMinus = useCallback(
+    (index: number) => () => {
+      const data = currentModuleEvents.filter((el, i) => i !== index);
+      setCurrentModuleEvents([...data]);
+      stateToAppdata(data);
+    },
+    [currentModuleEvents, stateToAppdata]
+  );
 
   // 单项数据的更新
   const onChangeItem = useCallback(
     (index: number) => (data: string[]) => {
-      const operateData = [...eventData];
+      const operateData = [...curentEvent];
       operateData[index] = { name: `${data[0]}/${data[1]}`, arguments: [] };
-      onChange(eventDescribe, operateData);
+      onChange(curentEventInfomation, operateData);
     },
-    [eventData, eventDescribe, onChange]
+    [curentEvent, curentEventInfomation, onChange]
+  );
+
+  // onArgumentsSettingOk 回收参数数据，关闭窗口
+  const onArgumentsSettingOk = useCallback(
+    (argumentList) => {
+      const operateData = [...curentEvent];
+      const index = currentArgument?.index;
+      if (index !== undefined) {
+        operateData[index].arguments = argumentList;
+        onChange(curentEventInfomation, operateData);
+        setArgumentsVisible(false);
+      }
+    },
+    [curentEvent, curentEventInfomation, currentArgument?.index, onChange]
+  );
+
+  const getFunArguments = useCallback(
+    (moduleId: string): ExposeFunctions[] => {
+      if (moduleId === 'globalEffect') {
+        return require(`~/core/globalEvents`).globalExposeFunctions;
+      }
+      for (let index = 0; index < appData.length; index++) {
+        const element = appData[index];
+        if (moduleId === element.moduleId) {
+          return require(`~/modules/${element.type}`).default.exposeFunctions;
+        }
+      }
+      return [];
+    },
+    [appData]
+  );
+
+  /**
+   * 创建设置面板参数，
+   */
+  const onSetArg = useCallback(
+    (parames: ArgParames) => () => {
+      const { argumentList, index, functionName, functionArgumentList } = parames;
+      
+      setCurrentArgument({
+        argumentList,
+        index,
+        functionName,
+        functionArgumentList,
+      });
+      setArgumentsVisible(true);
+    },
+    []
   );
 
   return (
     <>
       <div className={s.divide}>
-        <div className={s.title}>{eventDescribe.description}</div>
+        <div className={s.title}>{curentEventInfomation.description}</div>
         <div className={s.menu}>
           <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
         </div>
       </div>
-      {selectedModule.map((event, index) => {
+      {currentModuleEvents.map((event, index) => {
+        const moduleExportFunctionArguments = getFunArguments(
+          event.moduleValue
+        ) || [];
+        const currentExportFunctionArguments =
+          moduleExportFunctionArguments.filter(
+            (item) => item.name === event.dispatchedFunctions
+          )[0]?.arguments || [];
+
+        let canNotSetArguments = false;
+        // 没有选择方法时不可以编辑
+        if (!event.dispatchedFunctions) {
+          canNotSetArguments = true;
+        }
+        // 无需配置参数是不可编辑
+        if (currentExportFunctionArguments.length <= 0) {
+          canNotSetArguments = true;
+        }
+
         return (
           <Row
             className={s.row}
             gutter={4}
-            key={`${index}${event.moduleValue}${event.functionValue}`}
+            key={`${index}${event.moduleValue}${event.dispatchedFunctions}`}
           >
             <EventItem
               moduleValue={event.moduleValue}
-              functionValue={event.functionValue}
+              dispatchedFunctions={event.dispatchedFunctions}
               argumentList={event.arguments || []}
               onChange={onChangeItem(index)}
             />
             <Col span={4} className={s.minuswrap}>
-              <Button icon={<SettingOutlined />} onClick={() => console.log(event.arguments)}>参数</Button>
+              {/** 未选择方法时不可以编辑参数 */}
+              <Button
+                icon={<SettingOutlined />}
+                onClick={onSetArg({
+                  argumentList: event.arguments || [],
+                  index,
+                  functionName: event.dispatchedFunctions,
+                  functionArgumentList: currentExportFunctionArguments
+                })}
+                disabled={canNotSetArguments}
+              >
+                参数
+              </Button>
             </Col>
             <Col span={2} className={s.minuswrap}>
-              <Button size="small" icon={<MinusOutlined onClick={onMinus(index)} />} />
+              <Button
+                size="small"
+                icon={<MinusOutlined onClick={onMinus(index)} />}
+              />
             </Col>
           </Row>
         );
       })}
+      <ArgumentsSetting
+        visible={argumentsVisible}
+        onOk={onArgumentsSettingOk}
+        argumentsData={currentArgument?.argumentList || []}
+        initArgumentData={currentArgument?.functionArgumentList || []}
+        onCancel={() => setArgumentsVisible(false)}
+      />
     </>
   );
 };

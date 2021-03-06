@@ -165,15 +165,15 @@ const appData: AppDataListTypes = [
           describe: '等待3秒',
           data: 3000
         }] },
-        { name: "b/hide", arguments: [] },
+        { name: "fcadjasdjjasdljasdlaskdajshdgh903643620/hide", arguments: [] },
       ],
     },
     type: "Conterner",
   },
   {
-    moduleId: "b",
+    moduleId: "fcadjasdjjasdljasdlaskdajshdgh903643620",
     moduleName: "b弹窗",
-    layout: { w: 8, h: 2, x: 2, y: 7, i: "b", moved: false, static: false },
+    layout: { w: 8, h: 2, x: 2, y: 7, i: "fcadjasdjjasdljasdlaskdajshdgh903643620", moved: false, static: false },
     style: {
       basic: {
         display: { width: 200 },
@@ -263,7 +263,7 @@ const appData: AppDataListTypes = [
     content: { text: "c" },
     events: {
       onClick: [
-        { name: "b/show", arguments: [] },
+        { name: "fcadjasdjjasdljasdlaskdajshdgh903643620/show", arguments: [] },
       ],
     },
     type: "Conterner",

@@ -30,7 +30,7 @@ const EventsSetting: React.FC<Props> = () => {
   );
 
   if (!moduleId) return null;
-
+  
   // 当前激活项模块是否向全局发布事件，
   const exposeEvents: ExposeEvents[] = require(`~/modules/${type}`)
     .default.exposeEvents;
@@ -41,15 +41,14 @@ const EventsSetting: React.FC<Props> = () => {
     <div className={s.root}>
       {Object.keys(events).map((eventName) => {
         // 获取当前事件描述
-        const eventDescribe =
+        const curentEventInfomation =
           exposeEvents.filter((exposeEvent) => exposeEvent.name === eventName)[0] ||
           {};
-          console.log('eventDescribe', eventDescribe)
         return (
           <EventGroup
             key={eventName}
-            eventData={events[eventName]}
-            eventDescribe={eventDescribe}
+            curentEvent={events[eventName]}
+            curentEventInfomation={curentEventInfomation}
             onChange={onChangeEventGroup}
           />
         );

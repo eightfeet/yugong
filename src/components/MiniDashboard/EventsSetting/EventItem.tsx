@@ -29,22 +29,22 @@ interface Props {
    * 
    */
   moduleValue: string;
-  functionValue: string;
+  dispatchedFunctions: string;
   onChange: (data: string[]) => void;
   argumentList: ArgumentsItem[]
 }
 
 const EventItem: React.FC<Props> = ({
   moduleValue,
-  functionValue,
+  dispatchedFunctions,
   argumentList,
   onChange,
 }) => {
   const [selectItem, setSelectItem] = useState<any[]>([]);
 
   useEffect(() => {
-    setSelectItem([moduleValue, functionValue]);
-  }, [moduleValue, functionValue]);
+    setSelectItem([moduleValue, dispatchedFunctions]);
+  }, [moduleValue, dispatchedFunctions]);
 
   const appData = useSelector((state: RootState) => state.appData);
   // 模块options清单
@@ -110,7 +110,7 @@ const EventItem: React.FC<Props> = ({
     }
   }, [selectItem, getFunctionOptionsList, onChange]);
 
-  const onChangeFunctionValue = useCallback((data: string) => {
+  const onChangeDispatchedFunctions = useCallback((data: string) => {
     const operateData = [...selectItem];
     operateData[1] = data;
     setSelectItem(operateData);
@@ -140,7 +140,7 @@ const EventItem: React.FC<Props> = ({
           value={selectItem[1] || null}
           className={s.selecter}
           placeholder="请选择方法"
-          onChange={onChangeFunctionValue}
+          onChange={onChangeDispatchedFunctions}
         >
           {functionList.map((item) => (
             <Select.Option key={item.name} value={item.name}>{item.description}</Select.Option>

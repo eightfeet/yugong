@@ -1,3 +1,5 @@
+import { ExposeFunctions } from "~/types/modules";
+
 const hourglass = (times: number) =>
   new Promise((res) => setTimeout(() => res(""), times || 1000));
 
@@ -14,10 +16,16 @@ export const globalOption = {
   type: "global",
 };
 
-export const globalExposeFunctions = [
+export const globalExposeFunctions: ExposeFunctions[] = [
   {
     name: "hourglass",
     description: "沙漏",
+    arguments: [{
+      type: 'number',
+      name: '延时',
+      describe: '等待3秒',
+      data: 3000
+    }]
   },
   {
     name: "fn",
