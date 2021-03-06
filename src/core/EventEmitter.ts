@@ -1,4 +1,4 @@
-import defaultEvents from './globalEvents'
+import defaultEvents from "./globalEvents";
 interface EventEmitterEvents {
   [key: string]: Function;
 }
@@ -14,12 +14,11 @@ interface EventEmitterEmitArgs {
   arguments: any[];
 }
 
-
 class EventEmitter {
   public events: EventEmitterEvents;
   constructor(events?: EventEmitterEvents) {
     this.events = events || {
-      ...defaultEvents
+      ...defaultEvents,
     };
   }
 
@@ -29,12 +28,26 @@ class EventEmitter {
    * @param args
    */
   public emit(queues: EventEmitterEmitArgs[]) {
+    console.log("queues", queues);
     const queuesArray = async () => {
       for (let i = 0; i < queues.length; i++) {
         const item = queues[i];
         const method = this.events[item.name];
         if (method instanceof Function) {
-          await Promise.resolve().then(() => method(...item.arguments));
+          // 执行方法时发放对应参数
+          const operateArgument: any[] = [];
+          item.arguments.forEach((element) => {
+            const type = Object.prototype.toString.call(element.data);
+            const dataType = type.substring(8, type.length - 1).toLowerCase();
+            if (element.type === dataType) {
+              operateArgument.push(element.data);
+            } else {
+              console.error(
+                `方法${item.name}的参数要求${element.type}类型, 但得到的是${dataType}类型!`
+              );
+            }
+          });
+          await Promise.resolve().then(() => method(...operateArgument));
         } else {
           continue;
         }
@@ -74,7 +87,7 @@ class EventEmitter {
     for (const eventName in this.events) {
       if (Object.prototype.hasOwnProperty.call(this.events, eventName)) {
         const element = this.events[eventName];
-        console.log('清除', element)
+        console.log("清除", element);
       }
     }
   }
