@@ -3,8 +3,8 @@ import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
-import useRunningTime from "~/hooks/useRunningTime";
 import { ModulesProps } from "~/types/modules";
+import getResult from '~/core/getDataFromRunningTime'
 
 interface Props extends AppDataElementsTypes {
   id: string;
@@ -13,7 +13,6 @@ interface Props extends AppDataElementsTypes {
 
 const Modal: ModulesProps<Props> = (props) => {
   const { style, eventEmitter } = props;
-  const getResult = useRunningTime();
   const show = useCallback((parames) => {
     const {
       header,
@@ -26,7 +25,7 @@ const Modal: ModulesProps<Props> = (props) => {
       article: getResult(article),
       footer: getResult(footer),
     });
-  }, [getResult]);
+  }, []);
 
   const hide = useCallback(() => {
     if (!ref.current) return;

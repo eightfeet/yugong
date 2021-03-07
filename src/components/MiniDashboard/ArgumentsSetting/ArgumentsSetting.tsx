@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArgumentsSetting.module.less";
+import ObjectArguments from "./ObjectArguments";
 
 interface Props {
   /**
@@ -15,9 +16,26 @@ interface Props {
    * 确认时回调
    */
   onOk: (data: ArgumentsItem[]) => void;
+  /**
+   * 参数数据
+   */
   argumentsData: ArgumentsItem[];
+  /**
+   * 初始化参数数据
+   */
   initArgumentData: ArgumentsItem[];
+  /**
+   * 取消时回调
+   */
   onCancel: () => void;
+  /**
+   * 可自定义
+   */
+  flexible?: boolean;
+  /**
+   * title
+   */
+  title: string;
 }
 
 const ArgumentsSetting: React.FC<Props> = ({
@@ -26,14 +44,16 @@ const ArgumentsSetting: React.FC<Props> = ({
   initArgumentData,
   onOk,
   onCancel,
+  title,
+  flexible,
 }) => {
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
   // 将argument数据接管
   useEffect(() => {
-    if ( argumentsData.length <= 0 ) {
-      setArgumentState(initArgumentData || [])
+    if (argumentsData.length <= 0) {
+      setArgumentState(initArgumentData || []);
     } else {
-      setArgumentState(argumentsData)
+      setArgumentState(argumentsData);
     }
   }, [argumentsData, initArgumentData]);
 
@@ -48,19 +68,28 @@ const ArgumentsSetting: React.FC<Props> = ({
   const onChangeInput = useCallback(
     (index: number) => (e: any) => {
       const result = [...argumentState];
-      result[index].data = Number(e.target.value);
+      result[index].data = e.target.value;
       setArgumentState(result);
     },
     [argumentState]
   );
 
+  const onChangeObjType = useCallback(
+    (index: number) => (data: ArgumentsItem) => {
+      const result = [...argumentState];
+      result[index] = data;
+      setArgumentState(result);
+    },
+    [argumentState],
+  )
+
   return (
     <Modal
       title={
         <div className={s.title}>
-          <h4>参数设置</h4>
+          <h4>{title}</h4>
           <div className={s.right}>
-            <Button size="small">新增</Button>
+            {flexible ? <Button size="small">新增</Button> : null}
           </div>
         </div>
       }
@@ -73,6 +102,7 @@ const ArgumentsSetting: React.FC<Props> = ({
     >
       {argumentsData.map((item, index) => (
         <Card
+          key={`${item.name}${index}`}
           title={
             <div className={s.cardtitle}>
               <div className={s.cardtitleinfo}>
@@ -80,7 +110,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                 <Input
                   className={s.title}
                   value={item.name}
-                  readOnly
+                  disabled={!flexible}
                   suffix={
                     <Tooltip title={item.describe}>
                       <InfoCircleOutlined
@@ -91,7 +121,11 @@ const ArgumentsSetting: React.FC<Props> = ({
                 />
                 <span className={s.divide} />
                 <span>类型：</span>
-                <Select className={s.type} value={item.type} disabled>
+                <Select
+                  className={s.type}
+                  value={item.type}
+                  disabled={!flexible}
+                >
                   <Select.Option value="string">string</Select.Option>
                   <Select.Option value="number">number</Select.Option>
                   <Select.Option value="boolean">boolean</Select.Option>
@@ -99,22 +133,22 @@ const ArgumentsSetting: React.FC<Props> = ({
                   <Select.Option value="array">array</Select.Option>
                 </Select>
               </div>
-              <div>
-                <Button size="small">移除</Button>
-              </div>
+              <div>{flexible ? <Button size="small">移除</Button> : null}</div>
             </div>
           }
         >
           <div>
-            {item.type === "number" ? (
+            {item.type === "number" || item.type === "string" ? (
               <Input
                 onChange={onChangeInput(index)}
                 value={item.data}
-                type="number"
-                min={0}
-                max={1000000}
+                type="text"
               />
             ) : null}
+            {
+              item.type === "object" ? 
+              <ObjectArguments onChange={onChangeObjType(index)} objArguments={item} flexible={!!flexible} /> : null
+            }
           </div>
         </Card>
       ))}

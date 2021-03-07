@@ -28,7 +28,6 @@ class EventEmitter {
    * @param args
    */
   public emit(queues: EventEmitterEmitArgs[]) {
-    console.log("queues", queues);
     const queuesArray = async () => {
       for (let i = 0; i < queues.length; i++) {
         const item = queues[i];
@@ -37,12 +36,11 @@ class EventEmitter {
           // 执行方法时发放对应参数
           const operateArgument: any[] = [];
           item.arguments.forEach((element) => {
+            operateArgument.push(element.data);
             const type = Object.prototype.toString.call(element.data);
             const dataType = type.substring(8, type.length - 1).toLowerCase();
-            if (element.type === dataType) {
-              operateArgument.push(element.data);
-            } else {
-              console.error(
+            if (element.type !== dataType) {
+              console.warn(
                 `方法${item.name}的参数要求${element.type}类型, 但得到的是${dataType}类型!`
               );
             }

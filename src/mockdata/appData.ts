@@ -80,13 +80,32 @@ const appData: AppDataListTypes = [
     content: { text: "将" },
     events: {
       onClick: [
-        { name: "fcadjasdjjasdljasdlaskdajshdgh903643620/show", arguments: [] },
-        { name: "globalEffect/hourglass", arguments: [{
-          type: 'number',
-          name: '延时',
-          describe: '等待3秒',
-          data: 3000
-        }] },
+        {
+          name: "fcadjasdjjasdljasdlaskdajshdgh903643620/show",
+          arguments: [
+            {
+              type: "object",
+              name: "弹窗内容",
+              describe: "header：头部，article：内容，footer：底部",
+              data: {
+                header: "{{search.h}}",
+                article: "<p>article</p>",
+                footer: "<p>footer</p>",
+              },
+            },
+          ],
+        },
+        {
+          name: "globalEffect/hourglass",
+          arguments: [
+            {
+              type: "number",
+              name: "延时",
+              describe: "等待3秒",
+              data: 3000,
+            },
+          ],
+        },
         { name: "fcadjasdjjasdljasdlaskdajshdgh903643620/hide", arguments: [] },
       ],
     },
@@ -95,7 +114,15 @@ const appData: AppDataListTypes = [
   {
     moduleId: "fcadjasdjjasdljasdlaskdajshdgh903643620",
     moduleName: "b弹窗",
-    layout: { w: 8, h: 2, x: 2, y: 7, i: "fcadjasdjjasdljasdlaskdajshdgh903643620", moved: false, static: false },
+    layout: {
+      w: 8,
+      h: 2,
+      x: 2,
+      y: 7,
+      i: "fcadjasdjjasdljasdlaskdajshdgh903643620",
+      moved: false,
+      static: false,
+    },
     style: {
       basic: {
         display: { width: 200 },

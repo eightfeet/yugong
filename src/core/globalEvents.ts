@@ -1,7 +1,10 @@
 import { ExposeFunctions } from "~/types/modules";
+import getResult from '~/core/getDataFromRunningTime';
 
-const hourglass = (times: number) =>
-  new Promise((res) => setTimeout(() => res(""), times || 1000));
+const hourglass = (times: string) => {
+    const timesResult = parseInt(getResult(times));
+    return new Promise((res) => setTimeout(() => res(""), timesResult || 3000));
+}
 
 const fn = () => console.log("fn other effect！");
 
@@ -22,8 +25,8 @@ export const globalExposeFunctions: ExposeFunctions[] = [
     description: "沙漏",
     arguments: [{
       type: 'number',
-      name: '延时',
-      describe: '等待3秒',
+      name: '计时器',
+      describe: '延时计时器，等待时间后执行下一个任务！',
       data: 3000
     }]
   },

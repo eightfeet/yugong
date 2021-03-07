@@ -150,7 +150,7 @@ const Responsive: React.FC<Props> = () => {
               ref={ref}
               id="wrapiframe"
               title="wrapiframe"
-              src="/?isEditing=true"
+              src={`/${window.location.search}`}
               style={{
                 width: "1px",
                 border: "none",
