@@ -32,7 +32,7 @@ interface ArgumentBase<T> {
   /**
    * 参数中文名
    */
-  name: string;
+  name?: string;
   /**
    * 参数描述
    */

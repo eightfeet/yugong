@@ -50,12 +50,13 @@ const ArgumentsSetting: React.FC<Props> = ({
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
   // 将argument数据接管
   useEffect(() => {
-    if (argumentsData.length <= 0) {
-      setArgumentState(initArgumentData || []);
-    } else {
-      setArgumentState(argumentsData);
+    let data: ArgumentsItem[] = [...argumentsData];
+    // 不可自定义参数且数据为空时，使用组件初始数据
+    if (data.length === 0 && !flexible) {
+      data = [...initArgumentData];
     }
-  }, [argumentsData, initArgumentData]);
+    setArgumentState(data);
+  }, [argumentsData, flexible, initArgumentData]);
 
   // 弹窗确定收集编辑完毕的argument数据
   const onModalOk = useCallback(() => {
@@ -80,6 +81,56 @@ const ArgumentsSetting: React.FC<Props> = ({
       result[index] = data;
       setArgumentState(result);
     },
+    [argumentState]
+  );
+
+  // 移除字段
+  const onRemove = useCallback(
+    (index: number) => () => {
+      let result = [...argumentState];
+      result = result.filter((_, i) => i !== index);
+      setArgumentState(result);
+    },
+    [argumentState]
+  );
+
+  // 新增字段
+  const onAddField = useCallback(() => {
+    const result = [...argumentState];
+    result.push({
+      describe: undefined,
+      name: "未命名",
+      type: "string",
+      data: "",
+    });
+    setArgumentState(result);
+  }, [argumentState]);
+
+  // 修改字段类型
+  const onChangeArgType = useCallback(
+    (index: number) => (e: any) => {
+      const result = [...argumentState];
+      result[index].type = e;
+      switch (e) {
+        case 'string':
+        case 'number':
+          result[index].data = ''
+          break;
+        case 'array':
+          result[index].data = []
+          break;
+        case 'object':
+          result[index].data = {}
+          break;
+        case 'boolean':
+          result[index].data = false
+          break;
+      
+        default:
+          break;
+      }
+      setArgumentState(result);
+    },
     [argumentState],
   )
 
@@ -89,7 +140,11 @@ const ArgumentsSetting: React.FC<Props> = ({
         <div className={s.title}>
           <h4>{title}</h4>
           <div className={s.right}>
-            {flexible ? <Button size="small">新增</Button> : null}
+            {flexible ? (
+              <Button size="small" onClick={onAddField}>
+                新增
+              </Button>
+            ) : null}
           </div>
         </div>
       }
@@ -100,8 +155,9 @@ const ArgumentsSetting: React.FC<Props> = ({
       okText="确定"
       cancelText="取消"
     >
-      {argumentsData.map((item, index) => (
+      {argumentState.map((item, index) => (
         <Card
+          className={s.card}
           key={`${item.name}${index}`}
           title={
             <div className={s.cardtitle}>
@@ -110,9 +166,19 @@ const ArgumentsSetting: React.FC<Props> = ({
                 <Input
                   className={s.title}
                   value={item.name}
+                  placeholder="新增字段描名称"
                   disabled={!flexible}
                   suffix={
-                    <Tooltip title={item.describe}>
+                    <Tooltip
+                      title={
+                        <Input
+                          className={s.desc}
+                          placeholder="新增字段描述"
+                          disabled={!flexible}
+                          value={item.describe}
+                        />
+                      }
+                    >
                       <InfoCircleOutlined
                         style={{ color: "rgba(0,0,0,.45)" }}
                       />
@@ -125,6 +191,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                   className={s.type}
                   value={item.type}
                   disabled={!flexible}
+                  onChange={onChangeArgType(index)}
                 >
                   <Select.Option value="string">string</Select.Option>
                   <Select.Option value="number">number</Select.Option>
@@ -133,7 +200,13 @@ const ArgumentsSetting: React.FC<Props> = ({
                   <Select.Option value="array">array</Select.Option>
                 </Select>
               </div>
-              <div>{flexible ? <Button size="small">移除</Button> : null}</div>
+              <div>
+                {flexible ? (
+                  <Button size="small" onClick={onRemove(index)}>
+                    移除
+                  </Button>
+                ) : null}
+              </div>
             </div>
           }
         >
@@ -141,14 +214,18 @@ const ArgumentsSetting: React.FC<Props> = ({
             {item.type === "number" || item.type === "string" ? (
               <Input
                 onChange={onChangeInput(index)}
+                placeholder="新增字段名"
                 value={item.data}
                 type="text"
               />
             ) : null}
-            {
-              item.type === "object" ? 
-              <ObjectArguments onChange={onChangeObjType(index)} objArguments={item} flexible={!!flexible} /> : null
-            }
+            {item.type === "object" ? (
+              <ObjectArguments
+                onChange={onChangeObjType(index)}
+                objArguments={item}
+                flexible={!!flexible}
+              />
+            ) : null}
           </div>
         </Card>
       ))}
