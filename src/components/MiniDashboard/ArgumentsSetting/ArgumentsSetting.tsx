@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArgumentsSetting.module.less";
+import ArrayArguments from "./ArrayArguments";
 import ObjectArguments from "./ObjectArguments";
 
 interface Props {
@@ -112,27 +113,27 @@ const ArgumentsSetting: React.FC<Props> = ({
       const result = [...argumentState];
       result[index].type = e;
       switch (e) {
-        case 'string':
-        case 'number':
-          result[index].data = ''
+        case "string":
+        case "number":
+          result[index].data = "";
           break;
-        case 'array':
-          result[index].data = []
+        case "array":
+          result[index].data = [];
           break;
-        case 'object':
-          result[index].data = {}
+        case "object":
+          result[index].data = {};
           break;
-        case 'boolean':
-          result[index].data = false
+        case "boolean":
+          result[index].data = false;
           break;
-      
+
         default:
           break;
       }
       setArgumentState(result);
     },
-    [argumentState],
-  )
+    [argumentState]
+  );
 
   return (
     <Modal
@@ -221,6 +222,13 @@ const ArgumentsSetting: React.FC<Props> = ({
             ) : null}
             {item.type === "object" ? (
               <ObjectArguments
+                onChange={onChangeObjType(index)}
+                objArguments={item}
+                flexible={!!flexible}
+              />
+            ) : null}
+            {item.type === "array" ? (
+              <ArrayArguments
                 onChange={onChangeObjType(index)}
                 objArguments={item}
                 flexible={!!flexible}
