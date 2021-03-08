@@ -231,7 +231,7 @@ const EventGroup: React.FC<Props> = ({
         );
       })}
       <ArgumentsSetting
-        flexible={!false}
+        flexible={false}
         title="参数设置"
         visible={argumentsVisible}
         onOk={onArgumentsSettingOk}

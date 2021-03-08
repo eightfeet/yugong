@@ -41,7 +41,8 @@ const ObjectArguments: React.FC<Props> = ({
   const onAddKey = useCallback(() => {
     const result: anyObj = { ...argumentsState };
     if (addOption.current) {
-      const key = addOption.current.state.value;
+      const key = addOption.current.input.value;
+      addOption.current.setState({value: null});
       if (!key) {
         const msg = `请输入属性名！`;
         console.error(msg);

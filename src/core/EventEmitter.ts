@@ -1,3 +1,4 @@
+import getBooleanData from "./getBooleanData";
 import defaultEvents from "./globalEvents";
 interface EventEmitterEvents {
   [key: string]: Function;
@@ -36,7 +37,11 @@ class EventEmitter {
           // 执行方法时发放对应参数
           const operateArgument: any[] = [];
           item.arguments.forEach((element) => {
-            operateArgument.push(element.data);
+            if (element.type === 'boolean') {
+              operateArgument.push(getBooleanData(element.data))
+            } else {
+              operateArgument.push(element.data);
+            }
             const type = Object.prototype.toString.call(element.data);
             const dataType = type.substring(8, type.length - 1).toLowerCase();
             if (element.type !== dataType) {

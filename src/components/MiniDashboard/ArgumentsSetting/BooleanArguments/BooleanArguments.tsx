@@ -64,7 +64,7 @@ const BooleanArguments: React.FC<Props> = ({
         <Col span={8}>
           <Select className={s.selected} value={data.method} onChange={onChangeCondition}>
             {methodOptions.map((item) => (
-              <Select.Option value={item.value}>{item.name}</Select.Option>
+              <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
             ))}
           </Select>
         </Col>
