@@ -5,7 +5,7 @@ const method = [
   },
   {
     value: "===",
-    name: "完全等于",
+    name: "全等于",
   },
   {
     value: ">",
