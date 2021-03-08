@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArgumentsSetting.module.less";
 import ArrayArguments from "./ArrayArguments";
+import BooleanArguments from "./BooleanArguments";
 import ObjectArguments from "./ObjectArguments";
 
 interface Props {
@@ -124,7 +125,11 @@ const ArgumentsSetting: React.FC<Props> = ({
           result[index].data = {};
           break;
         case "boolean":
-          result[index].data = false;
+          result[index].data = {
+            comparableAverageA: null,
+            comparableAverageB: null,
+            method: '===' 
+          };
           break;
 
         default:
@@ -223,14 +228,21 @@ const ArgumentsSetting: React.FC<Props> = ({
             {item.type === "object" ? (
               <ObjectArguments
                 onChange={onChangeObjType(index)}
-                objArguments={item}
+                typeArguments={item}
                 flexible={!!flexible}
               />
             ) : null}
             {item.type === "array" ? (
               <ArrayArguments
                 onChange={onChangeObjType(index)}
-                objArguments={item}
+                typeArguments={item}
+                flexible={!!flexible}
+              />
+            ) : null}
+            {item.type === "boolean" ? (
+              <BooleanArguments
+                onChange={onChangeObjType(index)}
+                typeArguments={item}
                 flexible={!!flexible}
               />
             ) : null}

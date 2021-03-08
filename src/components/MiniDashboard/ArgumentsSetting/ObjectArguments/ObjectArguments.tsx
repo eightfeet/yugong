@@ -5,7 +5,7 @@ import { ArgumentsItem } from "~/types/appData";
 import s from "./ObjectArguments.module.less";
 
 interface Props {
-  objArguments: ArgumentsItem;
+  typeArguments: ArgumentsItem;
   flexible: boolean;
   onChange: (data: ArgumentsItem) => void;
 }
@@ -15,14 +15,14 @@ interface anyObj {
 }
 
 const ObjectArguments: React.FC<Props> = ({
-  objArguments,
+  typeArguments,
   flexible,
   onChange,
 }) => {
   const [argumentsState, setArgumentsState] = useState<ArgumentsItem>();
   useEffect(() => {
-    setArgumentsState(objArguments);
-  }, [objArguments]);
+    setArgumentsState(typeArguments);
+  }, [typeArguments]);
 
   const addOption = useRef<any>(null);
 

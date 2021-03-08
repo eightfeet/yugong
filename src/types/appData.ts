@@ -17,13 +17,12 @@ export interface EventsTypeItem {
 /**
  * 参数
  */
-export type ArgumentsItem = (
+export type ArgumentsItem =
   | ArgumentsObject
   | ArgumentsArray
   | ArgumentsBoolean
   | ArgumentsString
-  | ArgumentsNumber
-);
+  | ArgumentsNumber;
 
 /**
  * 参数基本
@@ -67,7 +66,11 @@ export interface ArgumentsArray extends ArgumentBase<"array"> {
  * 布尔参数
  */
 export interface ArgumentsBoolean extends ArgumentBase<"boolean"> {
-  data: boolean;
+  data: {
+    comparableAverageA: any;
+    comparableAverageB: any;
+    method: ">" | ">=" | "<" | "<=" | "===" | "==" | "&&" | "||";
+  };
 }
 
 /**

@@ -1,12 +1,11 @@
-import { Button, Col, Input, Row, message } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Button, Col, Input, Row } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArrayArguments.module.less";
-import { isArray } from "lodash";
 
 interface Props {
-  objArguments: ArgumentsItem;
+  typeArguments: ArgumentsItem;
   flexible: boolean;
   onChange: (data: ArgumentsItem) => void;
 }
@@ -15,17 +14,15 @@ interface anyObj {
   [keys: string]: any;
 }
 
-const ObjectArguments: React.FC<Props> = ({
-  objArguments,
+const ArrayArguments: React.FC<Props> = ({
+  typeArguments,
   flexible,
   onChange,
 }) => {
   const [argumentsState, setArgumentsState] = useState<ArgumentsItem>();
   useEffect(() => {
-    setArgumentsState(objArguments);
-  }, [objArguments]);
-
-  const addOption = useRef<any>(null);
+    setArgumentsState(typeArguments);
+  }, [typeArguments]);
 
   const onChangeValue = useCallback(
     (index: number) => (e: any) => {
@@ -97,4 +94,4 @@ const ObjectArguments: React.FC<Props> = ({
   );
 };
 
-export default ObjectArguments;
+export default ArrayArguments;
