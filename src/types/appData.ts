@@ -95,6 +95,35 @@ export interface EventsType {
 }
 
 /**
+ * Api
+ */
+export interface Api {
+  /**
+   * api名称
+   */
+  name?: string;
+  /**
+   * api描述
+   */
+  description?: string;
+  /**
+   * api识别Id
+   */
+  apiId?: string;
+  /**
+   * api Url地址
+   */
+  url: string;
+  method?: RequestInit["method"];
+  headers?: RequestInit["headers"];
+  body?: AnyObjectType;
+  credentials?: RequestInit["credentials"];
+  mode?: RequestInit["mode"];
+  successPublic?: AnyObjectType;
+  errorPublic?: AnyObjectType;
+}
+
+/**
  * 模块类型
  */
 export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
@@ -106,6 +135,7 @@ export interface AppDataElementsTypes {
   type: AppDataModuleTypes;
   moduleId: string;
   moduleName?: string;
+  api?: Api[];
 }
 
 export interface AppDataLayoutItemTypes extends AppDataElementsTypes {

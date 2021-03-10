@@ -100,8 +100,6 @@ const appData: AppDataListTypes = [
           arguments: [
             {
               type: "number",
-              name: "延时",
-              describe: "等待3秒",
               data: 3000,
             },
           ],
@@ -109,6 +107,28 @@ const appData: AppDataListTypes = [
         { name: "fcadjasdjjasdljasdlaskdajshdgh903643620/hide", arguments: [] },
       ],
     },
+    api: [{
+      apiId: 'lottery',
+      url: 'http://www.xxxxxx.api',
+      method: 'POST',
+      headers: {},
+      body:{},
+      credentials: 'same-origin',
+      mode: 'no-cors',
+      successPublic: {
+        data1: {
+          type: "number",
+          data: "{{./past}}",
+        },
+        data2: {
+          type: "object",
+          data: {
+            prize: "{{./prize}}"
+          },
+        }
+      },
+      errorPublic: {},
+    }],
     type: "Conterner",
   },
   {

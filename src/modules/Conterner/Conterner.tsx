@@ -38,6 +38,17 @@ Conterner.exposeEvents = [{
   description: '点击'
 }]
 
+Conterner.exposeApi = [{
+  apiId: 'lotter',
+  name: '抽奖接口',
+  url: 'http://api',
+  description: '点击',
+  headers: {
+    
+  },
+  mode: 'cors'
+}]
+
 export default Conterner;
 
 

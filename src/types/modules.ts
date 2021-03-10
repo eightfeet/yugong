@@ -17,6 +17,28 @@ export interface ExposeFunctions extends ExposeEvents {
     arguments?: ArgumentsItem[]
 }
 
+/**
+ * 静态Api
+ */
+export interface ExposeApi extends RequestInit {
+  /**
+   * api 名称
+   */
+  name: string;
+  /**
+   * api 描述
+   */
+  description: string;
+  /**
+   * api 识别ID
+   */
+  apiId: string;
+  /**
+   * api Url
+   */
+  url: string;
+} 
+
 
 /**
  * 静态事件导出
@@ -24,4 +46,5 @@ export interface ExposeFunctions extends ExposeEvents {
 export interface ModulesProps<TProps> extends React.FC<TProps> {
     exposeEvents?: ExposeEvents[];
     exposeFunctions?: ExposeFunctions[];
+    exposeApi?:  ExposeApi[];
 }
