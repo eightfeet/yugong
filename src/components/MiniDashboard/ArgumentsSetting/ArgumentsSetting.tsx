@@ -17,27 +17,31 @@ interface Props {
   /**
    * 确认时回调
    */
-  onOk: (data: ArgumentsItem[]) => void;
+  onOk?: (data: ArgumentsItem[]) => void;
   /**
    * 参数数据
    */
-  argumentsData: ArgumentsItem[];
+  argumentsData?: ArgumentsItem[];
   /**
    * 初始化参数数据
    */
-  initArgumentData: ArgumentsItem[];
+  initArgumentData?: ArgumentsItem[];
   /**
    * 取消时回调
    */
-  onCancel: () => void;
+  onCancel?: () => void;
   /**
-   * 可自定义
+   * 头部可自定义
    */
-  flexible?: boolean;
+  headerFlexible?: boolean;
+  /**
+   * 数据可自定义
+   */
+  dataFlexible?: boolean;
   /**
    * title
    */
-  title: string;
+  title?: string;
 }
 
 const ArgumentsSetting: React.FC<Props> = ({
@@ -47,18 +51,19 @@ const ArgumentsSetting: React.FC<Props> = ({
   onOk,
   onCancel,
   title,
-  flexible,
+  dataFlexible=false,
+  headerFlexible=false
 }) => {
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
   // 将argument数据接管
   useEffect(() => {
-    let data: ArgumentsItem[] = [...argumentsData];
+    let data: ArgumentsItem[] = [...argumentsData || []];
     // 不可自定义参数且数据为空时，使用组件初始数据
-    if (data.length === 0 && !flexible) {
-      data = [...initArgumentData];
+    if (data.length === 0 && !headerFlexible) {
+      data = [...initArgumentData || []];
     }
     setArgumentState(data);
-  }, [argumentsData, flexible, initArgumentData]);
+  }, [argumentsData, headerFlexible, initArgumentData]);
 
   // 弹窗确定收集编辑完毕的argument数据
   const onModalOk = useCallback(() => {
@@ -146,7 +151,7 @@ const ArgumentsSetting: React.FC<Props> = ({
         <div className={s.title}>
           <h4>{title}</h4>
           <div className={s.right}>
-            {flexible ? (
+            {headerFlexible ? (
               <Button size="small" onClick={onAddField}>
                 新增
               </Button>
@@ -173,14 +178,14 @@ const ArgumentsSetting: React.FC<Props> = ({
                   className={s.title}
                   value={item.name}
                   placeholder="新增字段描名称"
-                  disabled={!flexible}
+                  disabled={!headerFlexible}
                   suffix={
                     <Tooltip
                       title={
                         <Input
                           className={s.desc}
                           placeholder="新增字段描述"
-                          disabled={!flexible}
+                          disabled={!headerFlexible}
                           value={item.describe}
                         />
                       }
@@ -196,7 +201,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                 <Select
                   className={s.type}
                   value={item.type}
-                  disabled={!flexible}
+                  disabled={!headerFlexible}
                   onChange={onChangeArgType(index)}
                 >
                   <Select.Option value="string">string</Select.Option>
@@ -207,7 +212,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                 </Select>
               </div>
               <div>
-                {flexible ? (
+                {headerFlexible ? (
                   <Button size="small" onClick={onRemove(index)}>
                     移除
                   </Button>
@@ -229,21 +234,21 @@ const ArgumentsSetting: React.FC<Props> = ({
               <ObjectArguments
                 onChange={onChangeObjType(index)}
                 typeArguments={item}
-                flexible={!!flexible}
+                flexible={!!dataFlexible}
               />
             ) : null}
             {item.type === "array" ? (
               <ArrayArguments
                 onChange={onChangeObjType(index)}
                 typeArguments={item}
-                flexible={!!flexible}
+                flexible={!!dataFlexible}
               />
             ) : null}
             {item.type === "boolean" ? (
               <BooleanArguments
                 onChange={onChangeObjType(index)}
                 typeArguments={item}
-                flexible={!!flexible}
+                flexible={!!dataFlexible}
               />
             ) : null}
           </div>

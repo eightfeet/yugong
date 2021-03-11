@@ -1,7 +1,9 @@
 import { Button, Col, Divider, Input, Row, Select, Tooltip } from "antd";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import { ArgumentsItem } from "~/types/appData";
+import ArgumentsSetting from "../ArgumentsSetting";
 import s from "./ApiSetting.module.less";
 
 const selectSetting = (onChange: any, value: any) => (
@@ -25,6 +27,8 @@ const selectMethod = (onChange: any, value: any) => (
 
 const ApiSetting: React.FC = () => {
   const api = useSelector((state: RootState) => state.activationItem.api);
+  const [argData, setArgData] = useState<ArgumentsItem[] | undefined>()
+
 
   const onChangeInput = useCallback((e) => {
     console.log(e);
@@ -35,8 +39,25 @@ const ApiSetting: React.FC = () => {
   }, []);
 
   const onChangeSetting = useCallback((e) => {
-    console.log(e);
-  }, []);
+    console.log(e)
+    if ( e === 'headers') {
+      setArgData([{
+        name: 'header',
+        describe: 'api请求header信息',
+        type: 'object',
+        data: {
+          a: 11
+        }
+      }])
+    }
+  }, [setArgData]);
+
+  const hideArg = useCallback(
+    () => {
+      setArgData(undefined)
+    },
+    [],
+  )
 
   return (
     <div className={s.root}>
@@ -77,8 +98,10 @@ const ApiSetting: React.FC = () => {
           </Row>
         </div>
       ))}
+      <ArgumentsSetting dataFlexible visible={!!argData?.length} initArgumentData={argData} onCancel={hideArg} />
     </div>
   );
 };
 
 export default ApiSetting;
+
