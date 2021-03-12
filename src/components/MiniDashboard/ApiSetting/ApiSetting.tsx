@@ -29,16 +29,16 @@ const ApiSetting: React.FC = () => {
   const api = useSelector((state: RootState) => state.activationItem.api);
   const [argData, setArgData] = useState<ArgumentsItem[] | undefined>();
 
-  const onChangeInput = useCallback((e) => {
-    console.log(e);
+  const onChangeInput = useCallback((index) => (e: any) => {
+    console.log(index, e);
   }, []);
 
-  const onChangeMethod = useCallback((e) => {
-    console.log(e);
+  const onChangeMethod = useCallback((index) => (e: any) => {
+    console.log(index, e);
   }, []);
 
   const onChangeSetting = useCallback(
-    (e) => {
+    (index) => (e: any) => {
       let value: ArgumentsItem = {
         type: "string",
         data: "",
@@ -92,9 +92,9 @@ const ApiSetting: React.FC = () => {
           <Row className={s.row} gutter={4}>
             <Col span={24}>
               <Input
-                onChange={onChangeInput}
-                addonBefore={selectMethod(onChangeMethod, item.method)}
-                addonAfter={selectSetting(onChangeSetting, "高级设置")}
+                onChange={onChangeInput(index)}
+                addonBefore={selectMethod(onChangeMethod(index), item.method)}
+                addonAfter={selectSetting(onChangeSetting(index), "高级设置")}
                 value={item.url}
               />
             </Col>

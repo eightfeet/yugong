@@ -35,7 +35,7 @@ interface Props {
    */
   headerFlexible?: boolean;
   /**
-   * 数据可自定义
+   * 数据可自定义,默认false固定不变
    */
   dataFlexible?: boolean;
   /**
