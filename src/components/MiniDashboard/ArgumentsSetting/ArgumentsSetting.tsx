@@ -51,16 +51,16 @@ const ArgumentsSetting: React.FC<Props> = ({
   onOk,
   onCancel,
   title,
-  dataFlexible=false,
-  headerFlexible=false
+  dataFlexible = false,
+  headerFlexible = false,
 }) => {
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
   // 将argument数据接管
   useEffect(() => {
-    let data: ArgumentsItem[] = [...argumentsData || []];
+    let data: ArgumentsItem[] = [...(argumentsData || [])];
     // 不可自定义参数且数据为空时，使用组件初始数据
     if (data.length === 0 && !headerFlexible) {
-      data = [...initArgumentData || []];
+      data = [...(initArgumentData || [])];
     }
     setArgumentState(data);
   }, [argumentsData, headerFlexible, initArgumentData]);
@@ -133,7 +133,7 @@ const ArgumentsSetting: React.FC<Props> = ({
           result[index].data = {
             comparableAverageA: null,
             comparableAverageB: null,
-            method: '===' 
+            method: "===",
           };
           break;
 
@@ -166,42 +166,52 @@ const ArgumentsSetting: React.FC<Props> = ({
       okText="确定"
       cancelText="取消"
     >
-      {argumentState.map((item, index) => (
+      {argumentState.map((item, index) => {
+        const initItem = initArgumentData?.length ? (initArgumentData[index]) : undefined;
+        return (
         <Card
           className={s.card}
-          key={`${item.name}${index}`}
+          key={`${item.name || initItem?.name || ''}${index}`}
           title={
             <div className={s.cardtitle}>
               <div className={s.cardtitleinfo}>
-                <span>字段名称：</span>
-                <Input
-                  className={s.title}
-                  value={item.name}
-                  placeholder="新增字段描名称"
-                  disabled={!headerFlexible}
-                  suffix={
-                    <Tooltip
-                      title={
-                        <Input
-                          className={s.desc}
-                          placeholder="新增字段描述"
-                          disabled={!headerFlexible}
-                          value={item.describe}
-                        />
-                      }
-                    >
+                <span className={s.label}>字段名称：</span>
+                {!headerFlexible ? (
+                  <>
+                    {item.name || initItem?.name || ''} &nbsp;
+                    <Tooltip title={item.describe || initItem?.describe || ''}>
                       <InfoCircleOutlined
                         style={{ color: "rgba(0,0,0,.45)" }}
                       />
                     </Tooltip>
-                  }
-                />
+                  </>
+                ) : (
+                  <Input
+                    className={s.title}
+                    value={item.name || initItem?.name || ''}
+                    placeholder="新增字段描名称"
+                    suffix={
+                      <Tooltip
+                        title={
+                          <Input
+                            className={s.desc}
+                            placeholder="新增字段描述"
+                            value={item.describe}
+                          />
+                        }
+                      >
+                        <InfoCircleOutlined
+                          style={{ color: "rgba(0,0,0,.45)" }}
+                        />
+                      </Tooltip>
+                    }
+                  />
+                )}
                 <span className={s.divide} />
-                <span>类型：</span>
-                <Select
+                <span className={s.label}>类型：</span>
+                {headerFlexible ? <Select
                   className={s.type}
                   value={item.type}
-                  disabled={!headerFlexible}
                   onChange={onChangeArgType(index)}
                 >
                   <Select.Option value="string">string</Select.Option>
@@ -209,7 +219,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                   <Select.Option value="boolean">boolean</Select.Option>
                   <Select.Option value="object">object</Select.Option>
                   <Select.Option value="array">array</Select.Option>
-                </Select>
+                </Select> : item.type}
               </div>
               <div>
                 {headerFlexible ? (
@@ -225,13 +235,14 @@ const ArgumentsSetting: React.FC<Props> = ({
             {item.type === "number" || item.type === "string" ? (
               <Input
                 onChange={onChangeInput(index)}
-                placeholder="新增字段名"
+                placeholder={`请输入值,${item.describe || ''}`}
                 value={item.data}
                 type="text"
               />
             ) : null}
             {item.type === "object" ? (
               <ObjectArguments
+                describe={item.describe}
                 onChange={onChangeObjType(index)}
                 typeArguments={item}
                 flexible={!!dataFlexible}
@@ -239,6 +250,7 @@ const ArgumentsSetting: React.FC<Props> = ({
             ) : null}
             {item.type === "array" ? (
               <ArrayArguments
+                describe={item.describe}
                 onChange={onChangeObjType(index)}
                 typeArguments={item}
                 flexible={!!dataFlexible}
@@ -253,7 +265,7 @@ const ArgumentsSetting: React.FC<Props> = ({
             ) : null}
           </div>
         </Card>
-      ))}
+      )})}
     </Modal>
   );
 };

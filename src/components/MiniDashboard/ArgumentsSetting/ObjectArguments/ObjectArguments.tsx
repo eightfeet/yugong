@@ -8,6 +8,7 @@ interface Props {
   typeArguments: ArgumentsItem;
   flexible: boolean;
   onChange: (data: ArgumentsItem) => void;
+  describe?: string
 }
 
 interface anyObj {
@@ -17,6 +18,7 @@ interface anyObj {
 const ObjectArguments: React.FC<Props> = ({
   typeArguments,
   flexible,
+  describe,
   onChange,
 }) => {
   const [argumentsState, setArgumentsState] = useState<ArgumentsItem>();
@@ -81,7 +83,7 @@ const ObjectArguments: React.FC<Props> = ({
             <div className={s.label}>新增属性</div>
           </Col>
           <Col span={16}>
-            <Input ref={addOption} />
+            <Input ref={addOption} placeholder={describe} />
           </Col>
           <Col span={4}>
             <Button onClick={onAddKey} icon={<PlusOutlined  />}>确定</Button>

@@ -7,6 +7,7 @@ import s from "./ArrayArguments.module.less";
 interface Props {
   typeArguments: ArgumentsItem;
   flexible: boolean;
+  describe?: string;
   onChange: (data: ArgumentsItem) => void;
 }
 
@@ -18,6 +19,7 @@ const ArrayArguments: React.FC<Props> = ({
   typeArguments,
   flexible,
   onChange,
+  describe
 }) => {
   const [argumentsState, setArgumentsState] = useState<ArgumentsItem>();
   useEffect(() => {
@@ -78,7 +80,7 @@ const ArrayArguments: React.FC<Props> = ({
             <Input
               onChange={onChangeValue(index)}
               suffix={<div className={s.suffix}>索引{index}</div>}
-              placeholder="value"
+              placeholder={`请输入值${describe || ''}`}
               type="text"
               value={item}
             />

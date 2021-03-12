@@ -27,8 +27,7 @@ const selectMethod = (onChange: any, value: any) => (
 
 const ApiSetting: React.FC = () => {
   const api = useSelector((state: RootState) => state.activationItem.api);
-  const [argData, setArgData] = useState<ArgumentsItem[] | undefined>()
-
+  const [argData, setArgData] = useState<ArgumentsItem[] | undefined>();
 
   const onChangeInput = useCallback((e) => {
     console.log(e);
@@ -38,26 +37,50 @@ const ApiSetting: React.FC = () => {
     console.log(e);
   }, []);
 
-  const onChangeSetting = useCallback((e) => {
-    console.log(e)
-    if ( e === 'headers') {
-      setArgData([{
-        name: 'header',
-        describe: 'api请求header信息',
-        type: 'object',
-        data: {
-          a: 11
-        }
-      }])
-    }
-  }, [setArgData]);
-
-  const hideArg = useCallback(
-    () => {
-      setArgData(undefined)
+  const onChangeSetting = useCallback(
+    (e) => {
+      let value: ArgumentsItem = {
+        type: "string",
+        data: "",
+      };
+      switch (e) {
+        case "headers":
+          value = {
+            name: "headers",
+            describe: "包含请求相关的Headers对象。",
+            type: "object",
+            data: {
+              a: 11,
+            },
+          };
+          break;
+        case "mode":
+          value = {
+            name: "mode",
+            describe: "包含请求的模式 (例如： cors, no-cors, same-origin, navigate).",
+            type: "string",
+            data: "",
+          };
+          break;
+        case "credentials":
+          value = {
+            name: "credentials",
+            describe: "包含请求的证书(例如： omit, same-origin).",
+            type: "string",
+            data: "",
+          };
+          break;
+        default:
+          break;
+      }
+      setArgData([value]);
     },
-    [],
-  )
+    [setArgData]
+  );
+
+  const hideArg = useCallback(() => {
+    setArgData(undefined);
+  }, []);
 
   return (
     <div className={s.root}>
@@ -98,10 +121,14 @@ const ApiSetting: React.FC = () => {
           </Row>
         </div>
       ))}
-      <ArgumentsSetting dataFlexible visible={!!argData?.length} initArgumentData={argData} onCancel={hideArg} />
+      <ArgumentsSetting
+        dataFlexible
+        visible={!!argData?.length}
+        initArgumentData={argData}
+        onCancel={hideArg}
+      />
     </div>
   );
 };
 
 export default ApiSetting;
-
