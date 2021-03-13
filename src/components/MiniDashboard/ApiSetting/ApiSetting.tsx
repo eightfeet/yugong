@@ -64,7 +64,7 @@ const ApiSetting: React.FC = () => {
 
   useEffect(() => {
     // 是否有定义api
-    const defaultApi = [...getExposeApiData()];
+    const defaultApi = [...getExposeApiData()||[]];
     // 合并默认api定义与默认api
     defaultApi.forEach((elementDef) => {
       api?.forEach((element) => {
@@ -75,7 +75,6 @@ const ApiSetting: React.FC = () => {
         }
       });
     });
-    console.log('defaultApi', JSON.stringify(defaultApi, null, 2))
     // 保存修改
     setOperateApi(defaultApi);
   }, [api, getExposeApiData]);
@@ -232,7 +231,11 @@ const ApiSetting: React.FC = () => {
   const onHandleUserArg = useCallback(
     (index: number, type: "body" | "successPublic" | "errorPublic") => () => {
       // 获取api的数据；
-      const data = (api || [])[index][type] || {};
+      let data:Api["body" | "successPublic" | "errorPublic"] = {};
+      if (api?.length) {
+        data = api[index][type];
+      }
+
       // 转换为配置参数
       const useArgData: ArgumentsItem[] = [];
       for (const key in data) {
@@ -274,6 +277,7 @@ const ApiSetting: React.FC = () => {
                   addonBefore={selectMethod(onChangeMethod(index), item.method)}
                   addonAfter={selectSetting(onChangeSetting(index), "高级设置")}
                   value={item.url}
+                  placeholder="请输入Url 接口地址"
                 />
               </Col>
             </Row>

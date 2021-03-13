@@ -15,40 +15,35 @@ interface Props extends AppDataElementsTypes {
 const Conterner: ModulesProps<Props> = (props) => {
   const { eventEmitter, events } = props;
 
-  const onClick = useCallback(
-    () => {
-      if (eventEmitter.events) {
-        eventEmitter.emit(events.onClick)
-      }
-    },
-    [eventEmitter, events.onClick],
-  )
+  const onClick = useCallback(() => {
+    if (eventEmitter.events) {
+      eventEmitter.emit(events.onClick);
+    }
+  }, [eventEmitter, events.onClick]);
 
   return (
     <Wrapper {...props}>
-      <div onClick={onClick}>
-        {props.content.text}
-      </div>
+      <div onClick={onClick}>{props.content.text}</div>
     </Wrapper>
   );
 };
 
-Conterner.exposeEvents = [{
-  name: 'onClick',
-  description: '点击'
-}]
-
-Conterner.exposeApi = [{
-  apiId: 'lotter',
-  name: '抽奖接口',
-  url: 'http://api',
-  description: '请求抽奖数据',
-  headers: {
-    
+Conterner.exposeEvents = [
+  {
+    name: "onClick",
+    description: "点击",
   },
-  mode: 'cors'
-}]
+];
+
+Conterner.exposeApi = [
+  {
+    apiId: "lotter",
+    name: "抽奖接口",
+  },
+  {
+    apiId: "record",
+    name: "记录",
+  },
+];
 
 export default Conterner;
-
-
