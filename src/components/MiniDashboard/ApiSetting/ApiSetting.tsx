@@ -178,7 +178,7 @@ const ApiSetting: React.FC = () => {
       {api?.map((item, index) => (
         <div key={item.apiId}>
           <div className={s.divide}>
-            <div className={s.title}>{item.name || "接口名称"}</div>
+            <div className={s.title}>{item.name || item.apiId || "接口名称"}</div>
           </div>
           <Row className={s.row} gutter={4}>
             <Col span={24}>
