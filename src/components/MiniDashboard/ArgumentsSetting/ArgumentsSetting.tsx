@@ -97,6 +97,15 @@ const ArgumentsSetting: React.FC<Props> = ({
       result[index].name = e.target.value;
       setArgumentState(result);
     },
+    [argumentState] 
+  );
+
+  const onChangeDescribe = useCallback(
+    (index: number) => (e: any) => {
+      const result = [...argumentState];
+      result[index].describe = e.target.value;
+      setArgumentState(result);
+    },
     [argumentState]
   );
 
@@ -184,7 +193,7 @@ const ArgumentsSetting: React.FC<Props> = ({
           title={
             <div className={s.cardtitle}>
               <div className={s.cardtitleinfo}>
-                <span className={s.label}>字段名称：</span>
+                <span className={s.label}>字段名：</span>
                 {!headerFlexible ? (
                   <>
                     {item.name || initItem?.name || ''} &nbsp;
@@ -207,6 +216,8 @@ const ArgumentsSetting: React.FC<Props> = ({
                             className={s.desc}
                             placeholder="新增字段描述"
                             value={item.describe}
+                            style={{width: '200px'}}
+                            onChange={onChangeDescribe(index)}
                           />
                         }
                       >

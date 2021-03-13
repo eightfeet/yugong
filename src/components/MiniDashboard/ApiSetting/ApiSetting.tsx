@@ -64,19 +64,20 @@ const ApiSetting: React.FC = () => {
 
   useEffect(() => {
     // 是否有定义api
-    const defaultApi = [...getExposeApiData()||[]];
+    const defaultApi = [...(getExposeApiData() || [])];
     // 合并默认api定义与默认api
     defaultApi.forEach((elementDef) => {
       api?.forEach((element) => {
         if (elementDef.apiId === element.apiId) {
-          Object.keys(element).forEach(key => {
+          Object.keys(element).forEach((key) => {
             elementDef[key] = element[key];
-          })
+          });
         }
       });
     });
     // 保存修改
     setOperateApi(defaultApi);
+    console.log(JSON.stringify(defaultApi, null, 2))
   }, [api, getExposeApiData]);
 
   const updateAppdata = useMergeAppData();
@@ -97,8 +98,8 @@ const ApiSetting: React.FC = () => {
       defaultApiData.forEach((defaultItem) => {
         apiData.forEach((item) => {
           Object.keys(item).forEach((key: string) => {
-            if (item[key] === defaultItem[key] && key !== 'apiId') {
-              console.log(item[key], defaultItem[key])
+            if (item[key] === defaultItem[key] && key !== "apiId") {
+              console.log(item[key], defaultItem[key]);
               // 从结果中删除
               delete item[key];
             }
@@ -231,9 +232,9 @@ const ApiSetting: React.FC = () => {
   const onHandleUserArg = useCallback(
     (index: number, type: "body" | "successPublic" | "errorPublic") => () => {
       // 获取api的数据；
-      let data:Api["body" | "successPublic" | "errorPublic"] = {};
-      if (api?.length) {
-        data = api[index][type];
+      let data: Api["body" | "successPublic" | "errorPublic"] = {};
+      if (operateApi?.length) {
+        data = operateApi[index][type];
       }
 
       // 转换为配置参数
@@ -256,69 +257,77 @@ const ApiSetting: React.FC = () => {
       // 开启自定义字段编辑
       setHeaderFlexible(true);
     },
-    [api]
+    [operateApi]
   );
 
   return (
     <div className={s.root}>
-      {operateApi?.map((element, index) => {
-        const item = { ...(api?.length ? api[index] : {}), ...element };
-        return (
-          <div key={item.apiId}>
-            <div className={s.divide}>
-              <div className={s.title}>
-                {item.name || item.apiId || "接口名称"}
+      <>
+        {operateApi?.map((element, index) => {
+          const item = { ...(api?.length ? api[index] : {}), ...element };
+          return (
+            <div key={item.apiId}>
+              <div className={s.divide}>
+                <div className={s.title}>
+                  {item.name || item.apiId || "接口名称"}
+                </div>
               </div>
+              <Row className={s.row} gutter={4}>
+                <Col span={24}>
+                  <Input
+                    onChange={onChangeInput(index)}
+                    addonBefore={selectMethod(
+                      onChangeMethod(index),
+                      item.method
+                    )}
+                    addonAfter={selectSetting(
+                      onChangeSetting(index),
+                      "高级设置"
+                    )}
+                    value={item.url}
+                    placeholder="请输入Url 接口地址"
+                  />
+                </Col>
+              </Row>
+              <Row className={s.row} gutter={4}>
+                <Col span={24}>
+                  <Button
+                    onClick={onHandleUserArg(index, "body")}
+                    style={{ width: "100%" }}
+                  >
+                    入参设置
+                  </Button>
+                </Col>
+              </Row>
+              <Divider orientation="left" plain>
+                请求结果发布
+              </Divider>
+              <Row gutter={4}>
+                <Col span={12}>
+                  <Tooltip title={<div>将Api请求成功结果发布到全局</div>}>
+                    <Button
+                      onClick={onHandleUserArg(index, "successPublic")}
+                      style={{ width: "100%" }}
+                    >
+                      success
+                    </Button>
+                  </Tooltip>
+                </Col>
+                <Col span={12}>
+                  <Tooltip title={<div>将Api请求失败结果发布到全局</div>}>
+                    <Button
+                      onClick={onHandleUserArg(index, "errorPublic")}
+                      style={{ width: "100%" }}
+                    >
+                      error
+                    </Button>
+                  </Tooltip>
+                </Col>
+              </Row>
             </div>
-            <Row className={s.row} gutter={4}>
-              <Col span={24}>
-                <Input
-                  onChange={onChangeInput(index)}
-                  addonBefore={selectMethod(onChangeMethod(index), item.method)}
-                  addonAfter={selectSetting(onChangeSetting(index), "高级设置")}
-                  value={item.url}
-                  placeholder="请输入Url 接口地址"
-                />
-              </Col>
-            </Row>
-            <Row className={s.row} gutter={4}>
-              <Col span={24}>
-                <Button
-                  onClick={onHandleUserArg(index, "body")}
-                  style={{ width: "100%" }}
-                >
-                  入参设置
-                </Button>
-              </Col>
-            </Row>
-            <Divider orientation="left" plain>
-              请求结果发布
-            </Divider>
-            <Row gutter={4}>
-              <Col span={12}>
-                <Tooltip title={<div>将Api请求成功结果发布到全局</div>}>
-                  <Button
-                    onClick={onHandleUserArg(index, "successPublic")}
-                    style={{ width: "100%" }}
-                  >
-                    success
-                  </Button>
-                </Tooltip>
-              </Col>
-              <Col span={12}>
-                <Tooltip title={<div>将Api请求失败结果发布到全局</div>}>
-                  <Button
-                    onClick={onHandleUserArg(index, "errorPublic")}
-                    style={{ width: "100%" }}
-                  >
-                    error
-                  </Button>
-                </Tooltip>
-              </Col>
-            </Row>
-          </div>
-        );
-      })}
+          );
+        })}
+      </>
       <ArgumentsSetting
         title={
           !argData?.type
