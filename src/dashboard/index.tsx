@@ -3,6 +3,7 @@
  * 二者代码更纯粹，同时也方便前后台的可扩展性
  * 后台包含App端数据模型，数据编辑时，同步更改
  */
+import 'whatwg-fetch';
 import React from "react";
 import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
