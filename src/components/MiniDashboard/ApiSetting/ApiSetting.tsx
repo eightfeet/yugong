@@ -1,8 +1,9 @@
 import { Button, Col, Divider, Input, Row, Select, Tooltip } from "antd";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
+import useMergeAppData from "~/hooks/useMergeAppData";
 import { RootState } from "~/redux/store";
-import { ArgumentsItem } from "~/types/appData";
+import { AnyObjectType, Api, ArgumentsItem } from "~/types/appData";
 import ArgumentsSetting from "../ArgumentsSetting";
 import s from "./ApiSetting.module.less";
 
@@ -27,16 +28,41 @@ const selectMethod = (onChange: any, value: any) => (
 
 const ApiSetting: React.FC = () => {
   const api = useSelector((state: RootState) => state.activationItem.api);
-  const [argData, setArgData] = useState<ArgumentsItem[] | undefined>();
+  const updateAppdata = useMergeAppData();
+  const [argData, setArgData] = useState<
+    { index: number; results: ArgumentsItem[] } | undefined
+  >();
 
-  const onChangeInput = useCallback((index) => (e: any) => {
-    console.log(index, e);
-  }, []);
 
-  const onChangeMethod = useCallback((index) => (e: any) => {
-    console.log(index, e);
-  }, []);
+  const updateApi = useCallback(
+    (index: number, data: AnyObjectType) => {
+      // 复制当前Api数据
+      const newApi = [...(api || [])];
+      // 收集结果
+      const modify = { ...newApi[index], ...data };
+      // 修改api数据
+      newApi[index] = modify;
+      // 保存数据
+      updateAppdata(newApi, "api");
+    },
+    [api, updateAppdata]
+  );
 
+  const onChangeInput = useCallback(
+    (index) => (e: any) => {
+      updateApi(index, {url: e.target.value})
+    },
+    [updateApi]
+  );
+
+  const onChangeMethod = useCallback(
+    (index) => (e: any) => {
+      updateApi(index, {method: e})
+    },
+    [updateApi]
+  );
+
+  // 设置参数
   const onChangeSetting = useCallback(
     (index) => (e: any) => {
       let value: ArgumentsItem = {
@@ -57,7 +83,8 @@ const ApiSetting: React.FC = () => {
         case "mode":
           value = {
             name: "mode",
-            describe: "包含请求的模式 (例如： cors, no-cors, same-origin, navigate).",
+            describe:
+              "包含请求的模式 (例如： cors, no-cors, same-origin, navigate).",
             type: "string",
             data: "",
           };
@@ -73,7 +100,7 @@ const ApiSetting: React.FC = () => {
         default:
           break;
       }
-      setArgData([value]);
+      setArgData({ index, results: [value] });
     },
     [setArgData]
   );
@@ -81,6 +108,17 @@ const ApiSetting: React.FC = () => {
   const hideArg = useCallback(() => {
     setArgData(undefined);
   }, []);
+
+  const onArgOk = (data: ArgumentsItem[]) => {
+    const key = data[0].name;
+    const value = data[0].data;
+    if (!key || !value) {
+      return;
+    }
+    updateApi(argData!.index, {[key]: value})
+    hideArg();
+  };
+
 
   return (
     <div className={s.root}>
@@ -122,10 +160,12 @@ const ApiSetting: React.FC = () => {
         </div>
       ))}
       <ArgumentsSetting
+        headerFlexible
         dataFlexible
-        visible={!!argData?.length}
-        initArgumentData={argData}
+        visible={!!argData?.results?.length}
+        initArgumentData={argData?.results}
         onCancel={hideArg}
+        onOk={onArgOk}
       />
     </div>
   );

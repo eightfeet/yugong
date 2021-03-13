@@ -113,7 +113,7 @@ export interface Api {
   /**
    * api Url地址
    */
-  url: string;
+  url?: string;
   method?: RequestInit["method"];
   headers?: RequestInit["headers"];
   body?: AnyObjectType;
