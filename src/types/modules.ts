@@ -1,4 +1,4 @@
-import { ArgumentsItem } from "./appData";
+import { Api, ArgumentsItem } from "./appData";
 
 /**
  * 静态事件名称与描述
@@ -20,23 +20,8 @@ export interface ExposeFunctions extends ExposeEvents {
 /**
  * 静态Api
  */
-export interface ExposeApi extends RequestInit {
-  /**
-   * api 名称
-   */
-  name: string;
-  /**
-   * api 描述
-   */
-  description: string;
-  /**
-   * api 识别ID
-   */
-  apiId: string;
-  /**
-   * api Url
-   */
-  url: string;
+export interface ExposeApi extends Api {
+
 } 
 
 

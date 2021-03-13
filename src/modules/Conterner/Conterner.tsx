@@ -42,7 +42,7 @@ Conterner.exposeApi = [{
   apiId: 'lotter',
   name: '抽奖接口',
   url: 'http://api',
-  description: '点击',
+  description: '请求抽奖数据',
   headers: {
     
   },
