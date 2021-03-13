@@ -1,9 +1,18 @@
-import { Button, Col, Divider, Input, Row, Select, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  message,
+  Row,
+  Select,
+  Tooltip,
+} from "antd";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import useMergeAppData from "~/hooks/useMergeAppData";
 import { RootState } from "~/redux/store";
-import { AnyObjectType, Api, ArgumentsItem } from "~/types/appData";
+import { AnyObjectType, ArgumentsItem } from "~/types/appData";
 import ArgumentsSetting from "../ArgumentsSetting";
 import s from "./ApiSetting.module.less";
 
@@ -30,9 +39,10 @@ const ApiSetting: React.FC = () => {
   const api = useSelector((state: RootState) => state.activationItem.api);
   const updateAppdata = useMergeAppData();
   const [argData, setArgData] = useState<
-    { index: number; results: ArgumentsItem[] } | undefined
+    { index: number; results: ArgumentsItem[]; type?: string } | undefined
   >();
 
+  const [headerFlexible, setHeaderFlexible] = useState(false);
 
   const updateApi = useCallback(
     (index: number, data: AnyObjectType) => {
@@ -50,14 +60,14 @@ const ApiSetting: React.FC = () => {
 
   const onChangeInput = useCallback(
     (index) => (e: any) => {
-      updateApi(index, {url: e.target.value})
+      updateApi(index, { url: e.target.value });
     },
     [updateApi]
   );
 
   const onChangeMethod = useCallback(
     (index) => (e: any) => {
-      updateApi(index, {method: e})
+      updateApi(index, { method: e });
     },
     [updateApi]
   );
@@ -107,18 +117,61 @@ const ApiSetting: React.FC = () => {
 
   const hideArg = useCallback(() => {
     setArgData(undefined);
+    setHeaderFlexible(false);
   }, []);
 
   const onArgOk = (data: ArgumentsItem[]) => {
-    const key = data[0].name;
-    const value = data[0].data;
-    if (!key || !value) {
-      return;
+    // 保存静态字段
+    if (!argData?.type) {
+      const key = data[0].name;
+      const value = data[0].data;
+      if (!key || !value) {
+        message.error("失败！请填写字段名称与值");
+        return;
+      }
+      hideArg();
+      updateApi(argData!.index, { [key]: value });
     }
-    updateApi(argData!.index, {[key]: value})
-    hideArg();
+    // 保存动态字段值
+    if (argData?.type) {
+      const checkData = data.some((item) => {
+        return !item.name || !item.data;
+      });
+      if (checkData) {
+        message.error("失败！请填写字段名称与值");
+        return;
+      }
+      hideArg();
+      updateApi(argData!.index, { [argData.type]: data });
+    }
   };
 
+  const onHandleUserArg = useCallback(
+    (index: number, type: "body" | "successPublic" | "errorPublic") => () => {
+      // 获取api的数据；
+      const data = (api || [])[index][type] || {};
+      // 转换为配置参数
+      const useArgData: ArgumentsItem[] = [];
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          const element = data[key];
+          useArgData.push(element);
+        }
+      }
+      // 无数据时初始化一份
+      if (!useArgData.length) {
+        useArgData.push({
+          type: "string",
+          data: "",
+        });
+      }
+      // 准备当前编辑参数到参数面板
+      setArgData({ index, results: useArgData, type });
+      // 开启自定义字段编辑
+      setHeaderFlexible(true);
+    },
+    [api]
+  );
 
   return (
     <div className={s.root}>
@@ -139,7 +192,12 @@ const ApiSetting: React.FC = () => {
           </Row>
           <Row className={s.row} gutter={4}>
             <Col span={24}>
-              <Button style={{ width: "100%" }}>入参设置</Button>
+              <Button
+                onClick={onHandleUserArg(index, "body")}
+                style={{ width: "100%" }}
+              >
+                入参设置
+              </Button>
             </Col>
           </Row>
           <Divider orientation="left" plain>
@@ -148,19 +206,34 @@ const ApiSetting: React.FC = () => {
           <Row gutter={4}>
             <Col span={12}>
               <Tooltip title={<div>将Api请求成功结果发布到全局</div>}>
-                <Button style={{ width: "100%" }}>success</Button>
+                <Button
+                  onClick={onHandleUserArg(index, "successPublic")}
+                  style={{ width: "100%" }}
+                >
+                  success
+                </Button>
               </Tooltip>
             </Col>
             <Col span={12}>
               <Tooltip title={<div>将Api请求失败结果发布到全局</div>}>
-                <Button style={{ width: "100%" }}>error</Button>
+                <Button
+                  onClick={onHandleUserArg(index, "errorPublic")}
+                  style={{ width: "100%" }}
+                >
+                  error
+                </Button>
               </Tooltip>
             </Col>
           </Row>
         </div>
       ))}
       <ArgumentsSetting
-        headerFlexible
+        title={
+          !argData?.type
+            ? `${argData?.results[argData?.index]?.name || ""}设置`
+            : `${argData?.type || ''}参数设置`
+        }
+        headerFlexible={headerFlexible}
         dataFlexible
         visible={!!argData?.results?.length}
         initArgumentData={argData?.results}

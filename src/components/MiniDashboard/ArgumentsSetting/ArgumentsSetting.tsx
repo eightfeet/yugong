@@ -59,7 +59,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   useEffect(() => {
     let data: ArgumentsItem[] = [...(argumentsData || [])];
     // 不可自定义参数且数据为空时，使用组件初始数据
-    if (data.length === 0 && !headerFlexible) {
+    if (data.length === 0) {
       data = [...(initArgumentData || [])];
     }
     setArgumentState(data);
@@ -86,6 +86,15 @@ const ArgumentsSetting: React.FC<Props> = ({
     (index: number) => (data: ArgumentsItem) => {
       const result = [...argumentState];
       result[index] = data;
+      setArgumentState(result);
+    },
+    [argumentState]
+  );
+
+  const onChangeFieldName = useCallback(
+    (index: number) => (e: any) => {
+      const result = [...argumentState];
+      result[index].name = e.target.value;
       setArgumentState(result);
     },
     [argumentState]
@@ -152,7 +161,7 @@ const ArgumentsSetting: React.FC<Props> = ({
           <h4>{title}</h4>
           <div className={s.right}>
             {headerFlexible ? (
-              <Button size="small" onClick={onAddField}>
+              <Button onClick={onAddField}>
                 新增
               </Button>
             ) : null}
@@ -171,7 +180,7 @@ const ArgumentsSetting: React.FC<Props> = ({
         return (
         <Card
           className={s.card}
-          key={`${item.name || initItem?.name || ''}${index}`}
+          key={`${index}`}
           title={
             <div className={s.cardtitle}>
               <div className={s.cardtitleinfo}>
@@ -189,7 +198,8 @@ const ArgumentsSetting: React.FC<Props> = ({
                   <Input
                     className={s.title}
                     value={item.name || initItem?.name || ''}
-                    placeholder="新增字段描名称"
+                    placeholder="新增字段名称"
+                    onChange={onChangeFieldName(index)}
                     suffix={
                       <Tooltip
                         title={
@@ -223,7 +233,7 @@ const ArgumentsSetting: React.FC<Props> = ({
               </div>
               <div>
                 {headerFlexible ? (
-                  <Button size="small" onClick={onRemove(index)}>
+                  <Button onClick={onRemove(index)}>
                     移除
                   </Button>
                 ) : null}
