@@ -21,6 +21,8 @@ const getBooleanData = ({
       return comparableAverageA && comparableAverageB;
     case "||":
       return comparableAverageA && comparableAverageB;
+    default:
+      return false;
   }
 };
 

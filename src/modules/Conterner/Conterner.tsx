@@ -15,14 +15,16 @@ interface Props extends AppDataElementsTypes {
  */
 const Conterner: ModulesProps<Props> = (props) => {
   const { eventEmitter, events, api } = props;
-  useEffect(() => {
-    api?.forEach((item) => (item.url ? requester(item) : null));
-  }, [api]);
-  const onClick = useCallback(() => {
+  const onClick = useCallback(async () => {
+    const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone')
+    // 事先准备数据
+    if (apiArguments?.length) {
+        await requester({...Conterner.exposeApi![0], ...apiArguments[0]})
+    }
     if (eventEmitter.events) {
       eventEmitter.emit(events.onClick);
     }
-  }, [eventEmitter, events.onClick]);
+  }, [eventEmitter, events.onClick, api]);
 
   return (
     <Wrapper {...props}>
@@ -42,7 +44,7 @@ Conterner.exposeApi = [
   {
     apiId: "findEmployeeByPhone",
     name: "获取雇员信息",
-    url: "/employee/findEmployeeByPhone",
+    url: "https://wx-test1.by-health.com/scrm/employee/findEmployeeByPhone",
     method: "GET",
     body: [
       {

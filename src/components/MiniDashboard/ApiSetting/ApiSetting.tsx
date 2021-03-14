@@ -77,7 +77,6 @@ const ApiSetting: React.FC = () => {
     });
     // 保存修改
     setOperateApi(defaultApi);
-    console.log(JSON.stringify(defaultApi, null, 2))
   }, [api, getExposeApiData]);
 
   const updateAppdata = useMergeAppData();
@@ -89,7 +88,6 @@ const ApiSetting: React.FC = () => {
 
   const updateApi = useCallback(
     (data: Api[]) => {
-      console.log(JSON.stringify(operateApi, null, 2));
       /**
        * 清洗默认数据
        */
@@ -99,7 +97,6 @@ const ApiSetting: React.FC = () => {
         apiData.forEach((item) => {
           Object.keys(item).forEach((key: string) => {
             if (item[key] === defaultItem[key] && key !== "apiId") {
-              console.log(item[key], defaultItem[key]);
               // 从结果中删除
               delete item[key];
             }

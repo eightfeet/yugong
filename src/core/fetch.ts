@@ -1,6 +1,7 @@
 import { AnyObjectType, Api } from "~/types/appData";
 import { stringifyUrl } from "query-string";
-import getDataFromRunningTime from './getDataFromRunningTime'
+import getDataFromRunningTime from "./getDataFromRunningTime";
+import getBooleanData from "./getBooleanData";
 
 const requester = async ({ url, method, body, headers, credentials }: Api) => {
   if (!url) {
@@ -14,24 +15,38 @@ const requester = async ({ url, method, body, headers, credentials }: Api) => {
   };
 
   // 关联body
-  let bodyData: any = { };
+  let bodyData: any = {};
   body?.forEach((element: AnyObjectType) => {
     switch (element.type) {
-        case "string":
-        case "number":
-          bodyData[element.name] = getDataFromRunningTime(element.data);
-          break;
-        case "array":
-          break;
-        case "object":
-          break;
-        case "boolean":
-          break;
+      case "string":
+        bodyData[element.name] = getDataFromRunningTime(element.data);
+        break;
+      case "number":
+        bodyData[element.name] = Number(getDataFromRunningTime(element.data));
+        break;
+      case "array":
+        bodyData[element.name] = element.data.map((item: string) =>
+          getDataFromRunningTime(item)
+        );
+        break;
+      case "object":
+        const objdata = {};
+        Object(element.data)
+          .keys()
+          .forEach((key: string) => {
+            objdata[key] = getDataFromRunningTime(element.data[key]);
+          });
+        bodyData[element.name] = objdata;
+        break;
+      case "boolean":
+        const {comparableAverageA, comparableAverageB, method} = element;
+        const booleanData = getBooleanData({comparableAverageA, comparableAverageB, method});
+        bodyData[element.name] = booleanData;
+        break;
 
-        default:
-          break;
-      }
-    
+      default:
+        break;
+    }
   });
 
   // 处理Url
