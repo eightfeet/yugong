@@ -2,7 +2,7 @@
  * AppLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -45,6 +45,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
   const appData = useSelector((state: RootState) => state.appData);
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const ref = useRef(null);
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const isEditing = useSelector(
@@ -113,6 +114,17 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   }, [appData]);
 
   (window.top as any).eventEmitter = (window as any).eventEmitter = eventEmitter;
+
+  // 同步runningTimeData
+  useEffect(() => {
+    sendMessage(
+      {
+        tag: "updateRunningTimes",
+        value: runningTimes,
+      },
+      window.top
+    );
+  }, [runningTimes, sendMessage])
 
   const renderGridLayout = () => (<GridLayout
     onLayoutChange={onLayoutChange}

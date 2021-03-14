@@ -35,6 +35,7 @@ const Responsive: React.FC<Props> = () => {
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
+  const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
   useEffect(() => {
     setIsEditing(true);
@@ -52,6 +53,9 @@ const Responsive: React.FC<Props> = () => {
         break;
       case "updateAppData":
         updateAppData(value);
+        break;
+      case "updateRunningTimes":
+        setRunningTimes(value);
         break;
       case "id":
         // 设置当前项正在被编辑
@@ -113,9 +117,7 @@ const Responsive: React.FC<Props> = () => {
   return (
     <div className={s.main}>
       <div className={s.menu}>
-        <div className={s.lefttitle}>
-          标题：
-        </div>
+        <div className={s.lefttitle}>标题：</div>
         <div className={s.rightbtn}>
           {isEditing === true ? (
             <Button type="default" size="small" onClick={setEditing}>
