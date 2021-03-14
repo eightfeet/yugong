@@ -1,13 +1,16 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { ClusterOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Input, Select, Tooltip } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArgumentsSetting.module.less";
 import ArrayArguments from "./ArrayArguments";
 import BooleanArguments from "./BooleanArguments";
 import ObjectArguments from "./ObjectArguments";
+import RunningTimesModal from "~/components/MiniDashboard/RunningTimesModal";
 
 interface Props {
   /**
@@ -54,7 +57,9 @@ const ArgumentsSetting: React.FC<Props> = ({
   dataFlexible = false,
   headerFlexible = false,
 }) => {
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
+  const [showRunningTimes, setShowRunningTimes] = useState(false);
   // 将argument数据接管
   useEffect(() => {
     let data: ArgumentsItem[] = [...(argumentsData || [])];
@@ -97,7 +102,7 @@ const ArgumentsSetting: React.FC<Props> = ({
       result[index].name = e.target.value;
       setArgumentState(result);
     },
-    [argumentState] 
+    [argumentState]
   );
 
   const onChangeDescribe = useCallback(
@@ -163,131 +168,158 @@ const ArgumentsSetting: React.FC<Props> = ({
     [argumentState]
   );
 
+  const onClickShowGloabVar = useCallback(() => {
+    console.log(runningTimes);
+  }, [runningTimes]);
+
   return (
-    <Modal
-      title={
-        <div className={s.title}>
-          <h4>{title}</h4>
-          <div className={s.right}>
-            {headerFlexible ? (
-              <Button onClick={onAddField}>
-                新增
-              </Button>
-            ) : null}
+    <>
+      <Modal
+        title={
+          <div className={s.title}>
+            <h4>
+              {title}{" "}
+              <Button
+                type="text"
+                onClick={onClickShowGloabVar}
+                icon={
+                  <Tooltip title="查看全局发布变量">
+                    <ClusterOutlined onClick={() => setShowRunningTimes(true)} />
+                  </Tooltip>
+                }
+              />
+            </h4>
+            <div className={s.right}>
+              {headerFlexible ? (
+                <Button onClick={onAddField}>新增</Button>
+              ) : null}
+            </div>
           </div>
-        </div>
-      }
-      visible={visible}
-      onOk={onModalOk}
-      onCancel={onCancel}
-      bodyStyle={{ padding: "10px" }}
-      okText="确定"
-      cancelText="取消"
-    >
-      {argumentState.map((item, index) => {
-        const initItem = initArgumentData?.length ? (initArgumentData[index]) : undefined;
-        return (
-        <Card
-          className={s.card}
-          key={`${index}`}
-          title={
-            <div className={s.cardtitle}>
-              <div className={s.cardtitleinfo}>
-                <span className={s.label}>字段名：</span>
-                {!headerFlexible ? (
-                  <>
-                    {item.name || initItem?.name || ''} &nbsp;
-                    <Tooltip title={item.describe || initItem?.describe || ''}>
-                      <InfoCircleOutlined
-                        style={{ color: "rgba(0,0,0,.45)" }}
-                      />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <Input
-                    className={s.title}
-                    value={item.name || initItem?.name || ''}
-                    placeholder="新增字段名称"
-                    onChange={onChangeFieldName(index)}
-                    suffix={
-                      <Tooltip
-                        title={
-                          <Input
-                            className={s.desc}
-                            placeholder="新增字段描述"
-                            value={item.describe}
-                            style={{width: '200px'}}
-                            onChange={onChangeDescribe(index)}
+        }
+        visible={visible}
+        onOk={onModalOk}
+        onCancel={onCancel}
+        bodyStyle={{ padding: "10px" }}
+        okText="确定"
+        cancelText="取消"
+      >
+        {argumentState.map((item, index) => {
+          const initItem = initArgumentData?.length
+            ? initArgumentData[index]
+            : undefined;
+          return (
+            <Card
+              className={s.card}
+              key={`${index}`}
+              title={
+                <div className={s.cardtitle}>
+                  <div className={s.cardtitleinfo}>
+                    <span className={s.label}>字段名：</span>
+                    {!headerFlexible ? (
+                      <>
+                        {item.name || initItem?.name || ""} &nbsp;
+                        <Tooltip
+                          title={item.describe || initItem?.describe || ""}
+                        >
+                          <InfoCircleOutlined
+                            style={{ color: "rgba(0,0,0,.45)" }}
                           />
+                        </Tooltip>
+                      </>
+                    ) : (
+                      <Input
+                        className={s.title}
+                        value={item.name || initItem?.name || ""}
+                        placeholder="新增字段名称"
+                        onChange={onChangeFieldName(index)}
+                        suffix={
+                          <Tooltip
+                            title={
+                              <Input
+                                className={s.desc}
+                                placeholder="新增字段描述"
+                                value={item.describe}
+                                style={{ width: "200px" }}
+                                onChange={onChangeDescribe(index)}
+                              />
+                            }
+                          >
+                            <InfoCircleOutlined
+                              style={{ color: "rgba(0,0,0,.45)" }}
+                            />
+                          </Tooltip>
                         }
+                      />
+                    )}
+                    <span className={s.divide} />
+                    <span className={s.label}>类型：</span>
+                    {headerFlexible ? (
+                      <Select
+                        className={s.type}
+                        value={item.type}
+                        onChange={onChangeArgType(index)}
                       >
-                        <InfoCircleOutlined
-                          style={{ color: "rgba(0,0,0,.45)" }}
-                        />
-                      </Tooltip>
-                    }
-                  />
-                )}
-                <span className={s.divide} />
-                <span className={s.label}>类型：</span>
-                {headerFlexible ? <Select
-                  className={s.type}
-                  value={item.type}
-                  onChange={onChangeArgType(index)}
-                >
-                  <Select.Option value="string">string</Select.Option>
-                  <Select.Option value="number">number</Select.Option>
-                  <Select.Option value="boolean">boolean</Select.Option>
-                  <Select.Option value="object">object</Select.Option>
-                  <Select.Option value="array">array</Select.Option>
-                </Select> : item.type}
-              </div>
+                        <Select.Option value="string">string</Select.Option>
+                        <Select.Option value="number">number</Select.Option>
+                        <Select.Option value="boolean">boolean</Select.Option>
+                        <Select.Option value="object">object</Select.Option>
+                        <Select.Option value="array">array</Select.Option>
+                      </Select>
+                    ) : (
+                      item.type
+                    )}
+                  </div>
+                  <div>
+                    {headerFlexible ? (
+                      <Button onClick={onRemove(index)}>移除</Button>
+                    ) : null}
+                  </div>
+                </div>
+              }
+            >
               <div>
-                {headerFlexible ? (
-                  <Button onClick={onRemove(index)}>
-                    移除
-                  </Button>
+                {item.type === "number" || item.type === "string" ? (
+                  <Input
+                    onChange={onChangeInput(index)}
+                    placeholder={`请输入值,${item.describe || ""}`}
+                    value={item.data}
+                    type="text"
+                  />
+                ) : null}
+                {item.type === "object" ? (
+                  <ObjectArguments
+                    describe={item.describe}
+                    onChange={onChangeObjType(index)}
+                    typeArguments={item}
+                    flexible={!!dataFlexible}
+                  />
+                ) : null}
+                {item.type === "array" ? (
+                  <ArrayArguments
+                    describe={item.describe}
+                    onChange={onChangeObjType(index)}
+                    typeArguments={item}
+                    flexible={!!dataFlexible}
+                  />
+                ) : null}
+                {item.type === "boolean" ? (
+                  <BooleanArguments
+                    onChange={onChangeObjType(index)}
+                    typeArguments={item}
+                    flexible={!!dataFlexible}
+                  />
                 ) : null}
               </div>
-            </div>
-          }
-        >
-          <div>
-            {item.type === "number" || item.type === "string" ? (
-              <Input
-                onChange={onChangeInput(index)}
-                placeholder={`请输入值,${item.describe || ''}`}
-                value={item.data}
-                type="text"
-              />
-            ) : null}
-            {item.type === "object" ? (
-              <ObjectArguments
-                describe={item.describe}
-                onChange={onChangeObjType(index)}
-                typeArguments={item}
-                flexible={!!dataFlexible}
-              />
-            ) : null}
-            {item.type === "array" ? (
-              <ArrayArguments
-                describe={item.describe}
-                onChange={onChangeObjType(index)}
-                typeArguments={item}
-                flexible={!!dataFlexible}
-              />
-            ) : null}
-            {item.type === "boolean" ? (
-              <BooleanArguments
-                onChange={onChangeObjType(index)}
-                typeArguments={item}
-                flexible={!!dataFlexible}
-              />
-            ) : null}
-          </div>
-        </Card>
-      )})}
-    </Modal>
+            </Card>
+          );
+        })}
+      </Modal>
+      <RunningTimesModal
+        visible={showRunningTimes}
+        data={runningTimes}
+        onCancel={() => setShowRunningTimes(false)}
+      />
+    </>
   );
 };
 
