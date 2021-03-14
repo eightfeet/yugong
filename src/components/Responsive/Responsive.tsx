@@ -116,31 +116,6 @@ const Responsive: React.FC<Props> = () => {
 
   return (
     <div className={s.main}>
-      <div className={s.menu}>
-        <div className={s.lefttitle}>标题：</div>
-        <div className={s.rightbtn}>
-          {isEditing === true ? (
-            <Button type="default" size="small" onClick={setEditing}>
-              设计模式
-            </Button>
-          ) : (
-            <Button type="default" size="small" onClick={setEditing}>
-              预览模式
-            </Button>
-          )}
-          &nbsp;
-          <Button
-            type="default"
-            size="small"
-            onClick={() => {
-              window.localStorage.clear();
-              window.location.reload();
-            }}
-          >
-            重置
-          </Button>
-        </div>
-      </div>
       <Ruler onChange={onChangeRule} />
       <div className={s.box}>
         {!stateTag ? (
