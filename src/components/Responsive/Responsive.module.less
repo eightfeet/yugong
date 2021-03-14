@@ -9,6 +9,7 @@
 
 .main {
     min-width: 768px;
+    position: relative;
 }
 
 .menu {
@@ -23,4 +24,35 @@
 .rightbtn {
     width:300px;
     text-align:right
+}
+
+.dashboard {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 570px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgb(197, 197, 197);
+    z-index: 100;
+    .header {
+        display: flex;
+        cursor: all-scroll;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+        height: 40px;
+
+        h3 {
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+            padding-left: 10px;
+            flex: auto;
+        }
+        .icon {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+    }
 }

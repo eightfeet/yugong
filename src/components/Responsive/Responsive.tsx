@@ -3,13 +3,19 @@
  *
  */
 
-import { Button } from "antd";
+import {
+  CloseOutlined,
+  PlusOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { Affix, Button, Modal } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
 import { Dispatch, RootState } from "~/redux/store";
 import MiniDashboard from "../MiniDashboard";
 import s from "./Responsive.module.less";
+import Draggable from "react-draggable";
 import Ruler from "./Ruler";
 
 interface Props {}
@@ -114,9 +120,42 @@ const Responsive: React.FC<Props> = () => {
     forceUpdateByStateTag();
   };
 
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [opacity, setOpacity] = useState('1')
   return (
     <div className={s.main}>
+      <Affix offsetTop={10}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setShowDashboard(true)}
+        >
+          新增
+        </Button>
+        &nbsp;
+        <Button
+          type="primary"
+          icon={<SettingOutlined />}
+          onClick={() => setShowDashboard(!showDashboard)}
+        >
+          设置
+        </Button>
+      </Affix>
       <Ruler onChange={onChangeRule} />
+      {showDashboard ? (
+        <Draggable axis="both" onDrag={() => setOpacity('0.5')} onStop={() => setOpacity('1')}>
+          <div className={s.dashboard} style={{opacity}}>
+            <div className={s.header}>
+              <h3>设置面板</h3>
+              <CloseOutlined
+                className={s.icon}
+                onClick={() => setShowDashboard(false)}
+              />
+            </div>
+            <MiniDashboard />
+          </div>
+        </Draggable>
+      ) : null}
       <div className={s.box}>
         {!stateTag ? (
           <div
@@ -137,7 +176,6 @@ const Responsive: React.FC<Props> = () => {
             />
           </div>
         ) : null}
-        <MiniDashboard />
       </div>
     </div>
   );

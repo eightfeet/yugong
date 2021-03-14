@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import ConfigurationController from "~/components/MiniDashboard/ConfigurationController";
 import s from "./Dashboard.module.less";
-import { Menu, Button, Select } from "antd";
+import { Menu, Button, Select, Affix } from "antd";
 import {
   FormatPainterOutlined,
   SettingOutlined,
@@ -29,15 +29,6 @@ const Dashboard: React.FC<Props> = () => {
 
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
-
-  // 面板收起与展开开关
-  const [collapsed, setCollapsed] = useState(true);
-  const toggleCollapsed = useCallback(() => {
-    if (!moduleId) {
-      return;
-    }
-    setCollapsed(!collapsed);
-  }, [collapsed, moduleId]);
 
   // 样式与设置菜单面板
   const [mainTag, setMainTag] = useState("config");
@@ -72,17 +63,7 @@ const Dashboard: React.FC<Props> = () => {
   );
 
   return (
-    <div
-      className={s.root}
-      style={collapsed ? { width: "0px", border: "0 solid #eee" } : {}}
-    >
-      <Button
-        className={s.menuicon}
-        type={collapsed ? "primary" : "dashed"}
-        onClick={toggleCollapsed}
-      >
-        <SettingOutlined />
-      </Button>
+    <div className={s.root} style={{height: `${window.innerHeight - 80}px`}}>
       <div className={s.dashboardwrap}>
         <div className={s.headtab}>
           <div className={s.moduleselect}>
@@ -95,19 +76,18 @@ const Dashboard: React.FC<Props> = () => {
               optionFilterProp="children"
               filterOption={
                 (input, option) => {
-                  const str = option?.children.join('').toLowerCase();
+                  const str = option?.children.join("").toLowerCase();
                   if (str.indexOf(input) !== -1) {
-                    return true
+                    return true;
                   }
-                  return false
+                  return false;
                 }
                 // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {appData.map((item) => (
                 <Select.Option value={item.moduleId} key={item.moduleId}>
-                  {item.type}
-                  （{item.moduleName || '未标题'}-{item.moduleId}）
+                  {item.type}（{item.moduleName || "未标题"}-{item.moduleId}）
                 </Select.Option>
               ))}
             </Select>
