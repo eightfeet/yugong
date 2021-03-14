@@ -8,7 +8,7 @@ import {
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Affix, Button, Modal } from "antd";
+import { Affix, Button, message, Drawer } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -17,6 +17,7 @@ import MiniDashboard from "../MiniDashboard";
 import s from "./Responsive.module.less";
 import Draggable from "react-draggable";
 import Ruler from "./Ruler";
+import Repository from "../MiniDashboard/Repository";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -50,6 +51,8 @@ const Responsive: React.FC<Props> = () => {
   const ref = useRef(null);
 
   const [iframeWidth, setIframeWidth] = useState();
+
+  const [showDrawer, setShowDrawer] = useState(false);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -121,14 +124,15 @@ const Responsive: React.FC<Props> = () => {
   };
 
   const [showDashboard, setShowDashboard] = useState(false);
-  const [opacity, setOpacity] = useState('1')
+  const [opacity, setOpacity] = useState("1");
   return (
     <div className={s.main}>
       <Affix offsetTop={10}>
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={() => setShowDashboard(true)}
+          onClick={() => setShowDrawer(true)}
+          
         >
           新增
         </Button>
@@ -136,15 +140,24 @@ const Responsive: React.FC<Props> = () => {
         <Button
           type="primary"
           icon={<SettingOutlined />}
-          onClick={() => setShowDashboard(!showDashboard)}
+          onClick={() =>
+            activationItem.moduleId
+              ? setShowDashboard(!showDashboard)
+              : message.error("请选择要编辑的组建")
+          }
         >
           设置
         </Button>
       </Affix>
       <Ruler onChange={onChangeRule} />
       {showDashboard ? (
-        <Draggable axis="both" onDrag={() => setOpacity('0.5')} onStop={() => setOpacity('1')}>
-          <div className={s.dashboard} style={{opacity}}>
+        <Draggable
+          axis="both"
+          handle={`.${s.header}`}
+          onDrag={() => setOpacity("0.5")}
+          onStop={() => setOpacity("1")}
+        >
+          <div className={s.dashboard} style={{ opacity }}>
             <div className={s.header}>
               <h3>设置面板</h3>
               <CloseOutlined
@@ -156,6 +169,17 @@ const Responsive: React.FC<Props> = () => {
           </div>
         </Draggable>
       ) : null}
+      <Drawer
+          className={s.drawer}
+          title="组件库"
+          width={550}
+          onClose={() => setShowDrawer(false)}
+          visible={showDrawer}
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={null}
+        >
+          <Repository />
+        </Drawer>
       <div className={s.box}>
         {!stateTag ? (
           <div

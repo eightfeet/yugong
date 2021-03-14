@@ -31,7 +31,7 @@ const Dashboard: React.FC<Props> = () => {
     .updateActivationItem;
 
   // 样式与设置菜单面板
-  const [mainTag, setMainTag] = useState("config");
+  const [mainTag, setMainTag] = useState("style");
   const onSelectMainTag = useCallback((e) => {
     setMainTag(e.key);
   }, []);
