@@ -1,9 +1,9 @@
 import { AnyObjectType, Api } from "~/types/appData";
 import { stringifyUrl } from "query-string";
-import getDataFromRunningTime from "./getDataFromRunningTime";
-import getBooleanData from "./getBooleanData";
+import getDataFromArguments from "./getDataFromArguments";
+import { Dispatch, store } from "~/redux/store";
 
-const requester = async ({ url, method, body, headers, credentials }: Api) => {
+const requester = async ({ url, method, body, headers, successPublic, errorPublic, credentials }: Api) => {
   if (!url) {
     return Promise.reject({ message: "没有url" });
   }
@@ -15,39 +15,7 @@ const requester = async ({ url, method, body, headers, credentials }: Api) => {
   };
 
   // 关联body
-  let bodyData: any = {};
-  body?.forEach((element: AnyObjectType) => {
-    switch (element.type) {
-      case "string":
-        bodyData[element.name] = getDataFromRunningTime(element.data);
-        break;
-      case "number":
-        bodyData[element.name] = Number(getDataFromRunningTime(element.data));
-        break;
-      case "array":
-        bodyData[element.name] = element.data.map((item: string) =>
-          getDataFromRunningTime(item)
-        );
-        break;
-      case "object":
-        const objdata = {};
-        Object(element.data)
-          .keys()
-          .forEach((key: string) => {
-            objdata[key] = getDataFromRunningTime(element.data[key]);
-          });
-        bodyData[element.name] = objdata;
-        break;
-      case "boolean":
-        const {comparableAverageA, comparableAverageB, method} = element;
-        const booleanData = getBooleanData({comparableAverageA, comparableAverageB, method});
-        bodyData[element.name] = booleanData;
-        break;
-
-      default:
-        break;
-    }
-  });
+  let bodyData: any = getDataFromArguments(body || [])
 
   // 处理Url
   let urlData = url;
@@ -71,9 +39,25 @@ const requester = async ({ url, method, body, headers, credentials }: Api) => {
 
   try {
     const res = await fetch(urlData, args);
-    console.log(res);
+    /**
+     * 状态范围
+     */
+    if (res.status >= 200 && res.status < 300) {
+      const textData = await res.text();
+      const resultData = JSON.parse(textData);
+      // 处理请求结果
+      console.log('resultData', resultData);
+      if (successPublic?.length) {
+        const successPublicResult = getDataFromArguments(successPublic, resultData);
+        console.log('successPublicResult', successPublicResult)
+        store.dispatch.runningTimes.setRunningTimes(successPublicResult)
+      }
+      return resultData;
+    }
+    throw res
   } catch (error) {
-    console.log(error);
+    // 处理失败结果
+    // console.log(error);
   }
 };
 

@@ -27,7 +27,7 @@ export const globalExposeFunctions: ExposeFunctions[] = [
       type: 'number',
       name: '计时器',
       describe: '延时计时器，等待时间后执行下一个任务！',
-      data: 3000
+      data: '3000'
     }]
   },
   {

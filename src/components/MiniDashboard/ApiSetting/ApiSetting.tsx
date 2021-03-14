@@ -229,19 +229,14 @@ const ApiSetting: React.FC = () => {
   const onHandleUserArg = useCallback(
     (index: number, type: "body" | "successPublic" | "errorPublic") => () => {
       // 获取api的数据；
-      let data: Api["body" | "successPublic" | "errorPublic"] = {};
+      let data: Api["body" | "successPublic" | "errorPublic"] = [];
       if (operateApi?.length) {
         data = operateApi[index][type];
       }
 
       // 转换为配置参数
-      const useArgData: ArgumentsItem[] = [];
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          const element = data[key];
-          useArgData.push(element);
-        }
-      }
+      const useArgData: ArgumentsItem[] = [...data || []];
+      
       // 无数据时初始化一份
       if (!useArgData.length) {
         useArgData.push({

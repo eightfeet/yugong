@@ -84,7 +84,7 @@ export interface ArgumentsString extends ArgumentBase<"string"> {
  * 数字参数
  */
 export interface ArgumentsNumber extends ArgumentBase<"number"> {
-  data: number;
+  data: string;
 }
 
 /**
@@ -116,11 +116,11 @@ export interface Api {
   url?: string;
   method?: RequestInit["method"];
   headers?: RequestInit["headers"];
-  body?: AnyObjectType;
+  body?: ArgumentsItem[];
   credentials?: RequestInit["credentials"];
   mode?: RequestInit["mode"];
-  successPublic?: AnyObjectType;
-  errorPublic?: AnyObjectType;
+  successPublic?: ArgumentsItem[];
+  errorPublic?: ArgumentsItem[];
 }
 
 /**

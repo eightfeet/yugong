@@ -1,7 +1,8 @@
 import get from "lodash/get";
 import { store } from '~/redux/store';
+import { AnyObjectType } from "~/types/appData";
 
-const getDataFromRunningTime = (data: string) => {
+const getDataFromRunningTime = (data: string, userStore?: AnyObjectType) => {
   if (typeof data !== "string") {
     return data;
   }
@@ -9,7 +10,14 @@ const getDataFromRunningTime = (data: string) => {
   const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
   ruleList?.forEach((item) => {
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
-    const value = get(store.getState().runningTimes, key);
+    let value;
+    if ( userStore && key.indexOf('_api.')!== -1) {
+      // 处理api内部数据状态
+      value = get(userStore, key.replace('_api.', ''));
+    } else {
+      value = get(store.getState().runningTimes, key);
+    }
+    
     result = result.replace(item, `${value || ""}`);
   });
 

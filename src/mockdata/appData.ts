@@ -100,7 +100,7 @@ const appData: AppDataListTypes = [
           arguments: [
             {
               type: "number",
-              data: 3000,
+              data: "3000",
             },
           ],
         },
