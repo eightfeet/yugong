@@ -14,7 +14,7 @@ interface Props extends AppDataElementsTypes {
  * 容器
  */
 const Conterner: ModulesProps<Props> = (props) => {
-  const { eventEmitter, events, api } = props;
+  const { eventEmitter, events = {}, api } = props;
   const onClick = useCallback(async () => {
     const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone')
     // 事先准备数据
@@ -24,7 +24,7 @@ const Conterner: ModulesProps<Props> = (props) => {
     if (eventEmitter.events) {
       eventEmitter.emit(events.onClick);
     }
-  }, [eventEmitter, events.onClick, api]);
+  }, [api, eventEmitter, events]);
 
   return (
     <Wrapper {...props}>

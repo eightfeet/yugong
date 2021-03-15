@@ -39,7 +39,7 @@ const EventsSetting: React.FC<Props> = () => {
   // 遍历当前激活项保存的事件对象数据
   return (
     <div className={s.root}>
-      {Object.keys(events).map((eventName) => {
+      {Object.keys(events || {}).map((eventName) => {
         // 获取当前事件描述
         const curentEventInfomation =
           exposeEvents.filter((exposeEvent) => exposeEvent.name === eventName)[0] ||
@@ -47,7 +47,7 @@ const EventsSetting: React.FC<Props> = () => {
         return (
           <EventGroup
             key={eventName}
-            curentEvent={events[eventName]}
+            curentEvent={(events || {})[eventName]}
             curentEventInfomation={curentEventInfomation}
             onChange={onChangeEventGroup}
           />

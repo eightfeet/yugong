@@ -28,7 +28,7 @@ class EventEmitter {
    * 事件发布
    * @param args
    */
-  public emit(queues: EventEmitterEmitArgs[]) {
+  public emit(queues: EventEmitterEmitArgs[] = []) {
     const queuesArray = async () => {
       for (let i = 0; i < queues.length; i++) {
         const item = queues[i];
