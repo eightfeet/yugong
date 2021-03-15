@@ -127,6 +127,25 @@ const Responsive: React.FC<Props> = () => {
   const [opacity, setOpacity] = useState("1");
   return (
     <div className={s.main}>
+      {showDashboard ? (
+        <Draggable
+          axis="both"
+          handle={`.${s.header}`}
+          onDrag={() => setOpacity("0.5")}
+          onStop={() => setOpacity("1")}
+        >
+          <div className={s.dashboard} style={{ opacity }}>
+            <div className={s.header}>
+              <h3>设置面板</h3>
+              <CloseOutlined
+                className={s.icon}
+                onClick={() => setShowDashboard(false)}
+              />
+            </div>
+            <MiniDashboard />
+          </div>
+        </Draggable>
+      ) : null}
       <Affix offsetTop={10}>
         <Button
           type="primary"
@@ -150,25 +169,6 @@ const Responsive: React.FC<Props> = () => {
         </Button>
       </Affix>
       <Ruler onChange={onChangeRule} />
-      {showDashboard ? (
-        <Draggable
-          axis="both"
-          handle={`.${s.header}`}
-          onDrag={() => setOpacity("0.5")}
-          onStop={() => setOpacity("1")}
-        >
-          <div className={s.dashboard} style={{ opacity }}>
-            <div className={s.header}>
-              <h3>设置面板</h3>
-              <CloseOutlined
-                className={s.icon}
-                onClick={() => setShowDashboard(false)}
-              />
-            </div>
-            <MiniDashboard />
-          </div>
-        </Draggable>
-      ) : null}
       <Drawer
           className={s.drawer}
           title="组件库"

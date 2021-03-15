@@ -38,6 +38,10 @@ Conterner.exposeEvents = [
     name: "onClick",
     description: "点击",
   },
+  {
+    name: "onChange",
+    description: "修改地址",
+  },
 ];
 
 Conterner.exposeApi = [
