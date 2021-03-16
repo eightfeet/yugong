@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
-import useMergeAppData from '~/hooks/useMergeAppData';
 import usePostMessage from '~/hooks/usePostMessage';
 
 interface ModalType {
@@ -27,6 +26,36 @@ const Repository: React.FC = () => {
     const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
 
     const sendMessage = usePostMessage((data) => {});
+
+
+    const onStopDrag = useCallback(
+        (module: ModalType) => (e: any) => {
+            if (window.innerWidth - e.screenX > 550) {
+                setAddedModal(module);
+            }
+        },
+        [setAddedModal]
+    );
+
+    const onDoubleClick = useCallback(
+        (module: ModalType) => (e: any) => {
+            setAddedModal(module);
+        },
+        [setAddedModal]
+    );
+
+    const onAddItem = useCallback((data: AppDataLayoutItemTypes) => {
+        // Add a new item. It must have a unique key!
+        const optAppData = [...appData];
+        updateAppData(optAppData.concat(data));
+        const win = (document.getElementById(
+          "wrapiframe"
+        ) as HTMLIFrameElement).contentWindow;
+        if (win) {
+          sendMessage({ tag: "updateAppData", value: optAppData }, win);
+        }
+    }, [appData, sendMessage, updateAppData]);
+
 
     const createModal = useCallback(
         (moduleType: AppDataModuleTypes, name?: string) => {
@@ -56,23 +85,7 @@ const Repository: React.FC = () => {
             console.log('新增组件', result);
             onAddItem(result)
         },
-        [appData]
-    );
-
-    const onStopDrag = useCallback(
-        (module: ModalType) => (e: any) => {
-            if (window.innerWidth - e.screenX > 550) {
-                setAddedModal(module);
-            }
-        },
-        [setAddedModal]
-    );
-
-    const onDoubleClick = useCallback(
-        (module: ModalType) => (e: any) => {
-            setAddedModal(module);
-        },
-        [setAddedModal]
+        [appData.length, onAddItem]
     );
 
     const onCreate = useCallback(() => {
@@ -82,18 +95,6 @@ const Repository: React.FC = () => {
             createModal(addedModal?.moduleName, newModalName || '未命名');
         }
     }, [addedModal?.moduleName, createModal, newModalName]);
-
-    const onAddItem = useCallback((data: AppDataLayoutItemTypes) => {
-        // Add a new item. It must have a unique key!
-        const optAppData = [...appData];
-        updateAppData(optAppData.concat(data));
-        const win = (document.getElementById(
-          "wrapiframe"
-        ) as HTMLIFrameElement).contentWindow;
-        if (win) {
-          sendMessage({ tag: "updateAppData", value: optAppData }, win);
-        }
-    }, [appData]);
 
     // onRemoveItem(i) {
     //   console.log("removing", i);

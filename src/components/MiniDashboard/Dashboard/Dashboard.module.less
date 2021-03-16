@@ -17,15 +17,14 @@
 }
 
 .dashboard {
-  width: 550-80px;
+  width: 550px;
   flex-shrink: 0;
   overflow-y: auto;
 }
 
 .contentmenu {
   background-color: #eee;
-  min-width: 100px;
-  flex-shrink: 0;
+  width: 300px;
 }
 
 .headtab {
@@ -50,11 +49,20 @@
 
 .select {
   background-color: #eee;
-  min-width: 120px;
+  width: 180px;
   :global {
     .ant-select-selector {
       background-color: #eee !important;
       border: none !important;
     }
   }
+}
+
+
+.info {
+  margin-right: 20px;
+}
+
+.delete {
+  cursor: pointer;
 }

@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from "react";
 import ConfigurationController from "~/components/MiniDashboard/ConfigurationController";
 import s from "./Dashboard.module.less";
-import { Menu, Button, Select, Affix } from "antd";
+import { Menu, Button, Select, Affix, Tooltip, Modal } from "antd";
 import {
+  DeleteOutlined,
+  ExclamationCircleOutlined,
   FormatPainterOutlined,
   SettingOutlined,
   ToolOutlined,
@@ -12,6 +14,7 @@ import { RootState, Dispatch } from "~/redux/store";
 import StyleController from "../StyleController";
 import usePostMessage from "~/hooks/usePostMessage";
 
+const { confirm } = Modal;
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
@@ -63,7 +66,7 @@ const Dashboard: React.FC<Props> = () => {
   );
 
   return (
-    <div className={s.root} style={{height: `${window.innerHeight - 80}px`}}>
+    <div className={s.root} style={{ height: `${window.innerHeight - 80}px` }}>
       <div className={s.dashboardwrap}>
         <div className={s.headtab}>
           <div className={s.moduleselect}>
@@ -87,7 +90,7 @@ const Dashboard: React.FC<Props> = () => {
             >
               {appData.map((item) => (
                 <Select.Option value={item.moduleId} key={item.moduleId}>
-                  {item.type}（{item.moduleName || "未标题"}-{item.moduleId}）
+                  {item.moduleName || "(未标题)"}-{item.type}
                 </Select.Option>
               ))}
             </Select>
@@ -107,6 +110,30 @@ const Dashboard: React.FC<Props> = () => {
               设置
             </Menu.Item>
           </Menu>
+          <div className={s.info}>
+            <Tooltip
+              title={
+                <div>
+                  moduleId: <br />
+                  {activationItem.moduleId}
+                </div>
+              }
+            >
+              <ExclamationCircleOutlined onClick={() => {}} />
+            </Tooltip>
+          </div>
+          <div>
+            <Tooltip
+              title={`删除 ${
+                activationItem.moduleName || activationItem.moduleId
+              }`}
+            >
+              <DeleteOutlined
+                className={s.delete}
+                onClick={() =>{}}
+              />
+            </Tooltip>
+          </div>
         </div>
         <div
           className={s.controllerwrap}
