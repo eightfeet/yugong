@@ -33,6 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "typescript": "^4.0.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4",
     "whatwg-fetch": "^3.6.2"
   },
@@ -70,6 +71,7 @@
     "@types/react-grid-layout": "^1.1.1",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
+    "@types/uuid": "^8.3.0",
     "@types/whatwg-fetch": "0.0.33",
     "autoprefixer": "^10.2.3",
     "babel-plugin-import": "^1.13.3",
