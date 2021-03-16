@@ -4,8 +4,10 @@ import React, { useCallback, useState } from 'react';
 import { MODULES } from '~/core/constants';
 import { v4 as uuidv4 } from 'uuid';
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch, RootState } from '~/redux/store';
+import useMergeAppData from '~/hooks/useMergeAppData';
+import usePostMessage from '~/hooks/usePostMessage';
 
 interface ModalType {
     moduleName: AppDataModuleTypes;
@@ -21,7 +23,10 @@ const Repository: React.FC = () => {
     const [pisition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [addedModal, setAddedModal] = useState<ModalType>();
     const [newModalName, setNewModalName] = useState<string>();
-    const appData = useSelector((state:RootState) => state.appData);
+    const appData = useSelector((state: RootState) => state.appData);
+    const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+
+    const sendMessage = usePostMessage((data) => {});
 
     const createModal = useCallback(
         (moduleType: AppDataModuleTypes, name?: string) => {
@@ -49,8 +54,9 @@ const Repository: React.FC = () => {
                 type: moduleType,
             };
             console.log('新增组件', result);
+            onAddItem(result)
         },
-        []
+        [appData]
     );
 
     const onStopDrag = useCallback(
@@ -76,6 +82,23 @@ const Repository: React.FC = () => {
             createModal(addedModal?.moduleName, newModalName || '未命名');
         }
     }, [addedModal?.moduleName, createModal, newModalName]);
+
+    const onAddItem = useCallback((data: AppDataLayoutItemTypes) => {
+        // Add a new item. It must have a unique key!
+        const optAppData = [...appData];
+        updateAppData(optAppData.concat(data));
+        const win = (document.getElementById(
+          "wrapiframe"
+        ) as HTMLIFrameElement).contentWindow;
+        if (win) {
+          sendMessage({ tag: "updateAppData", value: optAppData }, win);
+        }
+    }, [appData]);
+
+    // onRemoveItem(i) {
+    //   console.log("removing", i);
+    //   this.setState({ items: _.reject(this.state.items, { i: i }) });
+    // }
 
     return (
         <>
