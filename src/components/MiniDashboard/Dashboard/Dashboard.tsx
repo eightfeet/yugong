@@ -1,12 +1,11 @@
 import React, { useCallback, useState } from "react";
 import ConfigurationController from "~/components/MiniDashboard/ConfigurationController";
 import s from "./Dashboard.module.less";
-import { Menu, Button, Select, Affix, Tooltip, Modal } from "antd";
+import { Menu, Select, Tooltip, Modal } from "antd";
 import {
   DeleteOutlined,
   ExclamationCircleOutlined,
   FormatPainterOutlined,
-  SettingOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,7 +66,7 @@ const Dashboard: React.FC<Props> = () => {
 
   return (
     <div className={s.root} style={{ height: `${window.innerHeight - 80}px` }}>
-      <div className={s.dashboardwrap}>
+
         <div className={s.headtab}>
           <div className={s.moduleselect}>
             <Select
@@ -148,7 +147,6 @@ const Dashboard: React.FC<Props> = () => {
           <ConfigurationController />
         </div>
       </div>
-    </div>
   );
 };
 

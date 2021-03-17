@@ -1,10 +1,13 @@
 .root {
   width: 100%;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboardwrap {
   width: 100%;
+  flex: auto;
 }
 
 .menuicon {
@@ -44,7 +47,8 @@
 }
 
 .controllerwrap {
-  height: 100%;
+  background-color: @component-background;
+  flex: auto;
 }
 
 .select {
