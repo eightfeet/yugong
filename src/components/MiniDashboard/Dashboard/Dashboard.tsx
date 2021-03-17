@@ -66,87 +66,100 @@ const Dashboard: React.FC<Props> = () => {
 
   return (
     <div className={s.root} style={{ height: `${window.innerHeight - 80}px` }}>
-
-        <div className={s.headtab}>
-          <div className={s.moduleselect}>
-            <Select
-              onChange={onChangeSelect}
-              className={s.select}
-              value={moduleId}
-              showSearch
-              placeholder="请选择编辑模块"
-              optionFilterProp="children"
-              filterOption={
-                (input, option) => {
-                  const str = option?.children.join("").toLowerCase();
-                  if (str.indexOf(input) !== -1) {
-                    return true;
-                  }
-                  return false;
+      <div className={s.headtab}>
+        <div className={s.moduleselect}>
+          <Select
+            onChange={onChangeSelect}
+            className={s.select}
+            value={moduleId}
+            showSearch
+            placeholder="请选择编辑模块"
+            optionFilterProp="children"
+            filterOption={
+              (input, option) => {
+                const str = option?.children.join("").toLowerCase();
+                if (str.indexOf(input) !== -1) {
+                  return true;
                 }
-                // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                return false;
               }
-            >
-              {appData.map((item) => (
-                <Select.Option value={item.moduleId} key={item.moduleId}>
-                  {item.moduleName || "(未标题)"}-{item.type}
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
-
-          <Menu
-            onClick={() => setMainTag("style")}
-            onSelect={onSelectMainTag}
-            selectedKeys={[mainTag]}
-            mode="horizontal"
-            className={s.contentmenu}
+              // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
           >
-            <Menu.Item key="style" icon={<FormatPainterOutlined />}>
-              样式
-            </Menu.Item>
-            <Menu.Item key="config" icon={<ToolOutlined />}>
-              设置
-            </Menu.Item>
-          </Menu>
-          <div className={s.info}>
-            <Tooltip
-              title={
-                <div>
-                  moduleId: <br />
-                  {activationItem.moduleId}
-                </div>
+            {appData.map((item) => (
+              <Select.Option value={item.moduleId} key={item.moduleId}>
+                {item.moduleName || "(未标题)"}-{item.type}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+
+        <Menu
+          onClick={() => setMainTag("style")}
+          onSelect={onSelectMainTag}
+          selectedKeys={[mainTag]}
+          mode="horizontal"
+          className={s.contentmenu}
+        >
+          <Menu.Item key="style" icon={<FormatPainterOutlined />}>
+            样式
+          </Menu.Item>
+          <Menu.Item key="config" icon={<ToolOutlined />}>
+            设置
+          </Menu.Item>
+        </Menu>
+        <div className={s.info}>
+          <Tooltip
+            title={
+              <div>
+                moduleId: <br />
+                {activationItem.moduleId}
+              </div>
+            }
+          >
+            <ExclamationCircleOutlined />
+          </Tooltip>
+        </div>
+        <div>
+          <Tooltip
+            title={`删除 ${
+              activationItem.moduleName || activationItem.moduleId
+            }`}
+          >
+            <DeleteOutlined
+              className={s.delete}
+              onClick={() =>
+                confirm({
+                  content: (
+                    <div>
+                      <h3>确定删除</h3>
+                      <br />
+                      模块名称：{activationItem.moduleName}
+                      <br />
+                      Id: {activationItem.moduleId}
+                    </div>
+                  ),
+                  okText: '确定',
+                  cancelText: '取消'
+                })
               }
-            >
-              <ExclamationCircleOutlined onClick={() => {}} />
-            </Tooltip>
-          </div>
-          <div>
-            <Tooltip
-              title={`删除 ${
-                activationItem.moduleName || activationItem.moduleId
-              }`}
-            >
-              <DeleteOutlined
-                className={s.delete}
-                onClick={() =>{}}
-              />
-            </Tooltip>
-          </div>
-        </div>
-        <div
-          className={s.controllerwrap}
-          style={{ display: mainTag === "style" ? "block" : "none" }}
-        >
-          <StyleController />
-        </div>
-        <div
-          className={s.controllerwrap}
-          style={{ display: mainTag === "config" ? "block" : "none" }}
-        >
-          <ConfigurationController />
+            />
+          </Tooltip>
         </div>
       </div>
+      <div
+        className={s.controllerwrap}
+        style={{ display: mainTag === "style" ? "block" : "none" }}
+      >
+        <StyleController />
+      </div>
+      <div
+        className={s.controllerwrap}
+        style={{ display: mainTag === "config" ? "block" : "none" }}
+      >
+        <ConfigurationController />
+      </div>
+    </div>
   );
 };
 
