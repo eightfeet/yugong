@@ -125,6 +125,13 @@ const Responsive: React.FC<Props> = () => {
 
   const [showDashboard, setShowDashboard] = useState(false);
   const [opacity, setOpacity] = useState("1");
+  // 无激活模块时隐藏设置面板
+  useEffect(() => {
+    if (!activationItem.moduleId) {
+      setShowDashboard(false)
+    } 
+  }, [activationItem])
+
   return (
     <div className={s.main}>
       {showDashboard ? (

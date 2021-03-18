@@ -9,6 +9,9 @@ export const activationItem = createModel<RootModel>()({
     reducers: {
         updateActivationItem(state, payload: AppDataLayoutItemTypes) {
             return {...state, ...payload};
+        },
+        removeActivationItem() {
+            return {} as AppDataLayoutItemTypes
         }
     }
 });

@@ -8,6 +8,7 @@ import {
   FormatPainterOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
+import reject from 'lodash/reject';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import StyleController from "../StyleController";
@@ -31,6 +32,8 @@ const Dashboard: React.FC<Props> = () => {
 
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
+  const removeActivationItem = useDispatch<Dispatch>().activationItem
+  .removeActivationItem;
 
   // 样式与设置菜单面板
   const [mainTag, setMainTag] = useState("style");
@@ -53,7 +56,6 @@ const Dashboard: React.FC<Props> = () => {
           const win = (document.getElementById(
             "wrapiframe"
           ) as HTMLIFrameElement).contentWindow;
-          console.log(win);
           if (win) {
             sendMessage({ tag: "id", value: element.moduleId }, win);
           }
@@ -63,6 +65,25 @@ const Dashboard: React.FC<Props> = () => {
     },
     [activationItem.moduleId, appData, sendMessage, updateActivationItem]
   );
+
+  const delModule = useCallback(
+    () => {
+      const optAppData = reject([...appData], { moduleId });
+      const win = (document.getElementById(
+        "wrapiframe"
+      ) as HTMLIFrameElement).contentWindow;
+      sendMessage({
+        tag: 'updateAppData',
+        value: optAppData
+      }, win);
+      sendMessage({
+        tag: 'removeActivationItem',
+        value: undefined
+      }, win);
+      removeActivationItem();
+    },
+    [],
+  )
 
   return (
     <div className={s.root} style={{ height: `${window.innerHeight - 80}px` }}>
@@ -140,7 +161,8 @@ const Dashboard: React.FC<Props> = () => {
                     </div>
                   ),
                   okText: '确定',
-                  cancelText: '取消'
+                  cancelText: '取消',
+                  onOk: delModule
                 })
               }
             />

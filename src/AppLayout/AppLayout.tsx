@@ -51,6 +51,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
+  const removeActivationItem = useDispatch<Dispatch>().activationItem.removeActivationItem;
 
   const [, setLocalStorage] = useLocalStorage("appData", null);
   // 接收与处理message
@@ -63,6 +64,9 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
       case "updateAppData":
         updateAppData(value);
         break;
+      case "removeActivationItem":
+          removeActivationItem();
+          break;
       case "id":
         setEditingId(value)
         break;

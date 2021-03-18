@@ -82,7 +82,6 @@ const Repository: React.FC = () => {
                 content,
                 type: moduleType,
             };
-            console.log('新增组件', result);
             onAddItem(result)
         },
         [appData.length, onAddItem]
