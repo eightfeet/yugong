@@ -96,11 +96,6 @@ const Repository: React.FC = () => {
         }
     }, [addedModal?.moduleName, createModal, newModalName]);
 
-    // onRemoveItem(i) {
-    //   console.log("removing", i);
-    //   this.setState({ items: _.reject(this.state.items, { i: i }) });
-    // }
-
     return (
         <>
             <Row gutter={[16, 16]}>
