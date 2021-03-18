@@ -1,4 +1,4 @@
-import { Api, ArgumentsItem } from "./appData";
+import { Api, AppDataElementsStyleTypes, AppDataElementsTypes, ArgumentsItem, EventsType } from "./appData";
 
 /**
  * 静态事件名称与描述
@@ -24,6 +24,12 @@ export interface ExposeApi extends Api {
 
 } 
 
+export interface ExposeDefaultProps {
+  style?: AppDataElementsStyleTypes;
+  events?: EventsType;
+  api?: Api[];
+}
+
 
 /**
  * 静态事件导出
@@ -32,4 +38,5 @@ export interface ModulesProps<TProps> extends React.FC<TProps> {
     exposeEvents?: ExposeEvents[];
     exposeFunctions?: ExposeFunctions[];
     exposeApi?:  ExposeApi[];
+    exposeDefaultProps?: ExposeDefaultProps
 }

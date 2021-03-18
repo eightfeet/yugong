@@ -82,7 +82,7 @@ const Dashboard: React.FC<Props> = () => {
       }, win);
       removeActivationItem();
     },
-    [],
+    [appData, moduleId, removeActivationItem, sendMessage],
   )
 
   return (

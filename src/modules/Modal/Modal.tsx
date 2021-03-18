@@ -113,4 +113,19 @@ Modal.exposeEvents = [
   },
 ];
 
+/**
+ * 发布默认porps
+ */
+ Modal.exposeDefaultProps = {
+   style: {
+    basic: {},
+    overlay: {},
+    content: {},
+    footer: {},
+    header: {},
+    article: {},
+    close: {},
+   }
+ };
+
 export default Modal;

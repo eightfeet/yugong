@@ -61,6 +61,9 @@ const Repository: React.FC = () => {
         (moduleType: AppDataModuleTypes, name?: string) => {
             // get module's static Options
             const module = require(`~/modules/${moduleType}`).default;
+            const { exposeDefaultProps } = module;
+            const { style } = exposeDefaultProps || {};
+            console.log('exposeDefaultProps', exposeDefaultProps)
             const moduleId: string = uuidv4();
             // Add a new item. It must have a unique key!
             const layout = {
@@ -72,13 +75,13 @@ const Repository: React.FC = () => {
                 moved: false,
                 static: false,
             };
-            const style = module.style || { basic: {} };
+            
             const content = { text: 1 };
             const result: AppDataLayoutItemTypes = {
                 moduleName: name || '未标题',
                 moduleId,
                 layout,
-                style,
+                style: style || { basic: {} },
                 content,
                 type: moduleType,
             };
