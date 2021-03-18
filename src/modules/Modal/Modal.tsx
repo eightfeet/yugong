@@ -5,6 +5,7 @@ import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import { ModulesProps } from "~/types/modules";
 import getResult from '~/core/getDataFromRunningTime'
+import Wrapper from "../Wrapper";
 
 interface Props extends AppDataElementsTypes {
   id: string;
@@ -63,7 +64,7 @@ const Modal: ModulesProps<Props> = (props) => {
     eventEmitter.addEventListener("hide", hide);
   }, [eventEmitter, hide, show]);
 
-  return null;
+  return <Wrapper {...props} />;
 };
 
 Modal.exposeFunctions = [
