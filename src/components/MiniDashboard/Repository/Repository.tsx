@@ -74,6 +74,7 @@ const Repository: React.FC = () => {
                 y: Infinity, // put it at the bottom
                 moved: false,
                 static: false,
+                ...exposeDefaultProps.layout || {} // merge default
             };
             
             const content = { text: 1 };
@@ -81,7 +82,7 @@ const Repository: React.FC = () => {
                 moduleName: name || '未标题',
                 moduleId,
                 layout,
-                style: style || { basic: {} },
+                style: style || { basic: {} }, // merge style
                 content,
                 type: moduleType,
             };

@@ -116,7 +116,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
   // 创建全站事件处理器
   const eventEmitter = useMemo(() => {
     return new EventEmitter()
-  }, [appData]);
+  }, []);
 
   // 暴露事件到window下
   (window.top as any).eventEmitter = (window as any).eventEmitter = eventEmitter;

@@ -21,7 +21,7 @@ interface Props extends AppDataElementsTypes {
  */
 
 const Modal: ModulesProps<Props> = (props) => {
-  const { style, eventEmitter, events={} } = props;
+  const { style, eventEmitter, events = {} } = props;
   // ===================================创建组件=================================== //
   const ref = useRef<Core>();
   const { overlay, header, footer, content, article, close } = style;
@@ -38,19 +38,27 @@ const Modal: ModulesProps<Props> = (props) => {
       },
       shouldCloseOnOverlayClick: true,
       onCancel: () => {
-        console.log('关闭弹窗！！！')
-        eventEmitter.emit(events.onClose)
-      }
+        eventEmitter.emit(events.onClose);
+      },
     });
-    console.log(ref.current)
     // 移除实例
     return () => {
       if (ref.current) {
-        if (!document.querySelector(`#${ref.current.state.id}`)) return;
-        ref.current.remove();
+        if (document.querySelector(`#${ref.current.state.id}`)) {
+          ref.current.remove();
+        }
       }
     };
-  }, [article, close, content, eventEmitter, events.onClose, footer, header, overlay]);
+  }, [
+    article,
+    close,
+    content,
+    eventEmitter,
+    events.onClose,
+    footer,
+    header,
+    overlay,
+  ]);
 
   // ===================================定义组件方法=================================== //
   const show = useCallback((parames) => {
@@ -109,15 +117,19 @@ Modal.exposeFunctions = [
 Modal.exposeEvents = [
   {
     name: "onClose",
-    description: "关闭弹窗时",
+    description: "关闭时",
   },
 ];
 
 /**
  * 发布默认porps
  */
- Modal.exposeDefaultProps = {
-   style: {
+Modal.exposeDefaultProps = {
+  layout: {
+    w: 1, // 宽
+    h: 1, // 高
+  },
+  style: {
     basic: {},
     overlay: {},
     content: {},
@@ -125,7 +137,7 @@ Modal.exposeEvents = [
     header: {},
     article: {},
     close: {},
-   }
- };
+  },
+};
 
 export default Modal;
