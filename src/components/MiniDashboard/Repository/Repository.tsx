@@ -74,7 +74,7 @@ const Repository: React.FC = () => {
                 y: Infinity, // put it at the bottom
                 moved: false,
                 static: false,
-                ...exposeDefaultProps.layout || {} // merge default
+                ...exposeDefaultProps?.layout || {} // merge default
             };
             
             const content = { text: 1 };

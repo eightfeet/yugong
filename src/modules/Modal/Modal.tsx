@@ -98,9 +98,9 @@ Modal.exposeFunctions = [
         name: "弹窗内容",
         describe: "header：头部，article：内容，footer：底部",
         data: {
-          header: "<h3>header</h3>",
-          article: "<p>article</p>",
-          footer: "<p>footer</p>",
+          header: '<h3 style="margin:0; pardding:0">header</h3>',
+          article: '<p style="padding: 10px">article</p>',
+          footer: '<p style="margin:0; pardding:0">footer</p>',
         },
       },
     ],
@@ -131,13 +131,110 @@ Modal.exposeDefaultProps = {
   },
   style: {
     basic: {},
-    overlay: {},
-    content: {},
-    footer: {},
-    header: {},
+    overlay: {
+      backgroundCommon: {
+        backgroundColor: "rgba(0, 0, 0, 0.54)",
+      },
+    },
+    content: {
+      display: {
+        width: 300,
+      },
+      border: {
+        radiusTopLeft: 8,
+        radiusTopRight: 8,
+        radiusBottomLeft: 8,
+        radiusBottomRight: 8,
+      },
+    },
+    footer: {
+      display: {
+        height: 50,
+      },
+      font: {
+        lineHeight: 50,
+        align: "center",
+      },
+      border: {
+        borderPosition: {
+          borderTop: true,
+          borderRight: false,
+          borderBottom: false,
+          borderLeft: false,
+          border: false,
+        },
+        borderColor: "rgba(219, 219, 219, 1)",
+        borderStyle: "solid",
+        borderWidth: 1,
+      },
+    },
+    header: {
+      display: {
+        height: 50,
+      },
+      font: {
+        lineHeight: 50,
+        fontSize: 15,
+      },
+      border: {
+        borderPosition: {
+          borderTop: false,
+          borderRight: false,
+          borderBottom: true,
+          borderLeft: false,
+          border: false,
+        },
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderColor: "rgba(216, 216, 216, 1)",
+      },
+    },
     article: {},
-    close: {},
+    close: {
+      display: {
+        width: 10,
+        height: 10,
+        position: 'absolute',
+        right: 15,
+        top: 15
+      },
+      border: {
+        radiusBottomLeft: 10,
+        radiusTopLeft: 10,
+        radiusBottomRight: 10,
+        radiusTopRight: 10
+      },
+      backgroundCommon: {
+        backgroundColor: 'red'
+      }
+    },
   },
 };
 
 export default Modal;
+
+// overlay: {
+//   backgroundColor: 'rgba(0,0,0,0.5)'
+// },
+// header: {
+//   borderBottom: '1px solid #eee'
+// },
+// article: {
+//   padding: '1em'
+// },
+// content: {
+//   backgroundColor: 'rgba(255, 255, 255, 1)',
+//   width: '18em',
+//   borderRadius: '0.5em',
+//   padding: '0.5em',
+//   // 设置内容的层级关系
+//   zIndex: 107,
+// },
+// close: {
+//   backgroundColor: 'rgba(255, 0, 0, 1)',
+//   borderRadius: '1em',
+//   width: '1em',
+//   height: '1em',
+//   top: '-3em',
+//   right: '0'
+// }
