@@ -16,14 +16,18 @@ interface Props extends AppDataElementsTypes {
 const Conterner: ModulesProps<Props> = (props) => {
   const { eventEmitter, events = {}, api } = props;
   const onClick = useCallback(async () => {
-    const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone')
-    // 事先准备数据
+    const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone');
+
+    // 事先准备数据。
     if (apiArguments?.length) {
         await requester({...Conterner.exposeApi![0], ...apiArguments[0]})
     }
+
+    // 再点击时间中执行事件队列数据。
     if (eventEmitter.events) {
       eventEmitter.emit(events.onClick);
     }
+    
   }, [api, eventEmitter, events]);
 
   return (

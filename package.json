@@ -5,7 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@eightfeet/loading": "^2.0.1",
-    "@eightfeet/modal": "^2.2.12",
+    "@eightfeet/modal": "^2.2.16",
     "@rematch/core": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

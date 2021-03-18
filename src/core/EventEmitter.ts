@@ -24,8 +24,7 @@ class EventEmitter {
   }
 
   /**
-   *
-   * 事件发布
+   * 队列执行执行监听事件
    * @param args
    */
   public emit(queues: EventEmitterEmitArgs[] = []) {
@@ -60,12 +59,12 @@ class EventEmitter {
   }
 
   /**
-   * 事件订阅
-   * @param name
-   * @param cb
+   * 件注册定事监听器
+   * @param name 注册名
+   * @param registerFunction 注册方法，将方法注册到全局
    */
-  public addEventListener(name: string, cb: Function) {
-    this.events[name] = cb;
+  public addEventListener(name: string, registerFunction: Function) {
+    this.events[name] = registerFunction;
   }
 
   public removeEventListener(name: string, cb: Function) {
