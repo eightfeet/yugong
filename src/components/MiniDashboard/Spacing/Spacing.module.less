@@ -1,0 +1,53 @@
+.row {
+    margin-bottom: 10px;
+
+    .unit {
+        line-height: 30px;
+    }
+}
+
+.wrap {
+    border: 1px solid #eee;
+    padding: 10px 10px 0 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.label {
+    text-align: right !important;
+    line-height: 30px;
+}
+
+.right {
+    text-align: right;
+}
+
+.boxA {
+    border: 1px solid #ddd;
+    padding: 40px;
+    width: 90%;
+    margin: 0 auto;
+    color: #aaa;
+    position: relative;
+    text-align: center;
+    
+    &::after {
+        content: '外边距';
+        position: absolute;
+        left: 50%;
+        display: block;
+        top: 10px;
+        left: 0;
+        right: 0;
+    }
+}
+
+.boxB {
+    border: 10px solid #ddd;
+    height: 70px;
+    padding: 12px;
+    text-align: center;
+    &::after {
+        content: '内边距';
+    }
+}

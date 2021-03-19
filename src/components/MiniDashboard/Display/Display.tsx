@@ -6,6 +6,7 @@ import NumberInput from "../NumberInput";
 import { DisplayTypesOfStyleItems } from "types/appData";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import Spacing from "../Spacing";
 
 interface Props {
   onChange: (result: DisplayTypesOfStyleItems) => void;
@@ -70,20 +71,21 @@ const Display: React.FC<Props> = ({onChange, defaultData, unit }) => {
     </Row>
     {position === 'absolute' ? <Row className={s.row}>
       <Col span={12}>
-            <NumberInput label="左边距" unit={unit} min={-100000} max={100000} value={left} onChange={onChangeDisplay("left")}/>
+            <NumberInput label="左定位" unit={unit} min={-100000} max={100000} value={left} onChange={onChangeDisplay("left")}/>
       </Col>
       <Col span={12}>
-            <NumberInput label="右边距" unit={unit} min={-100000} max={100000} value={right} onChange={onChangeDisplay("right")}/>
+            <NumberInput label="右定位" unit={unit} min={-100000} max={100000} value={right} onChange={onChangeDisplay("right")}/>
       </Col>
     </Row> : null}
     {position === 'absolute' ? <Row className={s.row}>
       <Col span={12}>
-            <NumberInput label="上边距" unit={unit} min={-100000} max={100000} value={top} onChange={onChangeDisplay("top")}/>
+            <NumberInput label="上定位" unit={unit} min={-100000} max={100000} value={top} onChange={onChangeDisplay("top")}/>
       </Col>
       <Col span={12}>
-            <NumberInput label="下边距" unit={unit} min={-100000} max={100000} value={bottom} onChange={onChangeDisplay("bottom")}/>
+            <NumberInput label="下定位" unit={unit} min={-100000} max={100000} value={bottom} onChange={onChangeDisplay("bottom")}/>
       </Col>
     </Row> : null}
+    <Spacing unit={unit} onChange={(type, value) => console.log(type, value)} />
     </>
   );
 };
