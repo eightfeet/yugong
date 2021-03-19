@@ -1,11 +1,11 @@
-import { Layout } from "react-grid-layout";
+// 组件类型
+
 import {
-  Api,
-  AppDataElementsStyleTypes,
-  AppDataElementsTypes,
-  ArgumentsItem,
-  EventsType,
-} from "./appData";
+    Api,
+    AppDataElementsStyleTypes,
+    ArgumentsItem,
+    EventsType,
+} from './appData';
 
 /**
  * 静态事件名称与描述
@@ -13,15 +13,15 @@ import {
  * @member description 描述
  */
 export interface ExposeEvents {
-  name: string;
-  description: string;
+    name: string;
+    description: string;
 }
 
 /**
  * 静态方法名称与描述
  */
 export interface ExposeFunctions extends ExposeEvents {
-  arguments?: ArgumentsItem[];
+    arguments?: ArgumentsItem[];
 }
 
 /**
@@ -30,23 +30,23 @@ export interface ExposeFunctions extends ExposeEvents {
 export interface ExposeApi extends Api {}
 
 export interface ExposeDefaultProps {
-  layout?: {
-    x?: number;
-    y?: number;
-    w?: number;
-    h?: number;
-  };
-  style?: AppDataElementsStyleTypes;
-  events?: EventsType;
-  api?: Api[];
+    layout?: {
+        x?: number;
+        y?: number;
+        w?: number;
+        h?: number;
+    };
+    style?: AppDataElementsStyleTypes;
+    events?: EventsType;
+    api?: Api[];
 }
 
 /**
  * 静态事件导出
  */
 export interface ModulesProps<TProps> extends React.FC<TProps> {
-  exposeEvents?: ExposeEvents[];
-  exposeFunctions?: ExposeFunctions[];
-  exposeApi?: ExposeApi[];
-  exposeDefaultProps?: ExposeDefaultProps;
+    exposeEvents?: ExposeEvents[];
+    exposeFunctions?: ExposeFunctions[];
+    exposeApi?: ExposeApi[];
+    exposeDefaultProps?: ExposeDefaultProps;
 }
