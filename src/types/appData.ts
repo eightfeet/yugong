@@ -1,17 +1,8 @@
 import { Layout } from "react-grid-layout";
+import { EventsType } from "./modules";
 
 export interface AnyObjectType {
   [keys: string]: any;
-}
-
-/**
- * 模块事件项引用的全局方法以及参数
- * @member name 引用方法名（模块名/方法名）
- * @member arguments 引用方法关联的参数与描述信息
- */
-export interface EventsTypeItem {
-  name: string;
-  arguments: ArgumentsItem[];
 }
 
 /**
@@ -85,13 +76,6 @@ export interface ArgumentsString extends ArgumentBase<"string"> {
  */
 export interface ArgumentsNumber extends ArgumentBase<"number"> {
   data: string;
-}
-
-/**
- * 事件类型清单
- */
-export interface EventsType {
-  [key: string]: EventsTypeItem[];
 }
 
 /**

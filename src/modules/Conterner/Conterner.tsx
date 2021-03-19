@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import Wrapper from "./../Wrapper";
 import { AppDataElementsTypes } from "~/types/appData";
 import EventEmitter from "~/core/EventEmitter";
-import { ModulesProps } from "~/types/modules";
+import { Modules } from "~/types/modules";
 import requester from "~/core/fetch";
 
 interface Props extends AppDataElementsTypes {
@@ -13,7 +13,7 @@ interface Props extends AppDataElementsTypes {
 /**
  * 容器
  */
-const Conterner: ModulesProps<Props> = (props) => {
+const Conterner: Modules<Props> = (props) => {
   const { eventEmitter, events = {}, api } = props;
   const onClick = useCallback(async () => {
     const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone');
@@ -38,6 +38,14 @@ const Conterner: ModulesProps<Props> = (props) => {
 };
 
 Conterner.exposeEvents = [
+  {
+    name: 'didMount',
+    description: "挂载",
+  },
+  {
+    name: "unMount",
+    description: "卸载",
+  },
   {
     name: "onClick",
     description: "点击",

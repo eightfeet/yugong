@@ -3,7 +3,7 @@ import { AppDataElementsTypes } from "~/types/appData";
 import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
-import { ModulesProps } from "~/types/modules";
+import { Modules } from "~/types/modules";
 import getResult from "~/core/getDataFromRunningTime";
 import Wrapper from "../Wrapper";
 
@@ -20,7 +20,7 @@ interface Props extends AppDataElementsTypes {
  * @returns
  */
 
-const Modal: ModulesProps<Props> = (props) => {
+const Modal: Modules<Props> = (props) => {
   const { style, eventEmitter, events = {} } = props;
   // ===================================创建组件=================================== //
   const ref = useRef<Core>();
@@ -116,9 +116,17 @@ Modal.exposeFunctions = [
  */
 Modal.exposeEvents = [
   {
+    name: 'didMount',
+    description: "挂载",
+  },
+  {
+    name: "unMount",
+    description: "卸载",
+  },
+  {
     name: "onClose",
     description: "关闭时",
-  },
+  }
 ];
 
 /**
@@ -212,29 +220,3 @@ Modal.exposeDefaultProps = {
 };
 
 export default Modal;
-
-// overlay: {
-//   backgroundColor: 'rgba(0,0,0,0.5)'
-// },
-// header: {
-//   borderBottom: '1px solid #eee'
-// },
-// article: {
-//   padding: '1em'
-// },
-// content: {
-//   backgroundColor: 'rgba(255, 255, 255, 1)',
-//   width: '18em',
-//   borderRadius: '0.5em',
-//   padding: '0.5em',
-//   // 设置内容的层级关系
-//   zIndex: 107,
-// },
-// close: {
-//   backgroundColor: 'rgba(255, 0, 0, 1)',
-//   borderRadius: '1em',
-//   width: '1em',
-//   height: '1em',
-//   top: '-3em',
-//   right: '0'
-// }
