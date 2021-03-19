@@ -100,7 +100,7 @@ interface Necessary<N, D> {
  * @template TProps
  */
 export interface Modules<TProps> extends React.FC<TProps> {
-    exposeEvents?: [Necessary<'didMount', '挂载'>, Necessary<'unMount', '卸载'>, ...ExposeEvents[]];
+    exposeEvents?: [Necessary<'mount', '挂载'>, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
     exposeFunctions?: ExposeFunctions[];
     exposeApi?: ExposeApi[];
     exposeDefaultProps?: ExposeDefaultProps;

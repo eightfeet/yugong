@@ -15,14 +15,40 @@ interface Props extends AppDataElementsTypes {
  */
 const Conterner: Modules<Props> = (props) => {
   const { eventEmitter, events = {}, api } = props;
+
+  const mount = useCallback(
+    () => {
+      eventEmitter.emit(events.mount);
+    },
+    [eventEmitter, events],
+  )
+
+  const unmount = useCallback(
+    () => {
+      eventEmitter.emit(events.unmount);
+    },
+    [eventEmitter, events],
+  )
+
+  // didMount
+  useEffect(() => {
+    // code to run on component mount
+    mount()
+    return () => {
+      unmount()
+    }
+  }, []);
+
+
+  
+
+
   const onClick = useCallback(async () => {
     const apiArguments = api?.filter(item => item.apiId === 'findEmployeeByPhone');
-
     // 事先准备数据。
     if (apiArguments?.length) {
         await requester({...Conterner.exposeApi![0], ...apiArguments[0]})
     }
-
     // 再点击时间中执行事件队列数据。
     if (eventEmitter.events) {
       eventEmitter.emit(events.onClick);
@@ -39,21 +65,17 @@ const Conterner: Modules<Props> = (props) => {
 
 Conterner.exposeEvents = [
   {
-    name: 'didMount',
+    name: 'mount',
     description: "挂载",
   },
   {
-    name: "unMount",
+    name: "unmount",
     description: "卸载",
   },
   {
     name: "onClick",
     description: "点击",
-  },
-  {
-    name: "onChange",
-    description: "修改地址",
-  },
+  }
 ];
 
 Conterner.exposeApi = [

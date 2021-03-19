@@ -116,11 +116,11 @@ Modal.exposeFunctions = [
  */
 Modal.exposeEvents = [
   {
-    name: 'didMount',
+    name: 'mount',
     description: "挂载",
   },
   {
-    name: "unMount",
+    name: "unmount",
     description: "卸载",
   },
   {

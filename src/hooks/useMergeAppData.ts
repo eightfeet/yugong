@@ -1,10 +1,11 @@
 import set from 'lodash/set';
 import cloneDeep from 'lodash/cloneDeep';
-import { Api, AppDataElementsStyleTypes, EventsTypeItem } from "types/appData";
+import { Api, AppDataElementsStyleTypes } from "types/appData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from '~/redux/store';
 import { useCallback } from 'react';
 import useLocalStorage from './useLocalStorage';
+import { EventsTypeItem } from '~/types/modules';
 
 const useMergeAppData = () => {
     const updateAppData = useDispatch<Dispatch>().appData.updateAppData;

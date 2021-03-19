@@ -7,8 +7,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import EventItem from "./EventItem";
-import { ArgumentsItem, EventsTypeItem } from "~/types/appData";
-import { ExposeEvents, ExposeFunctions } from "~/types/modules";
+import { ArgumentsItem } from "~/types/appData";
+import { EventsTypeItem, ExposeEvents, ExposeFunctions } from "~/types/modules";
 import ArgumentsSetting from "../ArgumentsSetting";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";

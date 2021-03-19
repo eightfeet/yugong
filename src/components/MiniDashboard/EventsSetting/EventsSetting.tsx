@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import EventGroup from "./EventGroup";
 import useMergeAppData from "~/hooks/useMergeAppData";
-import { ExposeEvents } from "~/types/modules";
-import { EventsTypeItem } from "~/types/appData";
+import { EventsTypeItem, ExposeEvents } from "~/types/modules";
 
 /**
  * 确定当前激活组件是否向全局发布事件
