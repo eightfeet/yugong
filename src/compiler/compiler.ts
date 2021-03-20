@@ -1,5 +1,6 @@
 import description from "./description";
 import { createInlineStyles } from "@eightfeet/modal";
+import { store } from "~/redux/store";
 
 interface objType {
   [key: string]: any;
@@ -9,6 +10,19 @@ interface resultType {
   result: objType;
   string: string;
 }
+
+/** 转换为目标单位 */
+export const changeToUnit = (value: any) => {
+  // 变量单位
+  const unit = store.getState().controller.unit;
+  // 转换单位
+  const toUnit = store.getState().controller.toUnit;
+  // step1：value转化为px单位值
+  // step2：value px单位转换为 toUnit单位 
+
+  return { value: `${value}${toUnit || ""}`, unit: toUnit };
+}
+
 
 /** 获取单位 */
 const getUnit: (key: string, type: string, subType?: string) => string = (
@@ -38,10 +52,18 @@ const conversionValue: (
   type,
   subType
 ) => {
-  const unit = getUnit(key, type, subType);
-  if (value === undefined || value === null)
+  // 当前描述单位 %，deg等
+  const descUnit = getUnit(key, type, subType);
+  // 变量单位
+  const unit = store.getState().controller.unit;
+
+  if (value === undefined || value === null) { // 空值处理
     return { value: undefined, unit: undefined };
-  return { value: `${value}${unit || ""}`, unit };
+  } else if (descUnit === unit) { // 此单位变量可编辑等待处理
+    return changeToUnit(value); // 处理可编辑单位值
+  } else { // 其他处理
+    return { value: `${value}${descUnit || ""}`, unit: descUnit };
+  }
 };
 
 export const display = function (styleObj: objType): resultType {
@@ -56,7 +78,7 @@ export const display = function (styleObj: objType): resultType {
           if (isNaN(val)) {
             return  el || 0
           } else {
-            return  `${el}${getUnit(key, 'display')}`;
+            return  changeToUnit(el).value;
           }
         })
         result[newKey] = data.join(' ');
