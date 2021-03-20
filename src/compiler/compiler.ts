@@ -60,7 +60,6 @@ const conversionValue: (
   const descUnit = getUnit(key, type, subType);
   // 变量单位
   const unit = store.getState().controller.unit;
-
   if (value === undefined || value === null) { // 空值处理
     return { value: undefined, unit: undefined };
   } else if (descUnit === unit) { // 此单位变量可编辑等待处理
