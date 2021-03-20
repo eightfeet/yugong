@@ -88,6 +88,26 @@
                 "end": 1000,
                 "default": 0
             }
+        ],
+        "padding": [
+            "number",
+            "内边距",
+            "px",
+            {
+                "start": 0,
+                "end": 100,
+                "default": 0
+            }
+        ],
+        "margin": [
+            "number",
+            "外边距",
+            "px",
+            {
+                "start": 0,
+                "end": 100,
+                "default": 0
+            }
         ]
     },
     "backgroundCommon": {

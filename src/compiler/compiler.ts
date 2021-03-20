@@ -50,7 +50,19 @@ export const display = function (styleObj: objType): resultType {
     if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
       const element = styleObj[key];
       let newKey = key;
-      result[newKey] = conversionValue(element, key, "display").value;
+      if (key === 'margin' || key === 'padding') {
+        const data = element.map((el:any) => {
+          const val = parseInt(el, 10);
+          if (isNaN(val)) {
+            return  el || 0
+          } else {
+            return  `${el}${getUnit(key, 'display')}`;
+          }
+        })
+        result[newKey] = data.join(' ');
+      } else {
+        result[newKey] = conversionValue(element, key, "display").value;
+      }
     }
   }
   return {

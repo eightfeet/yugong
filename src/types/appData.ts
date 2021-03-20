@@ -200,6 +200,8 @@ export interface DisplayTypesOfStyleItems {
   right?: number;
   top?: number;
   bottom?: number;
+  margin?: any[];
+  padding?: any[];
 }
 
 export interface BackgroundGradientTypesOfStyleItems {

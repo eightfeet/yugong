@@ -29,7 +29,7 @@ const Display: React.FC<Props> = ({onChange, defaultData, unit }) => {
   const [displayData, setDisplayData] = useState<DisplayTypesOfStyleItems>({});
   const moduleId = useSelector((state:RootState) => state.activationItem.moduleId)
 
-  const { width, height, zIndex, position, left, right, top, bottom } = displayData;
+  const { width, height, zIndex, position, left, right, top, bottom, margin, padding } = displayData;
 
   useEffect(() => {
     setDisplayData({...(defaultData)})
@@ -51,6 +51,18 @@ const Display: React.FC<Props> = ({onChange, defaultData, unit }) => {
     },
     [displayData, onChange]
   );
+
+  const onChangeSpace = useCallback(
+    (type, value) => {
+      const data:DisplayTypesOfStyleItems = {...displayData}
+      data[type] = value;
+      setDisplayData(data);
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
+    },
+    [displayData, onChange],
+  )
 
   return (<>
     <Row className={s.row}>
@@ -85,7 +97,7 @@ const Display: React.FC<Props> = ({onChange, defaultData, unit }) => {
             <NumberInput label="下定位" unit={unit} min={-100000} max={100000} value={bottom} onChange={onChangeDisplay("bottom")}/>
       </Col>
     </Row> : null}
-    <Spacing unit={unit} onChange={(type, value) => console.log(type, value)} />
+    <Spacing unit={unit} onChange={onChangeSpace} margin={margin} padding={padding} />
     </>
   );
 };
