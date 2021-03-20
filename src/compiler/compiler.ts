@@ -16,7 +16,6 @@ const getUnit: (key: string, type: string, subType?: string) => string = (
   type,
   subType
 ) => {
-  
   let items: any[] = [];
   if (subType) {
     items = (description() as { [key: string]: any })[type][subType][key];

@@ -1,9 +1,11 @@
-const description = (unit: string = 'px') => ({
+import { store } from '~/redux/store';
+
+const description = (unit: string = store.getState().controller.unit || 'px') => ({
     "display": {
         "width": [
             "number",
             "宽度",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -13,7 +15,7 @@ const description = (unit: string = 'px') => ({
         "height": [
             "number",
             "高度",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -52,7 +54,7 @@ const description = (unit: string = 'px') => ({
         "left": [
             "number",
             "左",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -62,7 +64,7 @@ const description = (unit: string = 'px') => ({
         "right": [
             "number",
             "右",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -72,7 +74,7 @@ const description = (unit: string = 'px') => ({
         "top": [
             "number",
             "上",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -82,7 +84,7 @@ const description = (unit: string = 'px') => ({
         "bottom": [
             "number",
             "下",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -92,7 +94,7 @@ const description = (unit: string = 'px') => ({
         "padding": [
             "number",
             "内边距",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -102,7 +104,7 @@ const description = (unit: string = 'px') => ({
         "margin": [
             "number",
             "外边距",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -185,7 +187,7 @@ const description = (unit: string = 'px') => ({
         "sizeX": [
             "number",
             "X尺寸",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -195,7 +197,7 @@ const description = (unit: string = 'px') => ({
         "sizeY": [
             "number",
             "Y尺寸",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 1000,
@@ -279,7 +281,7 @@ const description = (unit: string = 'px') => ({
         "radius": [
             "number",
             "圆角",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -289,7 +291,7 @@ const description = (unit: string = 'px') => ({
         "radiusTopLeft": [
             "number",
             "左上圆角",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -299,7 +301,7 @@ const description = (unit: string = 'px') => ({
         "radiusTopRight": [
             "number",
             "右上圆角",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -309,7 +311,7 @@ const description = (unit: string = 'px') => ({
         "radiusBottomLeft": [
             "number",
             "左下圆角",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -319,7 +321,7 @@ const description = (unit: string = 'px') => ({
         "radiusBottomRight": [
             "number",
             "右下圆角",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -407,7 +409,7 @@ const description = (unit: string = 'px') => ({
         "borderWidth": [
             "number",
             "边宽",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 30,
@@ -422,7 +424,7 @@ const description = (unit: string = 'px') => ({
         "shiftRight": [
             "number",
             "横向偏移",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -432,7 +434,7 @@ const description = (unit: string = 'px') => ({
         "shiftDown": [
             "number",
             "纵向偏移",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -442,7 +444,7 @@ const description = (unit: string = 'px') => ({
         "spread": [
             "number",
             "散布",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -452,7 +454,7 @@ const description = (unit: string = 'px') => ({
         "blur": [
             "number",
             "模糊",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -479,7 +481,7 @@ const description = (unit: string = 'px') => ({
         "shiftRight": [
             "number",
             "横向偏移",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -489,7 +491,7 @@ const description = (unit: string = 'px') => ({
         "shiftDown": [
             "number",
             "纵向偏移",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -499,7 +501,7 @@ const description = (unit: string = 'px') => ({
         "blur": [
             "number",
             "模糊",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -515,7 +517,7 @@ const description = (unit: string = 'px') => ({
         "fontSize": [
             "number",
             "字体大小",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -525,7 +527,7 @@ const description = (unit: string = 'px') => ({
         "lineHeight": [
             "number",
             "行间距",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 10,
@@ -539,7 +541,7 @@ const description = (unit: string = 'px') => ({
         "letterSP": [
             "number",
             "字母间距",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -549,7 +551,7 @@ const description = (unit: string = 'px') => ({
         "wordSp": [
             "number",
             "字间距",
-            "px",
+            unit,
             {
                 "start": 0,
                 "end": 100,
@@ -653,7 +655,7 @@ const description = (unit: string = 'px') => ({
         "translateX": [
             "number",
             "横向偏移",
-            "px",
+            unit,
             {
                 "start": -100,
                 "end": 100,
@@ -663,7 +665,7 @@ const description = (unit: string = 'px') => ({
         "translateY": [
             "number",
             "纵向偏移",
-            "px",
+            unit,
             {
                 "start": -100,
                 "end": 100,
