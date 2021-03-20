@@ -1,4 +1,4 @@
-import description from "./description.json";
+import description from "./description";
 import * as compiler from "./compiler";
 
 interface Params {
@@ -8,7 +8,7 @@ interface Params {
 function handler(styleGroup: Params):{style: React.CSSProperties, strStyle: string} {
   if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
     return {style: {}, strStyle: '' };
-  const descriptionKeys = Object.keys(description);
+  const descriptionKeys = Object.keys(description());
   const compiledResult = {
     style: {},
     strStyle: ''

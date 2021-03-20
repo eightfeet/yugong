@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AnyObjectType, AppDataElementsTypes } from "types/appData";
-import description from "~/compiler/description.json";
+import description from "~/compiler/description";
 import s from "./Tabs.module.scss";
 
 interface Props extends AppDataElementsTypes {
@@ -29,7 +29,7 @@ const Tabs: React.FC<Props> = (props) => {
       return temp;
     };
 
-    const data = handleObj(description);
+    const data = handleObj(description());
     setmenu(data);
   }, []);
 

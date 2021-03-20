@@ -1,4 +1,4 @@
-{
+const description = (unit: string = 'px') => ({
     "display": {
         "width": [
             "number",
@@ -691,4 +691,6 @@
             }
         ]
     }
-}
+})
+
+export default description;

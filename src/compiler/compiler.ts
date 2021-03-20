@@ -1,4 +1,4 @@
-import description from "./description.json";
+import description from "./description";
 import { createInlineStyles } from "@eightfeet/modal";
 
 interface objType {
@@ -16,11 +16,12 @@ const getUnit: (key: string, type: string, subType?: string) => string = (
   type,
   subType
 ) => {
+  
   let items: any[] = [];
   if (subType) {
-    items = (description as { [key: string]: any })[type][subType][key];
+    items = (description() as { [key: string]: any })[type][subType][key];
   } else {
-    items = (description as { [key: string]: any })[type][key];
+    items = (description() as { [key: string]: any })[type][key];
   }
   if (!items) return;
   return items[2];
