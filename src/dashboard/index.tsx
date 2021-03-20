@@ -4,7 +4,6 @@
  * 后台包含App端数据模型，数据编辑时，同步更改
  */
 import 'whatwg-fetch';
-import React from "react";
 import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 import reportWebVitals from "~/reportWebVitals";
