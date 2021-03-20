@@ -6,12 +6,14 @@ export const controller = createModel<RootModel>()({
         stateTag: false,
         isEditing: false,
         editingId: '',
-        unit: 'px'
+        unit: 'px',
+        toUnit: 'rem',
     } as {
         stateTag?: boolean;
         isEditing?: boolean;
         editingId?: string;
         unit?: string;
+        toUnit?: string;
     }, // typed complex state
     reducers: {
         setStateTag(state, payload: boolean) {
@@ -25,6 +27,9 @@ export const controller = createModel<RootModel>()({
         },
         setUnit(state, payload: string) {
             return { ...state, unit: payload };
+        },
+        setToUnit(state, payload: string) {
+            return { ...state, toUnit: payload };
         }
     },
     effects: (dispatch) => {
