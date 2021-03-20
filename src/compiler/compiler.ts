@@ -17,10 +17,14 @@ export const changeToUnit = (value: any) => {
   const unit = store.getState().controller.unit;
   // 转换单位
   const toUnit = store.getState().controller.toUnit;
+  if (unit === toUnit) {
+    return { value: `${value}${unit || ""}`, unit: unit };
+  } else {
+    return { value: `${value}${toUnit || ""}`, unit: toUnit };
+  }
   // step1：value转化为px单位值
   // step2：value px单位转换为 toUnit单位 
 
-  return { value: `${value}${toUnit || ""}`, unit: toUnit };
 }
 
 
