@@ -1,6 +1,7 @@
 import description from "./description";
 import { createInlineStyles } from "@eightfeet/modal";
 import { store } from "~/redux/store";
+import unitToPx from "~/core/unitToPx";
 
 interface objType {
   [key: string]: any;
@@ -11,22 +12,54 @@ interface resultType {
   string: string;
 }
 
+export const pxToRem = (value: number) => {
+  const rootFontsize = window
+    .getComputedStyle(document.body)
+    .getPropertyValue("font-size")
+    .replace("px", "");
+  return value / Number(rootFontsize);
+};
+
+export const pxToVw = (value: number) => {
+  let PVw = window.innerWidth * 0.01;
+  return value / PVw;
+};
+
+export const pxToVh = (value: number) => {
+  let PVh = window.innerHeight * 0.01;
+  return value / PVh;
+};
+
 /** 转换为目标单位 */
 export const changeToUnit = (value: any) => {
   // 变量单位
   const unit = store.getState().controller.unit;
   // 转换单位
   const toUnit = store.getState().controller.toUnit;
-  if (unit === toUnit) {
-    return { value: `${value}${unit || ""}`, unit: unit };
-  } else {
-    return { value: `${value}${toUnit || ""}`, unit: toUnit };
+
+  // step1：将value值转化为px单位值
+  const pxNumValue = unitToPx(`${value}${unit || ""}`);
+  // step2：value px单位转换为 toUnit单位
+  let unitNumValue = 0;
+  switch (toUnit) {
+    case "px":
+      unitNumValue = pxNumValue;
+      break;
+    case "rem":
+      unitNumValue = pxToRem(pxNumValue);
+      break;
+    case "vh":
+      unitNumValue = pxToVh(pxNumValue);
+      break;
+    case "vw":
+      unitNumValue = pxToVh(pxNumValue);
+      break;
+    default:
+      unitNumValue = pxNumValue;
   }
-  // step1：value转化为px单位值
-  // step2：value px单位转换为 toUnit单位 
 
-}
-
+  return { value: `${unitNumValue}${toUnit || "px"}`, unit: toUnit || "px" };
+};
 
 /** 获取单位 */
 const getUnit: (key: string, type: string, subType?: string) => string = (
@@ -60,11 +93,14 @@ const conversionValue: (
   const descUnit = getUnit(key, type, subType);
   // 变量单位
   const unit = store.getState().controller.unit;
-  if (value === undefined || value === null) { // 空值处理
+  if (value === undefined || value === null) {
+    // 空值处理
     return { value: undefined, unit: undefined };
-  } else if (descUnit === unit) { // 此单位变量可编辑等待处理
+  } else if (descUnit === unit) {
+    // 此单位变量可编辑等待处理
     return changeToUnit(value); // 处理可编辑单位值
-  } else { // 其他处理
+  } else {
+    // 其他处理
     return { value: `${value}${descUnit || ""}`, unit: descUnit };
   }
 };
@@ -75,16 +111,16 @@ export const display = function (styleObj: objType): resultType {
     if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
       const element = styleObj[key];
       let newKey = key;
-      if (key === 'margin' || key === 'padding') {
-        const data = element.map((el:any) => {
+      if (key === "margin" || key === "padding") {
+        const data = element.map((el: any) => {
           const val = parseInt(el, 10);
           if (isNaN(val)) {
-            return  el || 0
+            return el || 0;
           } else {
-            return  changeToUnit(el).value;
+            return changeToUnit(el).value;
           }
-        })
-        result[newKey] = data.join(' ');
+        });
+        result[newKey] = data.join(" ");
       } else {
         result[newKey] = conversionValue(element, key, "display").value;
       }
@@ -128,17 +164,17 @@ export const backgroundGradient = function (styleObj: objType): resultType {
       if (key === "gradient") {
         (element as any[]).forEach(({ color, transition }) => {
           if (color !== undefined && transition !== undefined) {
-            const group = `${conversionValue(
-              color,
-              "color",
-              "backgroundGradient",
-              "gradient"
-            ).value} ${conversionValue(
-              transition,
-              "transition",
-              "backgroundGradient",
-              "gradient"
-            ).value}`;
+            const group = `${
+              conversionValue(color, "color", "backgroundGradient", "gradient")
+                .value
+            } ${
+              conversionValue(
+                transition,
+                "transition",
+                "backgroundGradient",
+                "gradient"
+              ).value
+            }`;
             puppet.moz.push(group);
             puppet.webkit.push(group);
             puppet.normal.push(group);
@@ -198,11 +234,11 @@ export const backgroundCommon = function (styleObj: objType): resultType {
     if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
       const element = styleObj[key];
       const data = conversionValue(element, key, "backgroundCommon");
-      if (key === 'positionX' || key === 'positionY') {
-        positionUnit = data.unit || '';
+      if (key === "positionX" || key === "positionY") {
+        positionUnit = data.unit || "";
       }
-      if (key === 'sizeX' || key === 'sizeY') {
-        sizeXUnit = data.unit || '';
+      if (key === "sizeX" || key === "sizeY") {
+        sizeXUnit = data.unit || "";
       }
       if (BGposition[key] !== undefined) {
         if (key === "imageUrl") {
@@ -313,20 +349,21 @@ export const border = function (styleObj: objType): resultType {
     if (element === null || element === undefined) rules.borderRadius[i] = "0";
   });
   const brJoined = rules.borderRadius.join(" ");
-  
+
   if (brJoined !== "0 0 0 0") {
     result.borderRadius = rules.borderRadius.join(" ");
   }
 
-  const { borderTop, borderRight, borderBottom, borderLeft, border} = styleObj.borderPosition || {}
+  const { borderTop, borderRight, borderBottom, borderLeft, border } =
+    styleObj.borderPosition || {};
   const boderCss = rules.border.filter((item) => !!item).join(" ");
   if (border) {
     result[`border${type}`] = boderCss;
   } else {
-    if(borderTop) result['borderTop'] = boderCss;
-    if(borderRight) result['borderRight'] = boderCss;
-    if(borderBottom) result['borderBottom'] = boderCss;
-    if(borderLeft) result['borderLeft'] = boderCss;
+    if (borderTop) result["borderTop"] = boderCss;
+    if (borderRight) result["borderRight"] = boderCss;
+    if (borderBottom) result["borderBottom"] = boderCss;
+    if (borderLeft) result["borderLeft"] = boderCss;
   }
 
   return {
@@ -362,9 +399,13 @@ export const boxShadow = function (styleObj: objType): resultType {
         rule[position[key]] = value;
       }
     }
-    
-    if (rule[0] === 'true') {rule[0] = "inset"};
-    if (rule[0] === 'false') {rule[0] = null};
+
+    if (rule[0] === "true") {
+      rule[0] = "inset";
+    }
+    if (rule[0] === "false") {
+      rule[0] = null;
+    }
     if (!rule[1]) rule[1] = "0";
     if (!rule[2]) rule[2] = "0";
     if (!rule[3]) rule[3] = "0";

@@ -6,8 +6,8 @@ export const controller = createModel<RootModel>()({
         stateTag: false,
         isEditing: false,
         editingId: '',
-        unit: 'px',
-        toUnit: 'px',
+        unit: 'rem',
+        toUnit: 'vh',
     } as {
         stateTag?: boolean;
         isEditing?: boolean;
