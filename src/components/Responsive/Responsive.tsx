@@ -42,6 +42,8 @@ const Responsive: React.FC<Props> = () => {
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
+  const removeActivationItem = useDispatch<Dispatch>().activationItem.removeActivationItem;
+  
   const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
   useEffect(() => {
@@ -77,6 +79,7 @@ const Responsive: React.FC<Props> = () => {
             break;
           }
         }
+        setShowDashboard(true);
         break;
       default:
         break;
@@ -93,14 +96,6 @@ const Responsive: React.FC<Props> = () => {
         sendMessage({ tag: "setIsEditing", value: true }, win);
       };
     }
-  }, [isEditing, sendMessage, setIsEditing, win]);
-
-  // 切换编辑视图
-  const setEditing = useCallback(() => {
-    if (win) {
-      sendMessage({ tag: "setIsEditing", value: !isEditing }, win);
-    }
-    setIsEditing(!isEditing);
   }, [isEditing, sendMessage, setIsEditing, win]);
 
   // 收发处理，编辑完数据后通过sendMessage向子窗口发送最新数据。
@@ -132,6 +127,17 @@ const Responsive: React.FC<Props> = () => {
     } 
   }, [activationItem])
 
+  const hideDashboard = useCallback(
+    () => {
+      setShowDashboard(false)
+      removeActivationItem();
+      if (win) {
+        sendMessage({ tag: "removeActivationItem", value: undefined }, win);
+      }
+    },
+    [removeActivationItem, sendMessage, win],
+  )
+
   return (
     <div className={s.main}>
       {showDashboard ? (
@@ -146,7 +152,7 @@ const Responsive: React.FC<Props> = () => {
               <h3>设置面板</h3>
               <CloseOutlined
                 className={s.icon}
-                onClick={() => setShowDashboard(false)}
+                onClick={hideDashboard}
               />
             </div>
             <MiniDashboard />
