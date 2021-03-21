@@ -185,7 +185,7 @@ const Responsive: React.FC<Props> = () => {
           width={550}
           onClose={() => setShowPageDrawer(false)}
           visible={showPageDrawer}
-          bodyStyle={{ paddingBottom: 80 }}
+          bodyStyle={{ padding:'10px 10px 80px 10px', overflow: 'auto' }}
           footer={null}
         >
           <PageSetting />
@@ -196,7 +196,7 @@ const Responsive: React.FC<Props> = () => {
           width={550}
           onClose={() => setShowDrawer(false)}
           visible={showDrawer}
-          bodyStyle={{ paddingBottom: 80 }}
+          bodyStyle={{ padding:'10px 10px 80px 10px' }}
           footer={null}
         >
           <Repository />
