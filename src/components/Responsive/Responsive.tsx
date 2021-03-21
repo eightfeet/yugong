@@ -18,6 +18,7 @@ import s from "./Responsive.module.less";
 import Draggable from "react-draggable";
 import Ruler from "./Ruler";
 import Repository from "../MiniDashboard/Repository";
+import PageSetting from "../MiniDashboard/PageSetting";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -55,6 +56,7 @@ const Responsive: React.FC<Props> = () => {
   const [iframeWidth, setIframeWidth] = useState();
 
   const [showDrawer, setShowDrawer] = useState(false);
+  const [showPageDrawer, setShowPageDrawer] = useState(false);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -159,30 +161,36 @@ const Responsive: React.FC<Props> = () => {
           </div>
         </Draggable>
       ) : null}
-      <Affix offsetTop={10}>
+      <div>
         <Button
           type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setShowDrawer(true)}
-          
+          icon={<SettingOutlined />}
+          onClick={() => setShowPageDrawer(true)}
         >
-          新增
+          页面
         </Button>
         &nbsp;
         <Button
           type="primary"
-          icon={<SettingOutlined />}
-          onClick={() =>
-            activationItem.moduleId
-              ? setShowDashboard(!showDashboard)
-              : message.error("请选择要编辑的组建")
-          }
+          icon={<PlusOutlined />}
+          onClick={() => setShowDrawer(true)}
         >
-          设置
+          组件
         </Button>
-      </Affix>
+      </div>
       <Ruler onChange={onChangeRule} />
       <Drawer
+          className={s.drawer}
+          title="页面设置"
+          width={550}
+          onClose={() => setShowPageDrawer(false)}
+          visible={showPageDrawer}
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={null}
+        >
+          <PageSetting />
+        </Drawer>
+        <Drawer
           className={s.drawer}
           title="组件库"
           width={550}
