@@ -185,7 +185,7 @@ const Responsive: React.FC<Props> = () => {
           width={550}
           onClose={() => setShowPageDrawer(false)}
           visible={showPageDrawer}
-          bodyStyle={{ padding:'10px 10px 80px 10px', overflow: 'auto' }}
+          bodyStyle={{ padding:'0', overflow: 'auto' }}
           footer={null}
         >
           <PageSetting />
