@@ -7,8 +7,16 @@ const hourglass = (times: string) => {
 }
 
 const fn = () => console.log("fn other effect！");
-
+// {
+//   name: 'mount',
+//   description: '挂载',
+// },
+// {
+//   name: 'unmount',
+//   description: '卸载',
+// },
 const defaultFn = {
+  "globalEffect/": hourglass,
   "globalEffect/hourglass": hourglass,
   "globalEffect/fn": fn,
 };

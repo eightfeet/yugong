@@ -32,6 +32,11 @@ interface LayoutProps {
    * @memberof LayoutProps
    */
   cols: number;
+  /**
+   * 事件中心
+   * @memberof LayoutProps
+   */
+  eventEmitter: EventEmitter;
 }
 
 /**
@@ -40,7 +45,7 @@ interface LayoutProps {
  * @param {LayoutProps} { isEditing, rowHeight, cols, width, height, data}
  * @return {*}
  */
-const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
+const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => {
   const getAppData = useDispatch<Dispatch>().appData.getAppData;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
@@ -112,14 +117,6 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols }) => {
     },
     [appData, sendMessage, setLocalStorage]
   );
-
-  // 创建全站事件处理器
-  const eventEmitter = useMemo(() => {
-    return new EventEmitter()
-  }, []);
-
-  // 暴露事件到window下
-  (window.top as any).eventEmitter = (window as any).eventEmitter = eventEmitter;
 
   // 同步runningTimeData
   useEffect(() => {

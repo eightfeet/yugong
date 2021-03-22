@@ -92,6 +92,8 @@ interface Necessary<N, D> {
   description: D
 }
 
+export type ComExposeEvents = [Necessary<'mount', '挂载'>, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
+
 /**
  * 静态事件导出
  * @export
@@ -100,7 +102,7 @@ interface Necessary<N, D> {
  * @template TProps
  */
 export interface Modules<TProps> extends React.FC<TProps> {
-    exposeEvents?: [Necessary<'mount', '挂载'>, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
+    exposeEvents?: ComExposeEvents;
     exposeFunctions?: ExposeFunctions[];
     exposeApi?: ExposeApi[];
     exposeDefaultProps?: ExposeDefaultProps;
