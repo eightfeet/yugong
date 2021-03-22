@@ -52,6 +52,7 @@ const EventGroup: React.FC<Props> = ({
   curentEvent,
   onChange,
 }) => {
+  // 当前模块发布的事件状态清单
   const [currentModuleEvents, setCurrentModuleEvents] = useState<
     EventDataList[]
   >([]);
@@ -60,7 +61,10 @@ const EventGroup: React.FC<Props> = ({
 
   const appData = useSelector((state: RootState) => state.appData);
 
-  // 收集当前已选择模块的事件数据
+  /** 
+   * 将当传入Props事件执行清单转换为状态数据
+   * 用于组件内部维护
+   */
   useEffect(() => {
     const eventDataList = curentEvent.map((event) => {
       const selectData = event.name.split("/");
@@ -74,7 +78,9 @@ const EventGroup: React.FC<Props> = ({
     setCurrentModuleEvents(eventDataList);
   }, [curentEvent]);
 
-  // state to appdata
+  /**
+   * 更新
+   */
   const stateToAppdata = useCallback(
     (data: EventDataList[]) => {
       const result = data.map((item) => {
@@ -89,21 +95,31 @@ const EventGroup: React.FC<Props> = ({
     [curentEventInfomation, onChange]
   );
 
+  /**
+   * 新增事件执行
+   */
   const onPlus = useCallback(() => {
     const newItem: any = {
       moduleValue: "",
       dispatchedFunctions: "",
     };
     currentModuleEvents.push(newItem);
+    // 更新事件状态清单
     setCurrentModuleEvents([...currentModuleEvents]);
+    // onchange AppData数据
     stateToAppdata(currentModuleEvents);
   }, [currentModuleEvents, stateToAppdata]);
 
-  // 整租数据的更新
+  /**
+   * 删除事件执行
+   */
   const onMinus = useCallback(
     (index: number) => () => {
+      // 获取当前编辑的事件
       const data = currentModuleEvents.filter((el, i) => i !== index);
+      // 更新事件状态清单
       setCurrentModuleEvents([...data]);
+      // onchange AppData数据
       stateToAppdata(data);
     },
     [currentModuleEvents, stateToAppdata]
@@ -119,7 +135,9 @@ const EventGroup: React.FC<Props> = ({
     [curentEvent, curentEventInfomation, onChange]
   );
 
-  // onArgumentsSettingOk 回收参数数据，关闭窗口
+  /** 
+   * onArgumentsSettingOk 回收参数数据，关闭窗口 
+   */
   const onArgumentsSettingOk = useCallback(
     (argumentList) => {
       const operateData = [...curentEvent];
@@ -133,6 +151,9 @@ const EventGroup: React.FC<Props> = ({
     [curentEvent, curentEventInfomation, currentArgument?.index, onChange]
   );
 
+  /**
+   * 获取方法参数 
+   */
   const getFunArguments = useCallback(
     (moduleId: string): ExposeFunctions[] => {
       if (moduleId === 'globalEffect') {
