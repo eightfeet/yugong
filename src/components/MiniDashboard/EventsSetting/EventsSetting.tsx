@@ -14,6 +14,7 @@ import { EventsTypeItem, ExposeEvents } from "~/types/modules";
 interface Props {}
 
 const EventsSetting: React.FC<Props> = () => {
+
   const { events, type, moduleId } = useSelector(
     (state: RootState) => state.activationItem
   );
@@ -30,7 +31,10 @@ const EventsSetting: React.FC<Props> = () => {
 
   /** 获取当前实例元素的事件清单 */
   const getCurentEventByEventName = useCallback(
-    (eventName: string) => {
+    (
+      eventName: string // 事件名称，mounnt unmount ...
+    ) => {
+      // 事件清单存在，则返回事件清单的事件值
       if (events && Object.prototype.toString.call(events) === '[object Object]') {
         return events[eventName] || []
       }
@@ -50,7 +54,7 @@ const EventsSetting: React.FC<Props> = () => {
     {
       exposeEvents.map(element => (<EventGroup
         key={element.name}
-        curentEvent={getCurentEventByEventName(element.name)}
+        value={getCurentEventByEventName(element.name)}
         curentEventInfomation={element}
         onChange={onChangeEventGroup}
       />))

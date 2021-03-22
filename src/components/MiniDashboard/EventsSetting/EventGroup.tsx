@@ -12,10 +12,11 @@ import { EventsTypeItem, ExposeEvents, ExposeFunctions } from '~/types/modules';
 import ArgumentsSetting from '../ArgumentsSetting';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
+import App from '~/components/App'
 
 interface Props {
     curentEventInfomation: ExposeEvents;
-    curentEvent: EventsTypeItem[];
+    value: EventsTypeItem[];
     onChange: (
         curentEventInfomation: ExposeEvents,
         data: EventsTypeItem[]
@@ -26,7 +27,7 @@ interface EventDataList {
     /**
      * 模块名 
      */
-    moduleValue: string;
+    moduleUuid: string;
     /**
      * 模块发布的方法
      */
@@ -58,7 +59,7 @@ interface ArgParames {
 
 const EventGroup: React.FC<Props> = ({
     curentEventInfomation,
-    curentEvent,
+    value,
     onChange,
 }) => {
     // 当前模块发布的事件状态清单
@@ -71,21 +72,21 @@ const EventGroup: React.FC<Props> = ({
     const appData = useSelector((state: RootState) => state.appData);
 
     /**
-     * 将当传入Props事件执行清单转换为状态数据
+     * 将当前被选组件传入Props事件执行清单转换为状态数据
      * 用于组件内部维护
      */
     useEffect(() => {
-        const eventDataList = curentEvent.map((event) => {
+        const eventDataList = value.map((event) => {
             const selectData = event.name.split('/');
             const result = {
-                moduleValue: selectData[0],
+                moduleUuid: selectData[0],
                 dispatchedFunctions: selectData[1],
                 arguments: event.arguments || [],
             };
             return result;
         });
         setCurrentModuleEvents(eventDataList);
-    }, [curentEvent]);
+    }, [value]);
 
     /**
      * 更新
@@ -94,7 +95,7 @@ const EventGroup: React.FC<Props> = ({
         (data: EventDataList[]) => {
             const result = data.map((item) => {
                 const data = {
-                    name: `${item.moduleValue}/${item.dispatchedFunctions}`,
+                    name: `${item.moduleUuid}/${item.dispatchedFunctions}`,
                     arguments: item.arguments || [],
                 };
                 return data;
@@ -109,7 +110,7 @@ const EventGroup: React.FC<Props> = ({
      */
     const onPlus = useCallback(() => {
         const newItem: any = {
-            moduleValue: '',
+            moduleUuid: '',
             dispatchedFunctions: '',
         };
         currentModuleEvents.push(newItem);
@@ -137,14 +138,14 @@ const EventGroup: React.FC<Props> = ({
     // 单项数据的更新
     const onChangeItem = useCallback(
         (index: number) => (data: string[]) => {
-            const operateData = [...curentEvent];
+            const operateData = [...value];
             operateData[index] = {
                 name: `${data[0]}/${data[1]}`,
                 arguments: [],
             };
             onChange(curentEventInfomation, operateData);
         },
-        [curentEvent, curentEventInfomation, onChange]
+        [value, curentEventInfomation, onChange]
     );
 
     /**
@@ -152,7 +153,7 @@ const EventGroup: React.FC<Props> = ({
      */
     const onArgumentsSettingOk = useCallback(
         (argumentList) => {
-            const operateData = [...curentEvent];
+            const operateData = [...value];
             const index = currentArgument?.index;
             if (index !== undefined) {
                 operateData[index].arguments = argumentList;
@@ -160,7 +161,7 @@ const EventGroup: React.FC<Props> = ({
                 setArgumentsVisible(false);
             }
         },
-        [curentEvent, curentEventInfomation, currentArgument?.index, onChange]
+        [value, curentEventInfomation, currentArgument?.index, onChange]
     );
 
     /**
@@ -169,7 +170,7 @@ const EventGroup: React.FC<Props> = ({
     const getFunArguments = useCallback(
         (moduleId: string): ExposeFunctions[] => {
             if (moduleId === 'globalEffect') {
-                return require(`~/components/App`).exposeFunctions;
+                return App.exposeFunctions || [];
             }
             for (let index = 0; index < appData.length; index++) {
                 const element = appData[index];
@@ -224,8 +225,7 @@ const EventGroup: React.FC<Props> = ({
                 currentModuleEvents.map((event, index) => {
                     // 获取模块静态导出的方法参数
                     const moduleExportFunctionArguments =
-                        getFunArguments(event.moduleValue) || [];
-
+                        getFunArguments(event.moduleUuid) || [];
                     // 当前id模块导出的方法参数
                     const currentExportFunctionArguments =
                         moduleExportFunctionArguments.filter(
@@ -246,10 +246,10 @@ const EventGroup: React.FC<Props> = ({
                         <Row
                             className={s.row}
                             gutter={4}
-                            key={`${index}${event.moduleValue}${event.dispatchedFunctions}`}
+                            key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
                         >
                             <EventItem
-                                moduleValue={event.moduleValue}
+                                moduleUuid={event.moduleUuid}
                                 dispatchedFunctions={event.dispatchedFunctions}
                                 argumentList={event.arguments || []}
                                 onChange={onChangeItem(index)}

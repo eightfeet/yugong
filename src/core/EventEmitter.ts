@@ -1,5 +1,4 @@
 import getBooleanData from "./getBooleanData";
-import defaultEvents from "./globalEvents";
 interface EventEmitterEvents {
   [key: string]: Function;
 }
@@ -18,9 +17,7 @@ interface EventEmitterEmitArgs {
 class EventEmitter {
   public events: EventEmitterEvents;
   constructor(events?: EventEmitterEvents) {
-    this.events = events || {
-      ...defaultEvents,
-    };
+    this.events = events || {};
   }
 
   /**
@@ -41,6 +38,7 @@ class EventEmitter {
             } else {
               operateArgument.push(element.data);
             }
+
             const type = Object.prototype.toString.call(element.data);
             const dataType = type.substring(8, type.length - 1).toLowerCase();
             if (element.type !== dataType) {

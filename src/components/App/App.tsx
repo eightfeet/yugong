@@ -9,11 +9,6 @@ import { Modules } from '~/types/modules';
 import getResult from '~/core/getDataFromRunningTime';
 import './App.less';
 
-const hourglass = (times: string) => {
-    const timesResult = parseInt(getResult(times));
-    return new Promise((res) => setTimeout(() => res(""), timesResult || 3000));
-}
-
 interface Props {}
 
 const App: Modules<Props> = () => {
@@ -48,6 +43,11 @@ const App: Modules<Props> = () => {
       [eventEmitter],
     )
 
+    useMemo(() => {
+      eventEmitter.addEventListener('mount', onMount);
+      eventEmitter.addEventListener('unmount', onUnmount);
+    }, [eventEmitter, onMount, onUnmount])
+
     useEffect(() => {
       if (eventEmitter) {
         onMount();
@@ -59,7 +59,7 @@ const App: Modules<Props> = () => {
           console.log('卸载！！！')
         }
       }
-    }, [eventEmitter])
+    }, [eventEmitter, onMount, onUnmount])
 
     if (!eventEmitter) return null;
 
@@ -92,11 +92,19 @@ App.exposeEvents = [
 // 全局方法
 App.exposeFunctions = [
     {
-        name: 'globalEffect/fun1',
+        name: 'fun1',
         description: '方法1',
+        arguments: [{
+          type: "object",
+          name: "fun1",
+          describe: "fun1 描述",
+          data: {
+            data: 'fun1',
+          },
+        }]
     },
     {
-        name: 'globalEffect/fun2',
+        name: 'fun2',
         description: '方法2',
     },
 ];

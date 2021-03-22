@@ -23,7 +23,7 @@ const defaultFn = {
 
 export const globalOption = {
   name: "全局",
-  value: "globalEffect",
+  uuid: "globalEffect",
   type: "global",
 };
 
