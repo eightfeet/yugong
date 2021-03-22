@@ -1,7 +1,6 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Col, Divider, Input, InputNumber, Row, Select, Tooltip } from "antd";
 import React from "react";
-import ApiSetting from "../ApiSetting";
 import Background from "../Background";
 import s from "./PageSetting.module.less";
 const Option = Select.Option;
@@ -96,7 +95,7 @@ const Pagesetting: React.FC<Props> = () => {
         </Col>
       </Row>
       <Divider orientation="left">页面挂载</Divider>
-      <ApiSetting />
+      Api
       <Divider orientation="left">百度统计</Divider>
       <Row className={s.row}>
         <Col className={s.label} span={4}>
