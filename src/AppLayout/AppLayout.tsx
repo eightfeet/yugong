@@ -2,7 +2,7 @@
  * AppLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef } from "react";
 import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -15,7 +15,7 @@ import { RootState, Dispatch } from "~/redux/store";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 import EventEmitter from "~/core/EventEmitter";
-
+import { backgroundGradient, backgroundCommon } from "~/compiler/compiler";
 // 当前是否被ifream引用
 const visualSense = (window.self === window.top);
 
@@ -49,6 +49,8 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
   const getAppData = useDispatch<Dispatch>().appData.getAppData;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
+  const updatePage = useDispatch<Dispatch>().pageData.updatePage;
+  const pageData = useSelector((state: RootState) => state.pageData);
   const appData = useSelector((state: RootState) => state.appData);
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const ref = useRef(null);
@@ -73,8 +75,11 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
           removeActivationItem();
           break;
       case "id":
-        setEditingId(value)
+        setEditingId(value);
         break;
+      case "updatePage":
+        updatePage(value);
+          break;
       default:
         break;
     }
@@ -117,6 +122,17 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
     },
     [appData, sendMessage, setLocalStorage]
   );
+  const generateStyle = useCallback(
+    () => {
+      // compiler.backgroundCommon(pageData.style?.backgroundCommon|| {})
+      const style = {
+        ...backgroundCommon(pageData.style?.backgroundCommon || {}).result,
+        ...backgroundGradient(pageData.style?.backgroundGradient || {}).result,
+      };
+      return style;
+    },
+    [pageData.style?.backgroundCommon, pageData.style?.backgroundGradient],
+  )
 
   // 同步runningTimeData
   useEffect(() => {
@@ -161,7 +177,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
   </GridLayout>)
 
   return (
-    <div className={s.layout} ref={ref}>
+    <div className={s.layout} ref={ref} style={generateStyle()}>
       {isEditing ? (
         <GridLine
           width={window.innerWidth}

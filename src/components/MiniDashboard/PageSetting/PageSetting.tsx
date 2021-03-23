@@ -9,7 +9,7 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import Api from "~/components/App";
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
@@ -21,6 +21,7 @@ import s from "./PageSetting.module.less";
 import { useDispatch, useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { Dispatch, RootState } from "~/redux/store";
+import usePostMessage from "~/hooks/usePostMessage";
 const Option = Select.Option;
 const { Panel } = Collapse;
 
@@ -31,6 +32,20 @@ const units = ["px", "rem", "vw", "vh"];
 const Pagesetting: React.FC<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
+  const sendMessage = usePostMessage(() => {});
+  
+  useEffect(() => {
+    const win = (document.getElementById(
+      "wrapiframe"
+    ) as HTMLIFrameElement).contentWindow;
+    if (win) {
+      sendMessage({
+        tag: 'updatePage',
+        value: pageData
+      }, win)
+    }
+  }, [pageData, sendMessage])
+
 
   const onChangeEnv = useCallback(
     (envinfo, data) => {
