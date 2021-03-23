@@ -129,7 +129,6 @@ const Apiconfig: React.FC<Props> = ({ apiData, defaultApiData, onChange }) => {
                     }
                 });
             });
-            console.log('最终保存数据', optApiData);
             // 更新到state
             setOperateApi(optApiData);
             // 将数据更新到appData

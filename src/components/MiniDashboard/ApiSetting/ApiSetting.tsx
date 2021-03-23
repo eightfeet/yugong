@@ -16,7 +16,7 @@ const ApiSetting: React.FC<Props> = () => {
         (state: RootState) => state.activationItem
     );
 
-    const { api, type } = activationItem;
+    const { api, type, moduleId } = activationItem;
 
     /**
      * 获取当前被选组件导出的（自定义）默认Api数据
