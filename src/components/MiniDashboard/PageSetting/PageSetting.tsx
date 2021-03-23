@@ -1,8 +1,8 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Button,
   Col,
   Collapse,
-  Divider,
   Input,
   InputNumber,
   Row,
@@ -11,9 +11,12 @@ import {
 } from "antd";
 import React, { useCallback, useState } from "react";
 import Api from "~/components/App";
+import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
 import Background from "../Background";
 import EventGroup from "../EventsSetting/EventGroup";
+import reject from 'lodash/reject';
+import { v4 as uuidv4 } from 'uuid';
 import s from "./PageSetting.module.less";
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -26,6 +29,8 @@ const Pagesetting: React.FC<Props> = () => {
   // 修改页面事件数据，to do 维护到redux
   const [currentMountEvn, setCurrentMountEvn] = useState([]);
   const [currentUnmountEvn, setCurrentUnmountEvn] = useState([]);
+  const [pageApi, setpageApi] = useState<ApiType[]>([])
+
   const onChangeEnv = useCallback((envinfo, data) => {
     if (envinfo.name === "mount") {
       setCurrentMountEvn(data);
@@ -34,6 +39,26 @@ const Pagesetting: React.FC<Props> = () => {
       setCurrentUnmountEvn(data);
     }
   }, []);
+
+  const onPlus = useCallback(
+    () => {
+      const optPageApi = [...pageApi];
+      optPageApi.push({
+        name: `Api_${optPageApi.length + 1}`,
+        apiId: uuidv4()
+      });
+      setpageApi(optPageApi)
+    },
+    [pageApi],
+  )
+
+  const onRemoveApi = useCallback(
+    (_, data: ApiType) => {
+      const optPageApi = reject([...pageApi], { apiId:  data.apiId});
+      setpageApi(optPageApi)
+    },
+    [pageApi],
+  )
 
   return (
     <>
@@ -123,14 +148,19 @@ const Pagesetting: React.FC<Props> = () => {
         </Panel>
         <Panel header="页面挂载" key="pagemount">
           <div className={s.events}>
-            <h4>Api</h4>
-            <ApiConfig apiData={[{
-              name: 'test',
-              apiId: 'onmount1'
-            }]} defaultApiData={[{
-              name: 'test',
-              apiId: 'onmount1'
-            }]} onChange={(data) => console.log(data)} />
+            <h4 className={s.apititle}>
+              <div className={s.title}>Api</div>
+              <Button
+                  size="small"
+                  icon={<PlusOutlined onClick={onPlus} />}
+              />
+            </h4>
+            <ApiConfig
+              onRemove={onRemoveApi}
+              apiData={pageApi}
+              defaultApiData={pageApi}
+              onChange={(data) => console.log(data)}
+            />
           </div>
           <div className={s.events}>
             <h4>事件</h4>
