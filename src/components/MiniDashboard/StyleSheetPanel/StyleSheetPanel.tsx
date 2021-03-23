@@ -116,6 +116,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
           <Panel header="背景" key="backgroundCommon_backgroundGradient">
             <Background
               unit={unit}
+              updateKey={selected.moduleId}
               onChange={onChangeBackgroundCommon}
               defaultBGCommonData={
                 selected?.style?.[path]?.backgroundCommon || {}

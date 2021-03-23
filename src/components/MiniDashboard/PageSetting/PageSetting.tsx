@@ -9,15 +9,18 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import Api from "~/components/App";
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
 import Background from "../Background";
 import EventGroup from "../EventsSetting/EventGroup";
-import reject from 'lodash/reject';
-import { v4 as uuidv4 } from 'uuid';
+import reject from "lodash/reject";
+import { v4 as uuidv4 } from "uuid";
 import s from "./PageSetting.module.less";
+import { useDispatch, useSelector } from "react-redux";
+import cloneDeep from "lodash/cloneDeep";
+import { Dispatch, RootState } from "~/redux/store";
 const Option = Select.Option;
 const { Panel } = Collapse;
 
@@ -26,39 +29,116 @@ interface Props {}
 const units = ["px", "rem", "vw", "vh"];
 
 const Pagesetting: React.FC<Props> = () => {
-  // 修改页面事件数据，to do 维护到redux
-  const [currentMountEvn, setCurrentMountEvn] = useState([]);
-  const [currentUnmountEvn, setCurrentUnmountEvn] = useState([]);
-  const [pageApi, setpageApi] = useState<ApiType[]>([])
+  const pageData = useSelector((state: RootState) => state.pageData);
+  const updatePage = useDispatch<Dispatch>().pageData.updatePage;
 
-  const onChangeEnv = useCallback((envinfo, data) => {
-    if (envinfo.name === "mount") {
-      setCurrentMountEvn(data);
-    }
-    if (envinfo.name === "unmount") {
-      setCurrentUnmountEvn(data);
-    }
-  }, []);
-
-  const onPlus = useCallback(
-    () => {
-      const optPageApi = [...pageApi];
-      optPageApi.push({
-        name: `Api_${optPageApi.length + 1}`,
-        apiId: uuidv4()
-      });
-      setpageApi(optPageApi)
+  const onChangeEnv = useCallback(
+    (envinfo, data) => {
+      const optPageData = cloneDeep(pageData);
+      if (envinfo.name === "mount") {
+        optPageData.mountEnvents = data;
+      }
+      if (envinfo.name === "unmount") {
+        optPageData.unmountEnvents = data;
+      }
+      updatePage(optPageData);
     },
-    [pageApi],
-  )
+    [pageData, updatePage]
+  );
+
+  const onChangeBg = useCallback(
+    (data: any) => {
+      const optPageData = cloneDeep(pageData);
+      const style = {
+        ...(optPageData.style || {}),
+      };
+      if (data.type === "backgroundCommon") {
+        style.backgroundCommon = data.values;
+      }
+      if (data.type === "backgroundGradient") {
+        style.backgroundGradient = data.values;
+      }
+      optPageData.style = style;
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
+
+  const onChangeUnit = useCallback(
+    (type: "unit" | "toUnit") => (e: any) => {
+      const optPageData = cloneDeep(pageData);
+      if (type === "unit") {
+        optPageData.unit = e;
+      }
+      if (type === "toUnit") {
+        optPageData.toUnit = e;
+      }
+
+      if (optPageData.unit !== "rem" && optPageData.toUnit !== "rem") {
+        delete optPageData.UIWidth;
+        delete optPageData.baseFont;
+      }
+
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
+
+  const onChangeStatisticsId = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.statisticsId = e.target.value;
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
+
+  const onChangeUIWidth = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.UIWidth = e.target.value;
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
+
+  const onChangeBaseFont = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.baseFont = e.target.value;
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
+
+  const onChangeApi = useCallback(
+    (data) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.onLoadApi = data;
+      updatePage(optPageData);
+    },
+    [pageData, updatePage]
+  );
 
   const onRemoveApi = useCallback(
     (_, data: ApiType) => {
-      const optPageApi = reject([...pageApi], { apiId:  data.apiId});
-      setpageApi(optPageApi)
+      const optPageData = cloneDeep(pageData);
+      optPageData.onLoadApi = reject(optPageData.onLoadApi, {
+        apiId: data.apiId,
+      });
+      updatePage(optPageData);
     },
-    [pageApi],
-  )
+    [pageData, updatePage]
+  );
+
+  const onPlus = useCallback(() => {
+    const optPageData = cloneDeep(pageData);
+    optPageData.onLoadApi?.push({
+      name: `Api_${optPageData.onLoadApi.length + 1}`,
+      apiId: uuidv4(),
+    });
+    updatePage(optPageData);
+  }, [pageData, updatePage]);
 
   return (
     <>
@@ -69,7 +149,14 @@ const Pagesetting: React.FC<Props> = () => {
               页面名称：
             </Col>
             <Col span={19}>
-              <Input placeholder="请输入页面名称" className={s.num} />
+              <Input
+                placeholder="请输入页面名称"
+                value={pageData.pageTitle}
+                onChange={(e) => {
+                  updatePage({ pageTitle: e.target.value });
+                }}
+                className={s.num}
+              />
             </Col>
             <Col span={1} />
           </Row>
@@ -79,7 +166,12 @@ const Pagesetting: React.FC<Props> = () => {
             </Col>
             <Col span={19}>
               <div className={s.bg}>
-                <Background onChange={(data) => console.log(data)} />
+                <Background
+                  updateKey={"api"}
+                  defaultBGCommonData={pageData.style?.backgroundCommon || {}}
+                  defaultBGGradient={pageData.style?.backgroundGradient || {}}
+                  onChange={onChangeBg}
+                />
               </div>
             </Col>
             <Col span={1} />
@@ -89,7 +181,12 @@ const Pagesetting: React.FC<Props> = () => {
               页面单位：
             </Col>
             <Col span={7}>
-              <Select placeholder="请选择" className={s.select}>
+              <Select
+                placeholder="请选择"
+                className={s.select}
+                value={pageData.unit}
+                onChange={onChangeUnit("unit")}
+              >
                 {units.map((item) => (
                   <Option key={item} value={item}>
                     {item}
@@ -106,7 +203,12 @@ const Pagesetting: React.FC<Props> = () => {
               编辑单位：
             </Col>
             <Col span={7}>
-              <Select placeholder="请选择" className={s.select}>
+              <Select
+                placeholder="请选择"
+                className={s.select}
+                value={pageData.toUnit}
+                onChange={onChangeUnit("toUnit")}
+              >
                 {units.map((item) => (
                   <Option key={item} value={item}>
                     {item}
@@ -121,45 +223,54 @@ const Pagesetting: React.FC<Props> = () => {
             </Col>
           </Row>
 
-          <Row gutter={4} className={s.row}>
-            <Col className={s.label} span={4}>
-              UI宽度：
-            </Col>
-            <Col span={7}>
-              <InputNumber placeholder="px" className={s.num} />
-            </Col>
-            <Col className={s.info} span={1}>
-              <Tooltip title={<div>终端页面显示单位</div>}>
-                <InfoCircleOutlined />
-              </Tooltip>
-            </Col>
-            <Col className={s.label} span={4}>
-              基准字体：
-            </Col>
-            <Col span={7}>
-              <InputNumber placeholder="px" className={s.num} />
-            </Col>
-            <Col className={s.info} span={1}>
-              <Tooltip title={<div>编辑面板使用单位</div>}>
-                <InfoCircleOutlined />
-              </Tooltip>
-            </Col>
-          </Row>
+          {pageData.toUnit === "rem" || pageData.unit === "rem" ? (
+            <Row gutter={4} className={s.row}>
+              <Col className={s.label} span={4}>
+                UI宽度：
+              </Col>
+              <Col span={7}>
+                <InputNumber
+                  value={pageData.baseFont}
+                  onChange={onChangeBaseFont}
+                  placeholder="px"
+                  className={s.num}
+                />
+              </Col>
+              <Col className={s.info} span={1}>
+                <Tooltip title={<div>终端页面显示单位</div>}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </Col>
+              <Col className={s.label} span={4}>
+                基准字体：
+              </Col>
+              <Col span={7}>
+                <InputNumber
+                  value={pageData.UIWidth}
+                  onChange={onChangeUIWidth}
+                  placeholder="px"
+                  className={s.num}
+                />
+              </Col>
+              <Col className={s.info} span={1}>
+                <Tooltip title={<div>编辑面板使用单位</div>}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </Col>
+            </Row>
+          ) : null}
         </Panel>
         <Panel header="页面挂载" key="pagemount">
           <div className={s.events}>
             <h4 className={s.apititle}>
               <div className={s.title}>Api</div>
-              <Button
-                  size="small"
-                  icon={<PlusOutlined onClick={onPlus} />}
-              />
+              <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
             </h4>
             <ApiConfig
               onRemove={onRemoveApi}
-              apiData={pageApi}
-              defaultApiData={pageApi}
-              onChange={(data) => console.log(data)}
+              apiData={pageData.onLoadApi}
+              defaultApiData={pageData.onLoadApi}
+              onChange={onChangeApi}
             />
           </div>
           <div className={s.events}>
@@ -169,7 +280,9 @@ const Pagesetting: React.FC<Props> = () => {
                 <EventGroup
                   key={index}
                   value={
-                    item.name === "mount" ? currentMountEvn : currentUnmountEvn
+                    item.name === "mount"
+                      ? pageData.mountEnvents || []
+                      : pageData.unmountEnvents || []
                   }
                   curentEventInfomation={item}
                   onChange={onChangeEnv}
@@ -187,6 +300,8 @@ const Pagesetting: React.FC<Props> = () => {
               <Input
                 placeholder="请在百度账号下创建站点，获取统计Id"
                 className={s.num}
+                value={pageData.statisticsId}
+                onChange={onChangeStatisticsId}
               />
             </Col>
           </Row>

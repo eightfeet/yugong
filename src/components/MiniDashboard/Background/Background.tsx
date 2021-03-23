@@ -13,13 +13,12 @@ import {
 import Select from "../Select";
 import QuadrangularSelect from "../QuadrangularSelect";
 import GradientSlider from "../GradientSlider";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
 
 interface Props {
   onChange: (result: ResultType) => void;
   defaultBGCommonData?: BackgroundCommonTypesOfStyleItems;
   defaultBGGradient?: BackgroundGradientTypesOfStyleItems;
+  updateKey: string;
   unit?: string;
 }
 
@@ -42,11 +41,9 @@ const BackgroundCommon: React.FC<Props> = ({
   onChange,
   defaultBGCommonData,
   defaultBGGradient,
+  updateKey,
   unit,
 }) => {
-  const moduleId = useSelector(
-    (state: RootState) => state.activationItem.moduleId
-  );
   
   // commonBackground
   const [commonData, setCommonData] = useState<BackgroundCommonTypesOfStyleItems>({});
@@ -62,7 +59,7 @@ const BackgroundCommon: React.FC<Props> = ({
   useEffect(() => {
     const data = { ...(defaultBGCommonData || {}) };
     setCommonData(data);
-  }, [defaultBGCommonData, moduleId]);
+  }, [defaultBGCommonData, updateKey]);
 
   const onChangeBackgroundCommon = useCallback(
     (type: ChangeType) => (result: any) => {
@@ -109,7 +106,7 @@ const BackgroundCommon: React.FC<Props> = ({
   useEffect(() => {
     const data = { ...(defaultBGGradient || {}) };
     setGradientData(data);
-  }, [defaultBGGradient, moduleId]);
+  }, [defaultBGGradient, updateKey]);
   const { gradient, gradientDirections } = gradientData || {};
 
   

@@ -4,29 +4,34 @@ import {
   BackgroundCommonTypesOfStyleItems,
   BackgroundGradientTypesOfStyleItems,
 } from "~/types/appData";
-import { EventsType } from "~/types/modules";
+import { EventsType, EventsTypeItem } from "~/types/modules";
 import { RootModel } from "./models";
 
 interface PageData {
-  neme?: string;
+  pageTitle?: string;
   unit?: "px" | "rem" | "vh" | "vw";
   toUnit?: "px" | "rem" | "vh" | "vw";
+  UIWidth?: number;
+  baseFont?: number;
   style?: {
-    BackgroundCommon?: BackgroundCommonTypesOfStyleItems;
-    BackgroundGradient?: BackgroundGradientTypesOfStyleItems;
+    backgroundCommon?: BackgroundCommonTypesOfStyleItems;
+    backgroundGradient?: BackgroundGradientTypesOfStyleItems;
   };
   onLoadApi?: Api[];
-  onLoadEnvents?: EventsType[];
+  mountEnvents?: EventsTypeItem[];
+  unmountEnvents?: EventsTypeItem[];
+  statisticsId?: string;
 }
 
 export const pageData = createModel<RootModel>()({
   state: {
-    neme: "页面名称",
+    pageTitle: "页面名称",
     style: {},
     unit: "px",
     toUnit: "px",
     onLoadApi: [],
-    onLoadEnvents: [],
+    mountEnvents: [],
+    unmountEnvents: []
   } as PageData, // typed complex state
   reducers: {
     updatePage(state, payload: PageData) {
@@ -35,8 +40,8 @@ export const pageData = createModel<RootModel>()({
     updatePageStyle(
       state,
       payload: {
-        BackgroundCommon?: BackgroundCommonTypesOfStyleItems;
-        BackgroundGradient?: BackgroundGradientTypesOfStyleItems;
+        backgroundCommon?: BackgroundCommonTypesOfStyleItems;
+        backgroundGradient?: BackgroundGradientTypesOfStyleItems;
       }
     ) {
       return { ...state, style: payload };
