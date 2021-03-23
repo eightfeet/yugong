@@ -8,6 +8,7 @@ import {
     Select,
     Tooltip,
 } from 'antd';
+import cloneDeep from 'lodash/cloneDeep';
 import React, { useCallback, useEffect, useState } from 'react';
 import { AnyObjectType, Api, ArgumentsItem } from '~/types/appData';
 import { ExposeApi } from '~/types/modules';
@@ -44,16 +45,22 @@ const selectMethod = (onChange: any, value: any) => (
 );
 
 interface Props {
+    /**
+     * api数据
+     */
     apiData?: Api[];
+    /**
+     * 模块默认导出的api数据
+     */
     defaultApiData?: ExposeApi[];
+    /**
+     * 修改
+     */
     onChange?: (data: Api[]) => void;
 }
 
-const Apiconfig: React.FC<Props> = ({
-    apiData,
-    defaultApiData,
-    onChange,
-}) => {
+const Apiconfig: React.FC<Props> = ({ apiData, defaultApiData, onChange }) => {
+
     /**
      * 操作数据
      */
@@ -61,27 +68,31 @@ const Apiconfig: React.FC<Props> = ({
 
     /**
      * 设置当前操作数据
+     * api数据合并至默认数据，
+     * 组合为一分操作数据operateApi
      */
     useEffect(() => {
         // 是否有定义api
-        const defaultApi = [...(defaultApiData || [])];
+        const defaultApi = cloneDeep(defaultApiData);
+        const api = cloneDeep(apiData);
         // 合并默认api定义与api数据,
         // 比对数据覆盖默认数据
-        defaultApi.forEach((elementDef) => {
-            apiData?.forEach((element) => {
-                if (elementDef.apiId === element.apiId) {
-                    Object.keys(element).forEach((key) => {
-                        elementDef[key] = element[key];
-                    });
+        defaultApi?.forEach((defItem) => {
+            const apiItem =
+                api?.find((item) => item.apiId === defItem.apiId) || {};
+            Object.keys(defItem).forEach((key) => {
+                if (apiItem[key]) {
+                    defItem[key] = apiItem[key];
                 }
             });
         });
+
         // 保存修改
-        setOperateApi(defaultApi);
+        setOperateApi(defaultApi || []);
     }, [apiData, defaultApiData]);
 
-    /** 
-     * api参数 
+    /**
+     * api参数
      */
     const [argData, setArgData] = useState<
         | {
@@ -99,22 +110,26 @@ const Apiconfig: React.FC<Props> = ({
      */
     const updateApi = useCallback(
         (data: Api[]) => {
-            // 清洗默认数据
             const optApiData = [...data];
             const optDefaultApiData = [...(defaultApiData || [])];
-
-            // 删除操作数据中没有被读取的数据
-            optDefaultApiData.forEach((defaultItem) => {
-                optApiData.forEach((item) => {
-                    Object.keys(item).forEach((key: string) => {
-                        if (item[key] === defaultItem[key] && key !== 'apiId') {
-                            // 从结果中删除
-                            delete item[key];
-                        }
-                    });
+            // 1、清洗操作数据，操作数据与默认数据相同的时不做保存，避免存储数据过大
+            optApiData.forEach((apiItem) => {
+                const defaultApiItem =
+                    optDefaultApiData.find(
+                        (item) => item.apiId === apiItem.apiId
+                    ) || {};
+                Object.keys(apiItem).forEach((key: string) => {
+                    // 保留名字和id
+                    if (
+                        apiItem[key] === defaultApiItem[key] &&
+                        (key !== 'apiId' && key !== 'name')
+                    ) {
+                        // 从操作数据中删除与默认数据相同的属性
+                        delete apiItem[key];
+                    }
                 });
             });
-
+            console.log('最终保存数据', optApiData);
             // 更新到state
             setOperateApi(optApiData);
             // 将数据更新到appData
@@ -132,7 +147,6 @@ const Apiconfig: React.FC<Props> = ({
         (index) => (e: any) => {
             const result = [...operateApi];
             result[index].url = e.target.value;
-            
             updateApi(result);
         },
         [operateApi, updateApi]
