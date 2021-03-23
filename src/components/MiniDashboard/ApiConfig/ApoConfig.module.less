@@ -1,0 +1,31 @@
+.root {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 500px;
+    box-sizing: border-box;
+}
+
+.row {
+    align-items: center;
+    margin-bottom: 10px;
+    :global {
+        .ant-radio-button-wrapper {
+            padding: 0 10px;
+        }
+        .ant-input-number{
+            width: 100%;
+        }
+    }
+}
+
+.divide {
+    border-bottom: 1px solid rgb(240, 240, 240);
+    height: 30px;
+    margin: 10px 0;
+
+    display: flex; 
+    .title {
+        flex: 1;
+        color: #aaa;
+    }
+}

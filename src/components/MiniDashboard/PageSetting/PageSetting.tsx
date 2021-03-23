@@ -123,6 +123,7 @@ const Pagesetting: React.FC<Props> = () => {
         <Panel header="页面挂载" key="pagemount">
           <div className={s.events}>
             <h4>Api</h4>
+            
           </div>
           <div className={s.events}>
             <h4>事件</h4>
@@ -140,7 +141,7 @@ const Pagesetting: React.FC<Props> = () => {
             </>
           </div>
         </Panel>
-        <Panel header="百度统计" key="pagemount">
+        <Panel header="百度统计" key="pagecounter">
           <Row className={s.row}>
             <Col className={s.label} span={4}>
               统计Id：
