@@ -11,6 +11,7 @@ import {
 } from "antd";
 import React, { useCallback, useState } from "react";
 import Api from "~/components/App";
+import ApiConfig from "../ApiConfig";
 import Background from "../Background";
 import EventGroup from "../EventsSetting/EventGroup";
 import s from "./PageSetting.module.less";
@@ -123,7 +124,13 @@ const Pagesetting: React.FC<Props> = () => {
         <Panel header="页面挂载" key="pagemount">
           <div className={s.events}>
             <h4>Api</h4>
-            
+            <ApiConfig apiData={[{
+              name: 'test',
+              apiId: 'onmount1'
+            }]} defaultApiData={[{
+              name: 'test',
+              apiId: 'onmount1'
+            }]} onChange={(data) => console.log(data)} />
           </div>
           <div className={s.events}>
             <h4>事件</h4>
