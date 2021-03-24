@@ -124,10 +124,15 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
   );
   const generateStyle = useCallback(
     () => {
+      const gradient = backgroundGradient(pageData.style?.backgroundGradient || {}).result;
       const style = {
         ...backgroundCommon(pageData.style?.backgroundCommon || {}).result,
-        ...backgroundGradient(pageData.style?.backgroundGradient || {}).result,
       };
+
+      if (gradient.background) {
+        style.background = gradient.background
+      }
+
       return style;
     },
     [pageData.style?.backgroundCommon, pageData.style?.backgroundGradient],
@@ -177,6 +182,7 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
 
   return (
     <div className={s.layout} ref={ref} style={generateStyle()}>
+      {JSON.stringify(generateStyle())}
       {isEditing ? (
         <GridLine
           width={window.innerWidth}

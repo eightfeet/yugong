@@ -205,10 +205,12 @@ export interface DisplayTypesOfStyleItems {
 }
 
 export interface BackgroundGradientTypesOfStyleItems {
+  /**渐变位置和过度色值 */
   gradient?: {
     color: string;
     transition: number;
   }[];
+  /**渐变方向 */
   gradientDirections?: string;
 }
 
