@@ -3,14 +3,22 @@
  */
 
 import { useCallback, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import AppLayout from '~/AppLayout';
 import EventEmitter from '~/core/EventEmitter';
+import { RootState } from '~/redux/store';
 import { Modules } from '~/types/modules';
 import './App.less';
 
 interface Props {}
 
 const App: Modules<Props> = () => {
+
+    // 设置页面标题
+    const pageData = useSelector((state: RootState) => state.pageData);
+    useEffect(() => {
+      document.title = pageData.pageTitle || '*'
+    }, [pageData.pageTitle])
 
     // 创建全站事件处理器
     const eventEmitter = useMemo(() => {
