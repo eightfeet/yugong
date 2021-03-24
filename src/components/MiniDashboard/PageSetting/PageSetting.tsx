@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { Dispatch, RootState } from "~/redux/store";
 import usePostMessage from "~/hooks/usePostMessage";
+import useLocalStorage from "~/hooks/useLocalStorage";
+
 const Option = Select.Option;
 const { Panel } = Collapse;
 
@@ -32,7 +34,18 @@ const units = ["px", "rem", "vw", "vh"];
 const Pagesetting: React.FC<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
-  const sendMessage = usePostMessage(() => {});
+  // 数据传递问题
+  const sendMessage = usePostMessage((data) => {
+    const { tag, value } = data;
+    if (tag === 'updatePage') {
+      updatePage(value)
+    }
+  });
+
+  const [_, setPagedataLocalStorage] = useLocalStorage(
+    'pageData',
+    null
+);
   
   useEffect(() => {
     const win = (document.getElementById(
@@ -56,7 +69,7 @@ const Pagesetting: React.FC<Props> = () => {
       if (envinfo.name === "unmount") {
         optPageData.unmountEnvents = data;
       }
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -74,7 +87,7 @@ const Pagesetting: React.FC<Props> = () => {
         style.backgroundGradient = data.values;
       }
       optPageData.style = style;
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -94,7 +107,7 @@ const Pagesetting: React.FC<Props> = () => {
         delete optPageData.baseFont;
       }
 
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -103,7 +116,7 @@ const Pagesetting: React.FC<Props> = () => {
     (e) => {
       const optPageData = cloneDeep(pageData);
       optPageData.statisticsId = e.target.value;
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -112,7 +125,7 @@ const Pagesetting: React.FC<Props> = () => {
     (e) => {
       const optPageData = cloneDeep(pageData);
       optPageData.UIWidth = e.target.value;
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -121,7 +134,7 @@ const Pagesetting: React.FC<Props> = () => {
     (e) => {
       const optPageData = cloneDeep(pageData);
       optPageData.baseFont = e.target.value;
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -130,7 +143,7 @@ const Pagesetting: React.FC<Props> = () => {
     (data) => {
       const optPageData = cloneDeep(pageData);
       optPageData.onLoadApi = data;
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -141,7 +154,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.onLoadApi = reject(optPageData.onLoadApi, {
         apiId: data.apiId,
       });
-      updatePage(optPageData);
+      handleUpdatePage(optPageData);
     },
     [pageData, updatePage]
   );
@@ -152,8 +165,16 @@ const Pagesetting: React.FC<Props> = () => {
       name: `Api_${optPageData.onLoadApi.length + 1}`,
       apiId: uuidv4(),
     });
-    updatePage(optPageData);
+    handleUpdatePage(optPageData);
   }, [pageData, updatePage]);
+
+  const handleUpdatePage = useCallback((pageData) => {
+    // 缓存
+    updatePage(pageData);
+
+    // 页面数据本地缓存
+    setPagedataLocalStorage(pageData);
+  }, [updatePage]);
 
   return (
     <>
