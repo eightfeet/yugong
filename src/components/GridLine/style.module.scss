@@ -3,6 +3,7 @@
 }
 .cwrap {
     position: absolute;
+    opacity: 0.1;
     left: 0;
     top: 0;
     height: 100%;
@@ -12,7 +13,7 @@
         position: absolute;
         width: 100%;
         border: none;
-        border-bottom: 1px dashed #eee;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
         padding: 0;
         margin: 0;
     }
@@ -20,7 +21,7 @@
         position: absolute;
         height: 100%;
         border: none;
-        border-right: 1px dashed #eee;
+        border-right: 1px dashed rgba(0, 0, 0, 0.5);
         padding: 0;
         margin: 0;
     }

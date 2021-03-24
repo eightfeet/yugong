@@ -182,7 +182,6 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
 
   return (
     <div className={s.layout} ref={ref} style={generateStyle()}>
-      {JSON.stringify(generateStyle())}
       {isEditing ? (
         <GridLine
           width={window.innerWidth}
