@@ -41,6 +41,7 @@ const Responsive: React.FC<Props> = () => {
     .forceUpdateByStateTag;
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  const updatePageData = useDispatch<Dispatch>().pageData.updatePage;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
   const removeActivationItem = useDispatch<Dispatch>().activationItem.removeActivationItem;
@@ -69,6 +70,9 @@ const Responsive: React.FC<Props> = () => {
         break;
       case "updateRunningTimes":
         setRunningTimes(value);
+        break;
+      case "updatePage":
+        updatePageData(value);
         break;
       case "id":
         // 设置当前项正在被编辑

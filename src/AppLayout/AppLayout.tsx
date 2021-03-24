@@ -77,7 +77,7 @@ const AppLayout: React.FC<LayoutProps> = ({
         null
     );
 
-    const [pageDataLocalStoreData, setPageDataLocalStoreData] = useLocalStorage('pageData', null);
+    const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
 
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
@@ -116,6 +116,7 @@ const AppLayout: React.FC<LayoutProps> = ({
             );
         });
     }, [getAppData, appDataLocalStoreData, sendMessage]);
+    
 
     // 获取页面数据
     useMemo(() => {

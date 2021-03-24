@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo } from 'react';
 import AppLayout from '~/AppLayout';
 import EventEmitter from '~/core/EventEmitter';
 import { Modules } from '~/types/modules';
-import getResult from '~/core/getDataFromRunningTime';
 import './App.less';
 
 interface Props {}

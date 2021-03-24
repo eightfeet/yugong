@@ -9,7 +9,7 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import Api from "~/components/App";
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
@@ -34,31 +34,40 @@ const units = ["px", "rem", "vw", "vh"];
 const Pagesetting: React.FC<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
-  // 数据传递问题
+  // const ref = useRef();
+
+  // 监听App页面数据，同步到编辑器数据
   const sendMessage = usePostMessage((data) => {
     const { tag, value } = data;
-    if (tag === 'updatePage') {
-      updatePage(value)
+    if (tag === "updatePage") {
+      updatePage(value);
     }
   });
 
-  const [_, setPagedataLocalStorage] = useLocalStorage(
-    'pageData',
-    null
-);
-  
-  useEffect(() => {
-    const win = (document.getElementById(
-      "wrapiframe"
-    ) as HTMLIFrameElement).contentWindow;
-    if (win) {
-      sendMessage({
-        tag: 'updatePage',
-        value: pageData
-      }, win)
-    }
-  }, [pageData, sendMessage])
+  // 本地存储编辑数据
+  const [_, setPagedataLocalStorage] = useLocalStorage("pageData", null);
 
+  const handleUpdatePage = useCallback(
+    (pageData) => {
+      // 1、更新redux数据
+      updatePage(pageData);
+      // 2、将页面数据本地缓存
+      setPagedataLocalStorage(pageData);
+      // 3、向下游发送数据
+      const win = (document.getElementById("wrapiframe") as HTMLIFrameElement)
+        .contentWindow;
+      if (win) {
+        sendMessage(
+          {
+            tag: "updatePage",
+            value: pageData,
+          },
+          win
+        );
+      }
+    },
+    [sendMessage, setPagedataLocalStorage, updatePage]
+  );
 
   const onChangeEnv = useCallback(
     (envinfo, data) => {
@@ -71,7 +80,7 @@ const Pagesetting: React.FC<Props> = () => {
       }
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeBg = useCallback(
@@ -89,7 +98,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.style = style;
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeUnit = useCallback(
@@ -109,7 +118,7 @@ const Pagesetting: React.FC<Props> = () => {
 
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeStatisticsId = useCallback(
@@ -118,7 +127,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.statisticsId = e.target.value;
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeUIWidth = useCallback(
@@ -127,7 +136,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.UIWidth = e.target.value;
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeBaseFont = useCallback(
@@ -136,7 +145,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.baseFont = e.target.value;
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onChangeApi = useCallback(
@@ -145,7 +154,7 @@ const Pagesetting: React.FC<Props> = () => {
       optPageData.onLoadApi = data;
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onRemoveApi = useCallback(
@@ -156,7 +165,7 @@ const Pagesetting: React.FC<Props> = () => {
       });
       handleUpdatePage(optPageData);
     },
-    [pageData, updatePage]
+    [handleUpdatePage, pageData]
   );
 
   const onPlus = useCallback(() => {
@@ -166,19 +175,11 @@ const Pagesetting: React.FC<Props> = () => {
       apiId: uuidv4(),
     });
     handleUpdatePage(optPageData);
-  }, [pageData, updatePage]);
-
-  const handleUpdatePage = useCallback((pageData) => {
-    // 缓存
-    updatePage(pageData);
-
-    // 页面数据本地缓存
-    setPagedataLocalStorage(pageData);
-  }, [updatePage]);
+  }, [handleUpdatePage, pageData]);
 
   return (
     <>
-      <Collapse bordered={false}>
+      <Collapse bordered={false} defaultActiveKey="baseset">
         <Panel header="基本信息" key="baseset">
           <Row className={s.row}>
             <Col className={s.label} span={4}>
@@ -207,6 +208,7 @@ const Pagesetting: React.FC<Props> = () => {
                   defaultBGCommonData={pageData.style?.backgroundCommon || {}}
                   defaultBGGradient={pageData.style?.backgroundGradient || {}}
                   onChange={onChangeBg}
+                  unit={pageData.toUnit}
                 />
               </div>
             </Col>

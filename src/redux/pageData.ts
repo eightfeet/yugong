@@ -8,18 +8,28 @@ import { EventsType, EventsTypeItem } from '~/types/modules';
 import { RootModel } from './models';
 
 interface PageData {
+    /* *页面标题 */
     pageTitle?: string;
+    /* 页面单位 */
     unit?: 'px' | 'rem' | 'vh' | 'vw';
+    /* 转换到页面单位 */
     toUnit?: 'px' | 'rem' | 'vh' | 'vw';
+    /* UI宽度 */
     UIWidth?: number;
+    /* 基准字符大小 */
     baseFont?: number;
+    /* 样式 */
     style?: {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
     };
+    /* api */
     onLoadApi?: Api[];
+    /* 挂载事件 */
     mountEnvents?: EventsTypeItem[];
+    /* 卸载事件 */
     unmountEnvents?: EventsTypeItem[];
+    /* 百度统计Id */
     statisticsId?: string;
 }
 
