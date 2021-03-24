@@ -47,6 +47,7 @@ interface LayoutProps {
  */
 const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => {
   const getAppData = useDispatch<Dispatch>().appData.getAppData;
+  const getPageData = useDispatch<Dispatch>().pageData.getPageData;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
@@ -60,7 +61,8 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
   );
   const removeActivationItem = useDispatch<Dispatch>().activationItem.removeActivationItem;
 
-  const [, setLocalStorage] = useLocalStorage("appData", null);
+  const [appDataLocalStoreData, setAppdataLocalStorage] = useLocalStorage("appData", null);
+  const [pageDataLocalStoreData, setPagedataLocalStorage] = useLocalStorage("pageData", null);
   // 接收与处理message
   const sendMessage = usePostMessage((data) => {
     const { tag, value } = data;
@@ -85,10 +87,14 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
     }
   });
 
+  // 在此保存pageData ？
+  useEffect(() => {
+    setPagedataLocalStorage(pageData)
+  }, [setPagedataLocalStorage, pageData])
+
   // 数据初始化，获取页面数据
-  const [localStoreData] = useLocalStorage("appData", null);
   useMemo(() => {
-    getAppData(localStoreData).then((res) => {
+    getAppData(appDataLocalStoreData).then((res) => {
       // 获取数据后 发送一份到父级窗口作为编辑数据
       sendMessage(
         {
@@ -98,7 +104,16 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
         window.top
       );
     });
-  }, [getAppData, localStoreData, sendMessage]);
+    getPageData(pageDataLocalStoreData).then(res => {
+      sendMessage(
+        {
+          tag: "updatePage",
+          value: res,
+        },
+        window.top
+      );
+    })
+  }, [getAppData, appDataLocalStoreData, sendMessage]);
 
   // 更新GridLine布局数据
   const onLayoutChange = useCallback(
@@ -118,9 +133,9 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
         },
         window.top
       );
-      setLocalStorage(appData);
+      setAppdataLocalStorage(appData);
     },
-    [appData, sendMessage, setLocalStorage]
+    [appData, sendMessage, setAppdataLocalStorage]
   );
   const generateStyle = useCallback(
     () => {
