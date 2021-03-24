@@ -133,7 +133,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeUIWidth = useCallback(
     (e) => {
       const optPageData = cloneDeep(pageData);
-      optPageData.UIWidth = e.target.value;
+      optPageData.UIWidth = e;
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -142,7 +142,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeBaseFont = useCallback(
     (e) => {
       const optPageData = cloneDeep(pageData);
-      optPageData.baseFont = e.target.value;
+      optPageData.baseFont = e;
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -208,7 +208,7 @@ const Pagesetting: React.FC<Props> = () => {
                   defaultBGCommonData={pageData.style?.backgroundCommon || {}}
                   defaultBGGradient={pageData.style?.backgroundGradient || {}}
                   onChange={onChangeBg}
-                  unit={pageData.toUnit}
+                  unit={pageData.unit}
                 />
               </div>
             </Col>
@@ -222,8 +222,8 @@ const Pagesetting: React.FC<Props> = () => {
               <Select
                 placeholder="请选择"
                 className={s.select}
-                value={pageData.unit}
-                onChange={onChangeUnit("unit")}
+                value={pageData.toUnit}
+                onChange={onChangeUnit("toUnit")}
               >
                 {units.map((item) => (
                   <Option key={item} value={item}>
@@ -244,8 +244,8 @@ const Pagesetting: React.FC<Props> = () => {
               <Select
                 placeholder="请选择"
                 className={s.select}
-                value={pageData.toUnit}
-                onChange={onChangeUnit("toUnit")}
+                value={pageData.unit}
+                onChange={onChangeUnit("unit")}
               >
                 {units.map((item) => (
                   <Option key={item} value={item}>
@@ -268,14 +268,14 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
               <Col span={7}>
                 <InputNumber
-                  value={pageData.baseFont}
-                  onChange={onChangeBaseFont}
+                  value={pageData.UIWidth}
+                  onChange={onChangeUIWidth}
                   placeholder="px"
                   className={s.num}
                 />
               </Col>
               <Col className={s.info} span={1}>
-                <Tooltip title={<div>终端页面显示单位</div>}>
+                <Tooltip title={<div>UI设计的屏幕宽度(px)</div>}>
                   <InfoCircleOutlined />
                 </Tooltip>
               </Col>
@@ -284,14 +284,14 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
               <Col span={7}>
                 <InputNumber
-                  value={pageData.UIWidth}
-                  onChange={onChangeUIWidth}
+                  value={pageData.baseFont}
+                  onChange={onChangeBaseFont}
                   placeholder="px"
                   className={s.num}
                 />
               </Col>
               <Col className={s.info} span={1}>
-                <Tooltip title={<div>编辑面板使用单位</div>}>
+                <Tooltip title={<div>UI设计下1rem的字体大小(px)</div>}>
                   <InfoCircleOutlined />
                 </Tooltip>
               </Col>

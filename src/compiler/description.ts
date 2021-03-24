@@ -1,6 +1,6 @@
 import { store } from '~/redux/store';
 
-const description = (unit: string = store.getState().controller.unit || 'px') => ({
+const description = (unit: string = store.getState().pageData.unit || 'px') => ({
     "display": {
         "width": [
             "number",

@@ -34,9 +34,9 @@ export const pxToVh = (value: number) => {
 /** 转换为目标单位 */
 export const changeToUnit = (value: any) => {
     // 变量单位
-    const unit = store.getState().controller.unit;
+    const unit = store.getState().pageData.unit;
     // 转换单位
-    const toUnit = store.getState().controller.toUnit;
+    const toUnit = store.getState().pageData.toUnit;
 
     // step1：将value值转化为px单位值
     const pxNumValue = unitToPx(`${value}${unit || ''}`);
@@ -93,7 +93,7 @@ const conversionValue: (
     // 当前描述单位 %，deg等
     const descUnit = getUnit(key, type, subType);
     // 变量单位
-    const unit = store.getState().controller.unit;
+    const unit = store.getState().pageData.unit;
     if (value === undefined || value === null) {
         // 空值处理
         return { value: undefined, unit: undefined };

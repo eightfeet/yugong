@@ -1,22 +1,25 @@
-export const toRem = (doc: any, win: any) => {
-	const UI = {
-		width: 750,
-		baseonFontsize: 31
-	};
-	
+
+function setRem (doc: any, win: any, width: any, baseonFontsize: any) {
+	let fontSize = '';
 	let docEl = doc.documentElement,
 		resizeEvt = "orientationchange" in window ? "orientationchange" : "resize",
 		recalc = function() {
 			let clientWidth = docEl.clientWidth;
 			if (!clientWidth) return;
-			if (clientWidth >= UI.width) {
-				docEl.style.fontSize = UI.baseonFontsize + "px";
+			if (clientWidth >= width) {
+				fontSize = docEl.style.fontSize = baseonFontsize + "px";
 			} else {
-				docEl.style.fontSize = UI.baseonFontsize * (clientWidth / UI.width) + "px";
+				fontSize = docEl.style.fontSize = baseonFontsize * (clientWidth /  width) + "px";
 			}
 		};
 
 	if (!doc.addEventListener) return;
+	recalc();
+	win.removeEventListener(resizeEvt, recalc, false);
+	doc.removeEventListener("DOMContentLoaded", recalc, false);
 	win.addEventListener(resizeEvt, recalc, false);
 	doc.addEventListener("DOMContentLoaded", recalc, false);
+	return fontSize;
 }
+
+export default setRem;

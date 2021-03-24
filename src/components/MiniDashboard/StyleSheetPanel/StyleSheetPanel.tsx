@@ -21,7 +21,7 @@ interface Props {
 
 const StyleSheetPanel: React.FC<Props> = ({ path }) => {
   const selected = useSelector((state: RootState) => state.activationItem);
-  const unit = useSelector((state: RootState) => state.controller.unit);
+  const unit = useSelector((state: RootState) => state.pageData.unit);
   const update = useMergeAppData();
   const rootStyle = `style.${path}`;
 
