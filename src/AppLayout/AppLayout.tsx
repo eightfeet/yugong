@@ -124,7 +124,6 @@ const AppLayout: React.FC<LayoutProps> = ({ rowHeight, cols, eventEmitter }) => 
   );
   const generateStyle = useCallback(
     () => {
-      // compiler.backgroundCommon(pageData.style?.backgroundCommon|| {})
       const style = {
         ...backgroundCommon(pageData.style?.backgroundCommon || {}).result,
         ...backgroundGradient(pageData.style?.backgroundGradient || {}).result,
