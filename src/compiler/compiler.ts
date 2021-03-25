@@ -2,7 +2,10 @@ import description from './description';
 import { createInlineStyles } from '@eightfeet/modal';
 import { store } from '~/redux/store';
 import unitToPx from '~/core/unitToPx';
-import { BackgroundGradientTypesOfStyleItems } from '~/types/appData';
+import {
+    BackgroundCommonTypesOfStyleItems,
+    BackgroundGradientTypesOfStyleItems,
+} from '~/types/appData';
 
 interface objType {
     [key: string]: any;
@@ -14,11 +17,12 @@ interface resultType {
 }
 
 export const pxToRem = (value: number) => {
-    const rootFontsize = window
-        .getComputedStyle(document.body)
-        .getPropertyValue('font-size')
-        .replace('px', '');
-    return value / Number(rootFontsize);
+    const rootFontsize = store.getState().controller.bestFont;
+    const uiBaseFont = store.getState().pageData.baseFont;
+    if (uiBaseFont && rootFontsize) {
+        return (value / uiBaseFont) * rootFontsize
+    }
+    return value;
 };
 
 export const pxToVw = (value: number) => {
@@ -40,6 +44,7 @@ export const changeToUnit = (value: any) => {
 
     // step1：将value值转化为px单位值
     const pxNumValue = unitToPx(`${value}${unit || ''}`);
+
     // step2：value px单位转换为 toUnit单位
     let unitNumValue = 0;
     switch (toUnit) {
@@ -53,13 +58,13 @@ export const changeToUnit = (value: any) => {
             unitNumValue = pxToVh(pxNumValue);
             break;
         case 'vw':
-            unitNumValue = pxToVh(pxNumValue);
+            unitNumValue = pxToVw(pxNumValue);
             break;
         default:
             unitNumValue = pxNumValue;
     }
 
-    return { value: `${unitNumValue}${toUnit || 'px'}`, unit: toUnit || 'px' };
+    return { value: `${unitNumValue}px`, unit: toUnit || 'px' };
 };
 
 /** 获取单位 */
@@ -145,7 +150,7 @@ export const backgroundGradient = function (
     let type: 'linear-gradient' | 'radial-gradient' = 'linear-gradient';
 
     // 临时傀儡数据
-    const puppet: {[keys: string]: any[]} = {
+    const puppet: { [keys: string]: any[] } = {
         moz: [],
         webkit: [],
         normal: [],
@@ -203,11 +208,15 @@ export const backgroundGradient = function (
         });
     }
     // 无值时
-    if (puppet.moz.length === 0 || puppet.webkit.length === 0 || puppet.normal.length === 0) {
-      return {
-        result: {},
-        string: ''
-      }
+    if (
+        puppet.moz.length === 0 ||
+        puppet.webkit.length === 0 ||
+        puppet.normal.length === 0
+    ) {
+        return {
+            result: {},
+            string: '',
+        };
     }
     // 组装css
     const result: objType = {};
@@ -233,8 +242,11 @@ export const backgroundGradient = function (
     };
 };
 
-export const backgroundCommon = function (styleObj: objType): resultType {
-    const rules: { background: any[]; backgroundSize: any[] } = {
+export const backgroundCommon = function (
+    styleObj: BackgroundCommonTypesOfStyleItems
+): resultType {
+    // 数据傀儡
+    const puppet: { background: any[]; backgroundSize: any[] } = {
         background: [
             null /*backgroundColor*/,
             null /*imageUrl*/,
@@ -271,59 +283,59 @@ export const backgroundCommon = function (styleObj: objType): resultType {
             }
             if (BGposition[key] !== undefined) {
                 if (key === 'imageUrl') {
-                    rules.background[BGposition[key]] = `url("${data.value}")`;
+                    puppet.background[BGposition[key]] = `url("${data.value}")`;
                 } else {
-                    rules.background[BGposition[key]] = data.value;
+                    puppet.background[BGposition[key]] = data.value;
                 }
             }
             if (BGSbackgroundSize[key] !== undefined) {
-                rules.backgroundSize[BGSbackgroundSize[key]] = data.value;
+                puppet.backgroundSize[BGSbackgroundSize[key]] = data.value;
             }
         }
     }
 
     const result: objType = {};
-    if (rules.background[1]) {
+    if (puppet.background[1]) {
         // imageUrl
         if (
-            (!rules.background[3] || rules.background[3] === positionUnit) &&
-            rules.background[4]
+            (!puppet.background[3] || puppet.background[3] === positionUnit) &&
+            puppet.background[4]
         ) {
             // positionX positionY
-            rules.background[3] = '0%';
+            puppet.background[3] = '0%';
         }
         if (
-            (!rules.background[4] || rules.background[4] === positionUnit) &&
-            rules.background[3]
+            (!puppet.background[4] || puppet.background[4] === positionUnit) &&
+            puppet.background[3]
         ) {
-            rules.background[4] = '0%';
+            puppet.background[4] = '0%';
         }
 
         if (
-            (!rules.backgroundSize[0] ||
-                rules.backgroundSize[0] === sizeXUnit) &&
-            rules.backgroundSize[1]
+            (!puppet.backgroundSize[0] ||
+                puppet.backgroundSize[0] === sizeXUnit) &&
+            puppet.backgroundSize[1]
         ) {
-            rules.backgroundSize[0] = 'auto';
+            puppet.backgroundSize[0] = 'auto';
         }
         if (
-            (!rules.backgroundSize[1] ||
-                rules.backgroundSize[1] === sizeXUnit) &&
-            rules.backgroundSize[0]
+            (!puppet.backgroundSize[1] ||
+                puppet.backgroundSize[1] === sizeXUnit) &&
+            puppet.backgroundSize[0]
         ) {
-            rules.backgroundSize[1] = 'auto';
+            puppet.backgroundSize[1] = 'auto';
         }
     } else {
-        rules.background[2] = rules.background[3] = rules.background[4] = null;
+        puppet.background[2] = puppet.background[3] = puppet.background[4] = null;
     }
 
-    result.background = rules.background.filter((item) => !!item).join(' ');
+    result.background = puppet.background.filter((item) => !!item).join(' ');
     if (
-        rules.background[1] &&
-        rules.backgroundSize[0] &&
-        rules.backgroundSize[1]
+        puppet.background[1] &&
+        puppet.backgroundSize[0] &&
+        puppet.backgroundSize[1]
     ) {
-        result.backgroundSize = rules.backgroundSize
+        result.backgroundSize = puppet.backgroundSize
             .filter((item) => !!item)
             .join(' ');
     }

@@ -14,6 +14,7 @@ export const controller = createModel<RootModel>()({
         editingId?: string;
         unit?: string;
         toUnit?: string;
+        bestFont?: number
     }, // typed complex state
     reducers: {
         setStateTag(state, payload: boolean) {
@@ -30,6 +31,9 @@ export const controller = createModel<RootModel>()({
         },
         setToUnit(state, payload: string) {
             return { ...state, toUnit: payload };
+        },
+        setBestFont(state, payload: number) {
+            return { ...state, bestFont: payload };
         }
     },
     effects: (dispatch) => {

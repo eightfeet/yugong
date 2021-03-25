@@ -157,6 +157,7 @@ const AppLayout: React.FC<LayoutProps> = ({
         const gradient = backgroundGradient(
             pageData.style?.backgroundGradient || {}
         ).result;
+
         const style = {
             ...backgroundCommon(pageData.style?.backgroundCommon || {}).result,
         };

@@ -23,7 +23,7 @@ const App: Modules<Props> = () => {
       pageData.UIWidth &&
       pageData.baseFont
     ) {
-      setRem(document, window, pageData.UIWidth, pageData.baseFont);
+      setRem(pageData.UIWidth, pageData.baseFont);
     }
   }, [pageData.UIWidth, pageData.baseFont, pageData.toUnit, pageData.unit]);
   // 设置页面标题

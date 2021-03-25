@@ -114,6 +114,9 @@ const Pagesetting: React.FC<Props> = () => {
       if (optPageData.unit !== "rem" && optPageData.toUnit !== "rem") {
         delete optPageData.UIWidth;
         delete optPageData.baseFont;
+      } else {
+        optPageData.UIWidth = undefined;
+        optPageData.baseFont = undefined
       }
 
       handleUpdatePage(optPageData);
