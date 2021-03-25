@@ -1,9 +1,44 @@
-import { store } from '~/redux/store';
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch, RootState } from "~/redux/store";
 
-function setRem(width: any, baseonFontsize: any) {
+function useRem() {
+  const pageData = useSelector((state: RootState) => state.pageData);
+  const setBestFont = useDispatch<Dispatch>().controller.setBestFont;
+  const uiWidth = useSelector((state: RootState) => state.pageData.UIWidth);
+  const uiFontSize = useSelector((state: RootState) => state.pageData.baseFont);
+    
+  const resizeFn = useCallback(() => {
     let clientWidth = document.documentElement.clientWidth;
-    const fontSizeValue = baseonFontsize * (clientWidth / width);
-    store.dispatch.controller.setBestFont(fontSizeValue);
+    const fontSizeValue = (uiFontSize || 1) * (clientWidth / (uiWidth || 1));
+    setBestFont(fontSizeValue);
+  }, [uiFontSize, setBestFont, uiWidth]);
+  
+  useEffect(() => {
+    resizeFn();
+    if (
+      (pageData.toUnit === "rem" || pageData.unit === "rem") &&
+      pageData.UIWidth &&
+      pageData.baseFont
+    ) {
+      window.addEventListener("resize", resizeFn, true);
+    }
+    return () => {
+      if (
+        (pageData.toUnit === "rem" || pageData.unit === "rem") &&
+        pageData.UIWidth &&
+        pageData.baseFont
+      ) {
+        window.removeEventListener("resize", resizeFn, true);
+      }
+    };
+  }, [
+    pageData.UIWidth,
+    pageData.baseFont,
+    pageData.toUnit,
+    pageData.unit,
+    resizeFn
+  ]);
 }
 
-export default setRem;
+export default useRem;

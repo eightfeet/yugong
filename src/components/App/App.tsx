@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import AppLayout from "~/AppLayout";
 import EventEmitter from "~/core/EventEmitter";
-import setRem from "~/core/toRem";
+import useRem from "~/core/toRem";
 import { RootState } from "~/redux/store";
 import { Modules } from "~/types/modules";
 import "./App.less";
@@ -17,15 +17,8 @@ const App: Modules<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
 
   // 设置基准rem单位
-  useEffect(() => {
-    if (
-      (pageData.toUnit === "rem" || pageData.unit === "rem") &&
-      pageData.UIWidth &&
-      pageData.baseFont
-    ) {
-      setRem(pageData.UIWidth, pageData.baseFont);
-    }
-  }, [pageData.UIWidth, pageData.baseFont, pageData.toUnit, pageData.unit]);
+  useRem()
+
   // 设置页面标题
   useEffect(() => {
     document.title = pageData.pageTitle || "*";
