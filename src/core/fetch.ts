@@ -4,10 +4,11 @@ import getDataFromArguments from "./getDataFromArguments";
 import { Dispatch, store } from "~/redux/store";
 
 const requester = async ({ url, method, body, headers, successPublic, errorPublic, credentials }: Api) => {
+  console.log(1)
   if (!url) {
     return Promise.reject({ message: "没有url" });
   }
-
+  console.log(2)
   // 处理header
   const headersData = {
     "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const requester = async ({ url, method, body, headers, successPublic, errorPubli
   if (method !== "GET") {
     args.body = bodyData;
   }
-
+  console.log(3)
   try {
     const res = await fetch(urlData, args);
     /**

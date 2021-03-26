@@ -154,7 +154,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeApi = useCallback(
     (data) => {
       const optPageData = cloneDeep(pageData);
-      optPageData.onLoadApi = data;
+      optPageData.onLoadApi = [...data];
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -182,7 +182,7 @@ const Pagesetting: React.FC<Props> = () => {
 
   return (
     <>
-      <Collapse bordered={false} defaultActiveKey="baseset">
+      <Collapse bordered={false} defaultActiveKey="pagemount">
         <Panel header="基本信息" key="baseset">
           <Row className={s.row}>
             <Col className={s.label} span={4}>
