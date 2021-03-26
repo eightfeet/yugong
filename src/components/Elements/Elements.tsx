@@ -1,6 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { AppDataElementsTypes } from 'types/appData';
 import LazyLoader from '~/components/LazyLoader';
+import { RootState } from '~/redux/store';
 
 /**
  * To do list !!!
@@ -14,14 +16,17 @@ import LazyLoader from '~/components/LazyLoader';
 interface ElementsProps extends AppDataElementsTypes {
     id?: string;
     layout?: {
-        [keys: string]:any
-    }
+        [keys: string]: any;
+    };
 }
 
 const Elements: React.FC<ElementsProps> = (props) => {
     const { type, layout, ...other } = props;
     return (
-        <LazyLoader path={`modules/${type}`} {...other}/>
+        <LazyLoader
+            path={`modules/${type}`}
+            {...other}
+        />
     );
 };
 

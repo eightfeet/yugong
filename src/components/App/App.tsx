@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import AppLayout from "~/AppLayout";
 import EventEmitter from "~/core/EventEmitter";
-import useRem from "~/core/toRem";
+import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { Modules } from "~/types/modules";
 import "./App.less";
@@ -15,6 +15,8 @@ interface Props {}
 
 const App: Modules<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
+  // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
+  const rootFontsize = useSelector((state: RootState) => state.controller.bestFont) || 16;
 
   // 设置基准rem单位
   useRem()
@@ -70,6 +72,7 @@ const App: Modules<Props> = () => {
 
   return (
     <AppLayout
+      rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
       rowHeight={parseInt(process.env.REACT_APP_APPLAYOUT_ROWHEIGHT || "0")}
       cols={parseInt(process.env.REACT_APP_APPLAYOUT_COLS || "0")}

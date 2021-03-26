@@ -114,6 +114,7 @@ export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
+  rootFontsize?: number; 
   events?: EventsType;
   content: AnyObjectType;
   type: AppDataModuleTypes;

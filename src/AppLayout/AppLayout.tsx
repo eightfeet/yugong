@@ -43,6 +43,10 @@ interface LayoutProps {
      * @memberof LayoutProps
      */
     eventEmitter: EventEmitter;
+    /**
+     * 字体尺寸
+     */
+    rootFontsize: number;
 }
 
 /**
