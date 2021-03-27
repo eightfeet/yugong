@@ -6,7 +6,6 @@ import { RootState } from "~/redux/store";
 import Api from '~/components/App';
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
-import { globalOption } from "~/core/globalEvents";
 
 /**
  * 事件描述
@@ -74,8 +73,6 @@ const EventItem: React.FC<Props> = ({
         });
       }
     }
-    // 将全局方法注入
-    data.push(globalOption);
     setModuleList(data);
   }, [appData]);
 

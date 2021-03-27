@@ -1,14 +1,12 @@
 import { AnyObjectType, Api } from "~/types/appData";
 import { stringifyUrl } from "query-string";
 import getDataFromArguments from "./getDataFromArguments";
-import { Dispatch, store } from "~/redux/store";
+import { store } from "~/redux/store";
 
 const requester = async ({ url, method, body, headers, successPublic, errorPublic, credentials }: Api) => {
-  console.log(1)
   if (!url) {
     return Promise.reject({ message: "没有url" });
   }
-  console.log(2)
   // 处理header
   const headersData = {
     "Content-Type": "application/json",
@@ -37,7 +35,6 @@ const requester = async ({ url, method, body, headers, successPublic, errorPubli
   if (method !== "GET") {
     args.body = bodyData;
   }
-  console.log(3)
   try {
     const res = await fetch(urlData, args);
     /**
@@ -47,10 +44,8 @@ const requester = async ({ url, method, body, headers, successPublic, errorPubli
       const textData = await res.text();
       const resultData = JSON.parse(textData);
       // 处理请求结果
-      console.log('resultData', resultData);
       if (successPublic?.length) {
         const successPublicResult = getDataFromArguments(successPublic, resultData);
-        console.log('successPublicResult', successPublicResult)
         store.dispatch.runningTimes.setRunningTimes(successPublicResult)
       }
       return resultData;

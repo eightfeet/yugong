@@ -9,7 +9,7 @@ import EventEmitter from "~/core/EventEmitter";
 import requester from "~/core/fetch";
 import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
-import { Modules } from "~/types/modules";
+import { EventsTypeItem, Modules } from "~/types/modules";
 import "./App.less";
 
 interface Props {}
@@ -37,30 +37,28 @@ const App: Modules<Props> = () => {
 
   const onMount = useCallback(async () => {
     // 1、api处理
-    console.log("api处理！", pageData.onLoadApi);
-    // 检查是不是url
+    // 检查是不是http-url
     const reg = new RegExp('(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
-
-    const apiArguments = pageData.onLoadApi?.filter(item => reg.test(item.url || ''));
-    console.log(apiArguments)
+    const apiArguments = pageData.onLoadApi?.filter(item => (reg.test(item.url || '') && !!item.method));
     // 事先准备数据。
     if (apiArguments?.length) {
         apiArguments.forEach(async item => {
           await requester(item)
         })
     }
+
     // 2、事件处理
-    console.log("mount！");
-    const emitList: any[] = [];
-    eventEmitter.emit(emitList);
-  }, [eventEmitter, pageData.onLoadApi]);
+    setTimeout(() => {
+      const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
+      eventEmitter.emit(emitList); 
+    }, 1000);
+  }, [eventEmitter, pageData.mountEnvents, pageData.onLoadApi]);
 
   const onUnmount = useCallback(() => {
     // 1、事件处理
-    console.log("unmount！");
-    const emitList: any[] = [];
+    const emitList: EventsTypeItem[] = pageData.unmountEnvents || [];
     eventEmitter.emit(emitList);
-  }, [eventEmitter]);
+  }, [eventEmitter, pageData.unmountEnvents]);
 
   useMemo(() => {
     eventEmitter.addEventListener("mount", onMount);
@@ -70,12 +68,10 @@ const App: Modules<Props> = () => {
   useEffect(() => {
     if (eventEmitter) {
       onMount();
-      console.log("挂载！！！");
     }
     return () => {
       if (eventEmitter) {
         onUnmount();
-        console.log("卸载！！！");
       }
     };
   }, [eventEmitter, onMount, onUnmount]);
