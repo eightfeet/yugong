@@ -16,7 +16,7 @@ const ApiSetting: React.FC<Props> = () => {
         (state: RootState) => state.activationItem
     );
 
-    const { api, type, moduleId } = activationItem;
+    const { api, type } = activationItem;
 
     /**
      * 获取当前被选组件导出的（自定义）默认Api数据
@@ -25,7 +25,7 @@ const ApiSetting: React.FC<Props> = () => {
         let data = !!type ? require(`~/modules/${type}`).default?.exposeApi : [];
         data = cloneDeep(data);
         return data;
-    }, [type, activationItem]);
+    }, [type]);
 
     /**
      * 更新数据方法
@@ -36,7 +36,7 @@ const ApiSetting: React.FC<Props> = () => {
         (data: Api[]) => {
             updateAppdata(data, 'api');
         },
-        [updateAppdata, activationItem]
+        [updateAppdata]
     );
 
     return (

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import AppLayout from "~/AppLayout";
 import EventEmitter from "~/core/EventEmitter";
 import requester from "~/core/fetch";
+import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
@@ -38,8 +39,7 @@ const App: Modules<Props> = () => {
   const onMount = useCallback(async () => {
     // 1、api处理
     // 检查是不是http-url
-    const reg = new RegExp('(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
-    const apiArguments = pageData.onLoadApi?.filter(item => (reg.test(item.url || '') && !!item.method));
+    const apiArguments = pageData.onLoadApi?.filter(item => (isUrl(item.url || '') && !!item.method));
     // 事先准备数据。
     if (apiArguments?.length) {
         apiArguments.forEach(async item => {
