@@ -47,7 +47,7 @@ const App: Modules<Props> = () => {
         })
     }
 
-    // 2、事件处理
+    // 2、事件处理，延迟一秒等待组件和eventEmitter准备
     setTimeout(() => {
       const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
       eventEmitter.emit(emitList); 
