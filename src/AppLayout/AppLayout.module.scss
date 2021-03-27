@@ -15,7 +15,11 @@
 }
 
 .layout {
-    z-index: 3;
+    :global{
+        .react-grid-item > .react-resizable-handle.react-resizable-handle-se {
+            z-index: 30;
+        }
+    }
     position: relative;
     flex: auto;
 }

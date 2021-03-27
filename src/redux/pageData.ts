@@ -31,6 +31,12 @@ interface PageData {
     unmountEnvents?: EventsTypeItem[];
     /* 百度统计Id */
     statisticsId?: string;
+    /* 删格列数*/
+    cols?: number;
+    /* 删格间距*/
+    space?:number;
+    /* 删格行高*/
+    rowHeight?: number;
 }
 
 export const pageData = createModel<RootModel>()({
@@ -42,6 +48,9 @@ export const pageData = createModel<RootModel>()({
         onLoadApi: [],
         mountEnvents: [],
         unmountEnvents: [],
+        cols: 12,
+        rowHeight: 20,
+        space: 0
     } as PageData, // typed complex state
     reducers: {
         updatePage(state, payload: PageData) {

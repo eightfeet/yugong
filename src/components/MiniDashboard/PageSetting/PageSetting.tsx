@@ -174,7 +174,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onPlus = useCallback(() => {
     const optPageData = cloneDeep(pageData);
     optPageData.onLoadApi?.push({
-      name: `Api_${optPageData.onLoadApi.length + 1}`,
+      name: `ApiBeforMounted`,
       apiId: uuidv4(),
     });
     handleUpdatePage(optPageData);

@@ -1,4 +1,4 @@
-import { ContainerOutlined, CreditCardOutlined } from "@ant-design/icons";
+import { ContainerOutlined, CopyOutlined, CreditCardOutlined } from "@ant-design/icons";
 
 export const MODULES = [
   {
@@ -12,6 +12,12 @@ export const MODULES = [
     title: "弹窗",
     discribe: "弹窗",
     icon: <CreditCardOutlined />
+  },
+  {
+    moduleName: "Slider",
+    title: "Slider",
+    discribe: "跑马灯",
+    icon: <CopyOutlined />
   },
 ];
 

@@ -82,8 +82,9 @@ const App: Modules<Props> = () => {
     <AppLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
-      rowHeight={parseInt(process.env.REACT_APP_APPLAYOUT_ROWHEIGHT || "0")}
-      cols={parseInt(process.env.REACT_APP_APPLAYOUT_COLS || "0")}
+      rowHeight={pageData.rowHeight || 0}
+      cols={pageData.cols || 0}
+      space={pageData.space || 0}
     />
   );
 };

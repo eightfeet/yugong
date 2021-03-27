@@ -21,11 +21,11 @@ interface ElementsProps extends AppDataElementsTypes {
 }
 
 const Elements: React.FC<ElementsProps> = (props) => {
-    const { type, layout, ...other } = props;
+    const { type } = props;
     return (
         <LazyLoader
             path={`modules/${type}`}
-            {...other}
+            {...props}
         />
     );
 };

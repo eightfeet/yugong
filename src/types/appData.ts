@@ -121,6 +121,9 @@ export interface AppDataElementsTypes {
   moduleId: string;
   moduleName?: string;
   api?: Api[];
+  layout?: {
+    [keys: string]: any;
+  };
 }
 
 export interface AppDataLayoutItemTypes extends AppDataElementsTypes {

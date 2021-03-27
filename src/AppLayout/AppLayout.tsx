@@ -46,6 +46,8 @@ interface LayoutProps {
      * 字体尺寸
      */
     rootFontsize: number;
+    /**间距 */
+    space: number;
 }
 
 /**
@@ -57,6 +59,7 @@ interface LayoutProps {
 const AppLayout: React.FC<LayoutProps> = ({
     rowHeight,
     cols,
+    space,
     eventEmitter,
 }) => {
     const getAppData = useDispatch<Dispatch>().appData.getAppData;
@@ -189,6 +192,7 @@ const AppLayout: React.FC<LayoutProps> = ({
             cols={cols}
             rowHeight={rowHeight}
             width={document.body.scrollWidth}
+            margin={[space, space]}
             autoSize
         >
             {appData.map((item) => {
@@ -227,7 +231,7 @@ const AppLayout: React.FC<LayoutProps> = ({
                     cols={cols}
                     rowHeight={rowHeight}
                     height={document.body.scrollHeight}
-                    space={10}
+                    space={space}
                 />
             ) : null}
             {isEditing ? renderGridLayout() : renderGridLayout()}

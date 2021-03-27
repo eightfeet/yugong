@@ -190,6 +190,7 @@ const Responsive: React.FC<Props> = () => {
           onClose={() => setShowPageDrawer(false)}
           visible={showPageDrawer}
           bodyStyle={{ padding:'0', overflow: 'auto' }}
+          maskStyle={{backgroundColor:'transparent'}}
           footer={null}
         >
           <PageSetting />
@@ -201,6 +202,7 @@ const Responsive: React.FC<Props> = () => {
           onClose={() => setShowDrawer(false)}
           visible={showDrawer}
           bodyStyle={{ padding:'10px 10px 80px 10px' }}
+          maskStyle={{backgroundColor:'transparent'}}
           footer={null}
         >
           <Repository />

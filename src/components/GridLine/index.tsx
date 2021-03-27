@@ -34,16 +34,16 @@ export default function GridLine({
     const xdata = [];
     const ydata = [];
     // y间隔
-    for (let index = 10; index < height; index += rowHeight + space) {
+    for (let index = space; index < height; index += rowHeight + space) {
       xdata.push({ top: Math.floor(index - space) });
       xdata.push({ top: Math.floor(index) });
     }
 
     // x间隔
-    const stx = (width - 10) / cols;
-    for (let index = 10; index <= width + 10; index += stx) {
+    const stx = (width - space) / cols;
+    for (let index = space; index <= width + space; index += stx) {
       ydata.push({ left: Math.floor(index) });
-      ydata.push({ left: Math.floor(index - 10) });
+      ydata.push({ left: Math.floor(index - space) });
     }
 
     setxl(xdata);
@@ -53,11 +53,11 @@ export default function GridLine({
 
   return (
     <div className={s.cwrap} style={{ minHeight: window.innerHeight }}>
-      {xl.map(({ top }: any) => (
-        <div key={top} className={s.x} style={{ top }} />
+      {xl.map(({ top }: any, index: number) => (
+        <div key={index} className={s.x} style={{ top }} />
       ))}
-      {yl.map(({ left }: any) => (
-        <div key={left} className={s.y} style={{ left }} />
+      {yl.map(({ left }: any, index: number) => (
+        <div key={index} className={s.y} style={{ left }} />
       ))}
     </div>
   );
