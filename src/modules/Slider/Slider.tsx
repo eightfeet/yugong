@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import isUrl from "~/core/helper/isUrl";
 import getResult from "~/core/getDataFromRunningTime";
-import s from './Slider.module.less'
+import s from "./Slider.module.less";
 
 interface Props extends AppDataElementsTypes {
   id: string;
@@ -89,17 +89,23 @@ const Slider: Modules<Props> = (props) => {
         window.location.href = item.imageLink;
       }
     },
-    [],
-  )
-  
+    []
+  );
+
   return (
     <Wrapper {...props}>
-      <AwesomeSlider style={{ width: `${width}px`, height: `${height}px`, ...(styleCompiler(style.slider).style || {}) }}>
+      <AwesomeSlider
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          ...(styleCompiler(style.slider).style || {}),
+        }}
+      >
         {images?.map((item, index) => (
-          <div className={s.imgwrap} key={index} onClick={onClickImg(item)}>
-            <img src={item.imageUrl || ""} alt={`${index}`} />
-          </div>
-        ))}
+            <div className={s.imgwrap} key={index} onClick={onClickImg(item)}>
+              <img src={item.imageUrl || ""} alt={`${index}`} />
+            </div>
+          ))}
       </AwesomeSlider>
     </Wrapper>
   );
@@ -159,7 +165,7 @@ Slider.exposeDefaultProps = {
   },
   style: {
     basic: {},
-    slider: {}
+    slider: {},
   },
 };
 
