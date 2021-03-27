@@ -3,7 +3,6 @@
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
 import React, {
-    CSSProperties,
     useCallback,
     useEffect,
     useMemo,
