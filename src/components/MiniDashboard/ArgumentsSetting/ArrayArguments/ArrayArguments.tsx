@@ -64,7 +64,7 @@ const ArrayArguments: React.FC<Props> = ({
   const data: any = argumentsState?.data || [];
   return (
     <>
-      {flexible ? (
+      {true ? (
         <Row className={s.toolbar} gutter={4}>
           <Col span={4}>
             <div className={s.label}>新增索引</div>
@@ -86,7 +86,7 @@ const ArrayArguments: React.FC<Props> = ({
             />
           </Col>
           <Col span={2} className={s.btn}>
-            {flexible ? (
+            {true ? (
               <Button size="small" onClick={onMinus(index)} icon={<MinusOutlined />} />
             ) : null}
           </Col>

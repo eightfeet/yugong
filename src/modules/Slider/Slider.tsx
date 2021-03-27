@@ -95,6 +95,7 @@ const Slider: Modules<Props> = (props) => {
   return (
     <Wrapper {...props}>
       <AwesomeSlider
+      className={s.slider}
         style={{
           width: `${width}px`,
           height: `${height}px`,
@@ -123,14 +124,14 @@ Slider.exposeFunctions = [
         type: "array",
         name: "imageUrls",
         describe: "图片地址",
-        data: [null, null, null, null, null, null],
+        data: [],
         fieldName: "imageUrls",
       },
       {
         type: "array",
         name: "imageLinks",
         describe: "与图片地址保持索引一致空值图片不可点击",
-        data: [null, null, null, null, null, null],
+        data: [],
         fieldName: "imageLinks",
       },
     ],
