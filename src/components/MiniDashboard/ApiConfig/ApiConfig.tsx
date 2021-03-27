@@ -119,23 +119,6 @@ const Apiconfig: React.FC<Props> = ({
   const updateApi = useCallback(
     (data: Api[]) => {
       const optApiData = [...data];
-      const optDefaultApiData = [...(defaultApiData || [])];
-      // 1、清洗操作数据，操作数据与默认数据相同的时不做保存，避免存储数据过大
-      optApiData.forEach((apiItem) => {
-        const defaultApiItem =
-          optDefaultApiData.find((item) => item.apiId === apiItem.apiId) || {};
-        Object.keys(apiItem).forEach((key: string) => {
-          // 保留名字和id
-          if (
-            apiItem[key] === defaultApiItem[key] &&
-            key !== "apiId" &&
-            key !== "name"
-          ) {
-            // 从操作数据中删除与默认数据相同的属性
-            delete apiItem[key];
-          }
-        });
-      });
       // 更新到state
       setOperateApi(optApiData);
       // 将数据更新到appData
@@ -143,7 +126,7 @@ const Apiconfig: React.FC<Props> = ({
         onChange(optApiData);
       }
     },
-    [defaultApiData, operateApi, onChange]
+    [onChange]
   );
 
   /**

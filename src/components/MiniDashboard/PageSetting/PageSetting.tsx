@@ -154,7 +154,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeApi = useCallback(
     (data) => {
       const optPageData = cloneDeep(pageData);
-      optPageData.onLoadApi = [...data];
+      optPageData.onLoadApi = data;
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -310,7 +310,7 @@ const Pagesetting: React.FC<Props> = () => {
             <ApiConfig
               onRemove={onRemoveApi}
               apiData={pageData.onLoadApi}
-              defaultApiData={pageData.onLoadApi}
+              defaultApiData={cloneDeep(pageData.onLoadApi)}
               onChange={onChangeApi}
             />
           </div>
