@@ -43,7 +43,7 @@ interface Configs {
 }
 
 /**
- * 组件
+ * 组件 换个组件 https://github.com/kidjp85/react-id-swiper
  * 组件Props接收AppDataElementsTypes类型数据，
  * 同时接受事件处理器eventEmitter注册事件(addEventListener)、执行事件(emit)
  * @param props
@@ -151,14 +151,6 @@ const Slider: Modules<Props> = (props) => {
       <div ref={sliderRef}>
         {ready ? (
           <AutoSlide
-            play={config.autoPlay === "0"}
-            cancelOnInteraction={true} // should stop playing on user interaction
-            bullets={true}
-            buttons={true}
-            showTimer={false}
-            animation={config.animation || "fallAnimation"}
-            interval={parseInt(config.interval || "") || 2000}
-            className={s.slider}
             style={{
               overflow: "hidden",
               width: `${width}px`,
@@ -226,11 +218,6 @@ Slider.exposeFunctions = [
         `,
         data: {
           autoPlay: "0",
-          // break: "1",
-          // bullets: "1",
-          // buttons: "0",
-          // interval: "2000",
-          // animation: "fallAnimation",
         } as Configs,
         fieldName: "configs",
       },
