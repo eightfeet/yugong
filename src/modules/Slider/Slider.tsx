@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { AppDataElementsTypes } from "~/types/appData";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnyObjectType, AppDataElementsTypes } from "~/types/appData";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
+import "react-awesome-slider/dist/custom-animations/cube-animation.css";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
@@ -12,6 +13,9 @@ import isUrl from "~/core/helper/isUrl";
 import getResult from "~/core/getDataFromRunningTime";
 import s from "./Slider.module.less";
 
+const withAutoplay = require("react-awesome-slider/dist/autoplay").default;
+
+const AutoSlide = withAutoplay(AwesomeSlider);
 interface Props extends AppDataElementsTypes {
   id: string;
   eventEmitter: EventEmitter;
@@ -20,6 +24,22 @@ interface Props extends AppDataElementsTypes {
 interface ImagesType {
   imageUrl?: string;
   imageLink?: string;
+}
+
+interface Configs {
+  /* 自动播放 */
+  autoPlay?: "0" | "1";
+  /** 交互时打断自动播放 */
+  cancelOnInteraction?: "0" | "1";
+  break?: "0" | "1";
+  /** 显示底部导航按钮 */
+  bullets?: "0" | "1";
+  /** 宽屏时显示左右箭头按钮 */
+  buttons?: "0" | "1";
+  /** 动画 */
+  animation?: string;
+  /* 间隔时间 */
+  interval?: string;
 }
 
 /**
@@ -32,6 +52,23 @@ interface ImagesType {
 
 const Slider: Modules<Props> = (props) => {
   const { style, eventEmitter, events = {}, layout } = props;
+
+  const [config, setConfig] = useState<Configs>({});
+  const sliderRef = useRef(null);
+  useEffect(() => {
+    // do auto play 😭 !!!
+    if (
+      sliderRef.current &&
+      config.autoPlay === "0" &&
+      config.buttons !== "0"
+    ) {
+      const ele = sliderRef.current;
+      setTimeout(() => {
+        ((ele as any).querySelector(".awssld__next") as any).click();
+      }, parseInt(config.interval || "") || 2000);
+    }
+  }, [sliderRef, config]);
+
   const pageData = useSelector((state: RootState) => state.pageData);
   const lw =
     (window.innerWidth - (pageData?.space || 0)) / (pageData?.cols || 1);
@@ -50,7 +87,7 @@ const Slider: Modules<Props> = (props) => {
     eventEmitter.emit(events.unmount);
   }, [eventEmitter, events]);
 
-  const onMount = useCallback((imageUrls, imageLinks) => {
+  const setData = useCallback((imageUrls, imageLinks) => {
     const data: ImagesType[] = [];
     imageUrls?.forEach((element: any, index: number) => {
       data.push({
@@ -62,7 +99,16 @@ const Slider: Modules<Props> = (props) => {
     const result = data.filter((item) => isUrl(item.imageUrl || "")) || [];
     setImages(result);
   }, []);
-  const onUnmount = useCallback(() => {}, []);
+  const setSlider = useCallback(
+    (config: Configs) => {
+      if (config) {
+        config.cancelOnInteraction = config.break;
+        delete config.break;
+        setConfig(config);
+      }
+    },
+    [setConfig]
+  );
 
   // ===================================创建组件=================================== //
 
@@ -79,9 +125,9 @@ const Slider: Modules<Props> = (props) => {
 
   //向eventEmitter注册事件，向外公布
   useMemo(() => {
-    eventEmitter.addEventListener("onMount", onMount);
-    eventEmitter.addEventListener("onUnmount", onUnmount);
-  }, [eventEmitter, onMount, onUnmount]);
+    eventEmitter.addEventListener("setData", setData);
+    eventEmitter.addEventListener("setSlider", setSlider);
+  }, [eventEmitter, setData, setSlider]);
 
   const onClickImg = useCallback(
     (item) => () => {
@@ -92,22 +138,42 @@ const Slider: Modules<Props> = (props) => {
     []
   );
 
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setReady(true);
+    }, 1000);
+  }, []);
+
+  // 显示按钮 bullets
   return (
     <Wrapper {...props}>
-      <AwesomeSlider
-      className={s.slider}
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          ...(styleCompiler(style.slider).style || {}),
-        }}
-      >
-        {images?.map((item, index) => (
-            <div className={s.imgwrap} key={index} onClick={onClickImg(item)}>
-              <img src={item.imageUrl || ""} alt={`${index}`} />
-            </div>
-          ))}
-      </AwesomeSlider>
+      <div ref={sliderRef}>
+        {ready ? (
+          <AutoSlide
+            play={config.autoPlay === "0"}
+            cancelOnInteraction={true} // should stop playing on user interaction
+            bullets={true}
+            buttons={true}
+            showTimer={false}
+            animation={config.animation || "fallAnimation"}
+            interval={parseInt(config.interval || "") || 2000}
+            className={s.slider}
+            style={{
+              overflow: "hidden",
+              width: `${width}px`,
+              height: `${height}px`,
+              ...(styleCompiler(style.slider).style || {}),
+            }}
+          >
+            {images?.map((item, index) => (
+              <div className={s.imgwrap} key={index} onClick={onClickImg(item)}>
+                <img src={item.imageUrl || ""} alt={`${index}`} />
+              </div>
+            ))}
+          </AutoSlide>
+        ) : null}
+      </div>
     </Wrapper>
   );
 };
@@ -117,8 +183,8 @@ const Slider: Modules<Props> = (props) => {
  */
 Slider.exposeFunctions = [
   {
-    name: "onMount",
-    description: "当广告挂载后",
+    name: "setData",
+    description: "设置数据源",
     arguments: [
       {
         type: "array",
@@ -136,9 +202,39 @@ Slider.exposeFunctions = [
       },
     ],
   },
+  /* 自动播放 */
+  // autoPlay?: '0' | '1';
+  // /** 交互时打断自动播放 */
+  // cancelOnInteraction?: '0' | '1';
+  // /** 显示底部导航按钮 */
+  // bullets?: '0' | '1';
+  // /** 宽屏时显示左右箭头按钮 */
+  // buttons?: '0' | '1';
+  // /** 动画 */
+  // animation?: string;
+  // /* 间隔时间 */
+  // interval?: string
   {
-    name: "onUnmount",
-    description: "当广告卸载后",
+    name: "setSlider",
+    description: "Slider 设置",
+    arguments: [
+      {
+        type: "object",
+        name: "configs",
+        describe: `
+          (autoPlay: 自动播放-0开启1关闭)
+        `,
+        data: {
+          autoPlay: "0",
+          // break: "1",
+          // bullets: "1",
+          // buttons: "0",
+          // interval: "2000",
+          // animation: "fallAnimation",
+        } as Configs,
+        fieldName: "configs",
+      },
+    ],
   },
 ];
 
