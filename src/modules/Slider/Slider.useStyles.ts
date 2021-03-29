@@ -1,50 +1,47 @@
 import { useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
-import { store } from '~/redux/store';
 import { SliderProps } from './Slider';
 
 
 const useStyles = (props: SliderProps) => {
-    const pageData = store.getState().pageData;
-    const {layout, style} = props;
-    const lw =
-        (window.innerWidth - (pageData?.space || 0)) / (pageData?.cols || 1);
-    const width = (layout?.w || 1) * lw - (pageData?.space || 0);
-    const height =
-        (layout?.h || 1) * (pageData?.rowHeight || 1) +
-        (layout?.h - 1 || 1) * (pageData?.space || 1);
-
 
     const createClsaas = useCallback(
-        createUseStyles({
-            sliderWrap: {
-                width: `${width}px`,
-                height: `${height}px`,
-            },
+        () => createUseStyles({
+            sliderWrap: {},
             next:{
-                background: 'green',
+                backgroundColor: 'rgba(0,0,0,0.3)',
                 '&:after': {
                     content: '"下一个"'
+                },
+                '&.swiper-button-disabled': {
+                    opacity: 0
                 }
+                
             },
             prev: {
-                background: 'yellow',
+                backgroundColor: 'rgba(0,0,0,0.3)',
                 '&:after': {
                     content: '"上一个"'
+                },
+                '&.swiper-button-disabled': {
+                    opacity: 0
                 }
             },
             swiperPagination: {
-                width: '100px',
-                background: 'orange',
-                height: 100
+                '& .swiper-pagination-bullet': {
+                    backgroundColor: 'red',
+                },
+                '& .swiper-pagination-bullet-active': {
+                    backgroundColor: 'green',
+                }
             },
             swiperslide: {
             }
         }),
-        [style],
+        [],
     )
 
-    return createClsaas();
+    return createClsaas()();
 };
 
 

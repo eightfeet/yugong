@@ -17,6 +17,8 @@ import s from "./Slider.module.less";
 import useStyles from "./Slider.useStyles";
 import staticConstants from "./Slider.staticConstants";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 export interface SliderProps extends AppDataElementsTypes {
   id: string;
@@ -42,7 +44,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy]);
 
 const Slider: Modules<SliderProps> = (props) => {
   // ===================================获取变量=================================== //
-  const { style, eventEmitter, events = {}, layout, moduleId } = props;
+  const { eventEmitter, events = {}, layout, moduleId } = props;
+  const pageData = useSelector((state: RootState) => state.pageData)
+  const prefix = `swiper${moduleId}`;
   // ===================================创建运行时class============================ //
   const useClass = useStyles(props);
   // ===================================定义方法=================================== //
@@ -68,7 +72,7 @@ const Slider: Modules<SliderProps> = (props) => {
     setImages(result);
   }, []);
 
-  const [config, setConfig] = useState<Configs>({});
+  const [, setConfig] = useState<Configs>({});
   const setSlider = useCallback(
     (config: Configs) => {
       if (config) {
@@ -104,32 +108,51 @@ const Slider: Modules<SliderProps> = (props) => {
   );
 
   // 初始化组件参数
-  const params = useCallback(() => {
-    return {
-      navigation: {
-        nextEl: `.${useClass.next}`,
-        prevEl: `.${useClass.prev}`,
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-    };
-  }, [useClass.next, useClass.prev]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const params = {
+    resizeObserver: true,
+    navigation: {
+      nextEl: `.${prefix}next`,
+      prevEl: `.${prefix}prev`,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  };
 
+  const swiperRef = useRef<Swiper>();
+  const drawSwiper = useCallback(() => {
+    if (swiperRef.current) {
+      swiperRef.current.destroy(true, true);
+    }
+    swiperRef.current = new Swiper(`.${prefix}container`, params);
+  }, [params, prefix]);
+
+  
   useEffect(() => {
-    (window as any).Swiper = Swiper;
-    const swiper = new Swiper(".swiper-container", params());
-    return () => {
-      swiper.destroy();
-    };
-  }, [params, layout]);
+    drawSwiper()
+  }, [drawSwiper, prefix]);
+
+  // 高度需要实时变化，将他处理为内链样式
+  const wrapWHStyle = useCallback(
+    () => {
+      const lw =
+        (window.innerWidth - (pageData?.space || 0)) / (pageData?.cols || 1);
+      const width = (layout?.w || 1) * lw - (pageData?.space || 0);
+      const height =
+          (layout?.h || 1) * (pageData?.rowHeight || 1) +
+          (layout?.h - 1 || 1) * (pageData?.space || 1) - layout?.h;
+          return {width: `${width}px`, height: `${height}px`}
+      },
+    [layout?.h, layout?.w, pageData?.cols, pageData?.rowHeight, pageData?.space],
+  )
 
   // 创建组件
   return (
     <Wrapper {...props}>
-      <div className={useClass.sliderWrap}>
-        <div className={classNames("swiper-container", s.swipercontainer)}>
+      <div className={useClass.sliderWrap} style={wrapWHStyle()}>
+        <div className={classNames("swiper-container", s.swipercontainer, `${prefix}container`)} >
           <div className="swiper-wrapper">
             {images?.map((item, index) => (
               <div
@@ -145,7 +168,9 @@ const Slider: Modules<SliderProps> = (props) => {
               </div>
             ))}
           </div>
-          <div className="swiper-pagination"></div>
+          <div className={classNames(s.next, useClass.next, `${prefix}next`)} />
+          <div className={classNames(s.prev, useClass.prev, `${prefix}prev`)} />
+          <div className={classNames("swiper-pagination")}></div>
         </div>
       </div>
     </Wrapper>
