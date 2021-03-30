@@ -140,9 +140,11 @@ const AppLayout: React.FC<LayoutProps> = ({
     // 更新GridLine布局数据
     const onLayoutChange = useCallback(
         (layout: LayoutDataType[]) => {
+            let editId: string = '';
             appData.forEach((item) => {
                 layout.forEach((element) => {
                     if (item.moduleId === element.i) {
+                        editId=item.moduleId;
                         item.layout = element;
                     }
                 });
@@ -156,6 +158,11 @@ const AppLayout: React.FC<LayoutProps> = ({
                 window.top
             );
             setAppdataLocalStorage(appData);
+            if(!isEditing) return;
+            // 设置当前操作对象为编辑状态
+            setEditingId(editId)
+            // 向父级窗口通知当前激活Id
+            sendMessage({tag: 'id', value: editId}, window.top)
         },
         [appData, sendMessage, setAppdataLocalStorage]
     );
