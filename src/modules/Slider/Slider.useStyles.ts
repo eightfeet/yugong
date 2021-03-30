@@ -1,20 +1,17 @@
-import { useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import styleCompiler from '~/compiler';
 
 
-const useStyles = createUseStyles({
-    sliderWrap: (style: any) => style.sliderWrap || {},
-
+const useStyles = createUseStyles<string, any>({
+    sliderWrap: (style) => styleCompiler(style.sliderWrap).style || {},
     next: (style) => ({
-        ...(style.next || {}),
+        ...styleCompiler(style.next).style || {},
         '&.swiper-button-disabled': {
             opacity: 0,
         },
     }),
     prev: (style) => ({
-        ...(style.prev || {}),
-
+        ...styleCompiler(style.prev).style || {},
         '&.swiper-button-disabled': {
             opacity: 0,
         },
@@ -23,12 +20,14 @@ const useStyles = createUseStyles({
     swiperPagination: (style) => ({
         ...(styleCompiler(style.pagination).style || {}),
 
-        '& .swiper-pagination-bullet': style.paginationBullet || {},
+        '& .swiper-pagination-bullet': styleCompiler(style.paginationBullet).style || {},
         '& .swiper-pagination-bullet-active':
-            style.paginationBulletActive || {},
+        styleCompiler(style.paginationBulletActive).style || {},
     }),
 
-    slideItem: (style) => style.slideItem || {},
+    slideItem: (style) => styleCompiler(style.slideItem).style || {},
 });
 
 export default useStyles;
+
+

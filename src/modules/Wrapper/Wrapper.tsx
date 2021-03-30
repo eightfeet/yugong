@@ -50,9 +50,9 @@ const Wrapper: React.FC<Props> = ({
 
   const pointerEvents: React.CSSProperties = {};
   if (isEditing) {
-    pointerEvents.pointerEvents = 'none';
+    // pointerEvents.pointerEvents = 'none';
   } else {
-    delete pointerEvents.pointerEvents;
+    // delete pointerEvents.pointerEvents;
   }
 
   return (
