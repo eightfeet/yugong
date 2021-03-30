@@ -48,7 +48,8 @@ const Slider: Modules<SliderProps> = (props) => {
   const pageData = useSelector((state: RootState) => state.pageData)
   const prefix = `swiper${moduleId}`;
   // ===================================创建运行时class============================ //
-  const useClass = useStyles(props);
+  const useClass = useStyles(props.style);
+  
   // ===================================定义方法=================================== //
   const mount = useCallback(() => {
     eventEmitter.emit(events.mount);

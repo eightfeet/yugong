@@ -68,6 +68,7 @@ const AppLayout: React.FC<LayoutProps> = ({
     const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
     const updatePage = useDispatch<Dispatch>().pageData.updatePage;
     const pageData = useSelector((state: RootState) => state.pageData);
+    const activationItem = useSelector((state: RootState) => state.activationItem);
     const appData = useSelector((state: RootState) => state.appData);
     const runningTimes = useSelector((state: RootState) => state.runningTimes);
     const ref = useRef(null);
@@ -144,7 +145,6 @@ const AppLayout: React.FC<LayoutProps> = ({
             appData.forEach((item) => {
                 layout.forEach((element) => {
                     if (item.moduleId === element.i) {
-                        editId=item.moduleId;
                         item.layout = element;
                     }
                 });
@@ -158,11 +158,10 @@ const AppLayout: React.FC<LayoutProps> = ({
                 window.top
             );
             setAppdataLocalStorage(appData);
-            if(!isEditing) return;
-            // 设置当前操作对象为编辑状态
-            setEditingId(editId)
-            // 向父级窗口通知当前激活Id
-            sendMessage({tag: 'id', value: editId}, window.top)
+            // // 设置当前操作对象为编辑状态
+            // setEditingId(editId)
+            // // 向父级窗口通知当前激活Id
+            // sendMessage({tag: 'id', value: editId}, window.top)
         },
         [appData, sendMessage, setAppdataLocalStorage]
     );

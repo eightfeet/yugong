@@ -1,44 +1,34 @@
 import { useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
-import { SliderProps } from './Slider';
+import styleCompiler from '~/compiler';
 
-const useStyles = (props: SliderProps) => {
-    const {
-        sliderWrap,
-        slideItem,
-        pagination,
-        paginationBullet,
-        paginationBulletActive,
-        prev,
-        next
-    } = props.style as any;
-    const createClsaas = useCallback(
-        () =>
-            createUseStyles({
-                sliderWrap: sliderWrap || {},
-                next: {
-                    ...(next || {}),
-                    '&.swiper-button-disabled': {
-                        opacity: 0,
-                    },
-                },
-                prev: {
-                    ...(prev || {}),
-                    '&.swiper-button-disabled': {
-                        opacity: 0,
-                    },
-                },
-                swiperPagination: {
-                    ...(pagination || {}),
-                    '& .swiper-pagination-bullet': (paginationBullet || {}),
-                    '& .swiper-pagination-bullet-active': (paginationBulletActive || {}),
-                },
-                slideItem: (slideItem || {}),
-            }),
-        []
-    );
 
-    return createClsaas()();
-};
+const useStyles = createUseStyles({
+    sliderWrap: (style: any) => style.sliderWrap || {},
+
+    next: (style) => ({
+        ...(style.next || {}),
+        '&.swiper-button-disabled': {
+            opacity: 0,
+        },
+    }),
+    prev: (style) => ({
+        ...(style.prev || {}),
+
+        '&.swiper-button-disabled': {
+            opacity: 0,
+        },
+    }),
+
+    swiperPagination: (style) => ({
+        ...(styleCompiler(style.pagination).style || {}),
+
+        '& .swiper-pagination-bullet': style.paginationBullet || {},
+        '& .swiper-pagination-bullet-active':
+            style.paginationBulletActive || {},
+    }),
+
+    slideItem: (style) => style.slideItem || {},
+});
 
 export default useStyles;
