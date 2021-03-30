@@ -91,6 +91,7 @@ const AppLayout: React.FC<LayoutProps> = ({
         const { tag, value } = data;
         switch (tag) {
             case 'setIsEditing':
+                alert(value)
                 setIsEditing(value);
                 break;
             case 'updateAppData':
@@ -231,6 +232,8 @@ const AppLayout: React.FC<LayoutProps> = ({
 
     return (
         <div className={s.layout} ref={ref} style={generateStyle()}>
+            <>{`??${isEditing}`}</>
+            <>
             {isEditing ? (
                 <GridLine
                     width={window.innerWidth}
@@ -240,7 +243,10 @@ const AppLayout: React.FC<LayoutProps> = ({
                     space={space}
                 />
             ) : null}
-            {isEditing ? renderGridLayout() : renderGridLayout()}
+            </>
+            <>
+            {isEditing ? renderGridLayout() : null}
+            </>
         </div>
     );
 };

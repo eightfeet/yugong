@@ -143,7 +143,7 @@
          cols: 12,
        })
      },
-     [],
+     [defaultLy],
    )
  
    const renderGridLayout = () => (<ResponsiveReactGridLayout

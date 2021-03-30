@@ -5,10 +5,13 @@
 
 import {
   CloseOutlined,
+  CoffeeOutlined,
+  EditOutlined,
+  EyeTwoTone,
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Affix, Button, message, Drawer } from "antd";
+import { Affix, Button, message, Drawer, Radio } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -44,8 +47,9 @@ const Responsive: React.FC<Props> = () => {
   const updatePageData = useDispatch<Dispatch>().pageData.updatePage;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
-  const removeActivationItem = useDispatch<Dispatch>().activationItem.removeActivationItem;
-  
+  const removeActivationItem = useDispatch<Dispatch>().activationItem
+    .removeActivationItem;
+
   const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
   useEffect(() => {
@@ -99,10 +103,19 @@ const Responsive: React.FC<Props> = () => {
   useEffect(() => {
     if (win) {
       win.onload = () => {
-        sendMessage({ tag: "setIsEditing", value: true }, win);
+        sendMessage({ tag: "setIsEditing", value: isEditing }, win);
       };
     }
   }, [isEditing, sendMessage, setIsEditing, win]);
+
+  const toggleEdit = useCallback(
+    () => {
+      const states = !isEditing;
+      sendMessage({ tag: "setIsEditing", value: states }, win);
+      setIsEditing(states);
+    },
+    [isEditing, sendMessage, setIsEditing, win],
+  )
 
   // 收发处理，编辑完数据后通过sendMessage向子窗口发送最新数据。
   useEffect(() => {
@@ -118,7 +131,7 @@ const Responsive: React.FC<Props> = () => {
   const onChangeRule = (width: any) => {
     setIframeWidth(width);
     if (win) {
-      sendMessage({ tag: "setIsEditing", value: true }, win);
+      sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }
     setIsEditing(true);
     forceUpdateByStateTag();
@@ -129,20 +142,17 @@ const Responsive: React.FC<Props> = () => {
   // 无激活模块时隐藏设置面板
   useEffect(() => {
     if (!activationItem.moduleId) {
-      setShowDashboard(false)
-    } 
-  }, [activationItem])
+      setShowDashboard(false);
+    }
+  }, [activationItem]);
 
-  const hideDashboard = useCallback(
-    () => {
-      setShowDashboard(false)
-      removeActivationItem();
-      if (win) {
-        sendMessage({ tag: "removeActivationItem", value: undefined }, win);
-      }
-    },
-    [removeActivationItem, sendMessage, win],
-  )
+  const hideDashboard = useCallback(() => {
+    setShowDashboard(false);
+    removeActivationItem();
+    if (win) {
+      sendMessage({ tag: "removeActivationItem", value: undefined }, win);
+    }
+  }, [removeActivationItem, sendMessage, win]);
 
   return (
     <div className={s.main}>
@@ -156,10 +166,7 @@ const Responsive: React.FC<Props> = () => {
           <div className={s.dashboard} style={{ opacity }}>
             <div className={s.header}>
               <h3>设置面板</h3>
-              <CloseOutlined
-                className={s.icon}
-                onClick={hideDashboard}
-              />
+              <CloseOutlined className={s.icon} onClick={hideDashboard} />
             </div>
             <MiniDashboard />
           </div>
@@ -181,32 +188,47 @@ const Responsive: React.FC<Props> = () => {
         >
           组件
         </Button>
+        &nbsp;
+        {!isEditing ? (
+          <Button
+            type="primary"
+            onClick={toggleEdit}
+            icon={<CoffeeOutlined />}
+          />
+        ) : null}
+        {isEditing ? (
+          <Button
+            type="primary"
+            onClick={() => setIsEditing(false)}
+            icon={<EditOutlined />}
+          />
+        ) : null}
       </div>
       <Ruler onChange={onChangeRule} />
       <Drawer
-          className={s.drawer}
-          title="页面设置"
-          width={550}
-          onClose={() => setShowPageDrawer(false)}
-          visible={showPageDrawer}
-          bodyStyle={{ padding:'0', overflow: 'auto' }}
-          maskStyle={{backgroundColor:'transparent'}}
-          footer={null}
-        >
-          <PageSetting />
-        </Drawer>
-        <Drawer
-          className={s.drawer}
-          title="组件库"
-          width={550}
-          onClose={() => setShowDrawer(false)}
-          visible={showDrawer}
-          bodyStyle={{ padding:'10px 10px 80px 10px' }}
-          maskStyle={{backgroundColor:'transparent'}}
-          footer={null}
-        >
-          <Repository />
-        </Drawer>
+        className={s.drawer}
+        title="页面设置"
+        width={550}
+        onClose={() => setShowPageDrawer(false)}
+        visible={isEditing && showPageDrawer}
+        bodyStyle={{ padding: "0", overflow: "auto" }}
+        maskStyle={{ backgroundColor: "transparent" }}
+        footer={null}
+      >
+        <PageSetting />
+      </Drawer>
+      <Drawer
+        className={s.drawer}
+        title="组件库"
+        width={550}
+        onClose={() => setShowDrawer(false)}
+        visible={isEditing && showDrawer}
+        bodyStyle={{ padding: "10px 10px 80px 10px" }}
+        maskStyle={{ backgroundColor: "transparent" }}
+        footer={null}
+      >
+        <Repository />
+      </Drawer>
       <div className={s.box}>
         {!stateTag ? (
           <div
