@@ -48,6 +48,13 @@ const Wrapper: React.FC<Props> = ({
     sendMessage({tag: 'id', value: id}, window.top)
   }, [isEditing, id, sendMessage, setEditingId]);
 
+  const pointerEvents: React.CSSProperties = {};
+  if (isEditing) {
+    pointerEvents.pointerEvents = 'none';
+  } else {
+    delete pointerEvents.pointerEvents;
+  }
+
   return (
     <div
       className={s.touchwrap}
@@ -55,7 +62,7 @@ const Wrapper: React.FC<Props> = ({
       onMouseDown={onLayoutClick}
     >
       {actId === id ? <div className={s.actwrap} /> : null}
-      <div id={id} style={basicStyle.style}>
+      <div id={id} style={{...basicStyle.style, ...pointerEvents}}>
         {children}
       </div>
     </div>

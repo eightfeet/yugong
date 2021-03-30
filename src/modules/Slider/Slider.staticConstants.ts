@@ -73,9 +73,24 @@ const staticConstants: StaticConstants = {
             h: 4, // 高
         },
         style: {
+            // 基础
             basic: {},
-            slider: {},
-        },
+            // 滑动包裹器
+            sliderWrap: {},
+            // 滑动页
+            slideItem: {},
+            // 导航
+            pagination: {},
+            // 导航按钮
+            paginationBullet: {},
+            // 导航按钮激活
+            paginationBulletActive: {},
+            // 上一页
+            prev: {},
+            // 下一页
+            next: {},
+            
+        }
     },
 };
 

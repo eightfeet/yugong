@@ -2,47 +2,43 @@ import { useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import { SliderProps } from './Slider';
 
-
 const useStyles = (props: SliderProps) => {
-
+    const {
+        sliderWrap,
+        slideItem,
+        pagination,
+        paginationBullet,
+        paginationBulletActive,
+        prev,
+        next
+    } = props.style as any;
     const createClsaas = useCallback(
-        () => createUseStyles({
-            sliderWrap: {},
-            next:{
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                '&:after': {
-                    content: '"下一个"'
+        () =>
+            createUseStyles({
+                sliderWrap: sliderWrap || {},
+                next: {
+                    ...(next || {}),
+                    '&.swiper-button-disabled': {
+                        opacity: 0,
+                    },
                 },
-                '&.swiper-button-disabled': {
-                    opacity: 0
-                }
-                
-            },
-            prev: {
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                '&:after': {
-                    content: '"上一个"'
+                prev: {
+                    ...(prev || {}),
+                    '&.swiper-button-disabled': {
+                        opacity: 0,
+                    },
                 },
-                '&.swiper-button-disabled': {
-                    opacity: 0
-                }
-            },
-            swiperPagination: {
-                '& .swiper-pagination-bullet': {
-                    backgroundColor: 'red',
+                swiperPagination: {
+                    ...(pagination || {}),
+                    '& .swiper-pagination-bullet': (paginationBullet || {}),
+                    '& .swiper-pagination-bullet-active': (paginationBulletActive || {}),
                 },
-                '& .swiper-pagination-bullet-active': {
-                    backgroundColor: 'green',
-                }
-            },
-            swiperslide: {
-            }
-        }),
-        [],
-    )
+                slideItem: (slideItem || {}),
+            }),
+        []
+    );
 
     return createClsaas()();
 };
 
-
-export default useStyles
+export default useStyles;

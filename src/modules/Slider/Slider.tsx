@@ -159,7 +159,7 @@ const Slider: Modules<SliderProps> = (props) => {
                 className={classNames(
                   "swiper-slide",
                   s.swiperslide,
-                  useClass.swiperslide
+                  useClass.slideItem
                 )}
                 key={`${moduleId}-slideContent-${index}`}
                 onClick={onClickImg(item)}
