@@ -170,7 +170,7 @@ const Slider: Modules<SliderProps> = (props) => {
           </div>
           <div className={classNames(s.next, useClass.next, `${prefix}next`)} />
           <div className={classNames(s.prev, useClass.prev, `${prefix}prev`)} />
-          <div className={classNames("swiper-pagination")}></div>
+          <div className={classNames("swiper-pagination", useClass.swiperPagination)}></div>
         </div>
       </div>
     </Wrapper>
