@@ -63,9 +63,6 @@ const AppLayout: React.FC<LayoutProps> = ({
     const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
     const updatePage = useDispatch<Dispatch>().pageData.updatePage;
     const pageData = useSelector((state: RootState) => state.pageData);
-    const activationItem = useSelector(
-        (state: RootState) => state.activationItem
-    );
     const appData = useSelector((state: RootState) => state.appData);
     const runningTimes = useSelector((state: RootState) => state.runningTimes);
     const ref = useRef(null);

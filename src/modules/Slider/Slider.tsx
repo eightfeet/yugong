@@ -51,13 +51,9 @@ const Slider: Modules<SliderProps> = (props) => {
     // ===================================创建运行时class============================ //
     const useClass = useStyles(props.style);
     // ===================================定义方法=================================== //
-    const mount = useCallback(async () => {
-        const apiArguments = api?.find(item => item.apiId === 'init');
-        if (apiArguments?.url) {
-            await requester(apiArguments)
-        }
+    const mount = useCallback(() => {
         eventEmitter.emit(events.mount);
-    }, [eventEmitter, events, api]);
+    }, [eventEmitter, events]);
 
     const unmount = useCallback(() => {
         eventEmitter.emit(events.unmount);
@@ -88,14 +84,19 @@ const Slider: Modules<SliderProps> = (props) => {
     );
 
     useEffect(() => {
-        console.log('唯一一次！');
         // 页面挂载
         mount();
         // 页面卸载
         return () => {
             unmount();
         };
-    }, []);
+    }, [mount, unmount]);
+
+    // API请求 注意依赖关系
+    useEffect(() => {
+        const apiArguments = api?.find(item => item.apiId === 'init');
+        requester(apiArguments || {});
+    }, [api])
 
     // ===================================定义组件方法=================================== //
     //向eventEmitter注册事件，向外公布
