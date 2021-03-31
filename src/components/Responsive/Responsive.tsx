@@ -155,7 +155,7 @@ const Responsive: React.FC<Props> = () => {
 
   return (
     <div className={s.main}>
-      {showDashboard ? (
+      {(showDashboard && isEditing) ? (
         <Draggable
           axis="both"
           handle={`.${s.header}`}
