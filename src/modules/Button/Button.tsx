@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
@@ -10,7 +11,13 @@ export interface ButtonProps extends AppDataElementsTypes {
 }
 
 const Button:Modules<ButtonProps> = (props) => {
-    const { eventEmitter, events = {}, } = props;
+    const { eventEmitter, events = {}, api} = props;
+    // API请求 注意依赖关系
+    useEffect(() => {
+        const apiArguments = api?.find(item => item.apiId === '');
+        requester(apiArguments || {});
+    }, [api])
+    // 基本事件
     useEffect(() => {
         // 执行挂载事件
         eventEmitter.emit(events.mount);
