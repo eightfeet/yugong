@@ -13,7 +13,10 @@ const requester = async ({
     credentials,
 }: Api) => {
     if (!url) {
-        return Promise.reject({ message: '没有url' });
+        return Promise.reject({ message: 'api缺少url' });
+    }
+    if (!method) {
+        return Promise.reject({ message: 'api缺少method' });
     }
     // 处理header
     const headersData = {
@@ -43,24 +46,33 @@ const requester = async ({
     if (method !== 'GET') {
         args.body = bodyData;
     }
-    const res = await fetch(urlData, args);
-    /**
-     * 状态范围
-     */
-    if (res.status >= 200 && res.status < 300) {
-        const textData = await res.text();
-        const resultData = JSON.parse(textData);
-        // 处理请求结果
-        if (successPublic?.length) {
-            const successPublicResult = getDataFromArguments(
-                successPublic,
-                resultData
-            );
-            store.dispatch.runningTimes.setRunningTimes(successPublicResult);
+
+    try {
+        const res = await fetch(urlData, args);
+        console.log(1)
+        /**
+         * 状态范围
+         */
+        if (res.status >= 200 && res.status < 300) {
+            const textData = await res.text();
+            const resultData = JSON.parse(textData);
+            // 处理请求结果
+            if (successPublic?.length) {
+                const successPublicResult = getDataFromArguments(
+                    successPublic,
+                    resultData
+                );
+                store.dispatch.runningTimes.setRunningTimes(
+                    successPublicResult
+                );
+            }
+            return resultData;
         }
-        return resultData;
+        console.log(2)
+        throw res;
+    } catch (error) {
+      console.warn(error)
     }
-    throw res;
 };
 
 export default requester;

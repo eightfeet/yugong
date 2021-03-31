@@ -53,9 +53,7 @@ const Slider: Modules<SliderProps> = (props) => {
     // ===================================定义方法=================================== //
     const mount = useCallback(async () => {
         const apiArguments = api?.find(item => item.apiId === 'init');
-        console.log('apiArguments', apiArguments)
         if (apiArguments?.url) {
-            console.log('apiArguments', apiArguments)
             await requester(apiArguments)
         }
         eventEmitter.emit(events.mount);
@@ -90,13 +88,14 @@ const Slider: Modules<SliderProps> = (props) => {
     );
 
     useEffect(() => {
+        console.log('唯一一次！');
         // 页面挂载
         mount();
         // 页面卸载
         return () => {
             unmount();
         };
-    }, [eventEmitter, mount, unmount]);
+    }, []);
 
     // ===================================定义组件方法=================================== //
     //向eventEmitter注册事件，向外公布

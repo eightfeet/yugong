@@ -111,8 +111,18 @@ const staticConstants: StaticConstants = {
      */
     exposeApi: [
         {
-            apiId: 'init',
-            name: '初始化数据',
+            apiId: "init",
+            name: "初始化数据",
+            url: "https://wx-test1.by-health.com/scrm/employee/findEmployeeByPhone",
+            method: "GET",
+            body: [
+              {
+                type: "string",
+                data: "{{search.mobilePhone}}",
+                name: "mobilePhone",
+                describe: "店员手机号码",
+              },
+            ],
         }
     ],
 };
