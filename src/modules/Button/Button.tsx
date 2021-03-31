@@ -45,6 +45,3 @@ const Button:Modules<ButtonProps> = () => {
   Button.exposeApi = [];
 
 export default Button;
-
-
- 
