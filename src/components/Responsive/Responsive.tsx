@@ -209,7 +209,7 @@ const Responsive: React.FC<Props> = () => {
         title="页面设置"
         width={550}
         onClose={() => setShowPageDrawer(false)}
-        visible={isEditing && showPageDrawer}
+        visible={showPageDrawer}
         bodyStyle={{ padding: "0", overflow: "auto" }}
         maskStyle={{ backgroundColor: "transparent" }}
         footer={null}
@@ -221,7 +221,7 @@ const Responsive: React.FC<Props> = () => {
         title="组件库"
         width={550}
         onClose={() => setShowDrawer(false)}
-        visible={isEditing && showDrawer}
+        visible={showDrawer}
         bodyStyle={{ padding: "10px 10px 80px 10px" }}
         maskStyle={{ backgroundColor: "transparent" }}
         footer={null}
