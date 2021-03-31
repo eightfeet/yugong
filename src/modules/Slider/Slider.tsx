@@ -22,7 +22,7 @@ import { RootState } from '~/redux/store';
 import requester from '~/core/fetch';
 
 export interface SliderProps extends AppDataElementsTypes {
-    id: string;
+    id: string; // Wrapper 组件使用
     eventEmitter: EventEmitter;
 }
 
