@@ -19,7 +19,6 @@ const useStyles = createUseStyles<string, any>({
 
     swiperPagination: (style) => ({
         ...(styleCompiler(style.pagination).style || {}),
-
         '& .swiper-pagination-bullet': styleCompiler(style.paginationBullet).style || {},
         '& .swiper-pagination-bullet-active':
         styleCompiler(style.paginationBulletActive).style || {},

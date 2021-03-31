@@ -5,6 +5,7 @@ import { AppDataElementsTypes } from "~/types/appData";
 import styleCompiler from "~/compiler";
 import s from "./Wrapper.module.less";
 import usePostMessage from "~/hooks/usePostMessage";
+import classNames from "classnames";
 
 interface Props extends AppDataElementsTypes {
   id: string;
@@ -50,9 +51,9 @@ const Wrapper: React.FC<Props> = ({
 
   const pointerEvents: React.CSSProperties = {};
   if (isEditing) {
-    // pointerEvents.pointerEvents = 'none';
+    pointerEvents.pointerEvents = 'none';
   } else {
-    // delete pointerEvents.pointerEvents;
+    delete pointerEvents.pointerEvents;
   }
 
   return (
@@ -61,14 +62,15 @@ const Wrapper: React.FC<Props> = ({
       onTouchStart={onLayoutClick}
       onMouseDown={onLayoutClick}
     >
-      {actId === id ? <div className={s.actwrap} /> : null}
+      {actId === id ? <div className={classNames(s.actwrap, {
+        [s.isedit] : isEditing,
+        [s.iswiew] : !isEditing,
+      })} /> : null}
       <div id={id} style={{...basicStyle.style, ...pointerEvents}}>
         {children}
       </div>
     </div>
   );
 };
-
-
 
 export default Wrapper;

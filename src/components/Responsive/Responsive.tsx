@@ -5,13 +5,12 @@
 
 import {
   CloseOutlined,
-  CoffeeOutlined,
   EditOutlined,
-  EyeTwoTone,
+  EyeOutlined,
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Affix, Button, message, Drawer, Radio } from "antd";
+import { Button, Drawer } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -53,7 +52,7 @@ const Responsive: React.FC<Props> = () => {
   const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
   useEffect(() => {
-    setIsEditing(true);
+    // setIsEditing(true);
   }, [setIsEditing]);
 
   const ref = useRef(null);
@@ -193,14 +192,14 @@ const Responsive: React.FC<Props> = () => {
           <Button
             type="primary"
             onClick={toggleEdit}
-            icon={<CoffeeOutlined />}
+            icon={<EditOutlined />}
           />
         ) : null}
         {isEditing ? (
           <Button
             type="primary"
-            onClick={() => setIsEditing(false)}
-            icon={<EditOutlined />}
+            onClick={toggleEdit}
+            icon={<EyeOutlined />}
           />
         ) : null}
       </div>

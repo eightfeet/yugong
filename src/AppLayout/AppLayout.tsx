@@ -2,12 +2,7 @@
  * AppLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import GridLayout, { Layout as LayoutDataType } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -68,7 +63,9 @@ const AppLayout: React.FC<LayoutProps> = ({
     const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
     const updatePage = useDispatch<Dispatch>().pageData.updatePage;
     const pageData = useSelector((state: RootState) => state.pageData);
-    const activationItem = useSelector((state: RootState) => state.activationItem);
+    const activationItem = useSelector(
+        (state: RootState) => state.activationItem
+    );
     const appData = useSelector((state: RootState) => state.appData);
     const runningTimes = useSelector((state: RootState) => state.runningTimes);
     const ref = useRef(null);
@@ -91,7 +88,6 @@ const AppLayout: React.FC<LayoutProps> = ({
         const { tag, value } = data;
         switch (tag) {
             case 'setIsEditing':
-                alert(value)
                 setIsEditing(value);
                 break;
             case 'updateAppData':
@@ -124,18 +120,17 @@ const AppLayout: React.FC<LayoutProps> = ({
             );
         });
     }, [getAppData, appDataLocalStoreData, sendMessage]);
-    
 
     // 获取页面数据
     useMemo(() => {
         getPageData(pageDataLocalStoreData).then((res) => {
-          sendMessage(
-            {
-                tag: 'updatePage',
-                value: res,
-            },
-            window.top
-          );
+            sendMessage(
+                {
+                    tag: 'updatePage',
+                    value: res,
+                },
+                window.top
+            );
         });
     }, [getPageData, pageDataLocalStoreData, sendMessage]);
 
@@ -213,7 +208,7 @@ const AppLayout: React.FC<LayoutProps> = ({
                         id={`wrap-${item.layout?.i}`}
                         className={classNames(
                             s.block,
-                            isEditing === false ? null : s.modify
+                            isEditing === false ? s.view : s.modify
                         )}
                         key={item.layout?.i}
                         data-grid={{
@@ -232,21 +227,18 @@ const AppLayout: React.FC<LayoutProps> = ({
 
     return (
         <div className={s.layout} ref={ref} style={generateStyle()}>
-            <>{`??${isEditing}`}</>
             <>
-            {isEditing ? (
-                <GridLine
-                    width={window.innerWidth}
-                    cols={cols}
-                    rowHeight={rowHeight}
-                    height={document.body.scrollHeight}
-                    space={space}
-                />
-            ) : null}
+                {isEditing ? (
+                    <GridLine
+                        width={window.innerWidth}
+                        cols={cols}
+                        rowHeight={rowHeight}
+                        height={document.body.scrollHeight}
+                        space={space}
+                    />
+                ) : null}
             </>
-            <>
-            {isEditing ? renderGridLayout() : null}
-            </>
+            <>{renderGridLayout()}</>
         </div>
     );
 };
