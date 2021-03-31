@@ -6,6 +6,7 @@ import { RootState } from '~/redux/store';
 import { Api } from '~/types/appData';
 import { ExposeApi } from '~/types/modules';
 import ApiConfig from '../ApiConfig';
+import merge from 'lodash/merge';
 
 interface Props {}
 const ApiSetting: React.FC<Props> = () => {
@@ -21,11 +22,21 @@ const ApiSetting: React.FC<Props> = () => {
     /**
      * 获取当前被选组件导出的（自定义）默认Api数据
      */
-    const getExposeApiData = useCallback((): ExposeApi[] => {
-        let data = !!type ? require(`~/modules/${type}`).default?.exposeApi : [];
-        data = cloneDeep(data);
-        return data;
-    }, [type]);
+    const getDefaultApiData = useCallback((): ExposeApi[] => {
+        let defaultData = !!type ? require(`~/modules/${type}`).default?.exposeApi : [];
+        defaultData = cloneDeep(defaultData);
+        let optApi = cloneDeep(api);
+        // k-比对apiId合并默认数据与保存数据，
+        const result = defaultData.map((element: ExposeApi) => {
+            const current = optApi?.find(item => item.apiId === element.apiId);
+            let optElememts = element;
+            if (current) {
+                optElememts = {...optElememts, ...current}
+            }
+            return optElememts;
+        });
+        return result;
+    }, [type, api]);
 
     /**
      * 更新数据方法
@@ -43,7 +54,7 @@ const ApiSetting: React.FC<Props> = () => {
         <>
             <ApiConfig
                 apiData={api}
-                defaultApiData={getExposeApiData()}
+                defaultApiData={getDefaultApiData()}
                 onChange={onChangeApi}
             />
         </>

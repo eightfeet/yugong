@@ -19,6 +19,7 @@ import staticConstants from './Slider.staticConstants';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
+import requester from '~/core/fetch';
 
 export interface SliderProps extends AppDataElementsTypes {
     id: string;
@@ -44,16 +45,21 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy]);
 
 const Slider: Modules<SliderProps> = (props) => {
     // ===================================获取变量=================================== //
-    const { eventEmitter, style, events = {}, layout, moduleId } = props;
+    const { eventEmitter, style, events = {}, layout, moduleId, api } = props;
     const pageData = useSelector((state: RootState) => state.pageData);
     const prefix = `swiper${moduleId}`;
     // ===================================创建运行时class============================ //
     const useClass = useStyles(props.style);
-
     // ===================================定义方法=================================== //
-    const mount = useCallback(() => {
+    const mount = useCallback(async () => {
+        const apiArguments = api?.find(item => item.apiId === 'init');
+        console.log('apiArguments', apiArguments)
+        if (apiArguments?.url) {
+            console.log('apiArguments', apiArguments)
+            await requester(apiArguments)
+        }
         eventEmitter.emit(events.mount);
-    }, [eventEmitter, events]);
+    }, [eventEmitter, events, api]);
 
     const unmount = useCallback(() => {
         eventEmitter.emit(events.unmount);
@@ -238,5 +244,10 @@ Slider.exposeEvents = staticConstants.exposeEvents;
  * 发布默认porps
  */
 Slider.exposeDefaultProps = staticConstants.exposeDefaultProps;
+
+/**
+ * 发布默认Api
+ */
+ Slider.exposeApi = staticConstants.exposeApi;
 
 export default Slider;

@@ -102,9 +102,19 @@ const staticConstants: StaticConstants = {
             paginationBullet: '标记',
             paginationBulletActive: '标记激活',
             prev: '上一页',
-            next: '下一页'
+            next: '下一页',
         },
     },
+
+    /**
+     * 发布默认porps
+     */
+    exposeApi: [
+        {
+            apiId: 'init',
+            name: '初始化数据',
+        }
+    ],
 };
 
 export default staticConstants;

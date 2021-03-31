@@ -63,7 +63,6 @@ const Repository: React.FC = () => {
             const module = require(`~/modules/${moduleType}`).default;
             const { exposeDefaultProps } = module;
             const { style } = exposeDefaultProps || {};
-            console.log('exposeDefaultProps', exposeDefaultProps)
             const moduleId: string = uuidv4();
             // Add a new item. It must have a unique key!
             const layout = {
