@@ -85,6 +85,9 @@ export interface ExposeDefaultProps {
      * 接口
      **/
     api?: Api[];
+    styleDescription?: {
+      [keys: string]: string
+    }
 }
 
 interface Necessary<N, D> {

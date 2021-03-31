@@ -1,4 +1,9 @@
-import { ComExposeEvents, ExposeApi, ExposeDefaultProps, ExposeFunctions } from "~/types/modules";
+import {
+    ComExposeEvents,
+    ExposeApi,
+    ExposeDefaultProps,
+    ExposeFunctions,
+} from '~/types/modules';
 
 interface StaticConstants {
     exposeEvents?: ComExposeEvents;
@@ -89,8 +94,16 @@ const staticConstants: StaticConstants = {
             prev: {},
             // 下一页
             next: {},
-            
-        }
+        },
+        styleDescription: {
+            sliderWrap: '包裹器',
+            slideItem: '滑动页',
+            pagination: '导航条',
+            paginationBullet: '标记',
+            paginationBulletActive: '标记激活',
+            prev: '上一页',
+            next: '下一页'
+        },
     },
 };
 

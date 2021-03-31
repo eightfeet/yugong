@@ -158,7 +158,7 @@ const Slider: Modules<SliderProps> = (props) => {
     // 创建组件
     return (
         <Wrapper {...props}>
-            <div className={useClass.sliderWrap} style={wrapWHStyle()}>
+            <div className={classNames(s.sliderWrap, useClass.sliderWrap)} style={wrapWHStyle()}>
                 <div
                     className={classNames(
                         'swiper-container',
