@@ -102,10 +102,11 @@ const Responsive: React.FC<Props> = () => {
   useEffect(() => {
     if (win) {
       win.onload = () => {
-        sendMessage({ tag: "setIsEditing", value: isEditing }, win);
+        sendMessage({ tag: "setIsEditing", value: true }, win);
+        setIsEditing(true);
       };
     }
-  }, [isEditing, sendMessage, setIsEditing, win]);
+  }, [isEditing, sendMessage, win]);
 
   const toggleEdit = useCallback(
     () => {
