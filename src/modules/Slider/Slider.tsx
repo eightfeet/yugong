@@ -44,7 +44,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy]);
 
 const Slider: Modules<SliderProps> = (props) => {
     // ===================================获取变量=================================== //
-    const { eventEmitter, events = {}, layout, moduleId } = props;
+    const { eventEmitter, style, events = {}, layout, moduleId } = props;
     const pageData = useSelector((state: RootState) => state.pageData);
     const prefix = `swiper${moduleId}`;
     // ===================================创建运行时class============================ //
@@ -134,7 +134,7 @@ const Slider: Modules<SliderProps> = (props) => {
         if (swiperRef.current) {
             swiperRef.current.update();
         }
-    }, [images]);
+    }, [images, style]);
 
     // 高度需要实时变化，将他处理为内链样式
     const wrapWHStyle = useCallback(() => {
