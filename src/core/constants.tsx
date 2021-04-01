@@ -8,6 +8,12 @@ export const MODULES = [
     icon: <ContainerOutlined />
   },
   {
+    moduleName: "Button",
+    title: "按钮",
+    discribe: "按钮",
+    icon: <CopyOutlined />
+  },
+  {
     moduleName: "Modal",
     title: "弹窗",
     discribe: "弹窗",
