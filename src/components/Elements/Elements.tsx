@@ -1,8 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { Layout } from 'react-grid-layout';
 import { AppDataElementsTypes } from 'types/appData';
 import LazyLoader from '~/components/LazyLoader';
-import { RootState } from '~/redux/store';
 
 /**
  * To do list !!!
@@ -15,9 +14,7 @@ import { RootState } from '~/redux/store';
  */
 interface ElementsProps extends AppDataElementsTypes {
     id?: string;
-    layout?: {
-        [keys: string]: any;
-    };
+    layout?: Layout;
 }
 
 const Elements: React.FC<ElementsProps> = (props) => {

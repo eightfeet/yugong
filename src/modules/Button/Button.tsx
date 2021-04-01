@@ -6,6 +6,8 @@ import { AppDataElementsTypes } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import s from "./Button.module.less";
+import useStyles from "./Button.useStyles";
+import classNames from "classnames";
 
 export interface ButtonProps extends AppDataElementsTypes {
   id: string;
@@ -13,11 +15,11 @@ export interface ButtonProps extends AppDataElementsTypes {
 }
 
 const Button: Modules<ButtonProps> = (props) => {
-  const { eventEmitter, events = {}, api } = props;
+  const { eventEmitter, events = {}, api, style } = props;
   const [text, setText] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [hidden, setHidden] = useState(false);
-
+  const userClass = useStyles(style);
   const defaultOptions = {
     isPreventDefault: false,
     delay: 2000
@@ -81,7 +83,7 @@ const Button: Modules<ButtonProps> = (props) => {
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           {...longPressEvent}
-          className={s.btn}
+          className={classNames(s.btn, userClass.button)}
           disabled={disabled}
         >
           {text}
@@ -177,5 +179,30 @@ Button.exposeApi = [
     name: "长按",
   },
 ];
+
+/**
+ * 发布默认porps
+ */
+ Button.exposeDefaultProps = {
+  layout: {
+    w: 1, // 宽
+    h: 1, // 高
+  },
+  style: {
+    basic: {},
+    normal: {},
+    disabled: {},
+    focus: {},
+    active: {},
+    hover: {}
+  },
+  styleDescription: {
+    normal: '常态',
+    disabled: '禁用',
+    focus: '获取焦点',
+    active: '激活',
+    hover: '经过'
+  },
+};
 
 export default Button;

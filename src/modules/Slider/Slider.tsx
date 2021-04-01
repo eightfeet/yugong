@@ -20,6 +20,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
 import requester from '~/core/fetch';
+import getLayoutSize from '~/core/helper/getLayoutOut';
 
 export interface SliderProps extends AppDataElementsTypes {
     id: string; // Wrapper 组件使用
@@ -142,29 +143,10 @@ const Slider: Modules<SliderProps> = (props) => {
         }
     }, [images, style]);
 
-    // 高度需要实时变化，将他处理为内链样式
-    const wrapWHStyle = useCallback(() => {
-        const lw =
-            (window.innerWidth - (pageData?.space || 0)) /
-            (pageData?.cols || 1);
-        const width = (layout?.w || 1) * lw - (pageData?.space || 0);
-        const height =
-            (layout?.h || 1) * (pageData?.rowHeight || 1) +
-            (layout?.h - 1 || 1) * (pageData?.space || 1) -
-            layout?.h;
-        return { width: `${width}px`, height: `${height}px` };
-    }, [
-        layout?.h,
-        layout?.w,
-        pageData?.cols,
-        pageData?.rowHeight,
-        pageData?.space,
-    ]);
-
     // 创建组件
     return (
         <Wrapper {...props}>
-            <div className={classNames(s.sliderWrap, useClass.sliderWrap)} style={wrapWHStyle()}>
+            <div className={classNames(s.sliderWrap, useClass.sliderWrap)} style={getLayoutSize(layout)}>
                 <div
                     className={classNames(
                         'swiper-container',
