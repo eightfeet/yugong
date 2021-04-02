@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import EventGroup from "./EventGroup";
 import useMergeAppData from "~/hooks/useMergeAppData";
-import { EventsTypeItem, ExposeEvents } from "~/types/modules";
+import { EventsType, EventsTypeItem, ExposeEvents } from "~/types/modules";
 
 /**
  * 确定当前激活组件是否向全局发布事件
@@ -14,11 +14,11 @@ import { EventsTypeItem, ExposeEvents } from "~/types/modules";
 interface Props {}
 
 const EventsSetting: React.FC<Props> = () => {
-
-  const { events, type, moduleId } = useSelector(
+  const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
-  
+  const { events, type, moduleId } = activationItem;
+
   /** 更新结果 */
   const update = useMergeAppData();
   const onChangeEventGroup = useCallback(
@@ -32,7 +32,8 @@ const EventsSetting: React.FC<Props> = () => {
   /** 获取当前实例元素的事件清单 */
   const getCurentEventByEventName = useCallback(
     (
-      eventName: string // 事件名称，mounnt unmount ...
+      eventName: string, // 事件名称，mounnt unmount ...
+      events: EventsType | undefined
     ) => {
       // 事件清单存在，则返回事件清单的事件值
       if (events && Object.prototype.toString.call(events) === '[object Object]') {
@@ -40,7 +41,7 @@ const EventsSetting: React.FC<Props> = () => {
       }
       return []
     },
-    [events],
+    [],
   )
 
   if (!moduleId) return null;
@@ -54,7 +55,7 @@ const EventsSetting: React.FC<Props> = () => {
     {
       exposeEvents.map(element => (<EventGroup
         key={element.name}
-        value={getCurentEventByEventName(element.name)}
+        value={getCurentEventByEventName(element.name, events)}
         curentEventInfomation={element}
         onChange={onChangeEventGroup}
       />))
