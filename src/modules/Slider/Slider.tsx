@@ -17,8 +17,6 @@ import s from './Slider.module.less';
 import useStyles from './Slider.useStyles';
 import staticConstants from './Slider.staticConstants';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
 import requester from '~/core/fetch';
 import getLayoutSize from '~/core/helper/getLayoutOut';
 
@@ -47,7 +45,6 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy]);
 const Slider: Modules<SliderProps> = (props) => {
     // ===================================获取变量=================================== //
     const { eventEmitter, style, events = {}, layout, moduleId, api } = props;
-    const pageData = useSelector((state: RootState) => state.pageData);
     const prefix = `swiper${moduleId}`;
     // ===================================创建运行时class============================ //
     const useClass = useStyles(props.style);

@@ -17,6 +17,7 @@ const EventsSetting: React.FC<Props> = () => {
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
+  
   const { events, type, moduleId } = activationItem;
 
   /** 更新结果 */

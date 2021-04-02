@@ -134,7 +134,6 @@ const AppLayout: React.FC<LayoutProps> = ({
     // 更新GridLine布局数据
     const onLayoutChange = useCallback(
         (layout: LayoutDataType[]) => {
-            let editId: string = '';
             appData.forEach((item) => {
                 layout.forEach((element) => {
                     if (item.moduleId === element.i) {

@@ -45,6 +45,7 @@ const Dashboard: React.FC<Props> = () => {
   //
   // 收发处理，子窗口onload时向子窗口发送信息, 通知当前正处于编辑模式下，
 
+  // 重置当前被选择项
   const onChangeSelect = useCallback(
     (e) => {
       if (activationItem.moduleId === e) return;

@@ -16,7 +16,6 @@ export interface ButtonProps extends AppDataElementsTypes {
 
 const Button: Modules<ButtonProps> = (props) => {
     const { eventEmitter, events = {}, api, style } = props;
-    console.log(JSON.stringify(style, null, 2));
     const [text, setText] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [hidden, setHidden] = useState(false);
