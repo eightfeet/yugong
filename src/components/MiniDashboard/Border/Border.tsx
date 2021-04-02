@@ -18,7 +18,7 @@ interface Props {
 
 const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
   const [border, setBorder] = useState<BorderTypesOfStyleItems>({});
-  const moduleId = useSelector((state:RootState) => state.activationItem.moduleId)
+  const moduleId = useSelector((state:RootState) => state.activationItem.moduleId);
   useEffect(() => {
     const data = defaultDate || {};
     setBorder({...data});

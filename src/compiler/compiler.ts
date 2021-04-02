@@ -405,8 +405,16 @@ export const border = function (styleObj: objType): resultType {
     const { borderTop, borderRight, borderBottom, borderLeft, border } =
         styleObj.borderPosition || {};
     const boderCss = rules.border.filter((item) => !!item).join(' ');
+
+    /** */
+    // 样式合并
     if (border) {
-        result[`border${type}`] = boderCss;
+        // 边框合并时jss会计算错误，这里暂时不做合并
+        // result[`border${type}`] = boderCss;
+        result['borderTop'] = boderCss;
+        result['borderRight'] = boderCss;
+        result['borderBottom'] = boderCss;
+        result['borderLeft'] = boderCss;
     } else {
         if (borderTop) result['borderTop'] = boderCss;
         if (borderRight) result['borderRight'] = boderCss;
