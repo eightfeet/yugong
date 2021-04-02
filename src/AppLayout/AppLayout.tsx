@@ -192,6 +192,7 @@ const AppLayout: React.FC<LayoutProps> = ({
             width={document.body.scrollWidth}
             margin={[space, space]}
             autoSize
+            isDraggable={isEditing}
         >
             {appData.map((item) => {
                 // 事件处理器的bind方法将事件处理器绑定到各个组件
