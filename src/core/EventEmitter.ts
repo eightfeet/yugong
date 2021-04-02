@@ -1,4 +1,6 @@
 import getBooleanData from "./getBooleanData";
+import getDefaultArgumentsByEventName from "./helper/getDefaultArgumentsByEventName";
+import getResult from "~/core/getDataFromRunningTime";
 interface EventEmitterEvents {
   [key: string]: Function;
 }
@@ -28,15 +30,19 @@ class EventEmitter {
     const queuesArray = async () => {
       for (let i = 0; i < queues.length; i++) {
         const item = queues[i];
+        // 执行方法时发放对应参数,当参数没有定义时，使用模块对应方法的默认参数
         const method = this.events[item.name];
         if (method instanceof Function) {
-          // 执行方法时发放对应参数
+          let argumentsData = item.arguments || [];
+          if (!argumentsData.length) {
+            argumentsData = getDefaultArgumentsByEventName(item.name) || [];
+          }
           const operateArgument: any[] = [];
-          item.arguments.forEach((element) => {
+          argumentsData.forEach((element) => {
             if (element.type === 'boolean') {
               operateArgument.push(getBooleanData(element.data))
             } else {
-              operateArgument.push(element.data);
+              operateArgument.push(getResult(element.data));
             }
 
             const type = Object.prototype.toString.call(element.data);
