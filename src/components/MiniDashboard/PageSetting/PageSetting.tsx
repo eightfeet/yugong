@@ -1,4 +1,5 @@
 import {
+  ClusterOutlined,
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -12,7 +13,7 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Api from "~/components/App";
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
@@ -26,6 +27,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Dispatch, RootState } from "~/redux/store";
 import usePostMessage from "~/hooks/usePostMessage";
 import useLocalStorage from "~/hooks/useLocalStorage";
+import RunningTimesModal from "../RunningTimesModal";
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -37,6 +39,8 @@ const units = ["px", "rem", "vw", "vh"];
 const Pagesetting: React.FC<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
+  const [showRunningTimes, setShowRunningTimes] = useState(false);
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   // const ref = useRef();
 
   // 监听App页面数据，同步到编辑器数据
@@ -218,11 +222,24 @@ const Pagesetting: React.FC<Props> = () => {
     },
     [handleUpdatePage, pageData]
   );
-  
+
+  const onShowRunningTimes = useCallback((e) => {
+    e.preventDefault();
+    setShowRunningTimes(true);
+  }, []);
+
   return (
     <>
       <Collapse bordered={false} defaultActiveKey="pagemount">
-        <Panel header="基本信息" key="baseset">
+        <Panel
+          header="基本信息"
+          key="baseset"
+          extra={
+            <Tooltip title="查看全局发布变量">
+              <ClusterOutlined onClick={onShowRunningTimes} />
+            </Tooltip>
+          }
+        >
           <Row gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
               页面名称：
@@ -294,7 +311,7 @@ const Pagesetting: React.FC<Props> = () => {
               </Tooltip>
             </Col>
           </Row>
-          <Row  gutter={4} className={s.row}>
+          <Row gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
               背景设置：
             </Col>
@@ -442,6 +459,11 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
         </Panel>
       </Collapse>
+      <RunningTimesModal
+        visible={showRunningTimes}
+        data={runningTimes}
+        onCancel={() => setShowRunningTimes(false)}
+      />
     </>
   );
 };

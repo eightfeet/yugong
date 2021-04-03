@@ -48,7 +48,8 @@ function toPx(length: string, element?: any) {
     valid = !isNaN(val) && unit;
   }
   if (!valid) {
-    throw new TypeError("Error parsing length");
+    return 0;
+    // throw new TypeError("Error parsing length");
   }
   return unit === "px" ? val : pxPerUnit(unit, element) * val;
 }
