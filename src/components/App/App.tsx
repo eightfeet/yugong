@@ -11,14 +11,16 @@ import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
+import getResult from "~/core/getDataFromRunningTime";
 import "./App.less";
+import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE, ROOT_FONTSIZE } from "~/core/constants";
 
 interface Props {}
 
 const App: Modules<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
-  const rootFontsize = useSelector((state: RootState) => state.controller.bestFont) || 16;
+  const rootFontsize = useSelector((state: RootState) => state.controller.bestFont) || ROOT_FONTSIZE;
 
   // 设置基准rem单位
   useRem()
@@ -82,9 +84,9 @@ const App: Modules<Props> = () => {
     <AppLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
-      rowHeight={pageData.rowHeight || 0}
-      cols={pageData.cols || 0}
-      space={pageData.space || 0}
+      rowHeight={parseInt(getResult(`${pageData.rowHeight}`)) || GRID_DEFAULT_ROWHEIGHT}
+      cols={parseInt(getResult(`${pageData.cols}`)) || GRID_DEFAULT_COLS}
+      space={parseInt(getResult(`${pageData.space}`)) || GRID_DEFAULT_SPACE}
     />
   );
 };

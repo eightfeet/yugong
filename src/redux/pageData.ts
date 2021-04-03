@@ -1,4 +1,5 @@
 import { createModel } from '@rematch/core';
+import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE } from '~/core/constants';
 import {
     Api,
     BackgroundCommonTypesOfStyleItems,
@@ -7,7 +8,7 @@ import {
 import { EventsType, EventsTypeItem } from '~/types/modules';
 import { RootModel } from './models';
 
-interface PageData {
+export interface PageData {
     /* *页面标题 */
     pageTitle?: string;
     /* 页面单位 */
@@ -48,9 +49,9 @@ export const pageData = createModel<RootModel>()({
         onLoadApi: [],
         mountEnvents: [],
         unmountEnvents: [],
-        cols: 12,
-        rowHeight: 20,
-        space: 0
+        cols: GRID_DEFAULT_COLS,
+        rowHeight: GRID_DEFAULT_ROWHEIGHT,
+        space: GRID_DEFAULT_SPACE
     } as PageData, // typed complex state
     reducers: {
         updatePage(state, payload: PageData) {

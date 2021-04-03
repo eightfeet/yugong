@@ -24,6 +24,11 @@ const getDataFromRunningTime = (data: string, userStore?: AnyObjectType) => {
   return result;
 };
 
+export const runningTimeToResult = (value: any, defaultValue: number) : number => {
+  const data = parseInt(`${getDataFromRunningTime(value)}`) || defaultValue;
+  return data;
+}
+
 // 测试变量用
 (window as any).getDataFromRunningTime = getDataFromRunningTime
 

@@ -27,4 +27,13 @@ export const MODULES = [
   },
 ];
 
+// 默认字体大小
+export const ROOT_FONTSIZE = 16;
+// 栅格默认间隔
+export const GRID_DEFAULT_SPACE = 0;
+// 栅格默认行高
+export const GRID_DEFAULT_ROWHEIGHT = 20;
+// 栅格默认列数
+export const GRID_DEFAULT_COLS = 12;
+
 // export default {}

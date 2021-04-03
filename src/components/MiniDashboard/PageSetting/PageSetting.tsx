@@ -1,4 +1,8 @@
-import { InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  ConsoleSqlOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -116,7 +120,7 @@ const Pagesetting: React.FC<Props> = () => {
         delete optPageData.baseFont;
       } else {
         optPageData.UIWidth = undefined;
-        optPageData.baseFont = undefined
+        optPageData.baseFont = undefined;
       }
 
       handleUpdatePage(optPageData);
@@ -180,11 +184,38 @@ const Pagesetting: React.FC<Props> = () => {
     handleUpdatePage(optPageData);
   }, [handleUpdatePage, pageData]);
 
+  const onChangeRowHeight = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.rowHeight = e.target.value;
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
+
+  const onChangeCols = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.cols = e.target.value;
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
+
+  const onChangeSpace = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.space = e.target.value;
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
+  
   return (
     <>
       <Collapse bordered={false} defaultActiveKey="pagemount">
         <Panel header="基本信息" key="baseset">
-          <Row className={s.row}>
+          <Row gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
               页面名称：
             </Col>
@@ -200,7 +231,64 @@ const Pagesetting: React.FC<Props> = () => {
             </Col>
             <Col span={1} />
           </Row>
-          <Row className={s.row}>
+
+          <Row gutter={4} className={s.row}>
+            <Col className={s.label} span={4}>
+              栅格列数：
+            </Col>
+            <Col span={7}>
+              <Input
+                value={pageData.cols}
+                onChange={onChangeCols}
+                className={s.num}
+                placeholder="输入栅格列数"
+              />
+            </Col>
+            <Col className={s.info} span={1}>
+              <Tooltip title={<div>屏幕栅格列数(默认12列)</div>}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </Col>
+            <Col className={s.label} span={4}>
+              栅格行高：
+            </Col>
+            <Col span={7}>
+              <Input
+                value={pageData.rowHeight}
+                onChange={onChangeRowHeight}
+                placeholder="输入栅格行高"
+                className={s.num}
+              />
+            </Col>
+            <Col className={s.info} span={1}>
+              <Tooltip
+                title={
+                  <div>屏幕栅格行高(默认20px)，可使用运行时window计算高度</div>
+                }
+              >
+                <InfoCircleOutlined />
+              </Tooltip>
+            </Col>
+          </Row>
+          <Row gutter={4} className={s.row}>
+            <Col className={s.label} span={4}>
+              栅格间距：
+            </Col>
+            <Col span={7}>
+              <Input
+                value={pageData.space}
+                onChange={onChangeSpace}
+                className={s.num}
+                placeholder="输入栅格间距"
+              />
+            </Col>
+            <Col className={s.info} span={1}>
+              <Tooltip title={<div>栅格间距(默认0px)</div>}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </Col>
+          </Row>
+          <Row  gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
               背景设置：
             </Col>
