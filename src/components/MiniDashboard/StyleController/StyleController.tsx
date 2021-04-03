@@ -23,7 +23,7 @@ const StyleController: React.FC<Props> = () => {
         () =>
             require(`~/modules/${activationItem.type}`).default
                 ?.exposeDefaultProps?.styleDescription || {},
-        []
+        [activationItem.type]
     );
     // 当前编辑路径
     const [stylePath, setStylePath] = useState('');

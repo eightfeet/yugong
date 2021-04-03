@@ -155,7 +155,7 @@ const EventItem: React.FC<Props> = ({
         >
           {moduleList.map((item) => (
             <Select.Option key={item.uuid} value={item.uuid}>
-              {item.name}
+              {item.name}-{item.type}
             </Select.Option>
           ))}
         </Select>
