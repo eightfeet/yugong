@@ -13,7 +13,7 @@ export const appData = createModel<RootModel>()({
     state: [] as AppDataListTypes, // typed complex state
     reducers: {
         // handle state changes with pure functions
-        updateAppData(state, payload: AppDataListTypes) {
+        updateAppData(_, payload: AppDataListTypes) {
             return [...payload];
         },
     },
