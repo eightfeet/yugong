@@ -1,29 +1,19 @@
-import { ContainerOutlined, CopyOutlined, CreditCardOutlined } from "@ant-design/icons";
+import Icon from '@ant-design/icons';
+import IconSlider from "./icons/IconSlider";
+import IconButton from "./icons/IconButton";
 
 export const MODULES = [
   {
-    moduleName: "Conterner",
-    title: "容器",
-    discribe: "元素容器",
-    icon: <ContainerOutlined />
-  },
-  {
     moduleName: "Button",
-    title: "按钮",
+    title: "Button",
     discribe: "按钮",
-    icon: <CopyOutlined />
-  },
-  {
-    moduleName: "Modal",
-    title: "弹窗",
-    discribe: "弹窗",
-    icon: <CreditCardOutlined />
+    icon: <Icon component={IconButton} />
   },
   {
     moduleName: "Slider",
     title: "Slider",
     discribe: "跑马灯",
-    icon: <CopyOutlined />
+    icon: <Icon component={IconSlider} />
   },
 ];
 

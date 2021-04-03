@@ -7,6 +7,7 @@ import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
 import usePostMessage from '~/hooks/usePostMessage';
+import s from './Repository.module.less'
 
 interface ModalType {
     moduleName: AppDataModuleTypes;
@@ -119,10 +120,7 @@ const Repository: React.FC = () => {
                                     title={
                                         <>
                                             <div
-                                                style={{
-                                                    fontSize: '40px',
-                                                    color: '#AAA',
-                                                }}
+                                                className={s.iconwrap}
                                             >
                                                 {item.icon}
                                             </div>
