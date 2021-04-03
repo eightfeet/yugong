@@ -34,7 +34,11 @@ export const DEFAULT_UNIT = 'px';
 // 默认转换单位
 export const DEFAULT_TO_UNIT = 'px';
 // 默认页面标题
-export const DEFAULT_PAGETITLE = '页面标题';
+export const DEFAULT_PAGE_TITLE = '页面标题';
+// 默认页面屏幕宽度
+export const DEFAULT_PAGE_WIDTH = 414;
+// 默认页面屏幕宽度
+export const DEFAULT_PAGE_HEIGHT = 736;
 // 栅格默认间隔
 export const GRID_DEFAULT_SPACE = 0;
 // 栅格默认行高

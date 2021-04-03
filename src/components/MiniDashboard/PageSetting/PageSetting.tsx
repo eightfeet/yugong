@@ -1,5 +1,4 @@
 import {
-  ConsoleSqlOutlined,
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -210,6 +209,15 @@ const Pagesetting: React.FC<Props> = () => {
     },
     [handleUpdatePage, pageData]
   );
+
+  const onChangePageTitle = useCallback(
+    (e) => {
+      const optPageData = cloneDeep(pageData);
+      optPageData.pageTitle = e.target.value;
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
   
   return (
     <>
@@ -223,9 +231,7 @@ const Pagesetting: React.FC<Props> = () => {
               <Input
                 placeholder="请输入页面名称"
                 value={pageData.pageTitle}
-                onChange={(e) => {
-                  updatePage({ pageTitle: e.target.value });
-                }}
+                onChange={onChangePageTitle}
                 className={s.num}
               />
             </Col>

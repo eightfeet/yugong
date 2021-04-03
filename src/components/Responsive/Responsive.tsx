@@ -58,7 +58,7 @@ const Responsive: React.FC<Props> = () => {
 
   const ref = useRef(null);
 
-  const [iframeWidth, setIframeWidth] = useState(417);
+  const [iframeWidth, setIframeWidth] = useState(414);
   const [iframeHeight, setIframeHeight] = useState(736);
 
   const [showDrawer, setShowDrawer] = useState(false);
