@@ -224,7 +224,7 @@ const Pagesetting: React.FC<Props> = () => {
   );
 
   const onShowRunningTimes = useCallback((e) => {
-    e.preventDefault();
+    e.stopPropagation();
     setShowRunningTimes(true);
   }, []);
 
