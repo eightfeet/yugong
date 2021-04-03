@@ -83,18 +83,18 @@ const Button: Modules<ButtonProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <Wrapper {...props}>
-            {!hidden ? (
-                <button
-                    onClick={onClick}
-                    onDoubleClick={onDoubleClick}
-                    {...longPressEvent}
-                    className={classNames(s.btn, userClass.button)}
-                    disabled={disabled}
-                >
-                    {text || '按钮'}
-                </button>
-            ) : null}
+        <Wrapper {...props} maxWidth>
+                {!hidden ? (
+                    <button
+                        onClick={onClick}
+                        onDoubleClick={onDoubleClick}
+                        {...longPressEvent}
+                        className={classNames(s.btn, userClass.button)}
+                        disabled={disabled}
+                    >
+                        {text || '按钮'}
+                    </button>
+                ) : null}
         </Wrapper>
     );
 };

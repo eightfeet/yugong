@@ -18,9 +18,6 @@ import useStyles from './Slider.useStyles';
 import staticConstants from './Slider.staticConstants';
 import classNames from 'classnames';
 import requester from '~/core/fetch';
-import getLayoutSize from '~/core/helper/getLayoutOut';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
 
 export interface SliderProps extends AppDataElementsTypes {
     id: string; // Wrapper 组件使用
@@ -46,10 +43,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy]);
 
 const Slider: Modules<SliderProps> = (props) => {
     // ===================================获取变量=================================== //
-    const { eventEmitter, style, events = {}, layout, moduleId, api } = props;
+    const { eventEmitter, style, events = {}, moduleId, api } = props;
     const prefix = `swiper${moduleId}`;
     // ===================================创建运行时class============================ //
-    const pageData = useSelector((state: RootState) => state.pageData);
     const useClass = useStyles(props.style);
     // ===================================定义方法=================================== //
     const mount = useCallback(() => {
@@ -135,7 +131,7 @@ const Slider: Modules<SliderProps> = (props) => {
                 swiperRef.current.destroy(true, true);
             }
         };
-    }, [prefix, pageData]);
+    }, [prefix]);
 
     useEffect(() => {
         if (swiperRef.current) {
@@ -145,8 +141,7 @@ const Slider: Modules<SliderProps> = (props) => {
 
     // 创建组件
     return (
-        <Wrapper {...props}>
-            <div className={classNames(s.sliderWrap, useClass.sliderWrap)} style={getLayoutSize(layout, pageData)}>
+        <Wrapper {...props} maxWidth maxHeight>
                 <div
                     className={classNames(
                         'swiper-container',
@@ -207,7 +202,6 @@ const Slider: Modules<SliderProps> = (props) => {
                         )}
                     ></div>
                 </div>
-            </div>
         </Wrapper>
     );
 };
