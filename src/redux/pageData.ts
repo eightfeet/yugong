@@ -1,5 +1,5 @@
 import { createModel } from '@rematch/core';
-import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE } from '~/core/constants';
+import { DEFAULT_PAGETITLE, DEFAULT_TO_UNIT, DEFAULT_UNIT, GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE } from '~/core/constants';
 import {
     Api,
     BackgroundCommonTypesOfStyleItems,
@@ -42,10 +42,10 @@ export interface PageData {
 
 export const pageData = createModel<RootModel>()({
     state: {
-        pageTitle: '页面名称',
+        pageTitle: DEFAULT_PAGETITLE,
         style: {},
-        unit: 'px',
-        toUnit: 'px',
+        unit: DEFAULT_UNIT,
+        toUnit: DEFAULT_TO_UNIT,
         onLoadApi: [],
         mountEnvents: [],
         unmountEnvents: [],

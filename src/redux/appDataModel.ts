@@ -6,7 +6,7 @@ import mockAppData from '~/mockdata/appData'
 const getAppData = (appdata: AppDataListTypes) => new Promise<AppDataListTypes>((resolve => {
     setTimeout(() => {
         resolve(appdata)
-    }, 3000)
+    }, 100)
 }))
 
 export const appData = createModel<RootModel>()({

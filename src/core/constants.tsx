@@ -29,6 +29,12 @@ export const MODULES = [
 
 // 默认字体大小
 export const ROOT_FONTSIZE = 16;
+// 默认单位
+export const DEFAULT_UNIT = 'px';
+// 默认转换单位
+export const DEFAULT_TO_UNIT = 'px';
+// 默认页面标题
+export const DEFAULT_PAGETITLE = '页面标题';
 // 栅格默认间隔
 export const GRID_DEFAULT_SPACE = 0;
 // 栅格默认行高
