@@ -3,7 +3,7 @@ import { Col, Select } from "antd";
 import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import Api from '~/components/App';
+import Api from "~/components/App";
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
 
@@ -15,7 +15,6 @@ interface EventEmitterExpose {
   description: string;
 }
 
-
 interface ModuleListItem {
   type: string;
   name: string;
@@ -24,12 +23,12 @@ interface ModuleListItem {
 
 interface Props {
   /**
-   * 
+   *
    */
   moduleUuid: string;
   dispatchedFunctions: string;
   onChange: (data: string[]) => void;
-  argumentList: ArgumentsItem[]
+  argumentList: ArgumentsItem[];
 }
 
 const EventItem: React.FC<Props> = ({
@@ -39,16 +38,15 @@ const EventItem: React.FC<Props> = ({
   onChange,
 }) => {
   const [selectItem, setSelectItem] = useState<any[]>([]);
-  /** 
-   * 设置当前被选项 
+  /**
+   * 设置当前被选项
    */
   useEffect(() => {
     setSelectItem([moduleUuid, dispatchedFunctions]);
   }, [moduleUuid, dispatchedFunctions]);
 
   const appData = useSelector((state: RootState) => state.appData);
-  
-  
+
   /**
    * 运行时可选模块清单
    */
@@ -58,7 +56,7 @@ const EventItem: React.FC<Props> = ({
    * 初始化运行时模块清单，
    * 仅包含有方法导出的模块
    */
-   useEffect(() => {
+  useEffect(() => {
     const data: ModuleListItem[] = [];
     for (let index = 0; index < appData.length; index++) {
       const item = appData[index];
@@ -76,8 +74,6 @@ const EventItem: React.FC<Props> = ({
     setModuleList(data);
   }, [appData]);
 
-
-  
   /**
    * 运行时可选方法清单
    */
@@ -97,53 +93,57 @@ const EventItem: React.FC<Props> = ({
       );
       if (!result) return;
       let exposeFunctions: EventEmitterExpose[] = [];
-      if (result.type !== 'global') {
-        exposeFunctions = require(`~/modules/${result.type}`)
-          .default.exposeFunctions;
-      } else  {
+      if (result.type !== "global") {
+        exposeFunctions = require(`~/modules/${result.type}`).default
+          .exposeFunctions;
+      } else {
         exposeFunctions = Api.exposeFunctions || [];
       }
       setFunctionList(exposeFunctions);
     },
     [moduleList]
   );
-  
+
   // 模块id变更时根据模块id获取当前模块的方法清单
   useEffect(() => {
     getFunctionOptionsList(moduleUuid);
   }, [getFunctionOptionsList, moduleUuid]);
 
-  
   /**
    * 模块被修改时，模块对应的方法要做同步修改
-   */  
-  const onChangemoduleUuid = useCallback((data: string) => {
-    // 修改被选数据
-    const operateData = [...selectItem];
-    operateData[0] = data;
-    operateData[1] = '';
-    setSelectItem(operateData);
-    // 获取被选模块的方法清单
-    getFunctionOptionsList(data);
-    // 数据变更
-    if (onChange instanceof Function) {
-      onChange(operateData)
-    }
-  }, [selectItem, getFunctionOptionsList, onChange]);
+   */
+  const onChangemoduleUuid = useCallback(
+    (data: string) => {
+      // 修改被选数据
+      const operateData = [...selectItem];
+      operateData[0] = data;
+      operateData[1] = "";
+      setSelectItem(operateData);
+      // 获取被选模块的方法清单
+      getFunctionOptionsList(data);
+      // 数据变更
+      if (onChange instanceof Function) {
+        onChange(operateData);
+      }
+    },
+    [selectItem, getFunctionOptionsList, onChange]
+  );
 
   /**
    * 修改方法
    */
-  const onChangeDispatchedFunctions = useCallback((data: string) => {
-    const operateData = [...selectItem];
-    operateData[1] = data;
-    setSelectItem(operateData);
-    if (onChange instanceof Function) {
-      onChange(operateData)
-    }
-  }, [selectItem, onChange]);
+  const onChangeDispatchedFunctions = useCallback(
+    (data: string) => {
+      const operateData = [...selectItem];
+      operateData[1] = data;
+      setSelectItem(operateData);
+      if (onChange instanceof Function) {
+        onChange(operateData);
+      }
+    },
+    [selectItem, onChange]
+  );
 
-  
   return (
     <>
       <Col span={9}>
@@ -152,9 +152,25 @@ const EventItem: React.FC<Props> = ({
           className={s.selecter}
           onChange={onChangemoduleUuid}
           placeholder="请选择要操作的模块"
+          showSearch
+          optionFilterProp="children"
+          filterOption={
+            (input, option) => {
+              const str = option?.children.join("").toLowerCase();
+              if (str.indexOf(input) !== -1) {
+                return true;
+              }
+              return false;
+            }
+            // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
         >
           {moduleList.map((item) => (
-            <Select.Option key={item.uuid} value={item.uuid}>
+            <Select.Option
+              key={item.uuid}
+              value={item.uuid}
+              optionFilterProp="children"
+            >
               {item.name}-{item.type}
             </Select.Option>
           ))}
@@ -168,7 +184,9 @@ const EventItem: React.FC<Props> = ({
           onChange={onChangeDispatchedFunctions}
         >
           {functionList.map((item) => (
-            <Select.Option key={item.name} value={item.name}>{item.description}</Select.Option>
+            <Select.Option key={item.name} value={item.name}>
+              {item.description}
+            </Select.Option>
           ))}
         </Select>
       </Col>
