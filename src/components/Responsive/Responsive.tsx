@@ -21,6 +21,7 @@ import Draggable from "react-draggable";
 import Ruler from "./Ruler";
 import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
+import classNames from "classnames";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -57,7 +58,8 @@ const Responsive: React.FC<Props> = () => {
 
   const ref = useRef(null);
 
-  const [iframeWidth, setIframeWidth] = useState(425);
+  const [iframeWidth, setIframeWidth] = useState(417);
+  const [iframeHeight, setIframeHeight] = useState(736);
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
@@ -106,16 +108,18 @@ const Responsive: React.FC<Props> = () => {
         setIsEditing(true);
       };
     }
-  }, [isEditing, sendMessage, win]);
+  }, [isEditing, sendMessage, setIsEditing, win]);
 
-  const toggleEdit = useCallback(
-    () => {
-      const states = !isEditing;
-      sendMessage({ tag: "setIsEditing", value: states }, win);
-      setIsEditing(states);
-    },
-    [isEditing, sendMessage, setIsEditing, win],
-  )
+  useEffect(() => {
+    sendMessage({ tag: "setIsEditing", value: true }, win);
+    setIsEditing(true);
+  }, [sendMessage, setIsEditing, win]);
+
+  const toggleEdit = useCallback(() => {
+    const states = !isEditing;
+    sendMessage({ tag: "setIsEditing", value: states }, win);
+    setIsEditing(states);
+  }, [isEditing, sendMessage, setIsEditing, win]);
 
   // 收发处理，编辑完数据后通过sendMessage向子窗口发送最新数据。
   useEffect(() => {
@@ -128,8 +132,9 @@ const Responsive: React.FC<Props> = () => {
     );
   }, [sendMessage, win, appData]);
 
-  const onChangeRule = (width: any) => {
+  const onChangeRule = (width: any, height: any) => {
     setIframeWidth(width);
+    setIframeHeight(height)
     if (win) {
       sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }
@@ -156,7 +161,7 @@ const Responsive: React.FC<Props> = () => {
 
   return (
     <div className={s.main}>
-      {(showDashboard && isEditing) ? (
+      {showDashboard && isEditing ? (
         <Draggable
           axis="both"
           handle={`.${s.header}`}
@@ -173,6 +178,23 @@ const Responsive: React.FC<Props> = () => {
         </Draggable>
       ) : null}
       <div>
+        {!isEditing ? (
+          <Button
+            type="primary"
+            className={s.toggle}
+            onClick={toggleEdit}
+            icon={<EditOutlined />}
+          />
+        ) : null}
+        {isEditing ? (
+          <Button
+            type="primary"
+            className={s.toggle}
+            onClick={toggleEdit}
+            icon={<EyeOutlined />}
+          />
+        ) : null}
+        &nbsp;
         <Button
           type="primary"
           icon={<SettingOutlined />}
@@ -188,21 +210,6 @@ const Responsive: React.FC<Props> = () => {
         >
           组件
         </Button>
-        &nbsp;
-        {!isEditing ? (
-          <Button
-            type="primary"
-            onClick={toggleEdit}
-            icon={<EditOutlined />}
-          />
-        ) : null}
-        {isEditing ? (
-          <Button
-            type="primary"
-            onClick={toggleEdit}
-            icon={<EyeOutlined />}
-          />
-        ) : null}
       </div>
       <Ruler onChange={onChangeRule} />
       <Drawer
@@ -230,10 +237,16 @@ const Responsive: React.FC<Props> = () => {
         <Repository />
       </Drawer>
       <div className={s.box}>
+        <div
+            className={classNames({
+              [s.viewbg]: !isEditing
+            })}
+            style={{transition: 'all 0.5s'}}
+        />
         {!stateTag ? (
           <div
             className={s.iframebox}
-            style={iframeWidth ? { width: iframeWidth } : {}}
+            style={iframeWidth ? { width: iframeWidth, height: iframeHeight } : {}}
           >
             <iframe
               ref={ref}

@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import s from "./Ruler.module.less";
 
 interface Prop {
-  onChange?: (width: string) => any;
+  onChange?: (width: string, height: string) => any;
 }
 const Ruler: React.FC<Prop> = ({ onChange }) => {
   const [, setIframeWidth] = useState();
@@ -28,7 +28,7 @@ const Ruler: React.FC<Prop> = ({ onChange }) => {
       setIframeWidth(e.target.getAttribute("data-width"));
       setIframeWidthText(e.target.getAttribute("data-text"));
       if (onChange instanceof Function) {
-        onChange(e.target.getAttribute("data-width"));
+        onChange(e.target.getAttribute("data-width"), e.target.getAttribute("data-height"));
       }
     },
     [onChange]
@@ -46,16 +46,18 @@ const Ruler: React.FC<Prop> = ({ onChange }) => {
           style={{ width: "768px" }}
         >
           <div
-            data-width="425px"
-            data-text="Mobile L - 425px"
+            data-width="414px"
+            data-height="736px"
+            data-text="Mobile L - 414px*736px"
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
             onClick={onClick}
-            style={{ width: "425px" }}
+            style={{ width: "414px" }}
           >
             <div
               data-width="375px"
-              data-text="Mobile M - 375px"
+              data-height="677px"
+              data-text="Mobile M(iphone6/7/8) - 375px*677px"
               onMouseOver={onMouseOver}
               onMouseOut={onMouseOut}
               onClick={onClick}
@@ -63,7 +65,8 @@ const Ruler: React.FC<Prop> = ({ onChange }) => {
             >
               <div
                 data-width="320px"
-                data-text="Mobile S - 320px"
+                data-height="568px"
+                data-text="Mobile S(iphone5s) - 320px*568px"
                 onMouseOver={onMouseOver}
                 onMouseOut={onMouseOut}
                 onClick={onClick}
