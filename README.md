@@ -1,3 +1,6 @@
+### To do list & bug
+- 页面栅格为负数时浏览器会崩溃
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

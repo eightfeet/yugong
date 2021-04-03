@@ -230,7 +230,7 @@ const Pagesetting: React.FC<Props> = () => {
 
   return (
     <>
-      <Collapse bordered={false} defaultActiveKey="pagemount">
+      <Collapse bordered={false} defaultActiveKey="baseset">
         <Panel
           header="基本信息"
           key="baseset"
