@@ -27,7 +27,8 @@ const App: Modules<Props> = () => {
 
   // 设置页面标题
   useEffect(() => {
-    document.title = pageData.pageTitle || "*";
+    document.title = pageData.pageTitle || "\u200E";
+    
   }, [pageData.pageTitle]);
 
   // 创建全站事件处理器
@@ -77,9 +78,7 @@ const App: Modules<Props> = () => {
       }
     };
   }, [eventEmitter, onMount, onUnmount]);
-
   if (!eventEmitter) return null;
-
   return (
     <AppLayout
       rootFontsize={rootFontsize}

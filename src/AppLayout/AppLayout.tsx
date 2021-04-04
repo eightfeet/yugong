@@ -79,7 +79,6 @@ const AppLayout: React.FC<LayoutProps> = ({
     );
 
     const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
-
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
         const { tag, value } = data;

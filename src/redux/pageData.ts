@@ -40,6 +40,17 @@ export interface PageData {
     rowHeight?: number;
 }
 
+// grid 部分参数无法热更新，这里优先使用最正确的数据，然后使用默认数据
+let localPageData:PageData = {};
+try {
+    let localStrPageData = localStorage.getItem('pageData');
+    if (localStrPageData) {
+        localPageData = JSON.parse(localStrPageData)
+    } 
+} catch (error) {
+    console.warn(error)
+}
+
 export const pageData = createModel<RootModel>()({
     state: {
         pageTitle: DEFAULT_PAGE_TITLE,
@@ -49,9 +60,9 @@ export const pageData = createModel<RootModel>()({
         onLoadApi: [],
         mountEnvents: [],
         unmountEnvents: [],
-        cols: GRID_DEFAULT_COLS,
-        rowHeight: GRID_DEFAULT_ROWHEIGHT,
-        space: GRID_DEFAULT_SPACE
+        cols: localPageData.cols || GRID_DEFAULT_COLS,
+        rowHeight: localPageData.rowHeight || GRID_DEFAULT_ROWHEIGHT,
+        space: localPageData.space || GRID_DEFAULT_SPACE
     } as PageData, // typed complex state
     reducers: {
         updatePage(state, payload: PageData) {
