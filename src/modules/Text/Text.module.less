@@ -1,0 +1,10 @@
+.text {
+  list-style-type: none;
+  counter-reset: sectioncounter;
+  margin: 0;
+  padding: 0;
+}
+.text li:before {
+  content: counter(sectioncounter);
+  counter-increment: sectioncounter;
+}

@@ -1,8 +1,15 @@
 import Icon from '@ant-design/icons';
 import IconSlider from "./icons/IconSlider";
 import IconButton from "./icons/IconButton";
+import IconText from "./icons/IconText";
 
 export const MODULES = [
+  {
+    moduleName: "Text",
+    title: "Text",
+    discribe: "文本",
+    icon: <Icon component={IconText} />
+  },
   {
     moduleName: "Button",
     title: "Button",

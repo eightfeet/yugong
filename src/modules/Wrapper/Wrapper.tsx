@@ -12,6 +12,7 @@ interface Props extends AppDataElementsTypes {
   id: string;
   maxWidth?: boolean;
   maxHeight?: boolean;
+  itemAlign?: 'top'|'center'|'bottom'
 }
 
 const Wrapper: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const Wrapper: React.FC<Props> = ({
   layout,
   maxWidth,
   maxHeight,
+  itemAlign="center",
 }) => {
   /**
    * Wrapper 自身的样式
@@ -74,7 +76,11 @@ const Wrapper: React.FC<Props> = ({
   }
   return (
     <div
-      className={s.touchwrap}
+      className={classNames(s.touchwrap, {
+        [s.aligncenter]: itemAlign === 'center',
+        [s.aligntop]: itemAlign === 'top',
+        [s.alignbottom]: itemAlign === 'bottom',
+      })}
       onTouchStart={onLayoutClick}
       onMouseDown={onLayoutClick}
     >
