@@ -5,6 +5,7 @@ import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import s from './Text.module.less'
+import useStyles from './Text.useStyle';
 
 export interface TextProps extends AppDataElementsTypes {
     id: string;
@@ -12,7 +13,8 @@ export interface TextProps extends AppDataElementsTypes {
 }
 
 const Text:Modules<TextProps> = (props) => {
-    const { eventEmitter, events = {}, api} = props;
+    const { eventEmitter, events = {}, api, style} = props;
+    const userClass = useStyles(style);
     // API请求 注意依赖关系
     useEffect(() => {
         const apiArguments = api?.find(item => item.apiId === '');
@@ -31,8 +33,8 @@ const Text:Modules<TextProps> = (props) => {
     return (
         <Wrapper {...props} maxWidth itemAlign="top">
              <ul className={s.text}>
-                <li>align-items 属性定义flex子项在flex容器的当前行的侧轴（纵轴）方向上的对齐方式。</li>
-                <li>提示：使用每个弹性对象元素的 align-self 属性可重写 align-items 属性。</li>
+                <li className={userClass.paragraph}>align-items 属性定义flex子项在flex容器的当前行的侧轴（纵轴）方向上的对齐方式。</li>
+                <li className={userClass.paragraph}>提示：使用每个弹性对象元素的 align-self 属性可重写 align-items 属性。</li>
              </ul>
         </Wrapper>
     )
@@ -67,12 +69,16 @@ Text.exposeDefaultProps = {
                 align: 'left'
             }
         },
+        paragraph: {
+
+        },
         prefix: {
 
         }
     },
     styleDescription: {
-        prefix: '前缀'
+        paragraph: '段落',
+        prefix: '段落前缀'
     }
 };
 
