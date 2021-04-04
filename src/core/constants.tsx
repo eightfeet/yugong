@@ -2,6 +2,7 @@ import Icon from '@ant-design/icons';
 import IconSlider from "./icons/IconSlider";
 import IconButton from "./icons/IconButton";
 import IconText from "./icons/IconText";
+import IconImage from './icons/IconImage';
 
 export const MODULES = [
   {
@@ -9,6 +10,12 @@ export const MODULES = [
     title: "Text",
     discribe: "文本",
     icon: <Icon component={IconText} />
+  },
+  {
+    moduleName: "Image",
+    title: "Image",
+    discribe: "图片",
+    icon: <Icon component={IconImage} />
   },
   {
     moduleName: "Button",
