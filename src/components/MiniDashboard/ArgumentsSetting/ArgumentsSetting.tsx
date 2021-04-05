@@ -3,8 +3,8 @@ import { Button, Card, Input, Select, Tooltip } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch, RootState } from "~/redux/store";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArgumentsSetting.module.less";
 import ArrayArguments from "./ArrayArguments";
@@ -60,6 +60,8 @@ const ArgumentsSetting: React.FC<Props> = ({
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
   const [showRunningTimes, setShowRunningTimes] = useState(false);
+  const forceUpdateByStateTag = useDispatch<Dispatch>().controller
+    .forceUpdateByStateTag;
   // 将argument数据接管
   useEffect(() => {
     let data: ArgumentsItem[] = [...(argumentsData || [])];
@@ -73,9 +75,10 @@ const ArgumentsSetting: React.FC<Props> = ({
   // 弹窗确定收集编辑完毕的argument数据
   const onModalOk = useCallback(() => {
     if (onOk instanceof Function) {
+      forceUpdateByStateTag();
       onOk(argumentState);
     }
-  }, [onOk, argumentState]);
+  }, [onOk, forceUpdateByStateTag, argumentState]);
 
   // number
   const onChangeInput = useCallback(

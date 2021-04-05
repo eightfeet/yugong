@@ -16,6 +16,7 @@ import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
 import EventEmitter from '~/core/EventEmitter';
 import { backgroundGradient, backgroundCommon } from '~/compiler/compiler';
+import { cloneDeep } from 'lodash';
 // 当前是否被ifream引用
 const visualSense = window.self === window.top;
 
@@ -133,7 +134,8 @@ const AppLayout: React.FC<LayoutProps> = ({
     // 更新GridLine布局数据
     const onLayoutChange = useCallback(
         (layout: LayoutDataType[]) => {
-            appData.forEach((item) => {
+            const optAppdata = cloneDeep(appData);
+            optAppdata.forEach((item) => {
                 layout.forEach((element) => {
                     if (item.moduleId === element.i) {
                         item.layout = element;
@@ -144,17 +146,18 @@ const AppLayout: React.FC<LayoutProps> = ({
             sendMessage(
                 {
                     tag: 'updateAppData',
-                    value: appData,
+                    value: optAppdata,
                 },
                 window.top
             );
-            setAppdataLocalStorage(appData);
+            updateAppData(optAppdata);
+            setAppdataLocalStorage(optAppdata);
             // // 设置当前操作对象为编辑状态
             // setEditingId(editId)
             // // 向父级窗口通知当前激活Id
             // sendMessage({tag: 'id', value: editId}, window.top)
         },
-        [appData, sendMessage, setAppdataLocalStorage]
+        [appData, sendMessage, setAppdataLocalStorage, updateAppData]
     );
     const generateStyle = useCallback(() => {
         const gradient = backgroundGradient(
