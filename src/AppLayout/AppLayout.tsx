@@ -78,7 +78,7 @@ const AppLayout: React.FC<LayoutProps> = ({
         'appData',
         null
     );
-
+    
     const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
@@ -131,9 +131,13 @@ const AppLayout: React.FC<LayoutProps> = ({
         });
     }, [getPageData, pageDataLocalStoreData, sendMessage]);
 
-    // 更新GridLine布局数据
+    /**
+     * 更新GridLine布局数据到appData
+     * 这里不要忽略被选择项（activationItem）的数据更新, 在编辑端修改
+     */
     const onLayoutChange = useCallback(
         (layout: LayoutDataType[]) => {
+            // 更新appData
             const optAppdata = cloneDeep(appData);
             optAppdata.forEach((item) => {
                 layout.forEach((element) => {
@@ -142,6 +146,7 @@ const AppLayout: React.FC<LayoutProps> = ({
                     }
                 });
             });
+            
             // 通知父级窗口变更数据
             sendMessage(
                 {
@@ -152,10 +157,6 @@ const AppLayout: React.FC<LayoutProps> = ({
             );
             updateAppData(optAppdata);
             setAppdataLocalStorage(optAppdata);
-            // // 设置当前操作对象为编辑状态
-            // setEditingId(editId)
-            // // 向父级窗口通知当前激活Id
-            // sendMessage({tag: 'id', value: editId}, window.top)
         },
         [appData, sendMessage, setAppdataLocalStorage, updateAppData]
     );

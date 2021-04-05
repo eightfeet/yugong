@@ -22,6 +22,7 @@ import Ruler from "./Ruler";
 import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
 import classNames from "classnames";
+import { AppDataListTypes } from "~/types/appData";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
@@ -72,6 +73,14 @@ const Responsive: React.FC<Props> = () => {
         break;
       case "updateAppData":
         updateAppData(value);
+        // 同步更新被选模块的属性
+        if (activationItem.moduleId === undefined) return;
+        const asynAcactivationItem = (value as AppDataListTypes).find(
+          (item) => item.moduleId === activationItem.moduleId
+        );
+        if (asynAcactivationItem?.moduleId) {
+          updateActivationItem(asynAcactivationItem);
+        }
         break;
       case "updateRunningTimes":
         setRunningTimes(value);
@@ -134,7 +143,7 @@ const Responsive: React.FC<Props> = () => {
 
   const onChangeRule = (width: any, height: any) => {
     setIframeWidth(width);
-    setIframeHeight(height)
+    setIframeHeight(height);
     if (win) {
       sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }
@@ -238,15 +247,17 @@ const Responsive: React.FC<Props> = () => {
       </Drawer>
       <div className={s.box}>
         <div
-            className={classNames({
-              [s.viewbg]: !isEditing
-            })}
-            style={{transition: 'all 0.5s'}}
+          className={classNames({
+            [s.viewbg]: !isEditing,
+          })}
+          style={{ transition: "all 0.5s" }}
         />
         {!stateTag ? (
           <div
             className={s.iframebox}
-            style={iframeWidth ? { width: iframeWidth, height: iframeHeight } : {}}
+            style={
+              iframeWidth ? { width: iframeWidth, height: iframeHeight } : {}
+            }
           >
             <iframe
               ref={ref}
