@@ -29,9 +29,7 @@ interface ImagesType {
   imageLink?: string;
 }
 
-interface Configs {
-    autoPlay: "0" | "1";
-}
+type Configs = "0" | "1";
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
 
@@ -59,7 +57,10 @@ const Slider: Modules<SliderProps> = (props) => {
   }, [eventEmitter, events]);
 
   const [images, setImages] = useState<ImagesType[]>();
-  const [autplay, setAutplay] = useState<boolean>(false);
+  const [delay, setDelay] = useState<number>(0);
+  const [hideNav, setHideNav] = useState(false);
+  const [hidePage, setHidePage] = useState(false);
+  const [breakInterface, setBreakInterface] = useState(false);
   const setData = useCallback((imageUrls, imageLinks) => {
     const data: ImagesType[] = [];
     imageUrls?.forEach((element: any, index: number) => {
@@ -74,14 +75,38 @@ const Slider: Modules<SliderProps> = (props) => {
   }, []);
 
   const setSlider = useCallback(
-    (config: Configs) => {
-      if (config.autoPlay === "0") {
-        setAutplay(true);
+    (
+      navigation: Configs,
+      pagination: Configs,
+      delay: string,
+      disableOnInteraction: Configs
+    ) => {
+      const delayNum = Number(delay);
+      if (delayNum && delayNum > 0) {
+        setDelay(delayNum);
       } else {
-        setAutplay(false);
+        setDelay(0);
+      }
+
+      if (disableOnInteraction === '0') {
+        setBreakInterface(true);
+      } else {
+        setBreakInterface(false);
+      }
+
+      if (navigation === '0') {
+        setHideNav(true);
+      } else {
+        setHideNav(false);
+      }
+
+      if (pagination === '0') {
+        setHidePage(true);
+      } else {
+        setHidePage(false);
       }
     },
-    [setAutplay]
+    [setDelay]
   );
 
   useEffect(() => {
@@ -120,20 +145,37 @@ const Slider: Modules<SliderProps> = (props) => {
   useEffect(() => {
     const params: { [keys: string]: any } = {
       resizeObserver: true,
-      navigation: {
+    };
+
+    if (hideNav === false) {
+      params.navigation = {
         nextEl: `.${prefix}next`,
         prevEl: `.${prefix}prev`,
-      },
-      pagination: {
+      };
+    }
+    if (hideNav === true) {
+      delete params.navigation;
+    }
+
+    if (hidePage === false) {
+      params.pagination = {
         el: ".swiper-pagination",
         clickable: true,
-      },
-    };
-    console.log('params', params, autplay)
-    if (autplay === true) {
-      params.autoplay = {
-        delay: 5000,
       };
+    }
+    if (hidePage === true) {
+      delete params.pagination;
+    }
+
+    if (delay > 0) {
+      params.autoplay = {
+        delay,
+      };
+      if (breakInterface === true) {
+        params.autoplay.disableOnInteraction = true;
+      } else {
+        params.autoplay.disableOnInteraction = false;
+      }
     } else {
       delete params.autoplay;
     }
@@ -143,7 +185,7 @@ const Slider: Modules<SliderProps> = (props) => {
         swiperRef.current.destroy(true, true);
       }
     };
-  }, [prefix, autplay]);
+  }, [prefix, delay, hideNav, hidePage, breakInterface]);
 
   useEffect(() => {
     if (swiperRef.current) {
@@ -176,19 +218,34 @@ const Slider: Modules<SliderProps> = (props) => {
             </div>
           ))}
         </div>
-        <div className={classNames(s.next, useClass.next, `${prefix}next`)}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 443.52 443.52">
-            <path d="M336.226 209.591l-204.8-204.8c-6.78-6.548-17.584-6.36-24.132.42-6.388 6.614-6.388 17.099 0 23.712l192.734 192.734-192.734 192.734c-6.663 6.664-6.663 17.468 0 24.132 6.665 6.663 17.468 6.663 24.132 0l204.8-204.8c6.663-6.665 6.663-17.468 0-24.132z" />
-          </svg>
-        </div>
-        <div className={classNames(s.prev, useClass.prev, `${prefix}prev`)}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 443.52 443.52">
-            <path d="M143.492 221.863L336.226 29.129c6.663-6.664 6.663-17.468 0-24.132-6.665-6.662-17.468-6.662-24.132 0l-204.8 204.8c-6.662 6.664-6.662 17.468 0 24.132l204.8 204.8c6.78 6.548 17.584 6.36 24.132-.42 6.387-6.614 6.387-17.099 0-23.712L143.492 221.863z" />
-          </svg>
-        </div>
-        <div
-          className={classNames("swiper-pagination", useClass.swiperPagination)}
-        ></div>
+        {hideNav ? null : (
+          <>
+            <div className={classNames(s.next, useClass.next, `${prefix}next`)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 443.52 443.52"
+              >
+                <path d="M336.226 209.591l-204.8-204.8c-6.78-6.548-17.584-6.36-24.132.42-6.388 6.614-6.388 17.099 0 23.712l192.734 192.734-192.734 192.734c-6.663 6.664-6.663 17.468 0 24.132 6.665 6.663 17.468 6.663 24.132 0l204.8-204.8c6.663-6.665 6.663-17.468 0-24.132z" />
+              </svg>
+            </div>
+            <div className={classNames(s.prev, useClass.prev, `${prefix}prev`)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 443.52 443.52"
+              >
+                <path d="M143.492 221.863L336.226 29.129c6.663-6.664 6.663-17.468 0-24.132-6.665-6.662-17.468-6.662-24.132 0l-204.8 204.8c-6.662 6.664-6.662 17.468 0 24.132l204.8 204.8c6.78 6.548 17.584 6.36 24.132-.42 6.387-6.614 6.387-17.099 0-23.712L143.492 221.863z" />
+              </svg>
+            </div>
+          </>
+        )}
+        {hidePage ? null : (
+          <div
+            className={classNames(
+              "swiper-pagination",
+              useClass.swiperPagination
+            )}
+          ></div>
+        )}
       </div>
     </Wrapper>
   );
