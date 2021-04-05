@@ -25,14 +25,14 @@ const staticConstants: StaticConstants = {
           type: "number",
           name: "navigation",
           describe: "隐藏导航!0隐藏,1不隐藏",
-          data: "0",
+          data: "1",
           fieldName: "navigation",
         },
         {
           type: "number",
           name: "pagination",
           describe: "隐藏分页!0隐藏,1不隐藏",
-          data: "0",
+          data: "1",
           fieldName: "pagination",
         },
         {
