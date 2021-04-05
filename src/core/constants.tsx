@@ -3,6 +3,7 @@ import IconSlider from "./icons/IconSlider";
 import IconButton from "./icons/IconButton";
 import IconText from "./icons/IconText";
 import IconImage from './icons/IconImage';
+import IconTop10 from './icons/IconTop10';
 
 export const MODULES = [
   {
@@ -28,6 +29,12 @@ export const MODULES = [
     title: "Slider",
     discribe: "跑马灯",
     icon: <Icon component={IconSlider} />
+  },
+  {
+    moduleName: "Leaderboard",
+    title: "Leaderboard",
+    discribe: "排行榜",
+    icon: <Icon component={IconTop10} />
   },
 ];
 

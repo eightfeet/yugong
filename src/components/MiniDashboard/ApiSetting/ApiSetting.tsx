@@ -6,7 +6,6 @@ import { RootState } from '~/redux/store';
 import { Api } from '~/types/appData';
 import { ExposeApi } from '~/types/modules';
 import ApiConfig from '../ApiConfig';
-import merge from 'lodash/merge';
 
 interface Props {}
 const ApiSetting: React.FC<Props> = () => {
