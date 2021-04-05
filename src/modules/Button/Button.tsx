@@ -198,7 +198,6 @@ Button.exposeDefaultProps = {
         basic: {},
         normal: {
             display: {
-                width: 100,
                 padding: [10, 10, 10, 10],
             },
             border: {
