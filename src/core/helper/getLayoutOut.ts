@@ -26,7 +26,7 @@ const getLayoutSize = (layout?: Layout, pageData?: PageData) => {
   const height =
     (layout?.h || 1) * runningTimeToResult(rowHeight || GRID_DEFAULT_ROWHEIGHT, 1) +
     (layout?.h - 1 || 1) * runningTimeToResult(space || GRID_DEFAULT_SPACE, 0);
-  return { width: `${width}px`, height: `${height}px` };
+  return { width, height };
 };
 
 export default getLayoutSize;

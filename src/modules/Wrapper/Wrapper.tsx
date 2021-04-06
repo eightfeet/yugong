@@ -68,11 +68,11 @@ const Wrapper: React.FC<Props> = ({
   /*设置最大尺寸*/
   const defaultSize: AnyObjectType = {};
   const sizes = getLayoutSize(layout, pageData);
-  if (maxWidth) {
-    defaultSize.width = sizes.width;
+  if (maxWidth && sizes.width !== undefined && sizes.width !== null) {
+    defaultSize.width = `${Math.floor(sizes.width)}px`;
   }
-  if (maxHeight) {
-    defaultSize.height = sizes.height;
+  if (maxHeight && sizes.height !== undefined && sizes.height !== null) {
+    defaultSize.height = `${Math.floor(sizes.height)}px`;
   }
   return (
     <div

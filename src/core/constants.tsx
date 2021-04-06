@@ -4,6 +4,7 @@ import IconButton from "./icons/IconButton";
 import IconText from "./icons/IconText";
 import IconImage from './icons/IconImage';
 import IconTop10 from './icons/IconTop10';
+import IconTable from './icons/IconTable';
 
 export const MODULES = [
   {
@@ -23,6 +24,12 @@ export const MODULES = [
     title: "Button",
     discribe: "按钮",
     icon: <Icon component={IconButton} />
+  },
+  {
+    moduleName: "Table",
+    title: "Table",
+    discribe: "表格",
+    icon: <Icon component={IconTable} />
   },
   {
     moduleName: "Slider",
