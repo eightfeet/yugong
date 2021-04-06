@@ -91,6 +91,39 @@ Table.exposeDefaultProps = {
   layout: {
     w: 20,
   },
+  style: {
+    basic: {},
+    table: {},
+    thead: {},
+    tbody: {},
+    th: {},
+    td: {},
+    tr: {},
+    rowoddfirst: {},
+    rowoddlast: {},
+    rowodd: {},
+    roweven: {},
+    coloddfirst: {},
+    colevenlast: {},
+    colodd: {},
+    coleven: {},
+  },
+  styleDescription: {
+    table: "表格",
+    thead: "表头",
+    tbody: "内容",
+    th: "表头项",
+    td: "内容项",
+    tr: "行",
+    rowoddfirst: "首行",
+    rowoddlast: "末行",
+    rowodd: "奇数行",
+    roweven: "偶数行",
+    coloddfirst: "首列",
+    colevenlast: "未列",
+    colodd: "奇数列",
+    coleven: "偶数列",
+  }
 };
 
 /**
