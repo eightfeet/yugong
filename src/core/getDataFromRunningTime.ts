@@ -1,11 +1,14 @@
 import get from "lodash/get";
+import parse from 'html-react-parser';
 import { store } from '~/redux/store';
 import { AnyObjectType } from "~/types/appData";
 
-const getDataFromRunningTime = (data: string, userStore?: AnyObjectType) => {
+const getDataFromRunningTime = (data: string, userStore?: AnyObjectType): any => {
   if (typeof data !== "string") {
     return data;
   }
+
+  // 匹配运行时
   let result = data;
   const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
   ruleList?.forEach((item) => {
@@ -21,6 +24,9 @@ const getDataFromRunningTime = (data: string, userStore?: AnyObjectType) => {
     result = result.replace(item, `${value || ""}`);
   });
 
+  if (!!result.match(/^HTML(:|：)+/g)?.length) {
+    return parse(result.replace(/^HTML(:|：)+/, ''));
+  }
   return result;
 };
 

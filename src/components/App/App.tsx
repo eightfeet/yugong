@@ -83,9 +83,9 @@ const App: Modules<Props> = () => {
     <AppLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
-      rowHeight={parseInt(getResult(`${pageData.rowHeight}`)) || GRID_DEFAULT_ROWHEIGHT}
-      cols={parseInt(getResult(`${pageData.cols}`)) || GRID_DEFAULT_COLS}
-      space={parseInt(getResult(`${pageData.space}`)) || GRID_DEFAULT_SPACE}
+      rowHeight={parseInt(getResult(`${pageData.rowHeight}`) as string) || GRID_DEFAULT_ROWHEIGHT}
+      cols={parseInt(getResult(`${pageData.cols}`) as string) || GRID_DEFAULT_COLS}
+      space={parseInt(getResult(`${pageData.space}`) as string) || GRID_DEFAULT_SPACE}
     />
   );
 };

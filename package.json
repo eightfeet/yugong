@@ -19,6 +19,7 @@
     "compressorjs": "^1.0.7",
     "dayjs": "^1.10.4",
     "extend": "^3.0.2",
+    "html-react-parser": "^1.2.4",
     "iframe-resizer-react": "^1.1.0",
     "koa-compose": "^4.1.0",
     "query-string": "^6.14.1",

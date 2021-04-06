@@ -6,7 +6,7 @@ import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import s from "./Text.module.less";
 import useStyles from "./Text.useStyle";
-import saferInnerHtml from "~/core/saferInnerHtml";
+import getResult from '~/core/getDataFromRunningTime';
 
 export interface TextProps extends AppDataElementsTypes {
   id: string;
@@ -49,7 +49,9 @@ const Text: Modules<TextProps> = (props) => {
     <Wrapper {...props} maxWidth maxHeight itemAlign="top">
       <ul className={s.text}>
         {textArea.map((item, index: number) => (
-          <li key={index} className={userClass.paragraph} dangerouslySetInnerHTML={ {__html:saferInnerHtml(item)}} />
+          <li key={index} className={userClass.paragraph} >
+            {getResult(item)}
+          </li>
         ))}
       </ul>
     </Wrapper>
@@ -72,7 +74,7 @@ Text.exposeFunctions = [
           "文本可以是一个段落，也可以是一个列表！",
           "通过调用Text的setText方法可以修改文本内容！",
           "每个段落都有一个序号前缀，可以单独定义样式去隐藏或美化前缀",
-          "每段文本可以<b>追加html标签</b>，以满足更灵活的样式编辑"
+          'HTML:每段文本可以<b style="color:red">追加html标签</b>，以满足更灵活的样式编辑'
         ],
         fieldName: "textArray",
       },
