@@ -5,6 +5,8 @@ import { AppDataElementsTypes } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import s from './Table.module.less'
+import useStyles from "./Table.useStyle";
+import classNames from "classnames";
 
 export interface TableProps extends AppDataElementsTypes {
   id: string;
@@ -12,7 +14,8 @@ export interface TableProps extends AppDataElementsTypes {
 }
 
 const Table: Modules<TableProps> = (props) => {
-  const { eventEmitter, events = {}, api } = props;
+  const { eventEmitter, events = {}, api, style } = props;
+  const userClass = useStyles(style);
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -29,7 +32,7 @@ const Table: Modules<TableProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <Wrapper {...props} maxHeight maxWidth><table className={s.table}>
+    <Wrapper {...props} maxHeight maxWidth><table className={classNames(s.table, userClass.table)}>
         <thead>
           <tr>
             <th scope="col">#</th>
