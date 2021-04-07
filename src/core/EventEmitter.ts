@@ -1,6 +1,9 @@
 import getBooleanData from "./getBooleanData";
 import getDefaultArgumentsByEventName from "./helper/getDefaultArgumentsByEventName";
+import get from "lodash/get";
 import getResult from "~/core/getDataFromRunningTime";
+import { store } from "~/redux/store";
+
 interface EventEmitterEvents {
   [key: string]: Function;
 }
@@ -41,6 +44,10 @@ class EventEmitter {
           argumentsData.forEach((element) => {
             if (element.type === 'boolean') {
               operateArgument.push(getBooleanData(element.data))
+            } else if (element.type === 'runningTime') {
+              const runningTimes = store.getState().runningTimes;
+              const value = get(runningTimes, element.data);
+              operateArgument.push(value);
             } else {
               operateArgument.push(getResult(element.data));
             }

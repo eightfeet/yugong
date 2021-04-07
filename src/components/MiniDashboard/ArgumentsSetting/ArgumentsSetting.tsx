@@ -145,6 +145,7 @@ const ArgumentsSetting: React.FC<Props> = ({
       const result = [...argumentState];
       result[index].type = e;
       switch (e) {
+        case "runningTime":
         case "string":
         case "number":
           result[index].data = "";
@@ -262,6 +263,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                         value={item.type}
                         onChange={onChangeArgType(index)}
                       >
+                        <Select.Option value="runningTime">runningTime</Select.Option>
                         <Select.Option value="string">string</Select.Option>
                         <Select.Option value="number">number</Select.Option>
                         <Select.Option value="boolean">boolean</Select.Option>
@@ -281,7 +283,7 @@ const ArgumentsSetting: React.FC<Props> = ({
               }
             >
               <div>
-                {item.type === "number" || item.type === "string" ? (
+                {item.type === "number" || item.type === "string" || item.type === "runningTime" ? (
                   <Input
                     onChange={onChangeInput(index)}
                     placeholder={`请输入值,${item.describe || ""}`}

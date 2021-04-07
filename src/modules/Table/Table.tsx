@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
 import { AppDataElementsTypes } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
-import s from './Table.module.less'
+import s from "./Table.module.less";
 import useStyles from "./Table.useStyle";
 import classNames from "classnames";
+import getResult from "~/core/getDataFromRunningTime";
 
 export interface TableProps extends AppDataElementsTypes {
   id: string;
@@ -16,6 +17,8 @@ export interface TableProps extends AppDataElementsTypes {
 const Table: Modules<TableProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const userClass = useStyles(style);
+  const [theadDataStatu, setTheadDataStatu] = useState<string[]>([]);
+  const [tbodyDataStatu, setTbodyDataStatu] = useState<string[][]>([]);
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -31,44 +34,97 @@ const Table: Modules<TableProps> = (props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const setTheadData = useCallback((data) => {
+    setTheadDataStatu(data || []);
+  }, []);
+
+  const setTbodyData = useCallback((data, map) => {
+    if (!Array.isArray(data)) {
+      return;
+    }
+    const result: any[] = [];
+    data.forEach((element) => {
+      const temp: any[] = [];
+      if (Array.isArray(map)) {
+        map.forEach((item) => {
+          temp.push(getResult(item, element));
+        });
+      }
+      result.push(temp);
+    });
+    setTbodyDataStatu(result);
+  }, []);
+
+  // 向eventEmitter注册事件，向外公布
+  useMemo(() => {
+    eventEmitter.addEventListener("setTheadData", setTheadData);
+    eventEmitter.addEventListener("setTbodyData", setTbodyData);
+  }, [eventEmitter, setTbodyData, setTheadData]);
+
   return (
-    <Wrapper {...props} maxHeight maxWidth><table className={classNames(s.table, userClass.table)}>
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Username</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table></Wrapper>
+    <Wrapper {...props} maxHeight maxWidth>
+      <table className={classNames(s.table, userClass.table)}>
+        {theadDataStatu.length ? (
+          <thead>
+            <tr>
+              {theadDataStatu.map((item, index) => (
+                <th key={index} scope="col">
+                  {getResult(item)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        ) : null}
+        {tbodyDataStatu.length ? (
+          <tbody>
+            {
+              tbodyDataStatu.map(item => <tr>
+                {item.map(itemsub => <td>{itemsub}</td>)}
+              </tr>)
+            }
+          </tbody>
+        ) : null}
+      </table>
+    </Wrapper>
   );
 };
 
 /**
  * 注册方法的静态描述与默认参数定义
  */
-Table.exposeFunctions = [];
+Table.exposeFunctions = [
+  {
+    name: "setTheadData",
+    description: "设置表头",
+    arguments: [
+      {
+        type: "array",
+        name: "设置表头项",
+        describe: "设置表头标题，每项代表一列",
+        data: [],
+      },
+    ],
+  },
+  {
+    name: "setTbodyData",
+    description: "设置数据",
+    arguments: [
+      {
+        type: "runningTime",
+        name: "数据源",
+        describe: "数据源，设置运行时或Api返回数据源",
+        data: "",
+      },
+      {
+        type: "array",
+        name: "行值",
+        describe: "设置每行内容，数据替换基于数据源！",
+        data: [],
+      },
+    ],
+  },
+];
 
 /**
  * 发布事件的静态描述
@@ -123,7 +179,7 @@ Table.exposeDefaultProps = {
     colevenlast: "未列",
     colodd: "奇数列",
     coleven: "偶数列",
-  }
+  },
 };
 
 /**

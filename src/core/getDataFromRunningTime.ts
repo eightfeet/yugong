@@ -7,16 +7,19 @@ const getDataFromRunningTime = (data: string, userStore?: AnyObjectType): any =>
   if (typeof data !== "string") {
     return data;
   }
-
   // 匹配运行时
   let result = data;
   const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
   ruleList?.forEach((item) => {
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
     let value;
-    if ( userStore && key.indexOf('_api.')!== -1) {
+    if ( userStore) {
       // 处理api内部数据状态
-      value = get(userStore, key.replace('_api.', ''));
+      if (key.indexOf('_api.')!== -1) {
+        value = get(userStore, key.replace('_api.', ''));
+      } else {
+        value = get(userStore, key);
+      }
     } else {
       value = get(store.getState().runningTimes, key);
     }

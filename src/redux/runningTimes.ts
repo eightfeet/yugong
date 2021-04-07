@@ -5,6 +5,27 @@ import queryString from 'query-string';
 const parsed = queryString.parse(window.location.search);
 const height = window.innerHeight;
 
+const mockTableData = [
+    {
+        name: 'Eightfeet',
+        age: '18',
+        height: '170',
+        weight: '70'
+    },
+    {
+        name: 'Mike',
+        age: '20',
+        height: '168',
+        weight: '57'
+    },
+    {
+        name: 'Jimm',
+        age: '24',
+        height: '170',
+        weight: '60'
+    }
+]
+
 const windowHeight = {
     height,
     half: height/2,
@@ -25,6 +46,7 @@ export const runningTimes = createModel<RootModel>()({
     state: {
         search: parsed,
         windowHeight,
+        mockTableData,
     } as {
         [keys: string]: RunningTimesItem;
     }, 

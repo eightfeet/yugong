@@ -13,7 +13,8 @@ export type ArgumentsItem =
   | ArgumentsArray
   | ArgumentsBoolean
   | ArgumentsString
-  | ArgumentsNumber;
+  | ArgumentsNumber
+  | ArgumentsRunningTime;
 
 /**
  * 参数基本
@@ -75,6 +76,13 @@ export interface ArgumentsString extends ArgumentBase<"string"> {
  * 数字参数
  */
 export interface ArgumentsNumber extends ArgumentBase<"number"> {
+  data: string;
+}
+
+/**
+ * 运行时参数
+ */
+ export interface ArgumentsRunningTime extends ArgumentBase<"runningTime"> {
   data: string;
 }
 
