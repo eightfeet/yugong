@@ -144,7 +144,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <NumberInput
             label="字体大小"
             unit={unit}
-            min={1}
+            min={0}
             max={100000}
             value={fontSize}
             onChange={onChangeFont("fontSize")}
@@ -156,7 +156,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <NumberInput
             label="行间距"
             unit={unit}
-            min={1}
+            min={0}
             max={100000}
             value={lineHeight}
             onChange={onChangeFont("lineHeight")}
@@ -166,7 +166,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <NumberInput
             label="字间距"
             unit={unit}
-            min={1}
+            min={0}
             max={100000}
             value={letterSP}
             onChange={onChangeFont("letterSP")}

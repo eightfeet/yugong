@@ -103,7 +103,7 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
           <NumberInput
             label="描边宽度"
             unit={unit}
-            min={1}
+            min={0}
             max={100000}
             value={border.borderWidth}
             onChange={onChangeBorder("borderWidth")}

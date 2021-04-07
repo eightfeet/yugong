@@ -67,10 +67,10 @@ const Display: React.FC<Props> = ({onChange, defaultData, unit }) => {
   return (<>
     <Row className={s.row}>
       <Col span={12}>
-        <NumberInput label="宽度" unit={unit} min={1} max={100000} value={width} onChange={onChangeDisplay("width")} />
+        <NumberInput label="宽度" unit={unit} min={0} max={100000} value={width} onChange={onChangeDisplay("width")} />
       </Col>
       <Col span={12}>
-        <NumberInput label="高度" unit={unit} min={1} max={100000} value={height} onChange={onChangeDisplay("height")} />
+        <NumberInput label="高度" unit={unit} min={0} max={100000} value={height} onChange={onChangeDisplay("height")} />
       </Col>
     </Row>
     <Row className={s.row}>

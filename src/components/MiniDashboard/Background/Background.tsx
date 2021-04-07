@@ -159,7 +159,7 @@ const BackgroundCommon: React.FC<Props> = ({
               <NumberInput
                 label="背景宽度"
                 unit={unit}
-                min={1}
+                min={0}
                 max={100000}
                 value={sizeX}
                 onChange={onChangeBackgroundCommon("sizeX")}
@@ -169,7 +169,7 @@ const BackgroundCommon: React.FC<Props> = ({
               <NumberInput
                 label="背景高度"
                 unit={unit}
-                min={1}
+                min={0}
                 max={100000}
                 value={sizeY}
                 onChange={onChangeBackgroundCommon("sizeY")}
