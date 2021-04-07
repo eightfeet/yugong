@@ -64,28 +64,32 @@ const Table: Modules<TableProps> = (props) => {
 
   return (
     <Wrapper {...props} maxHeight maxWidth>
-      <table className={classNames(s.table, userClass.table)}>
-        {theadDataStatu.length ? (
-          <thead>
-            <tr>
-              {theadDataStatu.map((item, index) => (
-                <th key={index} scope="col">
-                  {getResult(item)}
-                </th>
+      <div className={s.tablewrap}>
+        <table className={classNames(s.table, userClass.table)}>
+          {theadDataStatu.length ? (
+            <thead>
+              <tr>
+                {theadDataStatu.map((item, index) => (
+                  <th key={index} scope="col">
+                    {getResult(item)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+          ) : null}
+          {tbodyDataStatu.length ? (
+            <tbody>
+              {tbodyDataStatu.map((item) => (
+                <tr>
+                  {item.map((itemsub) => (
+                    <td>{itemsub}</td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          </thead>
-        ) : null}
-        {tbodyDataStatu.length ? (
-          <tbody>
-            {
-              tbodyDataStatu.map(item => <tr>
-                {item.map(itemsub => <td>{itemsub}</td>)}
-              </tr>)
-            }
-          </tbody>
-        ) : null}
-      </table>
+            </tbody>
+          ) : null}
+        </table>
+      </div>
     </Wrapper>
   );
 };

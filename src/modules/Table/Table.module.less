@@ -2,25 +2,32 @@
 // Basic Bootstrap table
 //
 
-.table {
-    width: 100%;
-    margin-bottom: 0;
-    vertical-align: middle;
-    caption-side: bottom;
-    border-collapse: collapse;
-    overflow: hidden;
-
-    >thead {
-      vertical-align: bottom;
-    }
-
-    tbody, td, tfoot, th, thead, tr {
-      border: none;
-    }
-    
+.tablewrap {
+  height: 100%;
+  overflow-y: auto;
 }
 
+.table {
+  width: 100%;
+  white-space: nowrap;
+  margin: 0;
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  > thead {
+    vertical-align: bottom;
+  }
+}
 
-  
-  
-  
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.table thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
