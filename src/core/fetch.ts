@@ -71,6 +71,9 @@ const requester = async ({
         console.log(2)
         throw res;
     } catch (error) {
+        if (errorPublic) {
+
+        }
       console.warn(error)
     }
 };

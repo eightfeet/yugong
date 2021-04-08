@@ -22,7 +22,7 @@ const Table: Modules<TableProps> = (props) => {
     const [tbodyDataStatu, setTbodyDataStatu] = useState<string[][]>([]);
     // API请求 注意依赖关系
     useEffect(() => {
-        const apiArguments = api?.find((item) => item.apiId === '');
+        const apiArguments = api?.find((item) => item.apiId === 'mount');
         requester(apiArguments || {});
     }, [api]);
     // 基本事件
@@ -56,7 +56,6 @@ const Table: Modules<TableProps> = (props) => {
             }
             result.push(temp);
         });
-        console.log('concat', concat)
         if (concat) {
           setTbodyDataStatu(tbodyDataStatu.concat(result));
         } else {
@@ -66,15 +65,27 @@ const Table: Modules<TableProps> = (props) => {
 
     /** 下拉事件*/
     const onPullDown = useCallback(async () => {
+        const apiArguments = api?.find(
+            (item) => item.apiId === 'pullDown'
+        );
+        if (apiArguments) {
+            await requester(apiArguments || {});
+        }
       // 执行下拉事务
       eventEmitter.emit(events.pullDown);
-    }, [eventEmitter, events.pullDown]);
+    }, [api, eventEmitter, events.pullDown]);
 
     /** 上拉事件*/
     const onPullUp = useCallback(async () => {
+        const apiArguments = api?.find(
+            (item) => item.apiId === 'pullUp'
+        );
+        if (apiArguments) {
+            await requester(apiArguments || {});
+        }
       // 执行下拉事务
       eventEmitter.emit(events.pullUp);
-    }, [eventEmitter, events.pullUp]);
+    }, [api, eventEmitter, events.pullUp]);
 
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {
@@ -237,6 +248,15 @@ Table.exposeDefaultProps = {
 /**
  * 发布默认Api
  */
-Table.exposeApi = [];
+Table.exposeApi = [{
+    apiId: 'mount',
+    name: '挂载',
+},{
+    apiId: 'pullUp',
+    name: '上拉',
+},{
+    apiId: 'pullDown',
+    name: '下拉',
+}];
 
 export default Table;
