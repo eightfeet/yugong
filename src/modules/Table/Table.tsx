@@ -68,13 +68,13 @@ const Table: Modules<TableProps> = (props) => {
     const onPullDown = useCallback(async () => {
       // 执行下拉事务
       eventEmitter.emit(events.pullDown);
-    }, []);
+    }, [eventEmitter, events.pullDown]);
 
     /** 上拉事件*/
     const onPullUp = useCallback(async () => {
       // 执行下拉事务
       eventEmitter.emit(events.pullUp);
-    }, []);
+    }, [eventEmitter, events.pullUp]);
 
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {

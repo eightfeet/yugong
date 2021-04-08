@@ -60,6 +60,13 @@ const Repository: React.FC = () => {
 
   const createModal = useCallback(
     (moduleType: AppDataModuleTypes, name?: string) => {
+      let y = 0;
+      if (appData.length) {
+        const optAppData = [...appData].sort((a, b) => b.layout!.y - a.layout!.y);
+        if (optAppData[0]) {
+          y = optAppData[0].layout!.y + optAppData[0].layout!.h;
+        }
+      }
       // get module's static Options
       const module = require(`~/modules/${moduleType}`).default;
       const { exposeDefaultProps } = module;
@@ -70,8 +77,8 @@ const Repository: React.FC = () => {
         i: moduleId,
         w: 4,
         h: 4,
-        x: (appData.length * 4) % 12,
-        y: Infinity, // put it at the bottom
+        x: 0,
+        y, // put it at the bottom
         moved: false,
         static: false,
         ...(exposeDefaultProps?.layout || {}), // merge default
@@ -88,7 +95,7 @@ const Repository: React.FC = () => {
       };
       onAddItem(result);
     },
-    [appData.length, onAddItem]
+    [appData, onAddItem]
   );
 
   const onCreate = useCallback(() => {
