@@ -1,3 +1,4 @@
+import { store } from "~/redux/store";
 import { AnyObjectType, ArgumentsItem } from "~/types/appData";
 import getBooleanData from "./getBooleanData";
 import getDataFromRunningTime from "./getDataFromRunningTime";
@@ -7,6 +8,9 @@ const getDataFromArguments = (data: ArgumentsItem[], userStore?: AnyObjectType) 
   data?.forEach((element) => {
     if (!element.name) return;
     switch (element.type) {
+      case "runningTime":
+        result[element.name] = store.getState().runningTimes[element.data];
+        break;
       case "string":
         result[element.name] = getDataFromRunningTime(element.data, userStore);
         break;

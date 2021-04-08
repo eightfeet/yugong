@@ -71,8 +71,15 @@ const requester = async ({
         console.log(2)
         throw res;
     } catch (error) {
-        if (errorPublic) {
-
+        if (errorPublic?.length) {
+            console.log('error', error)
+            const errorPublicPublicResult = getDataFromArguments(
+                errorPublic,
+                error
+            );
+            store.dispatch.runningTimes.setRunningTimes(
+                errorPublicPublicResult
+            );
         }
       console.warn(error)
     }
