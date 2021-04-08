@@ -53,8 +53,9 @@ class EventEmitter {
             }
 
             const type = Object.prototype.toString.call(element.data);
-            const dataType = type.substring(8, type.length - 1).toLowerCase();
+            const dataType = element.type === 'runningTime' ? 'runningTime' :  type.substring(8, type.length - 1).toLowerCase();
             if (element.type !== dataType) {
+              console.log(element, dataType)
               console.warn(
                 `方法${item.name}的参数要求${element.type}类型, 但得到的是${dataType}类型!`
               );
