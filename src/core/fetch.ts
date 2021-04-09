@@ -1,31 +1,50 @@
 import { AnyObjectType, Api } from '~/types/appData';
 import { stringifyUrl } from 'query-string';
-import getDataFromArguments from './getDataFromArguments';
+import getArgumentsTypeDataFromDataSource from './getArgumentsTypeDataFromDataSource';
 import { store } from '~/redux/store';
+import getDataFromRunningTime from './getDataFromRunningTime';
 
-const requester = async ({
-    url,
-    method,
-    body,
-    headers,
-    successPublic,
-    errorPublic,
-    credentials,
-}: Api) => {
-    if (!url) {
+const requester = async (apiArguments: Api) => {
+    const {
+        method,
+        body,
+        headers,
+        mode,
+        credentials,
+        successPublic,
+        errorPublic,
+    } = apiArguments
+
+    
+    if (!apiArguments.url) {
         return Promise.reject({ message: 'api缺少url' });
     }
     if (!method) {
         return Promise.reject({ message: 'api缺少method' });
     }
+
+    // 从runningTime翻译Api数据;
+    // api 接收两种数据类型
+    // 1、运行时链接类型：url、headers、mode、credentials
+    // 2、参数类型结构数据：body, successPublic, errorPublic
+
+    const url = getDataFromRunningTime(apiArguments.url);
     // 处理header
     const headersData = {
         'Content-Type': 'application/json',
-        ...headers,
     };
 
+    if (Object.prototype.toString.call(headers) === '[object Object]') {
+        for (const key in headers) {
+            if (Object.prototype.hasOwnProperty.call(headers, key)) {
+                const element = getDataFromRunningTime(headers[key]);
+                headersData[key] = element;
+            }
+        }
+    }
+
     // 关联body
-    let bodyData: any = getDataFromArguments(body || []);
+    let bodyData: any = getArgumentsTypeDataFromDataSource(body || []);
 
     // 处理Url
     let urlData = url;
@@ -47,9 +66,16 @@ const requester = async ({
         args.body = bodyData;
     }
 
+    if (mode) {
+        args.mode = mode;
+    }
+
+    if (credentials) {
+        args.credentials = credentials;
+    }
+
     try {
         const res = await fetch(urlData, args);
-        console.log(1)
         /**
          * 状态范围
          */
@@ -58,7 +84,7 @@ const requester = async ({
             const resultData = JSON.parse(textData);
             // 处理请求结果
             if (successPublic?.length) {
-                const successPublicResult = getDataFromArguments(
+                const successPublicResult = getArgumentsTypeDataFromDataSource(
                     successPublic,
                     resultData
                 );
@@ -68,12 +94,10 @@ const requester = async ({
             }
             return resultData;
         }
-        console.log(2)
         throw res;
     } catch (error) {
         if (errorPublic?.length) {
-            console.log('error', error)
-            const errorPublicPublicResult = getDataFromArguments(
+            const errorPublicPublicResult = getArgumentsTypeDataFromDataSource(
                 errorPublic,
                 error
             );

@@ -2,31 +2,37 @@ import { store } from "~/redux/store";
 import { AnyObjectType, ArgumentsItem } from "~/types/appData";
 import getBooleanData from "./getBooleanData";
 import getDataFromRunningTime from "./getDataFromRunningTime";
-
-const getDataFromArguments = (data: ArgumentsItem[], userStore?: AnyObjectType) => {
+/**
+ * 从参数数据中获取数据
+ * @param {ArgumentsItem[]} argmentsData 
+ * @param {AnyObjectType} dataSource
+ * @return {AnyObjectType} 
+ */
+ 
+const getArgumentsTypeDataFromDataSource = (argmentsData: ArgumentsItem[], dataSource?: AnyObjectType): AnyObjectType => {
   const result: AnyObjectType = {};
-  data?.forEach((element) => {
+  argmentsData?.forEach((element) => {
     if (!element.name) return;
     switch (element.type) {
       case "runningTime":
         result[element.name] = store.getState().runningTimes[element.data];
         break;
       case "string":
-        result[element.name] = getDataFromRunningTime(element.data, userStore);
+        result[element.name] = getDataFromRunningTime(element.data, dataSource);
         break;
       case "number":
-        result[element.name] = Number(getDataFromRunningTime(element.data, userStore));
+        result[element.name] = Number(getDataFromRunningTime(element.data, dataSource));
         break;
       case "array":
         result[element.name] = element.data.map((item: string) =>
-          getDataFromRunningTime(item, userStore)
+          getDataFromRunningTime(item, dataSource)
         );
         break;
       case "object":
         const objdata = {};
         Object.keys(element.data)
           .forEach((key: string) => {
-            objdata[key] = getDataFromRunningTime(element.data[key], userStore);
+            objdata[key] = getDataFromRunningTime(element.data[key], dataSource);
           });
         result[element.name] = objdata;
         break;
@@ -39,7 +45,6 @@ const getDataFromArguments = (data: ArgumentsItem[], userStore?: AnyObjectType) 
         });
         result[element.name] = booleanData;
         break;
-
       default:
         break;
     }
@@ -47,4 +52,4 @@ const getDataFromArguments = (data: ArgumentsItem[], userStore?: AnyObjectType) 
   return result;
 };
 
-export default getDataFromArguments;
+export default getArgumentsTypeDataFromDataSource;
