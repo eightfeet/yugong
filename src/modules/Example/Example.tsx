@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { AppDataElementsTypes } from "~/types/appData";
-import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
-import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import Wrapper from "../Wrapper";
 
 interface Props extends AppDataElementsTypes {
@@ -20,7 +18,7 @@ interface Props extends AppDataElementsTypes {
  */
 
 const Example: Modules<Props> = (props) => {
-  const { style, eventEmitter, events = {} } = props;
+  const { eventEmitter } = props;
   // ===================================创建组件=================================== //
   useEffect(() => {
     // 创建弹窗

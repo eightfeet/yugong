@@ -14,7 +14,6 @@ import classNames from "classnames";
 import PullToRefresh from "rmc-pull-updown-to-refresh";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import {
-  getArguments,
   getArgumentsItem,
 } from "~/core/getArgumentsTypeDataFromDataSource";
 

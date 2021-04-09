@@ -36,7 +36,7 @@ function pxPerUnit(unit: string, element: any) {
 }
 
 function toPx(length: string, element?: any) {
-  var unitRe = /^\s*([+-]?[\d\.]*)\s*(.*)\s*$/i;
+  var unitRe = /^\s*([+-]?[\d.]*)\s*(.*)\s*$/i;
   var match = unitRe.exec(length);
   let valid = undefined,
     unit = '',

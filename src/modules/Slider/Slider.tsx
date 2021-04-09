@@ -12,7 +12,6 @@ import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import isUrl from "~/core/helper/isUrl";
-import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import s from "./Slider.module.less";
 import useStyles from "./Slider.useStyles";
 import staticConstants from "./Slider.staticConstants";

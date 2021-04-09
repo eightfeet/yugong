@@ -23,8 +23,8 @@ const staticConstants: StaticConstants = {
       arguments: [
         {
           type: "boolean",
-          name: "navigation",
-          describe: "是否隐藏导航",
+          name: "隐藏翻页箭头",
+          describe: "是否隐藏左右翻页箭头",
           data: {
             comparableAverageA: '',
             comparableAverageB: '',
@@ -34,8 +34,8 @@ const staticConstants: StaticConstants = {
         },
         {
           type: "boolean",
-          name: "pagination",
-          describe: "是否隐藏分页",
+          name: "隐藏底部导航",
+          describe: "是否隐藏隐藏底部导航圆点",
           data: {
             comparableAverageA: '',
             comparableAverageB: '',
