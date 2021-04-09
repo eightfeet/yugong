@@ -3,7 +3,7 @@ import { AppDataElementsTypes } from "~/types/appData";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
-import getResult from "~/core/getDataFromRunningTime";
+import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import Wrapper from "../Wrapper";
 
 interface Props extends AppDataElementsTypes {

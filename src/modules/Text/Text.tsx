@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
-import { AppDataElementsTypes } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import s from "./Text.module.less";
 import useStyles from "./Text.useStyle";
-import getResult from '~/core/getDataFromRunningTime';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 export interface TextProps extends AppDataElementsTypes {
   id: string;
@@ -20,8 +21,10 @@ const Text: Modules<TextProps> = (props) => {
   ]);
   const userClass = useStyles(style);
 
-  // 设置按钮
-  const setText = useCallback((text: string[]) => {
+  // 设置文本
+  const setText = useCallback((args: ArgumentsItem) => {
+    const text = getArgumentsItem(args)
+    console.log(3333, text)
     setTextArea(text);
   }, []);
 

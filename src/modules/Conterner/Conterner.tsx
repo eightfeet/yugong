@@ -88,6 +88,7 @@ Conterner.exposeApi = [
       {
         type: "string",
         data: "{{search.mobilePhone}}",
+        fieldName: "mobilePhone",
         name: "mobilePhone",
         describe: "店员手机号码",
       },

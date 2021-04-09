@@ -1,8 +1,8 @@
 import { AnyObjectType, Api } from '~/types/appData';
 import { stringifyUrl } from 'query-string';
-import getArgumentsTypeDataFromDataSource from './getArgumentsTypeDataFromDataSource';
+import { getArguments } from './getArgumentsTypeDataFromDataSource';
 import { store } from '~/redux/store';
-import getDataFromRunningTime from './getDataFromRunningTime';
+import { compilePlaceholderFromDataSource as getResult } from './getDataFromSource';
 
 const requester = async (apiArguments: Api) => {
     const {
@@ -28,7 +28,7 @@ const requester = async (apiArguments: Api) => {
     // 1、运行时链接类型：url、headers、mode、credentials
     // 2、参数类型结构数据：body, successPublic, errorPublic
 
-    const url = getDataFromRunningTime(apiArguments.url);
+    const url = getResult(apiArguments.url);
     // 处理header
     const headersData = {
         'Content-Type': 'application/json',
@@ -37,14 +37,14 @@ const requester = async (apiArguments: Api) => {
     if (Object.prototype.toString.call(headers) === '[object Object]') {
         for (const key in headers) {
             if (Object.prototype.hasOwnProperty.call(headers, key)) {
-                const element = getDataFromRunningTime(headers[key]);
+                const element = getResult(headers[key]);
                 headersData[key] = element;
             }
         }
     }
 
     // 关联body
-    let bodyData: any = getArgumentsTypeDataFromDataSource(body || []);
+    let bodyData: any = getArguments(body || []);
 
     // 处理Url
     let urlData = url;
@@ -84,7 +84,7 @@ const requester = async (apiArguments: Api) => {
             const resultData = JSON.parse(textData);
             // 处理请求结果
             if (successPublic?.length) {
-                const successPublicResult = getArgumentsTypeDataFromDataSource(
+                const successPublicResult = getArguments(
                     successPublic,
                     resultData
                 );
@@ -97,7 +97,7 @@ const requester = async (apiArguments: Api) => {
         throw res;
     } catch (error) {
         if (errorPublic?.length) {
-            const errorPublicPublicResult = getArgumentsTypeDataFromDataSource(
+            const errorPublicPublicResult = getArguments(
                 errorPublic,
                 error
             );

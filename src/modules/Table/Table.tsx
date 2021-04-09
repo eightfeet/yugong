@@ -8,7 +8,8 @@ import s from './Table.module.less';
 import useStyles from './Table.useStyle';
 import classNames from 'classnames';
 import PullToRefresh from 'rmc-pull-updown-to-refresh';
-import getResult from '~/core/getDataFromRunningTime';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
+import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 
 export interface TableProps extends AppDataElementsTypes {
     id: string;
@@ -37,15 +38,23 @@ const Table: Modules<TableProps> = (props) => {
     }, []);
 
     /**设置表格头部 */
-    const setTheadData = useCallback((data) => {
-        setTheadDataStatu(data || []);
+    const setTheadData = useCallback((args) => {
+        const data = getArguments(args);
+        const result = Object.keys(data).map(key => data[key]);
+        setTheadDataStatu(result);
     }, []);
 
     /**设置表格数据 */
-    const setTbodyData = useCallback((data, concat, map) => {
+    const setTbodyData = useCallback(args => {
+        console.log(333, args)
+        const data = getArguments([args.data]);
+        const concat = getArguments([args.concat]);
+        const map = getArguments([args.map]);
+
         if (!Array.isArray(data)) {
             return;
         }
+        console.log(333, data, concat, map)
         const result: any[] = [];
         data.forEach((element) => {
             const temp: any[] = [];
@@ -56,6 +65,7 @@ const Table: Modules<TableProps> = (props) => {
             }
             result.push(temp);
         });
+        console.log('result', result)
         if (concat) {
           setTbodyDataStatu(tbodyDataStatu.concat(result));
         } else {
@@ -145,6 +155,7 @@ Table.exposeFunctions = [
         arguments: [
             {
                 type: 'array',
+                fieldName: '',
                 name: '设置表头项',
                 describe: '设置表头标题，每项代表一列',
                 data: [],
@@ -158,6 +169,7 @@ Table.exposeFunctions = [
             {
                 type: 'runningTime',
                 name: '数据源',
+                fieldName: 'dataSource',
                 describe: '数据源，设置运行时或Api返回数据源',
                 data: '',
             },
@@ -165,6 +177,7 @@ Table.exposeFunctions = [
               type: 'boolean',
               name: '合并历史数据',
               describe: '设置每行内容，数据替换基于数据源！',
+              fieldName: 'isConcate',
               data: {
                 comparableAverageA: "0",
                 comparableAverageB: "1",
@@ -173,6 +186,7 @@ Table.exposeFunctions = [
             },
             {
                 type: 'array',
+                fieldName: 'rowMap',
                 name: '行值',
                 describe: '设置每行内容，数据替换基于数据源！',
                 data: [],

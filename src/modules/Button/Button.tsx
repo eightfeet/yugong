@@ -110,12 +110,14 @@ Button.exposeFunctions = [
             {
                 type: 'string',
                 name: '按钮文字',
+                fieldName: 'buttonText',
                 describe: '按钮显示文字',
                 data: '按钮',
             },
             {
                 type: 'boolean',
                 name: '禁用按钮',
+                fieldName: 'disabled',
                 describe: '禁用按钮，true禁用，false启用',
                 data: {
                     comparableAverageA: 'a',
@@ -126,6 +128,7 @@ Button.exposeFunctions = [
             {
                 type: 'boolean',
                 name: '隐藏按钮',
+                fieldName: 'hidden',
                 describe: '隐藏按钮，true隐藏，false不隐藏',
                 data: {
                     comparableAverageA: 'a',

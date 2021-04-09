@@ -11,7 +11,7 @@ import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
-import getResult from "~/core/getDataFromRunningTime";
+import { compilePlaceholderFromDataSource as getResult, HTMLToJSX } from "~/core/getDataFromSource";
 import "./App.less";
 import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE, ROOT_FONTSIZE } from "~/core/constants";
 
@@ -83,9 +83,9 @@ const App: Modules<Props> = () => {
     <AppLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
-      rowHeight={parseInt(getResult(`${pageData.rowHeight}`) as string) || GRID_DEFAULT_ROWHEIGHT}
-      cols={parseInt(getResult(`${pageData.cols}`) as string) || GRID_DEFAULT_COLS}
-      space={parseInt(getResult(`${pageData.space}`) as string) || GRID_DEFAULT_SPACE}
+      rowHeight={parseInt(getResult(`${pageData.rowHeight}`)) || GRID_DEFAULT_ROWHEIGHT}
+      cols={parseInt(getResult(`${pageData.cols}`)) || GRID_DEFAULT_COLS}
+      space={parseInt(getResult(`${pageData.space}`)) || GRID_DEFAULT_SPACE}
     />
   );
 };
@@ -114,6 +114,7 @@ App.exposeFunctions = [
       {
         type: "object",
         name: "fun1",
+        fieldName: "fun1",
         describe: "fun1 描述",
         data: {
           data: "fun1",

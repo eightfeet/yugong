@@ -1,9 +1,15 @@
 import get from "lodash/get";
-import parse from 'html-react-parser';
 import { store } from '~/redux/store';
 import { AnyObjectType } from "~/types/appData";
 
-const getDataFromRunningTime = (data: string, userStore?: AnyObjectType): any => {
+/**
+ * 从原数据编译占位符 compilePlaceholderFromDataSource
+ *
+ * @param {string} operationStr 操作字符
+ * @param {AnyObjectType} [dataSource] 数据源，默认runningTime
+ * @return {string}  返回编译结果
+ */
+export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType): string => {
   if (typeof data !== "string") {
     return data;
   }
@@ -13,32 +19,33 @@ const getDataFromRunningTime = (data: string, userStore?: AnyObjectType): any =>
   ruleList?.forEach((item) => {
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
     let value;
-    if ( userStore) {
+    if ( dataSource) {
       // 处理api内部数据状态
       if (key.indexOf('_api.')!== -1) {
-        value = get(userStore, key.replace('_api.', ''));
+        value = get(dataSource, key.replace('_api.', ''));
       } else {
-        value = get(userStore, key);
+        value = get(dataSource, key);
       }
     } else {
       value = get(store.getState().runningTimes, key);
     }
-    
     result = result.replace(item, `${value || ""}`);
   });
-
-  if (!!result.match(/^HTML(:|：)+/g)?.length) {
-    return parse(result.replace(/^HTML(:|：)+/, ''));
-  }
   return result;
 };
 
+/**
+ * 将所有数据类型转换为编译后的值
+ */
+export const getCompileResult = (data: any, dataSource?: AnyObjectType ) => {
+
+}
+
 export const runningTimeToResult = (value: any, defaultValue: number) : number => {
-  const data = parseInt(`${getDataFromRunningTime(value)}`) || defaultValue;
+  const data = parseInt(`${compilePlaceholderFromDataSource(value)}`) || defaultValue;
   return data;
 }
 
 // 测试变量用
-(window as any).getDataFromRunningTime = getDataFromRunningTime
+(window as any).compilePlaceholderFromDataSource = compilePlaceholderFromDataSource
 
-export default getDataFromRunningTime;

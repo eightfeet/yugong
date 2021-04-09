@@ -1,5 +1,5 @@
 import { Layout } from "react-grid-layout";
-import { runningTimeToResult } from "~/core/getDataFromRunningTime";
+import { runningTimeToResult } from "~/core/getDataFromSource";
 import { PageData } from "~/redux/pageData";
 import {
   GRID_DEFAULT_COLS,

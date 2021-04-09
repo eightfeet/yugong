@@ -4,7 +4,7 @@ import Core from "@eightfeet/modal";
 import styleCompiler from "~/compiler";
 import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
-import getResult from "~/core/getDataFromRunningTime";
+import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import Wrapper from "../Wrapper";
 
 interface Props extends AppDataElementsTypes {
@@ -96,6 +96,7 @@ Modal.exposeFunctions = [
       {
         type: "object",
         name: "弹窗内容",
+        fieldName: "modalContent",
         describe: "header：头部，article：内容，footer：底部",
         data: {
           header: '<h3 style="margin:0; pardding:0">header</h3>',

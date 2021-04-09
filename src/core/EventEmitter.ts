@@ -1,8 +1,4 @@
-import getBooleanData from "./getBooleanData";
 import getDefaultArgumentsByEventName from "./helper/getDefaultArgumentsByEventName";
-import get from "lodash/get";
-import getResult from "~/core/getDataFromRunningTime";
-import { store } from "~/redux/store";
 
 interface EventEmitterEvents {
   [key: string]: Function;
@@ -36,31 +32,13 @@ class EventEmitter {
         // 执行方法时发放对应参数,当参数没有定义时，使用模块对应方法的默认参数
         const method = this.events[item.name];
         if (method instanceof Function) {
+          // 获取方法对应的参数
           let argumentsData = item.arguments || [];
+          // 无参数时调用模块的默认参数
           if (!argumentsData.length) {
             argumentsData = getDefaultArgumentsByEventName(item.name) || [];
           }
-          const operateArgument: any[] = [];
-          argumentsData.forEach((element) => {
-            if (element.type === 'boolean') {
-              operateArgument.push(getBooleanData(element.data))
-            } else if (element.type === 'runningTime') {
-              const runningTimes = store.getState().runningTimes;
-              const value = get(runningTimes, element.data);
-              operateArgument.push(value);
-            } else {
-              operateArgument.push(getResult(element.data));
-            }
-
-            const type = Object.prototype.toString.call(element.data);
-            const dataType = element.type === 'runningTime' ? 'runningTime' :  type.substring(8, type.length - 1).toLowerCase();
-            if (element.type !== dataType) {
-              console.warn(
-                `方法${item.name}的参数要求${element.type}类型, 但得到的是${dataType}类型!`
-              );
-            }
-          });
-          await Promise.resolve().then(() => method(...operateArgument));
+          await Promise.resolve().then(() => method(...argumentsData));
         } else {
           continue;
         }

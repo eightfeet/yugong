@@ -133,6 +133,7 @@ const ArgumentsSetting: React.FC<Props> = ({
     result.push({
       describe: undefined,
       name: "未命名",
+      fieldName: "",
       type: "string",
       data: "",
     });

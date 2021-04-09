@@ -31,7 +31,7 @@ interface ArgumentBase<T> {
   /**
    * 参数字段名
    */
-  fieldName?: string;
+  fieldName: string;
   /**
    * 参数类型
    */

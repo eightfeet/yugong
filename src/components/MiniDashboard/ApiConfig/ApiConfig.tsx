@@ -159,11 +159,13 @@ const Apiconfig: React.FC<Props> = ({
       let value: ArgumentsItem = {
         type: "string",
         data: "",
+        fieldName: ""
       };
       switch (e) {
         case "headers":
           value = {
             name: "headers",
+            fieldName: "headers",
             describe: "包含请求相关的Headers对象。",
             type: "object",
             data: operateApi[index]?.headers || {},
@@ -172,6 +174,7 @@ const Apiconfig: React.FC<Props> = ({
         case "mode":
           value = {
             name: "mode",
+            fieldName: "mode",
             describe:
               "包含请求的模式 (例如： cors, no-cors, same-origin, navigate).",
             type: "string",
@@ -181,6 +184,7 @@ const Apiconfig: React.FC<Props> = ({
         case "credentials":
           value = {
             name: "credentials",
+            fieldName: "credentials",
             describe: "包含请求的证书(例如： omit, same-origin).",
             type: "string",
             data: operateApi[index]?.credentials || "",
@@ -266,6 +270,7 @@ const Apiconfig: React.FC<Props> = ({
         useArgData.push({
           type: "string",
           data: "",
+          fieldName: ""
         });
       }
       // 准备当前编辑参数到参数面板

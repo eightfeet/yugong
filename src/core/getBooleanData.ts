@@ -1,5 +1,4 @@
 import { ArgumentsBoolean } from "~/types/appData";
-import getResult from "~/core/getDataFromRunningTime";
 
 /**
  * boolean 值设计为一个比较的概念，左右参数和比较符号，返回boolean值
@@ -13,8 +12,8 @@ const getBooleanData = ({
   comparableAverageB,
   method,
 }: ArgumentsBoolean["data"]) => {
-  const Left = getResult(comparableAverageA);
-  const Right = getResult(comparableAverageB);
+  const Left = comparableAverageA;
+  const Right = comparableAverageB;
   switch (method) {
     case "===":
       return Left === Right;

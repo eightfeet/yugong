@@ -3,7 +3,7 @@ import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
 
 /**
- * 根据模块ID获取用模块信息
+ * 根据模块ID获取用模块参数信息
  * @param name moduleId + 事件名称，
  * @returns 
  */

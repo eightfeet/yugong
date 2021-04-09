@@ -42,9 +42,10 @@ export interface ExposeEvents {
  * 静态方法名称与描述
  * @export
  * @interface ExposeFunctions
- * @extends {ExposeEvents}
  */
-export interface ExposeFunctions extends ExposeEvents {
+export interface ExposeFunctions {
+    name: string;
+    description: string;
     arguments?: ArgumentsItem[];
 }
 
