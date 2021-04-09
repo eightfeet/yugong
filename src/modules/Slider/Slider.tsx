@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppDataElementsTypes } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsArray, ArgumentsBoolean, ArgumentsNumber } from "~/types/appData";
 import Swiper, { Autoplay } from "swiper";
 import SwiperCore, {
   Navigation,
@@ -18,6 +18,7 @@ import useStyles from "./Slider.useStyles";
 import staticConstants from "./Slider.staticConstants";
 import classNames from "classnames";
 import requester from "~/core/fetch";
+import { getArguments, getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 export interface SliderProps extends AppDataElementsTypes {
   id: string; // Wrapper 组件使用
@@ -28,8 +29,6 @@ interface ImagesType {
   imageUrl?: string;
   imageLink?: string;
 }
-
-type Configs = "0" | "1";
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
 
@@ -61,12 +60,14 @@ const Slider: Modules<SliderProps> = (props) => {
   const [hideNav, setHideNav] = useState(false);
   const [hidePage, setHidePage] = useState(false);
   const [breakInterface, setBreakInterface] = useState(false);
-  const setData = useCallback((imageUrls, imageLinks) => {
+  const setData = useCallback((imageUrls: ArgumentsArray, imageLinks: ArgumentsArray) => {
     const data: ImagesType[] = [];
-    imageUrls?.forEach((element: any, index: number) => {
+    const imageUrlsData = getArgumentsItem(imageUrls);
+    const imageLinksData = getArgumentsItem(imageLinks);
+    (imageUrlsData as any[])?.forEach((element: any, index: number) => {
       data.push({
-        imageUrl: getResult(element),
-        imageLink: getResult(imageLinks[index]),
+        imageUrl: element,
+        imageLink: imageLinksData[index],
       });
     });
 
@@ -76,31 +77,32 @@ const Slider: Modules<SliderProps> = (props) => {
 
   const setSlider = useCallback(
     (
-      navigation: Configs,
-      pagination: Configs,
-      delay: string,
-      disableOnInteraction: Configs
+      navigation: ArgumentsBoolean,
+      pagination: ArgumentsBoolean,
+      delay: ArgumentsNumber,
+      disableOnInteraction: ArgumentsBoolean
     ) => {
-      const delayNum = Number(delay);
-      if (delayNum && delayNum > 0) {
-        setDelay(delayNum);
+      const data = getArguments([navigation, pagination, delay, disableOnInteraction]);
+  
+      if (data.delay && data.delay > 0) {
+        setDelay(data.delay);
       } else {
         setDelay(0);
       }
 
-      if (disableOnInteraction === '0') {
+      if (data.disableOnInteraction) {
         setBreakInterface(true);
       } else {
         setBreakInterface(false);
       }
 
-      if (navigation === '0') {
+      if (data.navigation) {
         setHideNav(true);
       } else {
         setHideNav(false);
       }
 
-      if (pagination === '0') {
+      if (data.pagination) {
         setHidePage(true);
       } else {
         setHidePage(false);

@@ -22,17 +22,25 @@ const staticConstants: StaticConstants = {
       description: "Slider 设置",
       arguments: [
         {
-          type: "number",
+          type: "boolean",
           name: "navigation",
-          describe: "隐藏导航!0隐藏,1不隐藏",
-          data: "1",
+          describe: "是否隐藏导航",
+          data: {
+            comparableAverageA: '',
+            comparableAverageB: '',
+            method: '<'
+          },
           fieldName: "navigation",
         },
         {
-          type: "number",
+          type: "boolean",
           name: "pagination",
-          describe: "隐藏分页!0隐藏,1不隐藏",
-          data: "1",
+          describe: "是否隐藏分页",
+          data: {
+            comparableAverageA: '',
+            comparableAverageB: '',
+            method: '<'
+          },
           fieldName: "pagination",
         },
         {
@@ -43,10 +51,14 @@ const staticConstants: StaticConstants = {
           fieldName: "delay",
         },
         {
-          type: "number",
+          type: "boolean",
           name: "disableOnInteraction",
-          describe: "交互时打断自动播放!0打断,1不打断",
-          data: "0",
+          describe: "交互时打断自动播放",
+          data: {
+            comparableAverageA: '',
+            comparableAverageB: '',
+            method: '<'
+          },
           fieldName: "disableOnInteraction",
         },
       ],

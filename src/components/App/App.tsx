@@ -11,7 +11,7 @@ import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
-import { compilePlaceholderFromDataSource as getResult, HTMLToJSX } from "~/core/getDataFromSource";
+import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import "./App.less";
 import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE, ROOT_FONTSIZE } from "~/core/constants";
 

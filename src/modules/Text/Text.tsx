@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
-import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsArray } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import s from "./Text.module.less";
 import useStyles from "./Text.useStyle";
-import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 export interface TextProps extends AppDataElementsTypes {
@@ -16,15 +15,14 @@ export interface TextProps extends AppDataElementsTypes {
 
 const Text: Modules<TextProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
-  const [textArea, setTextArea] = useState<string[]>([
+  const [textArea, setTextArea] = useState<any>([
     '通过事件调用模块的设置文本(setText)方法来，设置文本内容'
   ]);
   const userClass = useStyles(style);
 
   // 设置文本
-  const setText = useCallback((args: ArgumentsItem) => {
-    const text = getArgumentsItem(args)
-    console.log(3333, text)
+  const setText = useCallback((args: ArgumentsArray) => {
+    const text = getArgumentsItem(args, undefined, true);
     setTextArea(text);
   }, []);
 
@@ -51,9 +49,9 @@ const Text: Modules<TextProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth maxHeight itemAlign="top">
       <ul className={s.text}>
-        {textArea.map((item, index: number) => (
+        {textArea.map((item: any, index: number) => (
           <li key={index} className={userClass.paragraph} >
-            {getResult(item)}
+            {item}
           </li>
         ))}
       </ul>

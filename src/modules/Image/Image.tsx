@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import EventEmitter from "~/core/EventEmitter";
-import { AppDataElementsTypes } from "~/types/appData";
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import { AppDataElementsTypes, ArgumentsObject } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import defaultImg from "./image.svg";
@@ -11,13 +12,19 @@ export interface ImageProps extends AppDataElementsTypes {
   eventEmitter: EventEmitter;
 }
 
+interface ImgUrl {
+  url: string,
+  alt: string
+}
+
 const Image: Modules<ImageProps> = (props) => {
   const { eventEmitter, events = {}, style } = props;
-  const [imgurl, setImgUrl] = useState<string>();
+  const [imgurl, setImgUrl] = useState<ImgUrl>();
   const userClass = useStyles(style);
-  // 设置按钮
-  const setImg = useCallback((text: string) => {
-    setImgUrl(text);
+  // 设置图片地址
+  const setImg = useCallback((img: ArgumentsObject) => {
+    const data = getArgumentsItem(img)
+    setImgUrl(data as ImgUrl);
   }, []);
 
   // 向eventEmitter注册事件，向外公布
@@ -38,10 +45,10 @@ const Image: Modules<ImageProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth maxHeight>
       <img
-        src={imgurl || defaultImg}
+        src={imgurl?.url || defaultImg}
         className={userClass.image}
         style={{ maxWidth: "100%", maxHeight: "100%" }}
-        alt=""
+        alt={imgurl?.alt || ""}
       />
     </Wrapper>
   );
@@ -56,11 +63,14 @@ Image.exposeFunctions = [
         description: "设置图片Url",
         arguments: [
           {
-            type: "string",
-            name: "url",
+            type: "object",
+            name: "img",
             describe: "图片url",
-            data: '',
-            fieldName: "url",
+            data: {
+              url: '',
+              alt: ''
+            },
+            fieldName: "img",
           },
         ],
       },
