@@ -33,6 +33,10 @@ interface ArgumentBase<T> {
    */
   fieldName: string;
   /**
+   * 允许html参数
+   */
+  html?: boolean;
+  /**
    * 参数类型
    */
   type: T;
@@ -82,7 +86,7 @@ export interface ArgumentsNumber extends ArgumentBase<"number"> {
 /**
  * 运行时参数
  */
- export interface ArgumentsRunningTime extends ArgumentBase<"runningTime"> {
+export interface ArgumentsRunningTime extends ArgumentBase<"runningTime"> {
   data: string;
 }
 
@@ -122,7 +126,7 @@ export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
 
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
-  rootFontsize?: number; 
+  rootFontsize?: number;
   events?: EventsType;
   content: AnyObjectType;
   type: AppDataModuleTypes;
