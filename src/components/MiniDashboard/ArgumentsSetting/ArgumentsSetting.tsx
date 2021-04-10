@@ -290,6 +290,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                     placeholder={`请输入值,${item.describe || ""}`}
                     value={item.data}
                     type="text"
+                    suffix={<span className={s.suffix}>html</span>}
                   />
                 ) : null}
                 {item.type === "object" ? (
