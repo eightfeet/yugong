@@ -303,6 +303,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                 ) : null}
                 {item.type === "array" ? (
                   <ArrayArguments
+                    htmlInput={item.html}
                     describe={item.describe}
                     onChange={onChangeObjType(index)}
                     typeArguments={item}

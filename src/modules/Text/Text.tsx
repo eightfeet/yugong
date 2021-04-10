@@ -71,11 +71,12 @@ Text.exposeFunctions = [
         type: "array",
         name: "textArray",
         describe: "文本内容",
+        html: true,
         data: [
           "文本可以是一个段落，也可以是一个列表！",
           "通过调用Text的setText方法可以修改文本内容！",
           "每个段落都有一个序号前缀，可以单独定义样式去隐藏或美化前缀",
-          'HTML:每段文本可以<b style="color:red">追加html标签</b>，以满足更灵活的样式编辑'
+          '每段文本可以<b style="color:red">追加html标签</b>，以满足更灵活的样式编辑'
         ],
         fieldName: "textArray",
       },

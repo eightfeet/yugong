@@ -3,9 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ArrayArguments.module.less";
+import HtmlSuffix from "../HtmlSuffix";
 
 interface Props {
   typeArguments: ArgumentsItem;
+  htmlInput?: boolean;
   flexible: boolean;
   describe?: string;
   onChange: (data: ArgumentsItem) => void;
@@ -19,6 +21,7 @@ const ArrayArguments: React.FC<Props> = ({
   typeArguments,
   flexible,
   onChange,
+  htmlInput,
   describe
 }) => {
   const [argumentsState, setArgumentsState] = useState<ArgumentsItem>();
@@ -79,7 +82,8 @@ const ArrayArguments: React.FC<Props> = ({
           <Col span={22}>
             <Input
               onChange={onChangeValue(index)}
-              suffix={<div className={s.suffix}>索引{index}</div>}
+              prefix={<div className={s.prefix}>{index}</div>}
+              suffix={htmlInput ? <HtmlSuffix /> : null}
               placeholder={`请输入值${describe || ''}`}
               type="text"
               value={item}
