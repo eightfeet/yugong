@@ -5,20 +5,6 @@ import getBooleanData from "./getBooleanData";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 
 /**
- * 将HTML标签转译为jsx
- * @param operationStr 操作字符
- * @returns
- */
-export const HTMLToJSX = (
-  operationStr: string
-): string | JSX.Element | JSX.Element[] => {
-  if (!!operationStr.match(/^HTML(:|：)+/g)?.length) {
-    return parse(operationStr.replace(/^HTML(:|：)+/, ""));
-  }
-  return operationStr;
-};
-
-/**
  * 单个参数获取数据源中的数据
  * @param {ArgumentsItem} argmentsDataItem 参数
  * @param {AnyObjectType} dataSource 取数数据源,默认runningTime
@@ -43,17 +29,17 @@ export const getArgumentsItem = (
       break;
     case "string":
       result = getResult(argmentsDataItem.data, dataSource);
-      if (toJSX) result = HTMLToJSX(result);
+      if (toJSX) result = parse(result);
       break;
     case "number":
       result = getResult(argmentsDataItem.data, dataSource);
-      if (toJSX) result = HTMLToJSX(result);
+      if (toJSX) result = parse(result);
       result = Number(result);
       break;
     case "array":
       result = argmentsDataItem.data.map((item: string) =>
         toJSX
-          ? HTMLToJSX(getResult(item, dataSource))
+          ? parse(getResult(item, dataSource))
           : getResult(item, dataSource)
       );
       break;
@@ -61,7 +47,7 @@ export const getArgumentsItem = (
       const objdata = {};
       Object.keys(argmentsDataItem.data).forEach((key: string) => {
         objdata[key] = getResult(argmentsDataItem.data[key], dataSource);
-        if (toJSX) objdata[key] = HTMLToJSX(objdata[key]);
+        if (toJSX) objdata[key] = parse(objdata[key]);
       });
       result = objdata;
       break;
@@ -73,10 +59,10 @@ export const getArgumentsItem = (
       } = argmentsDataItem.data;
       const booleanData = getBooleanData({
         comparableAverageA: toJSX
-          ? HTMLToJSX(comparableAverageA)
+          ? parse(comparableAverageA)
           : comparableAverageA,
         comparableAverageB: toJSX
-          ? HTMLToJSX(comparableAverageB)
+          ? parse(comparableAverageB)
           : comparableAverageB,
         method,
       });
