@@ -39,7 +39,7 @@ const Button: Modules<ButtonProps> = (props) => {
       disabled: ArgumentsBoolean,
       hidden: ArgumentsBoolean
     ) => {
-      const getText = getArgumentsItem(buttonText, undefined, true);
+      const getText = getArgumentsItem(buttonText);
       const isDisable = getArgumentsItem(disabled);
       const isHidden = getArgumentsItem(hidden);
       setText(getText as any);

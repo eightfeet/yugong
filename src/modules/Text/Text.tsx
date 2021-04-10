@@ -22,7 +22,7 @@ const Text: Modules<TextProps> = (props) => {
 
   // 设置文本
   const setText = useCallback((args: ArgumentsArray) => {
-    const text = getArgumentsItem(args, undefined, true);
+    const text = getArgumentsItem(args);
     setTextArea(text);
   }, []);
 

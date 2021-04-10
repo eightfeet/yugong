@@ -13,7 +13,6 @@ import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSour
 export const getArgumentsItem = (
   argmentsDataItem: ArgumentsItem,
   dataSource?: AnyObjectType,
-  toJSX?: boolean
 ):
   | AnyObjectType
   | any[]
@@ -23,6 +22,7 @@ export const getArgumentsItem = (
   | JSX.Element[] => {
   // if (!argmentsDataItem) return;
   let result = undefined;
+  const toJSX = argmentsDataItem.html;
   switch (argmentsDataItem.type) {
     case "runningTime":
       result = store.getState().runningTimes[argmentsDataItem.data];
@@ -85,12 +85,11 @@ export const getArgumentsItem = (
 export const getArguments = (
   argmentsData: ArgumentsItem[],
   dataSource?: AnyObjectType,
-  toJSX?: boolean
 ): AnyObjectType => {
   const allResult: AnyObjectType = {};
   argmentsData?.forEach((element) => {
     if (!element || !element.fieldName) return;
-    allResult[element.fieldName] = getArgumentsItem(element, dataSource, toJSX);
+    allResult[element.fieldName] = getArgumentsItem(element, dataSource);
   });
   return allResult;
 };
