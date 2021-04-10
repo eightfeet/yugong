@@ -11,6 +11,7 @@ import ArrayArguments from "./ArrayArguments";
 import BooleanArguments from "./BooleanArguments";
 import ObjectArguments from "./ObjectArguments";
 import RunningTimesModal from "~/components/MiniDashboard/RunningTimesModal";
+import HtmlSuffix from "./HtmlSuffix";
 
 interface Props {
   /**
@@ -290,12 +291,13 @@ const ArgumentsSetting: React.FC<Props> = ({
                     placeholder={`请输入值,${item.describe || ""}`}
                     value={item.data}
                     type="text"
-                    suffix={<span className={s.suffix}>html</span>}
+                    suffix={item.html ? <HtmlSuffix /> : null}
                   />
                 ) : null}
                 {item.type === "object" ? (
                   <ObjectArguments
                     describe={item.describe}
+                    htmlInput={item.html}
                     onChange={onChangeObjType(index)}
                     typeArguments={item}
                     flexible={!!dataFlexible}

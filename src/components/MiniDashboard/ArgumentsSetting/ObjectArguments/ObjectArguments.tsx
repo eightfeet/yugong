@@ -3,10 +3,12 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { ArgumentsItem } from "~/types/appData";
 import s from "./ObjectArguments.module.less";
+import HtmlSuffix from "../HtmlSuffix";
 
 interface Props {
   typeArguments: ArgumentsItem;
   flexible: boolean;
+  htmlInput?: boolean;
   onChange: (data: ArgumentsItem) => void;
   describe?: string
 }
@@ -18,6 +20,7 @@ interface anyObj {
 const ObjectArguments: React.FC<Props> = ({
   typeArguments,
   flexible,
+  htmlInput,
   describe,
   onChange,
 }) => {
@@ -98,6 +101,7 @@ const ObjectArguments: React.FC<Props> = ({
           <Col span={17}>
             <Input
               onChange={onChangeValue(key)}
+              suffix={htmlInput ? <HtmlSuffix /> : null}
               placeholder="value"
               type="text"
               value={data[key]}

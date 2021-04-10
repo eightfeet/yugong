@@ -165,6 +165,7 @@ Table.exposeFunctions = [
         type: "array",
         fieldName: "",
         name: "设置表头项",
+        html: true,
         describe: "设置表头标题，每项代表一列",
         data: [],
       },
@@ -177,6 +178,7 @@ Table.exposeFunctions = [
       {
         type: "runningTime",
         name: "数据源",
+        html: true,
         fieldName: "dataSource",
         describe: "数据源，设置运行时或Api返回数据源",
         data: "",

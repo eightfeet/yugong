@@ -123,6 +123,7 @@ Button.exposeFunctions = [
         type: "string",
         name: "按钮文字",
         fieldName: "buttonText",
+        html: true,
         describe: "按钮显示文字",
         data: "按钮",
       },
