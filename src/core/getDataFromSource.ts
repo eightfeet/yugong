@@ -19,7 +19,6 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   ruleList?.forEach((item) => {
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
     const runningTimes = store.getState().runningTimes;
-
     let value;
     if ( dataSource) {
       // 处理内部数据

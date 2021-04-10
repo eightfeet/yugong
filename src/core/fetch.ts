@@ -3,6 +3,7 @@ import { stringifyUrl } from "query-string";
 import { getArguments } from "./getArgumentsTypeDataFromDataSource";
 import { store } from "~/redux/store";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
+import loading from "./loading";
 
 const requester = async (apiArguments: Api) => {
   const { method, body, headers, mode, credentials } = apiArguments;
@@ -78,21 +79,11 @@ const requester = async (apiArguments: Api) => {
   throw res;
 };
 
-// try {
-//     throw res;
-//   } catch (error) {
-//     if (errorPublic?.length) {
-//       console.log(errorPublic);
-//       const errorPublicPublicResult = getArguments(errorPublic, error);
-//       store.dispatch.runningTimes.setRunningTimes(errorPublicPublicResult);
-//     }
-//     console.warn(error);
-//   }
-
 const bootstrap = async (apiArguments: Api) => {
   const { successPublic, errorPublic } = apiArguments;
   const setRunningTimes = store.dispatch.runningTimes.setRunningTimes;
   try {
+    loading.show();
     const result = await requester(apiArguments);
     // 处理请求结果
     // 成功发布
@@ -102,6 +93,7 @@ const bootstrap = async (apiArguments: Api) => {
     }
     return result;
   } catch (error) {
+    loading.hide();
     // 失败发布
     if (errorPublic?.length) {
       const errorPublicPublicResult = getArguments(errorPublic, error);
