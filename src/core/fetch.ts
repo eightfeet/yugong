@@ -9,12 +9,12 @@ const requester = async (apiArguments: Api) => {
   const { method, body, headers, mode, credentials } = apiArguments;
 
   if (!apiArguments.url) {
-    const error = { message: "api缺少url" };
-    throw error;
+    console.warn("api缺少url")
+    return {}
   }
   if (!method) {
-    const error = { message: "api缺少method" };
-    throw error;
+    console.warn("api缺少method")
+    return {}
   }
 
   // 从runningTime翻译Api数据;
@@ -85,6 +85,7 @@ const bootstrap = async (apiArguments: Api) => {
   try {
     loading.show();
     const result = await requester(apiArguments);
+    loading.hide();
     // 处理请求结果
     // 成功发布
     if (successPublic?.length) {

@@ -227,7 +227,7 @@ const AppLayout: React.FC<LayoutProps> = ({
   const renderGridLayout = () => (
     <GridLayout
       onLayoutChange={onLayoutChange}
-      verticalCompact={false}
+      compactType="vertical"
       cols={cols}
       rowHeight={rowHeight}
       width={document.body.scrollWidth}
