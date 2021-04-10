@@ -1,112 +1,114 @@
-import { AnyObjectType, Api } from '~/types/appData';
-import { stringifyUrl } from 'query-string';
-import { getArguments } from './getArgumentsTypeDataFromDataSource';
-import { store } from '~/redux/store';
-import { compilePlaceholderFromDataSource as getResult } from './getDataFromSource';
+import { AnyObjectType, Api } from "~/types/appData";
+import { stringifyUrl } from "query-string";
+import { getArguments } from "./getArgumentsTypeDataFromDataSource";
+import { store } from "~/redux/store";
+import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 
 const requester = async (apiArguments: Api) => {
-    const {
-        method,
-        body,
-        headers,
-        mode,
-        credentials,
-        successPublic,
-        errorPublic,
-    } = apiArguments
+  const { method, body, headers, mode, credentials } = apiArguments;
 
-    
-    if (!apiArguments.url) {
-        return Promise.reject({ message: 'api缺少url' });
+  if (!apiArguments.url) {
+    const error = { message: "api缺少url" };
+    throw error;
+  }
+  if (!method) {
+    const error = { message: "api缺少method" };
+    throw error;
+  }
+
+  // 从runningTime翻译Api数据;
+  // api 接收两种数据类型
+  // 1、运行时链接类型：url、headers、mode、credentials
+  // 2、参数类型结构数据：body, successPublic, errorPublic
+
+  const url = getResult(apiArguments.url);
+  // 处理header
+  const headersData = {
+    "Content-Type": "application/json",
+  };
+
+  if (Object.prototype.toString.call(headers) === "[object Object]") {
+    for (const key in headers) {
+      if (Object.prototype.hasOwnProperty.call(headers, key)) {
+        const element = getResult(headers[key]);
+        headersData[key] = element;
+      }
     }
-    if (!method) {
-        return Promise.reject({ message: 'api缺少method' });
-    }
+  }
+  // 关联body
+  let bodyData: any = getArguments(body || []);
 
-    // 从runningTime翻译Api数据;
-    // api 接收两种数据类型
-    // 1、运行时链接类型：url、headers、mode、credentials
-    // 2、参数类型结构数据：body, successPublic, errorPublic
+  // 处理Url
+  let urlData = url;
+  if (method === "GET") {
+    urlData = stringifyUrl({ url, query: bodyData });
+  }
 
-    const url = getResult(apiArguments.url);
-    // 处理header
-    const headersData = {
-        'Content-Type': 'application/json',
-    };
+  if (headersData["Content-Type"] === "application/json") {
+    bodyData = JSON.stringify(bodyData);
+  }
 
-    if (Object.prototype.toString.call(headers) === '[object Object]') {
-        for (const key in headers) {
-            if (Object.prototype.hasOwnProperty.call(headers, key)) {
-                const element = getResult(headers[key]);
-                headersData[key] = element;
-            }
-        }
-    }
+  // fetch参数
+  const args: AnyObjectType = {
+    method,
+    headers: headersData,
+  };
 
-    // 关联body
-    let bodyData: any = getArguments(body || []);
+  if (method !== "GET") {
+    args.body = bodyData;
+  }
 
-    // 处理Url
-    let urlData = url;
-    if (method === 'GET') {
-        urlData = stringifyUrl({ url, query: bodyData });
-    }
+  if (mode) {
+    args.mode = mode;
+  }
 
-    if (headersData['Content-Type'] === 'application/json') {
-        bodyData = JSON.stringify(bodyData);
-    }
+  if (credentials) {
+    args.credentials = credentials;
+  }
 
-    // fetch参数
-    const args: AnyObjectType = {
-        method,
-        headers: headersData,
-    };
-
-    if (method !== 'GET') {
-        args.body = bodyData;
-    }
-
-    if (mode) {
-        args.mode = mode;
-    }
-
-    if (credentials) {
-        args.credentials = credentials;
-    }
-
-    try {
-        const res = await fetch(urlData, args);
-        /**
-         * 状态范围
-         */
-        if (res.status >= 200 && res.status < 300) {
-            const textData = await res.text();
-            const resultData = JSON.parse(textData);
-            // 处理请求结果
-            if (successPublic?.length) {
-                const successPublicResult = getArguments(
-                    successPublic,
-                    resultData
-                );
-                store.dispatch.runningTimes.setRunningTimes(
-                    successPublicResult
-                );
-            }
-            return resultData;
-        }
-        throw res;
-    } catch (error) {
-        if (errorPublic?.length) {
-            const errorPublicPublicResult = getArguments(
-                errorPublic,
-                error
-            );
-            store.dispatch.runningTimes.setRunningTimes(
-                errorPublicPublicResult
-            );
-        }
-      console.warn(error)
-    }
+  const res = await fetch(urlData, args);
+  /**
+   * 状态范围
+   */
+  if (res.status >= 200 && res.status < 300) {
+    const textData = await res.text();
+    const resultData = JSON.parse(textData);
+    return resultData;
+  }
+  throw res;
 };
 
-export default requester;
+// try {
+//     throw res;
+//   } catch (error) {
+//     if (errorPublic?.length) {
+//       console.log(errorPublic);
+//       const errorPublicPublicResult = getArguments(errorPublic, error);
+//       store.dispatch.runningTimes.setRunningTimes(errorPublicPublicResult);
+//     }
+//     console.warn(error);
+//   }
+
+const bootstrap = async (apiArguments: Api) => {
+  const { successPublic, errorPublic } = apiArguments;
+  const setRunningTimes = store.dispatch.runningTimes.setRunningTimes;
+  try {
+    const result = await requester(apiArguments);
+    // 处理请求结果
+    // 成功发布
+    if (successPublic?.length) {
+      const successPublicResult = getArguments(successPublic, result);
+      setRunningTimes(successPublicResult);
+    }
+    return result;
+  } catch (error) {
+    // 失败发布
+    if (errorPublic?.length) {
+      const errorPublicPublicResult = getArguments(errorPublic, error);
+      setRunningTimes(errorPublicPublicResult);
+    }
+    throw error;
+  }
+};
+
+export default bootstrap;

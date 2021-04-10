@@ -18,16 +18,15 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
   ruleList?.forEach((item) => {
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
+    const runningTimes = store.getState().runningTimes;
+
     let value;
     if ( dataSource) {
-      // 处理api内部数据状态
-      if (key.indexOf('_api.')!== -1) {
-        value = get(dataSource, key.replace('_api.', ''));
-      } else {
-        value = get(dataSource, key);
-      }
+      // 处理内部数据
+      value = get(dataSource, key);
     } else {
-      value = get(store.getState().runningTimes, key);
+      // 处理运行时数据
+      value = get(runningTimes, key);
     }
     result = result.replace(item, `${value || ""}`);
   });

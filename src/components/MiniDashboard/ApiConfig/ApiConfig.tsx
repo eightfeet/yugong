@@ -264,13 +264,12 @@ const Apiconfig: React.FC<Props> = ({
 
       // 转换为配置参数
       const useArgData: ArgumentsItem[] = [...(data || [])];
-
       // 无数据时初始化一份
       if (!useArgData.length) {
         useArgData.push({
           type: "string",
           data: "",
-          fieldName: ""
+          fieldName: type
         });
       }
       // 准备当前编辑参数到参数面板

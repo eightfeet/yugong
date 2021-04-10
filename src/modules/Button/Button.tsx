@@ -57,9 +57,8 @@ const Button: Modules<ButtonProps> = (props) => {
   // 点击事件
   const onClick = useCallback(async () => {
     const apiArguments = api?.find((item) => item.apiId === "beforeClick");
-    if (apiArguments) {
-      await requester(apiArguments || {});
-    }
+    // api 参数交由requester自行处理
+    await requester(apiArguments || {});
     eventEmitter.emit(events.click);
   }, [api, eventEmitter, events.click]);
 
