@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
+import parse from "html-react-parser";
 import {
   AppDataElementsTypes,
   ArgumentsArray,
@@ -59,8 +60,8 @@ const Table: Modules<TableProps> = (props) => {
     ) => {
       const data = getArgumentsItem(dataSource);
       const concat = getArgumentsItem(isConcate);
+      // 这里单独处理，定义列数据从原数据映射
       const map = rowMap.data;
-
       if (!Array.isArray(data)) {
         return;
       }
@@ -70,12 +71,14 @@ const Table: Modules<TableProps> = (props) => {
         const temp: any[] = [];
         if (Array.isArray(map)) {
           map.forEach((item) => {
-            temp.push(getResult(item, element));
+            if (item) {
+              temp.push(parse(getResult(item, element)));
+            }
           });
         }
         result.push(temp);
       });
-      
+      // 递增翻页
       if (concat) {
         setTbodyDataStatu(tbodyDataStatu.concat(result));
       } else {
@@ -178,7 +181,6 @@ Table.exposeFunctions = [
       {
         type: "runningTime",
         name: "数据源",
-        html: true,
         fieldName: "dataSource",
         describe: "数据源，设置运行时或Api返回数据源",
         data: "",
@@ -198,6 +200,7 @@ Table.exposeFunctions = [
         type: "array",
         fieldName: "rowMap",
         name: "行值",
+        html: true,
         describe: "设置每行内容，数据替换基于数据源！",
         data: [],
       },
