@@ -17,7 +17,7 @@ const QuadrangularSelect: React.FC<Props> = ({unit, label, ...other}) => {
     if (ref.current) {
       (ref.current as any).blur();
     }
-  }, [moduleId, ref.current])
+  }, [moduleId])
   return (
     <Row className={s.row} gutter={4}>
       <Col className={s.label} span={10}>{label || ''}</Col>

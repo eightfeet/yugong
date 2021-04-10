@@ -49,6 +49,7 @@ const BorderCheckbox: React.FC<Props> = ({
     } else {
       setBorderPosition({ ...borderPosition, ...defaultData });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultData]);
 
   const handleBorderPosition = useCallback(

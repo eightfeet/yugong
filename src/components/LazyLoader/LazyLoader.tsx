@@ -12,6 +12,7 @@ const LazyLoader: React.FC<Props> = ({ path, ...other }) => {
   const rootFontsize =
   useSelector((state: RootState) => state.controller.bestFont) || 16;
   // Memo缓存组件防止反复刷新
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const LazyComponent = useMemo(() => lazy(() => import(`~/${path}`)), [path, rootFontsize]);
   return (
     <Suspense fallback={<div>Loading...</div>}>

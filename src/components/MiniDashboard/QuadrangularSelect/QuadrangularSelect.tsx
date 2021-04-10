@@ -52,19 +52,13 @@ const simpPosition = [
   },
 ];
 
-const QuadrangularSelect: React.FC<Props> = ({ unit, label, defaultData, onChange, ...other }) => {
-  const [selected, setselected] = useState<(number|undefined)[]>([]);
+const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) => {
+  const [, setselected] = useState<(number|undefined)[]>([]);
   const [index, setIndex] = useState<number>()
 
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId
   );
-
-  // 初始化
-  useEffect(() => {
-    setselected(defaultData);
-    checkSelect(defaultData);
-  }, [moduleId, defaultData])
 
   // 选中
   const checkSelect = useCallback(
@@ -87,7 +81,13 @@ const QuadrangularSelect: React.FC<Props> = ({ unit, label, defaultData, onChang
     if (onChange instanceof Function) {
       onChange(simpPosition[index].value)
     }
-  }, [checkSelect, selected]);
+  }, [checkSelect, onChange]);
+
+  // 初始化
+  useEffect(() => {
+    setselected(defaultData);
+    checkSelect(defaultData);
+  }, [moduleId, defaultData, checkSelect])
 
   return (
     <Row className={s.row} gutter={4}>

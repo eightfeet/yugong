@@ -115,7 +115,7 @@
  
    const eventEmitter = useMemo(() => {
      return new EventEmitter()
-   }, [appData]);
+   }, []);
  
    (window.top as any).eventEmitter = (window as any).eventEmitter = eventEmitter;
  

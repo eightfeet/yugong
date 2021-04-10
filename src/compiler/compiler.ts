@@ -349,7 +349,6 @@ export const backgroundCommon = function (
 export const border = function (styleObj: objType): resultType {
     // border-radius: {radiusTopLeft} {radiusTopRight} {radiusBottomLeft} {radiusBottomRight};
     // border{borderPosition}: {borderWidth} {borderStyle} {borderColor};
-    let type = '';
     const rules: {
         borderRadius: any[];
         border: any[];

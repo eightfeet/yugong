@@ -52,7 +52,7 @@ const Pagesetting: React.FC<Props> = () => {
   });
 
   // 本地存储编辑数据
-  const [_, setPagedataLocalStorage] = useLocalStorage("pageData", null);
+  const [, setPagedataLocalStorage] = useLocalStorage("pageData", null);
 
   const handleUpdatePage = useCallback(
     (pageData) => {

@@ -63,7 +63,7 @@ const Upload: React.FC<UploadProps> = ({
         setWh(str);
       }
     },
-    [img],
+    [],
   )
 
   // 删除临时文件
@@ -73,7 +73,7 @@ const Upload: React.FC<UploadProps> = ({
     if (defaultImg) {
       createTempImg(defaultImg);
     }
-  }, [defaultImg, moduleId]);
+  }, [createTempImg, defaultImg, moduleId]);
 
   const onChangeUpload = useCallback(
     (info: UploadChangeParam) => {
@@ -107,7 +107,7 @@ const Upload: React.FC<UploadProps> = ({
   const showView = useCallback(() => {
     getTempImgWH();
     setViewImg(true);
-  }, []);
+  }, [getTempImgWH]);
 
   const deleteImage = useCallback(() => {
     setimg("");

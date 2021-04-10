@@ -4,7 +4,6 @@ import { Input } from "antd";
 import { AnyObjectType } from "~/types/appData";
 import s from "./RunningTimesModal.module.less";
 import ReactJson from "react-json-view";
-import { indexOf } from "lodash";
 
 const { Search } = Input;
 

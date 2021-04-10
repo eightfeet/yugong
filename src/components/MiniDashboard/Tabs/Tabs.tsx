@@ -34,12 +34,11 @@ const Tabs: React.FC<Props> = (props) => {
   }, []);
 
   const clickItem = useCallback((item) => () => {
-    console.log(item)
     setselect(item)
     if (props.onClick instanceof Function) {
       props.onClick(item)
     }
-  }, []);
+  }, [props]);
 
   return <div className={s[`stage${0}`]}>
     {menu?.map((item, i) => <div className={item === select? s.selected : ''} key={i} onClick={clickItem(item)}>{item}</div>)}
