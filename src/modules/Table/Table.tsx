@@ -6,6 +6,8 @@ import {
   AppDataElementsTypes,
   ArgumentsArray,
   ArgumentsBoolean,
+  ArgumentsNumber,
+  ArgumentsString,
 } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
@@ -27,7 +29,9 @@ const Table: Modules<TableProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const userClass = useStyles(style);
   const [theadDataStatu, setTheadDataStatu] = useState<string[]>([]);
-  const [tbodyDataStatu, setTbodyDataStatu] = useState<string[][]>([]);
+  const [tbodyDataStatu, setTbodyDataStatu] = useState<any[][]>([]);
+  // 保留一份源数据表格替换用
+  const [copyDataSource, setCopyDataSource] = useState<any>();
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "mount");
@@ -59,6 +63,7 @@ const Table: Modules<TableProps> = (props) => {
       rowMap: ArgumentsArray
     ) => {
       const data = getArgumentsItem(dataSource);
+      setCopyDataSource(data)
       const concat = getArgumentsItem(isConcate);
       // 这里单独处理，定义列数据从原数据映射
       const map = rowMap.data;
@@ -88,6 +93,18 @@ const Table: Modules<TableProps> = (props) => {
     [tbodyDataStatu]
   );
 
+  /**覆写表格 */
+  const overrideTbodyItem = useCallback(
+    (rowItem: ArgumentsNumber, colItem: ArgumentsNumber, override: ArgumentsString) => {
+      const row = getArgumentsItem(rowItem) as number;
+      const col = getArgumentsItem(colItem) as number;
+      if (tbodyDataStatu[row] && tbodyDataStatu[row][col] && copyDataSource) {
+        tbodyDataStatu[row][col] = parse(getResult(override.data, copyDataSource));
+      }
+    },
+    [tbodyDataStatu, copyDataSource],
+  )
+
   /** 下拉事件*/
   const onPullDown = useCallback(async () => {
     const apiArguments = api?.find((item) => item.apiId === "pullDown");
@@ -108,11 +125,13 @@ const Table: Modules<TableProps> = (props) => {
     eventEmitter.emit(events.pullUp);
   }, [api, eventEmitter, events.pullUp]);
 
-  // 向eventEmitter注册事件，向外公布
+  // 向eventEmitter注册方法，向外公布
   useMemo(() => {
     eventEmitter.addEventListener("setTheadData", setTheadData);
     eventEmitter.addEventListener("setTbodyData", setTbodyData);
-  }, [eventEmitter, setTbodyData, setTheadData]);
+    eventEmitter.addEventListener("overrideTbodyItem", overrideTbodyItem);
+    
+  }, [eventEmitter, overrideTbodyItem, setTbodyData, setTheadData]);
 
   return (
     <Wrapper {...props} maxHeight maxWidth>

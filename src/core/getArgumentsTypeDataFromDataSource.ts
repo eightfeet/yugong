@@ -15,6 +15,7 @@ export const getArgumentsItem = (
   dataSource?: AnyObjectType,
 ):
   | AnyObjectType
+  | number
   | any[]
   | boolean
   | string
