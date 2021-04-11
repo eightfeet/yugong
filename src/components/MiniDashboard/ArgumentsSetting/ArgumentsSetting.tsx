@@ -220,7 +220,7 @@ const ArgumentsSetting: React.FC<Props> = ({
               title={
                 <div className={s.cardtitle}>
                   <div className={s.cardtitleinfo}>
-                    <span className={s.label}>字段名：</span>
+                    <span className={s.label}>名称：</span>
                     {!headerFlexible ? (
                       <>
                         {item.name || initItem?.name || ""} &nbsp;

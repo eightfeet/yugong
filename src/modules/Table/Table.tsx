@@ -166,7 +166,7 @@ Table.exposeFunctions = [
     arguments: [
       {
         type: "array",
-        fieldName: "",
+        fieldName: "setThead",
         name: "设置表头项",
         html: true,
         describe: "设置表头标题，每项代表一列",
@@ -203,6 +203,34 @@ Table.exposeFunctions = [
         html: true,
         describe: "设置每行内容，数据替换基于数据源！",
         data: [],
+      },
+    ],
+  },
+  {
+    name: "overrideTbodyItem",
+    description: "覆写表格",
+    arguments: [
+      {
+        type: "number",
+        fieldName: "rowItem",
+        name: "行",
+        describe: "tbody第几行",
+        data: "",
+      },
+      {
+        type: "number",
+        fieldName: "colItem",
+        name: "列",
+        describe: "tbody第几列",
+        data: "",
+      },
+      {
+        type: "string",
+        fieldName: "override",
+        name: "覆写",
+        html: true,
+        describe: "覆写表格项",
+        data: "",
       },
     ],
   },
