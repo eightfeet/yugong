@@ -96,10 +96,10 @@ const Table: Modules<TableProps> = (props) => {
   /**覆写表格 */
   const overrideTbodyItem = useCallback(
     (rowItem: ArgumentsNumber, colItem: ArgumentsNumber, override: ArgumentsString) => {
-      const row = getArgumentsItem(rowItem) as number;
-      const col = getArgumentsItem(colItem) as number;
+      const row = getArgumentsItem(rowItem) as number - 1;
+      const col = getArgumentsItem(colItem) as number - 1;
       if (tbodyDataStatu[row] && tbodyDataStatu[row][col] && copyDataSource) {
-        tbodyDataStatu[row][col] = parse(getResult(override.data, copyDataSource));
+        tbodyDataStatu[row][col] = getArgumentsItem(override, copyDataSource[row]);
       }
     },
     [tbodyDataStatu, copyDataSource],
@@ -248,7 +248,7 @@ Table.exposeFunctions = [
         fieldName: "override",
         name: "覆写",
         html: true,
-        describe: "覆写表格项",
+        describe: "覆写表格项, 数据替换基于数据源！",
         data: "",
       },
     ],
