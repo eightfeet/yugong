@@ -3,6 +3,7 @@ import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
 import parse from "html-react-parser";
 import {
+  AnyObjectType,
   AppDataElementsTypes,
   ArgumentsArray,
   ArgumentsBoolean,
@@ -28,8 +29,8 @@ export interface TableProps extends AppDataElementsTypes {
 const Table: Modules<TableProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const userClass = useStyles(style);
-  const [theadDataStatu, setTheadDataStatu] = useState<string[]>([]);
-  const [tbodyDataStatu, setTbodyDataStatu] = useState<any[][]>([]);
+  const [theadDataStatu, setTheadDataStatu] = useState<(string | number | JSX.Element | JSX.Element[])[]>([]);
+  const [tbodyDataStatu, setTbodyDataStatu] = useState<(string | number | boolean | any[] | Element | Element[] | AnyObjectType)[][]>([]);
   // 保留一份源数据表格替换用
   const [copyDataSource, setCopyDataSource] = useState<any>();
   // API请求 注意依赖关系
@@ -93,7 +94,10 @@ const Table: Modules<TableProps> = (props) => {
     [tbodyDataStatu]
   );
 
-  /**覆写表格 */
+  /**
+   * 从数据源覆写表格，做到表格项灵覆写，满足列表样式的各种变换 
+   * 
+   * */
   const overrideTbodyItem = useCallback(
     (rowItem: ArgumentsNumber, colItem: ArgumentsNumber, override: ArgumentsString) => {
       const row = getArgumentsItem(rowItem) as number - 1;
@@ -151,7 +155,7 @@ const Table: Modules<TableProps> = (props) => {
                 <tr>
                   {theadDataStatu.map((item, index) => (
                     <th key={index} scope="col">
-                      {getResult(item)}
+                      {item}
                     </th>
                   ))}
                 </tr>
@@ -227,7 +231,7 @@ Table.exposeFunctions = [
   },
   {
     name: "overrideTbodyItem",
-    description: "覆写表格",
+    description: "覆写表格，请在源数据准备完成后做覆写！",
     arguments: [
       {
         type: "number",
