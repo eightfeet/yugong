@@ -20,7 +20,9 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   let result = data;
   const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
   ruleList?.forEach((item) => {
+    // 移除{{}}
     const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
+    // to do A||B||C 拆解key，逐个遍历并替换，直到找到数据为止，若从元数据中找不到数据则返回最后一个字符串
     const runningTimes = store.getState().runningTimes;
     let value;
     if (!!key.match(/^\*\.+/)?.length) {
@@ -37,13 +39,6 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   });
   return result;
 };
-
-/**
- * 将所有数据类型转换为编译后的值
- */
-export const getCompileResult = (data: any, dataSource?: AnyObjectType ) => {
-
-}
 
 export const runningTimeToResult = (value: any, defaultValue: number) : number => {
   const data = parseInt(`${compilePlaceholderFromDataSource(value)}`) || defaultValue;
