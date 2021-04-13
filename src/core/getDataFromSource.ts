@@ -18,24 +18,37 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   }
   // 匹配运行时
   let result = data;
-  const ruleList = data.match(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm);
+  const ruleList = data.match(/\{\{(.[\w|\d|\-|/|.|\s*]+?)\}\}/gm);
   ruleList?.forEach((item) => {
     // 移除{{}}
-    const key = item.replace(/\{\{(.[\w|\d|-|/|.]+?)\}\}/gm, "$1");
-    // to do A||B||C 拆解key，逐个遍历并替换，直到找到数据为止，若从元数据中找不到数据则返回最后一个字符串
+    const key = item.replace(/\{\{(.[\w|\d|\-|/|.|\s*]+?)\}\}/gm, "$1");
+    // 拆解key，逐个遍历并替换，直到找到数据为止，若从元数据中找不到数据则返回最后一个字符串
+    let keyArray = key.split('||');
     const runningTimes = store.getState().runningTimes;
     let value;
-    if (!!key.match(/^\*\.+/)?.length) {
-      // force global 强制从运行时取值
-      value = get(runningTimes, key.replace('*.', ''), runningTimes);
-    } else if (dataSource) {
-      // 处理内部数据
-      value = get(dataSource, key, dataSource);
-    } else {
-      // 处理运行时数据
-      value = get(runningTimes, key, runningTimes);
-    }
+    keyArray.some((element, index) => {
+      // 移除首尾空格
+      const el =  element.replace(/(^\s*)|(\s*$)/g,"");
+      if (!!el.match(/^\*\.+/)?.length) {
+        // force global 强制从运行时取值
+        value = get(runningTimes, el.replace('*.', ''));
+      } else if (dataSource) {
+        // 处理内部数据
+        value = get(dataSource, el);
+      } else {
+        // 处理运行时数据
+        value = get(runningTimes, el);
+      }
+      if (!!value) {
+        return true
+      } else {
+        if (index === (keyArray.length - 1)) {value = element}
+        return false
+      }
+    })
+
     result = result.replace(item, `${value || ""}`);
+    
   });
   return result;
 };
