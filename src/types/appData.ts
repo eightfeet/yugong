@@ -65,7 +65,7 @@ export interface ArgumentsBoolean extends ArgumentBase<"boolean"> {
   data: {
     comparableAverageA: any;
     comparableAverageB: any;
-    method: ">" | ">=" | "<" | "<=" | "===" | "==" | "&&" | "||";
+    method: ">" | ">=" | "<" | "<=" | "===" | "==" | "!==" | "&&" | "||";
   };
 }
 

@@ -17,6 +17,8 @@ const getBooleanData = ({
   switch (method) {
     case "===":
       return Left === Right;
+    case "!==":
+      return Left !== Right;
     case ">=":
       return Left >= Right;
     case "<":

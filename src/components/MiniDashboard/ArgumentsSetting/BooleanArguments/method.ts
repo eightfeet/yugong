@@ -5,7 +5,11 @@ const method = [
   },
   {
     value: "===",
-    name: "全等于",
+    name: "完全等于",
+  },
+  {
+    value: "!==",
+    name: "不等于",
   },
   {
     value: ">",

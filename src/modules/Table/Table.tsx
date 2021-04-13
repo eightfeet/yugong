@@ -17,9 +17,7 @@ import useStyles from "./Table.useStyle";
 import classNames from "classnames";
 import PullToRefresh from "rmc-pull-updown-to-refresh";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
-import {
-  getArgumentsItem,
-} from "~/core/getArgumentsTypeDataFromDataSource";
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 export interface TableProps extends AppDataElementsTypes {
   id: string;
@@ -29,10 +27,27 @@ export interface TableProps extends AppDataElementsTypes {
 const Table: Modules<TableProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const userClass = useStyles(style);
-  const [theadDataStatu, setTheadDataStatu] = useState<(string | number | JSX.Element | JSX.Element[])[]>([]);
-  const [tbodyDataStatu, setTbodyDataStatu] = useState<(string | number | boolean | any[] | Element | Element[] | AnyObjectType)[][]>([]);
+  const [theadDataStatu, setTheadDataStatu] = useState<
+    (string | number | JSX.Element | JSX.Element[])[]
+  >([]);
+  const [tbodyDataStatu, setTbodyDataStatu] = useState<
+    (
+      | string
+      | number
+      | boolean
+      | any[]
+      | Element
+      | Element[]
+      | AnyObjectType
+    )[][]
+  >([]);
   // 保留一份源数据表格替换用
   const [copyDataSource, setCopyDataSource] = useState<any>();
+  // 是否开启下拉与上拉事件
+  const [pullStates, setPullStates] = useState<{
+    pullDown: boolean,
+    pullUp: boolean
+  }>()
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "mount");
@@ -49,6 +64,17 @@ const Table: Modules<TableProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**设置表格交互 */
+  const setTable = useCallback(
+    (isPullDown: ArgumentsBoolean, isPullUp: ArgumentsBoolean) => {
+      setPullStates({
+        pullDown: getArgumentsItem(isPullDown) as boolean,
+        pullUp: getArgumentsItem(isPullUp) as boolean
+      })
+    },
+    [],
+  )
+
   /**设置表格头部 */
   const setTheadData = useCallback((args: ArgumentsArray) => {
     const data = getArgumentsItem(args);
@@ -64,7 +90,7 @@ const Table: Modules<TableProps> = (props) => {
       rowMap: ArgumentsArray
     ) => {
       const data = getArgumentsItem(dataSource);
-      setCopyDataSource(data)
+      setCopyDataSource(data);
       const concat = getArgumentsItem(isConcate);
       // 这里单独处理，定义列数据从原数据映射
       const map = rowMap.data;
@@ -95,19 +121,26 @@ const Table: Modules<TableProps> = (props) => {
   );
 
   /**
-   * 从数据源覆写表格，做到表格项灵覆写，满足列表样式的各种变换 
-   * 
+   * 从数据源覆写表格，做到表格项灵覆写，满足列表样式的各种变换
+   *
    * */
   const overrideTbodyItem = useCallback(
-    (rowItem: ArgumentsNumber, colItem: ArgumentsNumber, override: ArgumentsString) => {
-      const row = getArgumentsItem(rowItem) as number - 1;
-      const col = getArgumentsItem(colItem) as number - 1;
+    (
+      rowItem: ArgumentsNumber,
+      colItem: ArgumentsNumber,
+      override: ArgumentsString
+    ) => {
+      const row = (getArgumentsItem(rowItem) as number) - 1;
+      const col = (getArgumentsItem(colItem) as number) - 1;
       if (tbodyDataStatu[row] && tbodyDataStatu[row][col] && copyDataSource) {
-        tbodyDataStatu[row][col] = getArgumentsItem(override, copyDataSource[row]);
+        tbodyDataStatu[row][col] = getArgumentsItem(
+          override,
+          copyDataSource[row]
+        );
       }
     },
-    [tbodyDataStatu, copyDataSource],
-  )
+    [tbodyDataStatu, copyDataSource]
+  );
 
   /** 下拉事件*/
   const onPullDown = useCallback(async () => {
@@ -131,11 +164,11 @@ const Table: Modules<TableProps> = (props) => {
 
   // 向eventEmitter注册方法，向外公布
   useMemo(() => {
+    eventEmitter.addEventListener("setTable", setTable);
     eventEmitter.addEventListener("setTheadData", setTheadData);
     eventEmitter.addEventListener("setTbodyData", setTbodyData);
     eventEmitter.addEventListener("overrideTbodyItem", overrideTbodyItem);
-    
-  }, [eventEmitter, overrideTbodyItem, setTbodyData, setTheadData]);
+  }, [eventEmitter, overrideTbodyItem, setTbodyData, setTheadData, setTable]);
 
   return (
     <Wrapper {...props} maxHeight maxWidth>
@@ -143,8 +176,8 @@ const Table: Modules<TableProps> = (props) => {
         <PullToRefresh
           className={s.bg_orange}
           onPullDown={onPullDown}
-          disablePullUp={false}
-          disablePullDown={false}
+          disablePullUp={!pullStates?.pullUp}
+          disablePullDown={!pullStates?.pullDown}
           pullDownText="左下拉更新"
           pullUpText="左上拉更新"
           onPullUp={onPullUp}
@@ -184,6 +217,34 @@ const Table: Modules<TableProps> = (props) => {
  */
 Table.exposeFunctions = [
   {
+    name: "setTable",
+    description: "设置table基本功能",
+    arguments: [
+      {
+        type: "boolean",
+        name: "允许下拉事件",
+        describe: "表达式成立时允许下拉事件",
+        fieldName: "isPullDown",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "1",
+          method: "===",
+        },
+      },
+      {
+        type: "boolean",
+        name: "允许上拉事件",
+        describe: "表达式成立时允许上拉事件",
+        fieldName: "isPullUp",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "1",
+          method: "===",
+        },
+      },
+    ],
+  },
+  {
     name: "setTheadData",
     description: "设置表头",
     arguments: [
@@ -199,7 +260,7 @@ Table.exposeFunctions = [
   },
   {
     name: "setTbodyData",
-    description: "设置数据",
+    description: "表格数据",
     arguments: [
       {
         type: "runningTime",
