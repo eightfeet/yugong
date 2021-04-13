@@ -28,11 +28,11 @@ const mockTableData = [
 
 const windowHeight = {
     height,
-    half: height/2,
-    quarter: height/4, 
-    oneTenth: height/10, 
-    oneTwentieth: height/20, 
-    oneThirtieth: height/30,
+    half: Math.floor(height/2),
+    quarter: Math.floor(height/4), 
+    oneTenth: Math.floor(height/10), 
+    oneTwentieth: Math.floor(height/20), 
+    oneThirtieth: Math.floor(height/30),
 }
 
 interface RunningTimesItem {
