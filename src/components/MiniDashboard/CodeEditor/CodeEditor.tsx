@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
 import s from "./CodeEditor.module.less";
@@ -8,6 +8,10 @@ import { useCallback } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { message } from "antd";
+import { CopyOutlined } from "@ant-design/icons";
+import Radio from "antd/lib/radio";
+import Button from "antd/lib/button";
+import { AppDataLayoutItemTypes } from "~/types/appData";
 
 interface Props {}
 
@@ -17,6 +21,13 @@ const Codeeditor: React.FC<Props> = () => {
   );
   const appData = useSelector((state: RootState) => state.appData);
   const dispatch = useDispatch<Dispatch>();
+  const [jsonData, setJsonData] = useState<AppDataLayoutItemTypes>();
+  const [jsonMode, setJsonMode] = useState<"view" | "code">("view");
+
+  useEffect(() => {
+    setJsonData({ ...activationItem });
+  }, [activationItem]);
+
   const [, setLocalStorage] = useLocalStorage("appData", null);
   const jsoneditor = useRef<JSONEditor>();
   const container = useRef<any>();
@@ -28,30 +39,53 @@ const Codeeditor: React.FC<Props> = () => {
         activationItem.moduleId === json.moduleId &&
         activationItem.moduleId === json.layout?.i
       ) {
-        dispatch.activationItem.updateActivationItem(json);
-        const operateData = [...appData].map((item) => {
-          if (item.moduleId === json.moduleId) {
-            return json;
-          }
-          return item;
-        });
-        dispatch.appData.updateAppData(operateData);
-        setLocalStorage(operateData);
-        dispatch.controller.forceUpdateByStateTag();
+        setJsonData(json);
+        // dispatch.activationItem.updateActivationItem(json);
+        // const operateData = [...appData].map((item) => {
+        //   if (item.moduleId === json.moduleId) {
+        //     return json;
+        //   }
+        //   return item;
+        // });
+        // dispatch.appData.updateAppData(operateData);
+        // setLocalStorage(operateData);
+        // dispatch.controller.forceUpdateByStateTag();
       }
     } catch (e) {
       return;
     }
-  }, [activationItem.moduleId, appData, dispatch.activationItem, dispatch.appData, dispatch.controller, setLocalStorage]);
+  }, [activationItem.moduleId]);
+
+  const onsubmit = useCallback(() => {
+    if (jsonData) {
+      dispatch.activationItem.updateActivationItem(jsonData);
+      const operateData = [...appData].map((item) => {
+        if (item.moduleId === jsonData.moduleId) {
+          return jsonData;
+        }
+        return item;
+      });
+      dispatch.appData.updateAppData(operateData);
+      setLocalStorage(operateData);
+      dispatch.controller.forceUpdateByStateTag();
+    }
+  }, [
+    appData,
+    dispatch.activationItem,
+    dispatch.appData,
+    dispatch.controller,
+    jsonData,
+    setLocalStorage,
+  ]);
 
   useEffect(() => {
-    if (container.current) {
+    if (container.current && jsonData) {
       jsoneditor.current = new JSONEditor(container.current, {
-        mode: "code",
+        mode: jsonMode,
         mainMenuBar: false,
         onChange: onChangeJSON,
       });
-      jsoneditor.current.set(activationItem);
+      jsoneditor.current.set(jsonData);
     }
 
     return () => {
@@ -59,15 +93,49 @@ const Codeeditor: React.FC<Props> = () => {
         jsoneditor.current.destroy();
       }
     };
-  }, [activationItem, onChangeJSON]);
+  }, [jsonData, onChangeJSON, jsonMode]);
+
+  const onChangeJsonMode = useCallback((e) => {
+    jsoneditor.current?.setMode(e.target.value);
+    setJsonMode(e.target.value);
+  }, []);
   return (
     <>
-      <CopyToClipboard
-        text={JSON.stringify(activationItem)}
-        onCopy={() => message.error("已复制到剪切板")}
-      >
-        <span>Copy to clipboard with span</span>
-      </CopyToClipboard>
+      <div className={s.toolbar}>
+        <div className={s.modeid}>{activationItem.moduleId}</div>
+        <div>
+          &nbsp;
+          <CopyToClipboard
+            text={JSON.stringify(activationItem)}
+            onCopy={() => message.info("已复制到剪切板")}
+          >
+            <Button size="small" icon={<CopyOutlined alt="复制到剪切板" />}>
+              复制
+            </Button>
+          </CopyToClipboard>
+          &nbsp;
+          <Radio.Group
+            value={jsonMode}
+            size="small"
+            onChange={onChangeJsonMode}
+          >
+            <Radio.Button value="view">预览</Radio.Button>
+            <Radio.Button value="code">编辑</Radio.Button>
+          </Radio.Group>
+          &nbsp;
+          {jsonMode === "code" ? (
+            <Button
+              size="small"
+              type="primary"
+              onClick={onsubmit}
+              icon={<CopyOutlined alt="复制到剪切板" />}
+            >
+              保存
+            </Button>
+          ) : null}
+          &nbsp;
+        </div>
+      </div>
       <div className={s.wrap} ref={container} />
     </>
   );
