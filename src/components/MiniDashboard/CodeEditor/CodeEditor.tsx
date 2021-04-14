@@ -6,7 +6,6 @@ import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";
 import { useCallback } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import usePostMessage from "~/hooks/usePostMessage";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { message } from "antd";
 
@@ -38,7 +37,6 @@ const Codeeditor: React.FC<Props> = () => {
         });
         dispatch.appData.updateAppData(operateData);
         setLocalStorage(operateData);
-
         dispatch.controller.forceUpdateByStateTag();
       }
     } catch (e) {
