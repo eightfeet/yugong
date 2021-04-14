@@ -3,6 +3,7 @@ import ConfigurationController from "~/components/MiniDashboard/ConfigurationCon
 import s from "./Dashboard.module.less";
 import { Menu, Select, Tooltip, Modal } from "antd";
 import {
+  CodeOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
   FormatPainterOutlined,
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, Dispatch } from "~/redux/store";
 import StyleController from "../StyleController";
 import usePostMessage from "~/hooks/usePostMessage";
+import CodeEditor from "../CodeEditor";
 
 const { confirm } = Modal;
 interface Props {}
@@ -129,6 +131,9 @@ const Dashboard: React.FC<Props> = () => {
           <Menu.Item key="config" icon={<ToolOutlined />}>
             设置
           </Menu.Item>
+          <Menu.Item key="code" icon={<CodeOutlined />}>
+            code
+          </Menu.Item>
         </Menu>
         <div className={s.info}>
           <Tooltip
@@ -181,6 +186,12 @@ const Dashboard: React.FC<Props> = () => {
         style={{ display: mainTag === "config" ? "block" : "none" }}
       >
         <ConfigurationController />
+      </div>
+      <div
+        className={s.controllerwrap}
+        style={{ display: mainTag === "code" ? "block" : "none" }}
+      >
+        <CodeEditor />
       </div>
     </div>
   );
