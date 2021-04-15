@@ -31,7 +31,8 @@ const Codeeditor: React.FC<Props> = () => {
   const [, setLocalStorage] = useLocalStorage("appData", null);
   const jsoneditor = useRef<JSONEditor>();
   const container = useRef<any>();
-  const onChangeJSON = useCallback(() => {
+
+  const onsubmit = useCallback(() => {
     try {
       var json = jsoneditor.current?.get();
       if (
@@ -40,34 +41,19 @@ const Codeeditor: React.FC<Props> = () => {
         activationItem.moduleId === json.layout?.i
       ) {
         setJsonData(json);
-        // dispatch.activationItem.updateActivationItem(json);
-        // const operateData = [...appData].map((item) => {
-        //   if (item.moduleId === json.moduleId) {
-        //     return json;
-        //   }
-        //   return item;
-        // });
-        // dispatch.appData.updateAppData(operateData);
-        // setLocalStorage(operateData);
-        // dispatch.controller.forceUpdateByStateTag();
+        dispatch.activationItem.updateActivationItem(json);
+        const operateData = [...appData].map((item) => {
+          if (item.moduleId === json.moduleId) {
+            return json;
+          }
+          return item;
+        });
+        dispatch.appData.updateAppData(operateData);
+        setLocalStorage(operateData);
+        dispatch.controller.forceUpdateByStateTag();
       }
     } catch (e) {
       return;
-    }
-  }, [activationItem.moduleId]);
-
-  const onsubmit = useCallback(() => {
-    if (jsonData) {
-      dispatch.activationItem.updateActivationItem(jsonData);
-      const operateData = [...appData].map((item) => {
-        if (item.moduleId === jsonData.moduleId) {
-          return jsonData;
-        }
-        return item;
-      });
-      dispatch.appData.updateAppData(operateData);
-      setLocalStorage(operateData);
-      dispatch.controller.forceUpdateByStateTag();
     }
   }, [
     appData,
@@ -83,7 +69,6 @@ const Codeeditor: React.FC<Props> = () => {
       jsoneditor.current = new JSONEditor(container.current, {
         mode: jsonMode,
         mainMenuBar: false,
-        onChange: onChangeJSON,
       });
       jsoneditor.current.set(jsonData);
     }
@@ -93,7 +78,7 @@ const Codeeditor: React.FC<Props> = () => {
         jsoneditor.current.destroy();
       }
     };
-  }, [jsonData, onChangeJSON, jsonMode]);
+  }, [jsonData, jsonMode]);
 
   const onChangeJsonMode = useCallback((e) => {
     jsoneditor.current?.setMode(e.target.value);

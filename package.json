@@ -38,7 +38,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-use": "^17.2.1",
-    "rmc-pull-updown-to-refresh": "^1.0.19",
+    "rmc-pull-updown-to-refresh": "^1.0.20",
     "swiper": "^6.5.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4",
