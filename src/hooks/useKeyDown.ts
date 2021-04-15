@@ -119,7 +119,7 @@ const useKeyDown = (
 
     // 处理方法
     const fn = (event: KeyboardEvent) => {
-      console.log(event.key)
+      console.log(event.key, event.keyCode)
       if (!(callback instanceof Function)) { // 没有回调方法直接返回
         return;
       }
