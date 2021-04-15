@@ -14,7 +14,7 @@ import { AnyObjectType } from "~/types/appData";
  */
 export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType): string => {
   if (typeof data !== "string") {
-    return data;
+    return data || '';
   }
   // 规则:{{}}
   const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s*]+?)\}\}/gm;
