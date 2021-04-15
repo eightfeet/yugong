@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
 import usePostMessage from "~/hooks/usePostMessage";
 import s from "./Repository.module.less";
+import useKeyDown from "~/hooks/useKeyDown";
 
 interface ModalType {
   moduleName: AppDataModuleTypes;
@@ -105,6 +106,8 @@ const Repository: React.FC = () => {
       createModal(addedModal?.moduleName, newModalName || "未命名");
     }
   }, [addedModal?.moduleName, createModal, newModalName]);
+
+  useKeyDown(onCreate, 13)
 
   return (
     <>

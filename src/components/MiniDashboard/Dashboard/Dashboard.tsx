@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from './Dashboard.module.less';
 import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
@@ -128,12 +128,25 @@ const Dashboard: React.FC<Props> = () => {
         [isDeleteComp, activationItem.moduleName, activationItem.moduleId, delModule]
     );
     
-    // 模块删除
+    // 模块删除快捷键
+    // key deletd
     useKeyDown(() => {
         if(!isDeleteComp){
             confirmModal();
         }
     }, 46);
+    // key command + backspace
+    useKeyDown((key) => {
+        if(!isDeleteComp){
+            confirmModal();
+        }
+    }, [91, 8]);
+    // key control + backspace
+    useKeyDown(() => {
+        if(!isDeleteComp){
+            confirmModal();
+        }
+    }, [17, 8]);
 
     // =====================================模块复制=======================================//
     // copyData
@@ -174,45 +187,8 @@ const Dashboard: React.FC<Props> = () => {
 
     // 处理键盘事件
     // 模拟模块复制
-    useEffect(() => {
-        // 上下window都监听delete按键，对当前元素进行删除处理
-        const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
-            .contentWindow;
-        // 第一个key为Ctrl，第二个key为c
-        let keyCodes: (number | undefined)[] = [];
-        const fn = (key: any) => {
-            if ((key.keyCode === 17 || key.keyCode === 91) && (keyCodes[0] !== 17 && keyCodes[0] !== 91)) {
-                // 设置第一个键为17
-                keyCodes[0] = key.keyCode;
-                keyCodes[1] = undefined;
-            }
-
-            if (
-                key.keyCode === 67 && // 按键c
-                (keyCodes[0] === 17 || keyCodes[0] === 91) && // 第一个按键没被设置为ctrl
-                keyCodes[1] !== 67 && // 第二个按键没被设置为c
-                !showCopyedModal
-            ) {
-                // 设置第二个键为67
-                keyCodes[1] = 67;
-            }
-            // 触发复制窗口
-            if (keyCodes?.join('') === '1767' || keyCodes?.join('') === '9167') {
-                beforCopyModule();
-                keyCodes = [];
-            }
-        };
-        if (win) {
-            win.addEventListener('keydown', fn, true);
-        }
-        window.addEventListener('keydown', fn, true);
-        return () => {
-            window.removeEventListener('keydown', fn, true);
-            if (win) {
-                win.removeEventListener('keydown', fn, true);
-            }
-        };
-    }, [beforCopyModule, showCopyedModal]);
+    useKeyDown(beforCopyModule, [17, 67])
+    useKeyDown(beforCopyModule, [91, 67])
 
     // 确认复制模块
     useKeyDown(() => {
