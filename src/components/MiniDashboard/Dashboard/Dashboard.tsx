@@ -130,11 +130,12 @@ const Dashboard: React.FC<Props> = () => {
     
     // 模块删除快捷键
     // key deletd
-    useKeyDown(() => {
+    useKeyDown((key) => {
+        console.log(key.key)
         if(!isDeleteComp){
             confirmModal();
         }
-    }, 46);
+    }, 46, 'Backspace');
     // key command + backspace
     useKeyDown((key) => {
         if(!isDeleteComp){
