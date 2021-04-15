@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from './Dashboard.module.less';
-import { Menu, Select, Tooltip, Modal } from 'antd';
+import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
 import {
     CodeOutlined,
+    CopyOutlined,
     DeleteOutlined,
-    ExclamationCircleOutlined,
     FormatPainterOutlined,
     ToolOutlined,
 } from '@ant-design/icons';
@@ -15,11 +15,18 @@ import { RootState, Dispatch } from '~/redux/store';
 import StyleController from '../StyleController';
 import usePostMessage from '~/hooks/usePostMessage';
 import CodeEditor from '../CodeEditor';
+import { v4 as uuidv4 } from 'uuid';
+import cloneDeep from 'lodash/cloneDeep';
 
 const { confirm } = Modal;
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
+    // 复制模块
+    const [showCopyedModal, setShowCopyedModal] = useState(false);
+    // 复制模块名称
+    const [newModalName, setNewModalName] = useState<string>();
+
     // appdata
     const appData = useSelector((state: RootState) => state.appData);
 
@@ -34,6 +41,7 @@ const Dashboard: React.FC<Props> = () => {
 
     const updateActivationItem = useDispatch<Dispatch>().activationItem
         .updateActivationItem;
+    const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
     const removeActivationItem = useDispatch<Dispatch>().activationItem
         .removeActivationItem;
 
@@ -71,6 +79,7 @@ const Dashboard: React.FC<Props> = () => {
         [activationItem.moduleId, appData, sendMessage, updateActivationItem]
     );
 
+    // =====================================模块删除=======================================//
     const delModule = useCallback(() => {
         const optAppData = reject([...appData], { moduleId });
         const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
@@ -111,123 +120,252 @@ const Dashboard: React.FC<Props> = () => {
         [delModule, confirm]
     );
 
+    // 模块删除
     useEffect(() => {
-      // 上下window都监听delete按键，对当前元素进行删除处理
-      const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
-          .contentWindow;
-      const fn = (key: any) => {
-          if (key.keyCode === 46) {
-            confirmModal();
-          }
-      };
-      if (win) {
-          win.addEventListener('keydown', fn, true);
-      }
-      window.addEventListener('keydown', fn, true);
-      return () => {
-          window.removeEventListener('keydown', fn, true);
-          if (win) {
-              win.removeEventListener('keydown', fn, true);
-          }
-      };
-  }, [confirmModal]);
+        // 上下window都监听delete按键，对当前元素进行删除处理
+        const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
+            .contentWindow;
+        const fn = (key: any) => {
+            if (key.keyCode === 46) {
+                confirmModal();
+            }
+        };
+        if (win) {
+            win.addEventListener('keydown', fn, true);
+        }
+        window.addEventListener('keydown', fn, true);
+        return () => {
+            window.removeEventListener('keydown', fn, true);
+            if (win) {
+                win.removeEventListener('keydown', fn, true);
+            }
+        };
+    }, [confirmModal]);
+
+    // =====================================模块复制=======================================//
+    // copyData
+    const beforCopyModule = useCallback(() => {
+        setShowCopyedModal(true);
+    }, [setShowCopyedModal]);
+
+    // 初始化或，取消复制弹窗
+    const initCopyModule = useCallback(() => {
+        setShowCopyedModal(false);
+        setNewModalName(undefined);
+    }, []);
+
+    // 方法，复制当前选中的组件
+    const copyModule = useCallback(() => {
+        // 准备创建
+        const oprateActivationItem = cloneDeep(activationItem);
+        const copyAppData = cloneDeep(appData);
+        const moduleId = uuidv4();
+        oprateActivationItem.moduleId = moduleId;
+        oprateActivationItem.layout!.i = moduleId;
+        oprateActivationItem.moduleName =
+            newModalName || `${activationItem.moduleName} 拷贝`;
+        // 模块位置
+        if (copyAppData.length > 1) {
+            copyAppData.sort((a, b) => (b.layout?.y || 0) - (a.layout?.y || 0));
+        }
+        const layoutY = copyAppData[0].layout?.y || 0;
+        const layoutH = copyAppData[0].layout?.h || 0;
+        oprateActivationItem.layout!.y = layoutY + layoutH;
+        // 复制模块,更新当前模块到全局并设为当前被选择模块
+        updateAppData([...appData, oprateActivationItem]);
+        updateActivationItem(oprateActivationItem);
+        // 初始化复制窗口
+        initCopyModule();
+    }, [activationItem, appData, updateAppData, updateActivationItem]);
+
+    // 处理键盘事件
+    // 模拟模块复制
+    useEffect(() => {
+        // 上下window都监听delete按键，对当前元素进行删除处理
+        const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
+            .contentWindow;
+        // 第一个key为Ctrl，第二个key为c
+        let keyCodes: (number | undefined)[] = [];
+        const fn = (key: any) => {
+            
+            if (key.keyCode === 17 && keyCodes[0] !== 17) {
+                // 设置第一个键为17
+                keyCodes[0] = 17;
+                keyCodes[1] = undefined;
+            }
+
+            if (
+                key.keyCode === 67 && // 按键c
+                keyCodes[0] === 17 && // 第一个按键没被设置为ctrl
+                keyCodes[1] !== 67 && // 第二个按键没被设置为c
+                !showCopyedModal
+            ) {
+                // 设置第二个键为67
+                keyCodes[1] = 67;
+            }
+            // 触发复制窗口
+            if (keyCodes?.join('') === '1767') {
+                beforCopyModule();
+                keyCodes = [];
+            }
+        };
+        if (win) {
+            win.addEventListener('keydown', fn, true);
+        }
+        window.addEventListener('keydown', fn, true);
+        return () => {
+            window.removeEventListener('keydown', fn, true);
+            if (win) {
+                win.removeEventListener('keydown', fn, true);
+            }
+        };
+    }, [beforCopyModule]);
 
     return (
-        <div
-            className={s.root}
-            style={{ height: `${window.innerHeight - 80}px` }}
-        >
-            <div className={s.headtab}>
-                <div className={s.moduleselect}>
-                    <Select
-                        onChange={onChangeSelect}
-                        className={s.select}
-                        value={moduleId}
-                        showSearch
-                        placeholder="请选择编辑模块"
-                        optionFilterProp="children"
-                        filterOption={
-                            (input, option) => {
-                                const str = option?.children
-                                    .join('')
-                                    .toLowerCase();
-                                if (str.indexOf(input) !== -1) {
-                                    return true;
+        <>
+            <div
+                className={s.root}
+                style={{ height: `${window.innerHeight - 80}px` }}
+            >
+                <div className={s.headtab}>
+                    <div className={s.moduleselect}>
+                        <Select
+                            onChange={onChangeSelect}
+                            className={s.select}
+                            value={moduleId}
+                            showSearch
+                            placeholder="请选择编辑模块"
+                            optionFilterProp="children"
+                            filterOption={
+                                (input, option) => {
+                                    const str = option?.children
+                                        .join('')
+                                        .toLowerCase();
+                                    if (str.indexOf(input) !== -1) {
+                                        return true;
+                                    }
+                                    return false;
                                 }
-                                return false;
+                                // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
-                            // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
-                    >
-                        {appData.map((item) => (
-                            <Select.Option
-                                value={item.moduleId}
-                                key={item.moduleId}
-                            >
-                                {item.moduleName || '(未标题)'}-{item.type}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </div>
+                        >
+                            {appData.map((item) => (
+                                <Select.Option
+                                    value={item.moduleId}
+                                    key={item.moduleId}
+                                >
+                                    {item.moduleName || '(未标题)'}-{item.type}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </div>
 
-                <Menu
-                    onClick={() => setMainTag('style')}
-                    onSelect={onSelectMainTag}
-                    selectedKeys={[mainTag]}
-                    mode="horizontal"
-                    className={s.contentmenu}
+                    <Menu
+                        onClick={() => setMainTag('style')}
+                        onSelect={onSelectMainTag}
+                        selectedKeys={[mainTag]}
+                        mode="horizontal"
+                        className={s.contentmenu}
+                    >
+                        <Menu.Item key="style" icon={<FormatPainterOutlined />}>
+                            样式
+                        </Menu.Item>
+                        <Menu.Item key="config" icon={<ToolOutlined />}>
+                            设置
+                        </Menu.Item>
+                        <Menu.Item key="code" icon={<CodeOutlined />}>
+                            code
+                        </Menu.Item>
+                    </Menu>
+                    <div className={s.info}>
+                        <Tooltip
+                            placement="bottomRight"
+                            title={
+                                <div className={s.tips}>
+                                    <h3>复制为新模块</h3>
+                                    当前模块信息
+                                    <br />
+                                    模块：{activationItem.moduleName}
+                                    <br />
+                                    类型：{activationItem.type}
+                                    <br />
+                                    Id：{activationItem.moduleId}
+                                </div>
+                            }
+                        >
+                            <CopyOutlined
+                                alt="复制微信新块"
+                                onClick={beforCopyModule}
+                            />
+                        </Tooltip>
+                    </div>
+                    <div>
+                        <Tooltip
+                            title={`删除 ${
+                                activationItem.moduleName ||
+                                activationItem.moduleId
+                            }`}
+                        >
+                            <DeleteOutlined
+                                className={s.delete}
+                                onClick={confirmModal}
+                            />
+                        </Tooltip>
+                    </div>
+                </div>
+                <div
+                    className={s.controllerwrap}
+                    style={{ display: mainTag === 'style' ? 'block' : 'none' }}
                 >
-                    <Menu.Item key="style" icon={<FormatPainterOutlined />}>
-                        样式
-                    </Menu.Item>
-                    <Menu.Item key="config" icon={<ToolOutlined />}>
-                        设置
-                    </Menu.Item>
-                    <Menu.Item key="code" icon={<CodeOutlined />}>
-                        code
-                    </Menu.Item>
-                </Menu>
-                <div className={s.info}>
-                    <Tooltip
-                        title={
-                            <div>
-                                moduleId: <br />
-                                {activationItem.moduleId}
-                            </div>
-                        }
-                    >
-                        <ExclamationCircleOutlined />
-                    </Tooltip>
+                    <StyleController />
                 </div>
-                <div>
-                    <Tooltip
-                        title={`删除 ${
-                            activationItem.moduleName || activationItem.moduleId
-                        }`}
-                    >
-                        <DeleteOutlined className={s.delete} onClick={confirmModal} />
-                    </Tooltip>
+                <div
+                    className={s.controllerwrap}
+                    style={{ display: mainTag === 'config' ? 'block' : 'none' }}
+                >
+                    <ConfigurationController />
+                </div>
+                <div
+                    className={s.controllerwrap}
+                    style={{ display: mainTag === 'code' ? 'block' : 'none' }}
+                >
+                    <CodeEditor />
                 </div>
             </div>
-            <div
-                className={s.controllerwrap}
-                style={{ display: mainTag === 'style' ? 'block' : 'none' }}
+            <Modal
+                title={`复制${activationItem?.moduleName || ''}(${
+                    activationItem?.type || ''
+                })模块`}
+                visible={!!showCopyedModal}
+                footer={null}
+                onCancel={initCopyModule}
             >
-                <StyleController />
-            </div>
-            <div
-                className={s.controllerwrap}
-                style={{ display: mainTag === 'config' ? 'block' : 'none' }}
-            >
-                <ConfigurationController />
-            </div>
-            <div
-                className={s.controllerwrap}
-                style={{ display: mainTag === 'code' ? 'block' : 'none' }}
-            >
-                <CodeEditor />
-            </div>
-        </div>
+                <Row gutter={[16, 16]}>
+                    <Col span={3}></Col>
+                    <Col span={15}>
+                        <Input
+                            type="text"
+                            value={
+                                newModalName ||
+                                `${activationItem.moduleName} 拷贝`
+                            }
+                            onChange={(e) =>
+                                setNewModalName(e.target.value || undefined)
+                            }
+                            placeholder={`请输入${
+                                activationItem?.type || ''
+                            }模块的别名`}
+                        />
+                    </Col>
+                    <Col span={6}>
+                        <Button type="primary" onClick={copyModule}>
+                            确定
+                        </Button>
+                    </Col>
+                </Row>
+                <br />
+            </Modal>
+        </>
     );
 };
 
