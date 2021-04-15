@@ -55,14 +55,7 @@ const Codeeditor: React.FC<Props> = () => {
     } catch (e) {
       return;
     }
-  }, [
-    appData,
-    dispatch.activationItem,
-    dispatch.appData,
-    dispatch.controller,
-    jsonData,
-    setLocalStorage,
-  ]);
+  }, [activationItem.moduleId, appData, dispatch.activationItem, dispatch.appData, dispatch.controller, setLocalStorage]);
 
   useEffect(() => {
     if (container.current && jsonData) {
