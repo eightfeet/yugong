@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+// 兼容数据
 const defaultKeys = {
   backspace: 8,
   tab: 9,
@@ -102,9 +103,15 @@ const defaultKeys = {
   singlequote: 222,
 };
 
+/**
+ *
+ *
+ * @param {(key: KeyboardEvent) => void} callback 回调
+ * @param {string} [key] 按键
+ * @param {("altKey" | "ctrlKey" | "shiftKey" | "metaKey")} [firstKey] 前置按键
+ */
 const useKeyDown = (
   callback: (key: KeyboardEvent) => void,
-  keyCode: number | number[],
   key?: string,
   firstKey?: "altKey" | "ctrlKey" | "shiftKey" | "metaKey",
 ) => {
@@ -119,37 +126,24 @@ const useKeyDown = (
 
     // 处理方法
     const fn = (event: KeyboardEvent) => {
-      console.log(event.key, event.keyCode)
       if (!(callback instanceof Function)) { // 没有回调方法直接返回
         return;
-      }
-
-      if (event.defaultPrevented) {
-        return; // Should do nothing if the default action has been cancelled
       }
 
       if (firstKey && !event[firstKey]) { // 需要首选参数但无触发首选参数时直接return
         return
       };
 
-      let handled: boolean = false;
       if (event.key !== undefined) { // 确认key值
         // Handle the event with KeyboardEvent.key and set handled true.
         if (event.key === key) { // 确认key值
           callback(event);
-          handled = true;
         }
       } else if (event.keyCode !== undefined) {
         // Handle the event with KeyboardEvent.keyCode and set handled true.
         if (key && event.keyCode === defaultKeys[`${key}`.toLowerCase()]) { // 确认key值
           callback(event);
-          handled = true;
         }
-      }
-
-      if (handled) {
-        // Suppress "double action" if event handled
-        event.preventDefault();
       }
     };
 
@@ -163,7 +157,7 @@ const useKeyDown = (
         win.removeEventListener("keydown", fn, true);
       }
     };
-  }, [callback, firstKey, key, keyCode]);
+  }, [callback, firstKey, key]);
 };
 
 export default useKeyDown;

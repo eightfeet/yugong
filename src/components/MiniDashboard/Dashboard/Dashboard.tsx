@@ -130,24 +130,12 @@ const Dashboard: React.FC<Props> = () => {
     
     // 模块删除快捷键
     // key deletd
-    useKeyDown((key) => {
-        console.log(key.key)
+    useKeyDown((event) => {
         if(!isDeleteComp){
+            event.preventDefault();
             confirmModal();
         }
-    }, 46, 'Backspace');
-    // key command + backspace
-    useKeyDown((key) => {
-        if(!isDeleteComp){
-            confirmModal();
-        }
-    }, [91, 8]);
-    // key control + backspace
-    useKeyDown(() => {
-        if(!isDeleteComp){
-            confirmModal();
-        }
-    }, [17, 8]);
+    }, 'Delete');
 
     // =====================================模块复制=======================================//
     // copyData
@@ -188,15 +176,15 @@ const Dashboard: React.FC<Props> = () => {
 
     // 处理键盘事件
     // 模拟模块复制
-    useKeyDown(beforCopyModule, [17, 67])
-    useKeyDown(beforCopyModule, [91, 67])
+    useKeyDown(beforCopyModule, 'c', 'ctrlKey')
 
-    // 确认复制模块
-    useKeyDown(() => {
+    // // 确认复制模块
+    useKeyDown((event) => {
         if (showCopyedModal) {
+            event.preventDefault();
             copyModule();
         }
-    }, 13)
+    }, 'Enter')
 
     return (
         <>

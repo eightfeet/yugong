@@ -22,7 +22,7 @@ interface ModalTypeIcon extends ModalType {
 
 const Repository: React.FC = () => {
   const [pisition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [addedModal, setAddedModal] = useState<ModalType>();
+  const [addedModal, setAddedModal] = useState<ModalType | undefined>();
   const [newModalName, setNewModalName] = useState<string>();
   const appData = useSelector((state: RootState) => state.appData);
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
@@ -95,19 +95,20 @@ const Repository: React.FC = () => {
         type: moduleType,
       };
       onAddItem(result);
+      setAddedModal(undefined);
+      setNewModalName(undefined);
     },
-    [appData, onAddItem]
+    [appData, onAddItem, setAddedModal, setNewModalName]
   );
 
-  const onCreate = useCallback(() => {
-    setAddedModal(undefined);
-    setNewModalName(undefined);
+  const onCreate = useCallback((event) => {
     if (addedModal?.moduleName) {
+      event.preventDefault();
       createModal(addedModal?.moduleName, newModalName || "未命名");
     }
   }, [addedModal?.moduleName, createModal, newModalName]);
 
-  useKeyDown(onCreate, 13)
+  // useKeyDown(onCreate, 'Enter')
 
   return (
     <>
