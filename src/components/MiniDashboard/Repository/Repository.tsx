@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from "~/types/appData";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
-import usePostMessage from "~/hooks/usePostMessage";
 import s from "./Repository.module.less";
 import useKeyDown from "~/hooks/useKeyDown";
 
@@ -26,8 +25,6 @@ const Repository: React.FC = () => {
   const [newModalName, setNewModalName] = useState<string>();
   const appData = useSelector((state: RootState) => state.appData);
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
-
-  const sendMessage = usePostMessage((data) => {});
 
   const onStopDrag = useCallback(
     (module: ModalType) => (e: any) => {
@@ -50,13 +47,8 @@ const Repository: React.FC = () => {
       // Add a new item. It must have a unique key!
       const optAppData = [...appData];
       updateAppData(optAppData.concat(data));
-      const win = (document.getElementById("wrapiframe") as HTMLIFrameElement)
-        .contentWindow;
-      if (win) {
-        sendMessage({ tag: "updateAppData", value: optAppData }, win);
-      }
     },
-    [appData, sendMessage, updateAppData]
+    [appData, updateAppData]
   );
 
   const createModal = useCallback(
@@ -98,7 +90,7 @@ const Repository: React.FC = () => {
       setAddedModal(undefined);
       setNewModalName(undefined);
     },
-    [appData, onAddItem, setAddedModal, setNewModalName]
+    [appData, onAddItem]
   );
 
   const onCreate = useCallback((event) => {
@@ -108,7 +100,7 @@ const Repository: React.FC = () => {
     }
   }, [addedModal?.moduleName, createModal, newModalName]);
 
-  // useKeyDown(onCreate, 'Enter')
+  useKeyDown(onCreate, 'Enter');
 
   return (
     <>
