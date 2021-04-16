@@ -268,7 +268,7 @@ const Pagesetting: React.FC<Props> = () => {
               />
             </Col>
             <Col className={s.info} span={1}>
-              <Tooltip title={<div>屏幕栅格列数(默认12列)</div>}>
+              <Tooltip title={<div>屏幕栅格列数&gt;0 (默认12列)</div>}>
                 <InfoCircleOutlined />
               </Tooltip>
             </Col>
@@ -286,7 +286,7 @@ const Pagesetting: React.FC<Props> = () => {
             <Col className={s.info} span={1}>
               <Tooltip
                 title={
-                  <div>屏幕栅格行高(默认20px)，可使用运行时window计算高度</div>
+                  <div>屏幕栅格行高&gt;0(默认20px)，可使用运行时window计算高度</div>
                 }
               >
                 <InfoCircleOutlined />

@@ -79,13 +79,16 @@ const App: Modules<Props> = () => {
     };
   }, [eventEmitter, onMount, onUnmount]);
   if (!eventEmitter) return null;
+  const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
+  const cols = parseInt(getResult(`${pageData.cols}`));
+  const space = parseInt(getResult(`${pageData.space}`));
   return (
     <AppLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
-      rowHeight={parseInt(getResult(`${pageData.rowHeight}`)) || GRID_DEFAULT_ROWHEIGHT}
-      cols={parseInt(getResult(`${pageData.cols}`)) || GRID_DEFAULT_COLS}
-      space={parseInt(getResult(`${pageData.space}`)) || GRID_DEFAULT_SPACE}
+      rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
+      cols={cols >= 0 ? cols : GRID_DEFAULT_COLS}
+      space={space >= 0 ? space : GRID_DEFAULT_SPACE}
     />
   );
 };
