@@ -176,7 +176,7 @@ const Dashboard: React.FC<Props> = () => {
 
     // 处理键盘事件
     // 模拟模块复制
-    useKeyDown(beforCopyModule, 'c', 'ctrlKey')
+    useKeyDown(beforCopyModule, 'c', 'ctrlKey');
 
     // // 确认复制模块
     useKeyDown((event) => {

@@ -93,7 +93,7 @@ const Color: React.FC<Props> = ({
         {displayColorPicker ? (
           <div className={s.popover}>
             <div className={s.cover} onClick={handleClose} />
-            <div className={s.wrap} style={pickWrapStyle} ref={picker}>
+            <div className={s.wrap} style={pickWrapStyle} ref={picker} onClick={e => e.stopPropagation()}>
               <SketchPicker
                 color={color || undefined}
                 width="250px"

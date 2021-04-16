@@ -24,9 +24,9 @@ const Button: Modules<ButtonProps> = (props) => {
   const [text, setText] = useState();
   const [disabled, setDisabled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [displayState, setDisplayState] = useState<string>();
 
   const userClass = useStyles(style);
-
   const defaultOptions = {
     isPreventDefault: false,
     delay: 2000,
@@ -49,10 +49,22 @@ const Button: Modules<ButtonProps> = (props) => {
     []
   );
 
+  // 设置按钮显示样式
+  const setButtonDisplay = useCallback(
+    (
+      state: ArgumentsString,
+    ) => {
+      const getState = getArgumentsItem(state);
+      setDisplayState(getState as string);
+    },
+    []
+  );
+
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
     eventEmitter.addEventListener("setButton", setButton);
-  }, [eventEmitter, setButton]);
+    eventEmitter.addEventListener("setButtonDisplay", setButtonDisplay);
+  }, [eventEmitter, setButton, setButtonDisplay]);
 
   // 点击事件
   const onClick = useCallback(async () => {
@@ -101,7 +113,12 @@ const Button: Modules<ButtonProps> = (props) => {
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           {...longPressEvent}
-          className={classNames(s.btn, userClass.button)}
+          className={classNames(s.btn, userClass.button, {
+            [userClass.disabled]: displayState === 'disabled', 
+            [userClass.focus]: displayState === 'focus', 
+            [userClass.active]: displayState === 'active', 
+            [userClass.hover]: displayState === 'hover'
+          })}
           disabled={disabled}
         >
           {text || "按钮"}
@@ -151,6 +168,17 @@ Button.exposeFunctions = [
       },
     ],
   },
+  {
+    name: "setButtonDisplay",
+    description: '设置按钮样式',
+    arguments: [{
+      type: "string",
+        name: "显示状态",
+        fieldName: "setButtonDisplay",
+        describe: "按钮显状态，disabled(禁用), focus: (获取焦点), active: (激活), hover: (经过)",
+        data: "",
+    }]
+  }
 ];
 
 /**

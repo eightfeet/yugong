@@ -119,7 +119,7 @@ const useKeyDown = (
   useEffect(() => {
     // 上下window都监听delete按键，对当前元素进行删除处理
     const win = (document.getElementById("wrapiframe") as HTMLIFrameElement)
-      .contentWindow;
+      ?.contentWindow;
 
     // 根据类型设置计较参数
     // let keyCodeData = keyCode;
