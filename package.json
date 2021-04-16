@@ -18,6 +18,7 @@
     "color-parse": "^1.4.2",
     "compressorjs": "^1.0.7",
     "dayjs": "^1.10.4",
+    "deep-equal": "^2.0.5",
     "extend": "^3.0.2",
     "html-react-parser": "^1.2.4",
     "iframe-resizer-react": "^1.1.0",
@@ -71,6 +72,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
+    "@types/deep-equal": "^1.0.1",
     "@types/extend": "^3.0.1",
     "@types/jsoneditor": "^8.6.0",
     "@types/lodash": "^4.14.168",
