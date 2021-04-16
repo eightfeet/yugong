@@ -11,7 +11,7 @@ interface Result {
  * @param wind 目标窗口
  * @param origin 域名默认当前
  */
-export const sendMessage = ({tag, value}: Result, wind: Window | null, origin = window.location.origin) => {
+export const sendMessage = ({tag, value}: Result, wind?: Window | null, origin = window.location.origin) => {
   if (wind) {
     wind.postMessage({tag, value}, origin);
   }
