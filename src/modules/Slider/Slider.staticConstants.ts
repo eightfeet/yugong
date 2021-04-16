@@ -91,7 +91,7 @@ const staticConstants: StaticConstants = {
   exposeEvents: [
     {
       name: "mount",
-      description: "挂载",
+      description: "初始化",
     },
     {
       name: "unmount",

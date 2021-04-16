@@ -52,7 +52,7 @@
             "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeEvents = [",
                 "\t{",
                     "\t\tname: 'mount',",
-                    "\t\tdescription: '挂载',",
+                    "\t\tdescription: "初始化",",
                 "\t},",
                 "\t{",
                     "\t\tname: 'unmount',",

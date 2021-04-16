@@ -326,7 +326,7 @@ Table.exposeFunctions = [
 Table.exposeEvents = [
   {
     name: "mount",
-    description: "挂载",
+    description: "初始化",
   },
   {
     name: "unmount",
@@ -390,7 +390,7 @@ Table.exposeDefaultProps = {
 Table.exposeApi = [
   {
     apiId: "mount",
-    name: "挂载",
+    name: "初始化",
   },
   {
     apiId: "pullUp",

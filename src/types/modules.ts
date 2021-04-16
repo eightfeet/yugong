@@ -96,7 +96,7 @@ interface Necessary<N, D> {
   description: D
 }
 
-export type ComExposeEvents = [Necessary<'mount', '挂载'>, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
+export type ComExposeEvents = [Necessary<'mount', "初始化">, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
 
 /**
  * 静态事件导出

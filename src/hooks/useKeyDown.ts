@@ -148,13 +148,13 @@ const useKeyDown = (
     };
 
     if (win) {
-      win.addEventListener("keydown", fn, true);
+      win?.addEventListener("keydown", fn, true);
     }
     window.addEventListener("keydown", fn, true);
     return () => {
       window.removeEventListener("keydown", fn, true);
       if (win) {
-        win.removeEventListener("keydown", fn, true);
+        win?.removeEventListener("keydown", fn, true);
       }
     };
   }, [callback, firstKey, key]);
