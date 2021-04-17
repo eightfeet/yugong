@@ -276,9 +276,7 @@ Button.exposeDefaultProps = {
     active: {},
     hover: {},
     before: {},
-    after: {},
-    actbefore: {},
-    actafter: {}
+    after: {}
   },
   styleDescription: {
     normal: "常态",
@@ -286,10 +284,8 @@ Button.exposeDefaultProps = {
     focus: "获取焦点",
     active: "激活",
     hover: "经过",
-    before: "常态前缀",
-    after: "常态后缀",
-    actbefore: "激活状态前缀",
-    actafter: "激活状态后缀"
+    before: "前缀",
+    after: "后缀"
   },
 };
 

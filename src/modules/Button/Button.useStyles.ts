@@ -16,13 +16,7 @@ const useStyles = createUseStyles<string, any>({
   },
   disabled: (style) => styleCompiler(style.disabled).style || {},
   focus: (style) => styleCompiler(style.focus).style || {},
-  active: (style) => {
-    return {
-      ...(styleCompiler(style.active).style || {}),
-      "&:before": styleCompiler(style.actbefore).style || {},
-      "&:after": styleCompiler(style.actafter).style || {},
-    }
-  },
+  active: (style) => styleCompiler(style.active).style || {},
   hover: (style) => styleCompiler(style.hover).style || {},
 });
 
