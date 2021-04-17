@@ -216,6 +216,7 @@ export interface DisplayTypesOfStyleItems {
   bottom?: number;
   margin?: any[];
   padding?: any[];
+  display?: string;
 }
 
 export interface BackgroundGradientTypesOfStyleItems {

@@ -3,28 +3,34 @@
 //
 
 .btn {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  &::before,
+  &::after {
+    content: "\00A0";
     display: inline-block;
-    width: 100%;
-    text-align: center;
     vertical-align: middle;
-    cursor: pointer;
-    border: none;
-    position: relative;
+    font-size: 0;
+  }
+  &:hover {
+    outline: 0;
+  }
 
-    &:hover {
-        outline: 0;
-    }
+  &:focus {
+    outline: 0;
+  }
 
-    &:focus {
-        outline: 0;
-    }
+  &:active {
+    outline: 0;
+  }
 
-    &:active {
-        outline: 0;
-    }
-
-    &:disabled {
-        pointer-events: none;
-    }
+  &:disabled {
+    pointer-events: none;
+  }
 }
