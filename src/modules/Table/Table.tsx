@@ -91,7 +91,6 @@ const Table: Modules<TableProps> = (props) => {
     ) => {
       
       const data = getArgumentsItem(dataSource);
-      console.log('data', data)
       setCopyDataSource(data);
       const concat = getArgumentsItem(isConcate);
       // 这里单独处理，定义列数据从原数据映射

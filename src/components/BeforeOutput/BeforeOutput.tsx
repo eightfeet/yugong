@@ -14,20 +14,15 @@ const Beforeoutput: React.FC<Props> = () => {
   const { getAppData } = useDispatch<Dispatch>().appData;
   const { getPageData } = useDispatch<Dispatch>().pageData;
 
-//   const pageData = useSelector((state: RootState) => state.pageData);
-
-const [pageData, setPageData] = useState<RootState['pageData']>()
+  const pageData = useSelector((state: RootState) => state.pageData);
   
   // 缓存
   const [appDataLocalStoreData] = useLocalStorage("appData", null);
   const [pageDataLocalStoreData] = useLocalStorage("pageData", null);
-
   const [isAppdataReady, setIsAppdataReady] = useState(false);
   const [isPagedataReady, setIsPagedataReady] = useState(false);
   const [isEventEmitterReady, setIsEventEmitterReady] = useState(false);
-
   const sendMessage = usePostMessage(() => {});
-
 
   // 创建全站事件处理器
   const eventEmitter = useMemo(() => {
@@ -56,7 +51,6 @@ const [pageData, setPageData] = useState<RootState['pageData']>()
   // 获取页面数据
   useMemo(() => {
     getPageData(pageDataLocalStoreData).then((res) => {
-      setPageData(res)
       setIsPagedataReady(true);
       sendMessage(
         {
@@ -68,6 +62,7 @@ const [pageData, setPageData] = useState<RootState['pageData']>()
     });
   }, [getPageData, pageDataLocalStoreData, sendMessage]);
 
+  // 底层数据将完全准备就绪，再放行App！
   if (!isAppdataReady || !isPagedataReady || !isEventEmitterReady || !pageData) {
     return null;
   }

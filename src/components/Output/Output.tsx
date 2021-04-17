@@ -13,19 +13,26 @@ import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import "./Output.less";
-import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE, ROOT_FONTSIZE } from "~/core/constants";
+import {
+  GRID_DEFAULT_COLS,
+  GRID_DEFAULT_ROWHEIGHT,
+  GRID_DEFAULT_SPACE,
+  ROOT_FONTSIZE,
+} from "~/core/constants";
 
 interface Props {
   eventEmitter: EventEmitter;
-  pageData: RootState['pageData']
+  pageData: RootState["pageData"];
 }
 
-const Output: Modules<Props> = ({eventEmitter, pageData}) => {
+const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
   // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
-  const rootFontsize = useSelector((state: RootState) => state.controller.bestFont) || ROOT_FONTSIZE;
+  const rootFontsize =
+    useSelector((state: RootState) => state.controller.bestFont) ||
+    ROOT_FONTSIZE;
   const [isMount, setIsMount] = useState(false);
   // 设置基准rem单位
-  useRem()
+  useRem();
 
   // 设置页面标题
   useEffect(() => {
@@ -33,30 +40,29 @@ const Output: Modules<Props> = ({eventEmitter, pageData}) => {
   }, [pageData.pageTitle]);
 
   const onMount = useCallback(async () => {
-    // 1、api处理
-    // 检查是不是http-url
-    const apiArguments = pageData.onLoadApi?.filter(item => (isUrl(item.url || '') && !!item.method));
-    console.log('准备')
-    // 事先准备数据。
-    if (apiArguments?.length) {
-        apiArguments.forEach(async item => {
-          const res = await requester(item);
-          console.log('res', res)
-        })
-    }
-    // 2、事件处理，等待组件和eventEmitter准备
-    const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
-    await eventEmitter.emit(emitList); 
+    // 1、api处理 检查是不是http-url
+    const apiArguments = pageData.onLoadApi?.filter(
+      (item) => isUrl(item.url || "") && !!item.method
+    );
 
-    setTimeout(() => {
-      setIsMount(true);
-    }, 1000);
-      
-      
+    // 2、事先准备数据。
+    if (apiArguments?.length) {
+      for (let index = 0; index < apiArguments.length; index++) {
+        const item = apiArguments[index];
+        await requester(item);
+      }
+    }
+
+    // 3、事件处理，等待组件和eventEmitter准备
+    const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
+    await eventEmitter.emit(emitList);
+
+    // 4、准备就绪
+    setIsMount(true);
   }, [eventEmitter, pageData.mountEnvents, pageData.onLoadApi]);
 
   const onUnmount = useCallback(() => {
-    // 1、事件处理
+    // 事件处理
     const emitList: EventsTypeItem[] = pageData.unmountEnvents || [];
     eventEmitter.emit(emitList);
   }, [eventEmitter, pageData.unmountEnvents]);
@@ -70,7 +76,7 @@ const Output: Modules<Props> = ({eventEmitter, pageData}) => {
     if (eventEmitter) {
       onMount();
     }
-  }, [eventEmitter, onMount])
+  }, [eventEmitter, onMount]);
 
   useEffect(() => {
     return () => {
@@ -79,13 +85,16 @@ const Output: Modules<Props> = ({eventEmitter, pageData}) => {
       }
     };
   }, [eventEmitter, onUnmount]);
-  if (!eventEmitter) return null;
+
   const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
   const cols = parseInt(getResult(`${pageData.cols}`));
   const space = parseInt(getResult(`${pageData.space}`));
-  if (!isMount) {
-    return null
+
+  // 前置数据完全准备就绪，完成onload再放行App！
+  if (!isMount || !eventEmitter) {
+    return null;
   }
+
   return (
     <OutputLayout
       rootFontsize={rootFontsize}
