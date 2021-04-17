@@ -3,7 +3,6 @@ import styleCompiler from "~/compiler";
 
 const useStyles = createUseStyles<string, any>({
   button: (style) => {
-    console.log(333, styleCompiler(style.befores).style)
     return {
       ...(styleCompiler(style.normal).style || {}),
       "&:disabled": styleCompiler(style.disabled).style || {},

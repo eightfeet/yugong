@@ -104,6 +104,7 @@ const ArgumentsSetting: React.FC<Props> = ({
     (index: number) => (e: any) => {
       const result = [...argumentState];
       result[index].fieldName = e.target.value;
+      result[index].name = e.target.value;
       setArgumentState(result);
     },
     [argumentState]

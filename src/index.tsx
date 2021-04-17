@@ -3,12 +3,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import Output from "~/components/Output";
 import reportWebVitals from "~/reportWebVitals";
+import BeforeOutput from '~/components/BeforeOutput';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Output />
+    <BeforeOutput />
   </Provider>,
   document.getElementById("root")
 );

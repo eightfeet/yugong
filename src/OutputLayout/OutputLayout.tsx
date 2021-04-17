@@ -2,7 +2,7 @@
  * OutputLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import GridLayout, { Layout as LayoutDataType } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -59,8 +59,8 @@ const OutputLayout: React.FC<LayoutProps> = ({
     space,
     eventEmitter,
 }) => {
-    const { getAppData, updateAppData } = useDispatch<Dispatch>().appData;
-    const { updatePage, getPageData } = useDispatch<Dispatch>().pageData;
+    const { updateAppData } = useDispatch<Dispatch>().appData;
+    const { updatePage } = useDispatch<Dispatch>().pageData;
     const { setEditingId, setIsEditing } = useDispatch<Dispatch>().controller;
     const {removeActivationItem} = useDispatch<Dispatch>().activationItem;
 
@@ -71,11 +71,10 @@ const OutputLayout: React.FC<LayoutProps> = ({
 
     const ref = useRef(null);
     // 缓存
-    const [appDataLocalStoreData, setAppdataLocalStorage] = useLocalStorage(
+    const [, setAppdataLocalStorage] = useLocalStorage(
         'appData',
         null
     );
-    const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
 
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
@@ -100,33 +99,6 @@ const OutputLayout: React.FC<LayoutProps> = ({
                 break;
         }
     });
-
-    // 数据初始化，获取页面数据
-    useMemo(() => {
-        getAppData(appDataLocalStoreData).then((res) => {
-            // 获取数据后 发送一份到父级窗口作为编辑数据
-            sendMessage(
-                {
-                    tag: 'updateAppData',
-                    value: res,
-                },
-                window.top
-            );
-        });
-    }, [getAppData, appDataLocalStoreData, sendMessage]);
-
-    // 获取页面数据
-    useMemo(() => {
-        getPageData(pageDataLocalStoreData).then((res) => {
-            sendMessage(
-                {
-                    tag: 'updatePage',
-                    value: res,
-                },
-                window.top
-            );
-        });
-    }, [getPageData, pageDataLocalStoreData, sendMessage]);
 
     /**
      * 更新GridLine布局数据到appData
