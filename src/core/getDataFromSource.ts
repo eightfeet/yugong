@@ -12,7 +12,7 @@ import { AnyObjectType } from "~/types/appData";
  * @param {AnyObjectType} [dataSource] 数据源，默认runningTime
  * @return {string} 返回编译结果
  */
-export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType): string => {
+export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType): any => {
   if (typeof data !== "string") {
     return data || '';
   }
@@ -24,8 +24,9 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   const regexforceRT = /^\*\.+/;
 
   // 匹配运行时
-  let result = data;
+  let result: any = data;
   const ruleList = data.match(regexwrap);
+
   ruleList?.forEach((item) => {
     // 移除{{}}
     const key = item.replace(regexwrap, "$1");
@@ -54,7 +55,11 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
       }
     })
 
-    result = result.replace(item, `${value || ""}`);
+    if ( typeof value === 'number' || typeof value === 'string') {
+      result = result.replace(item, `${value || ""}`);
+    } else {
+      result = value;
+    }
   });
   return result;
 };

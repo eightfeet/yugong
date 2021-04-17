@@ -1,10 +1,10 @@
 /**
- * App入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
+ * Output入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
  */
 
 import { useCallback, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import AppLayout from "~/AppLayout";
+import OutputLayout from "~/OutputLayout";
 import EventEmitter from "~/core/EventEmitter";
 import requester from "~/core/fetch";
 import isUrl from "~/core/helper/isUrl";
@@ -12,12 +12,12 @@ import useRem from "~/hooks/useRem";
 import { RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
-import "./App.less";
+import "./Output.less";
 import { GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE, ROOT_FONTSIZE } from "~/core/constants";
 
 interface Props {}
 
-const App: Modules<Props> = () => {
+const Output: Modules<Props> = () => {
   const pageData = useSelector((state: RootState) => state.pageData);
   // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
   const rootFontsize = useSelector((state: RootState) => state.controller.bestFont) || ROOT_FONTSIZE;
@@ -49,12 +49,9 @@ const App: Modules<Props> = () => {
           await requester(item)
         })
     }
-
     // 2、事件处理，延迟一秒等待组件和eventEmitter准备
-    setTimeout(() => {
-      const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
+    const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
       eventEmitter.emit(emitList); 
-    }, 1000);
   }, [eventEmitter, pageData.mountEnvents, pageData.onLoadApi]);
 
   const onUnmount = useCallback(() => {
@@ -83,7 +80,7 @@ const App: Modules<Props> = () => {
   const cols = parseInt(getResult(`${pageData.cols}`));
   const space = parseInt(getResult(`${pageData.space}`));
   return (
-    <AppLayout
+    <OutputLayout
       rootFontsize={rootFontsize}
       eventEmitter={eventEmitter}
       rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
@@ -94,10 +91,10 @@ const App: Modules<Props> = () => {
 };
 
 // 全局Api
-App.exposeApi = [];
+Output.exposeApi = [];
 
 // 全局事件
-App.exposeEvents = [
+Output.exposeEvents = [
   {
     name: "mount",
     description: "初始化",
@@ -109,7 +106,7 @@ App.exposeEvents = [
 ];
 
 // 全局方法
-App.exposeFunctions = [
+Output.exposeFunctions = [
   {
     name: "fun1",
     description: "方法1",
@@ -131,4 +128,4 @@ App.exposeFunctions = [
   },
 ];
 
-export default App;
+export default Output;

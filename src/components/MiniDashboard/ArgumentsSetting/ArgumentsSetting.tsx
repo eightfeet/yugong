@@ -103,7 +103,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   const onChangeFieldName = useCallback(
     (index: number) => (e: any) => {
       const result = [...argumentState];
-      result[index].name = e.target.value;
+      result[index].fieldName = e.target.value;
       setArgumentState(result);
     },
     [argumentState]
@@ -220,9 +220,9 @@ const ArgumentsSetting: React.FC<Props> = ({
               title={
                 <div className={s.cardtitle}>
                   <div className={s.cardtitleinfo}>
-                    <span className={s.label}>名称：</span>
                     {!headerFlexible ? (
                       <>
+                        <span className={s.label}>名称：</span>
                         {item.name || initItem?.name || ""} &nbsp;
                         <Tooltip
                           title={item.describe || initItem?.describe || ""}
@@ -233,29 +233,32 @@ const ArgumentsSetting: React.FC<Props> = ({
                         </Tooltip>
                       </>
                     ) : (
-                      <Input
-                        className={s.title}
-                        value={item.name || initItem?.name || ""}
-                        placeholder="新增字段名称"
-                        onChange={onChangeFieldName(index)}
-                        suffix={
-                          <Tooltip
-                            title={
-                              <Input
-                                className={s.desc}
-                                placeholder="新增字段描述"
-                                value={item.describe}
-                                style={{ width: "200px" }}
-                                onChange={onChangeDescribe(index)}
+                      <>
+                        <span className={s.label}>字段：</span>
+                        <Input
+                          className={s.title}
+                          value={item.fieldName || initItem?.fieldName || ""}
+                          placeholder="限数字或字母"
+                          onChange={onChangeFieldName(index)}
+                          suffix={
+                            <Tooltip
+                              title={
+                                <Input
+                                  className={s.desc}
+                                  placeholder="新增字段描述"
+                                  value={item.describe}
+                                  style={{ width: "200px" }}
+                                  onChange={onChangeDescribe(index)}
+                                />
+                              }
+                            >
+                              <InfoCircleOutlined
+                                style={{ color: "rgba(0,0,0,.45)" }}
                               />
-                            }
-                          >
-                            <InfoCircleOutlined
-                              style={{ color: "rgba(0,0,0,.45)" }}
-                            />
-                          </Tooltip>
-                        }
-                      />
+                            </Tooltip>
+                          }
+                        />
+                      </>
                     )}
                     <span className={s.divide} />
                     <span className={s.label}>类型：</span>

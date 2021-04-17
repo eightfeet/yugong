@@ -1,12 +1,12 @@
 /**
- * AppLayout，应用端通过懒加按需加载模块以保证性能，
+ * OutputLayout，应用端通过懒加按需加载模块以保证性能，
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import GridLayout, { Layout as LayoutDataType } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import s from './AppLayout.module.scss';
+import s from './OutputLayout.module.scss';
 import GridLine from '~/components/GridLine';
 import Elements from '~/components/Elements';
 import classNames from 'classnames';
@@ -53,7 +53,7 @@ interface LayoutProps {
  * @param {LayoutProps} { isEditing, rowHeight, cols, width, height, data}
  * @return {*}
  */
-const AppLayout: React.FC<LayoutProps> = ({
+const OutputLayout: React.FC<LayoutProps> = ({
     rowHeight,
     cols,
     space,
@@ -254,4 +254,4 @@ const AppLayout: React.FC<LayoutProps> = ({
     );
 };
 
-export default AppLayout;
+export default OutputLayout;
