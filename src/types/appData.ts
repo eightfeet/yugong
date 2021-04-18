@@ -217,6 +217,7 @@ export interface DisplayTypesOfStyleItems {
   margin?: any[];
   padding?: any[];
   display?: string;
+  overflow?: string;
 }
 
 export interface BackgroundGradientTypesOfStyleItems {

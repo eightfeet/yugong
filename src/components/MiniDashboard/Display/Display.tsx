@@ -23,14 +23,14 @@ type ChangeType =
   | "right"
   | "top"
   | "bottom"
-  | "display";
+  | "display"
+  | "overflow";
 
 const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
   const [displayData, setDisplayData] = useState<DisplayTypesOfStyleItems>({});
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId
   );
-
   const {
     width,
     height,
@@ -43,6 +43,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     margin,
     padding,
     display,
+    overflow,
   } = displayData;
 
   useEffect(() => {
@@ -113,7 +114,12 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
         <Col span={12}>
-          
+          <Select
+            label="内容溢出"
+            value={overflow}
+            optionsData={{ visible: "显示", hidden: "修剪", scroll: '滚动', auto: "自动", '': "无"}}
+            onChange={onChangeDisplay("overflow")}
+          />
         </Col>
       </Row>
       <Row className={s.row}>
@@ -121,7 +127,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="定位"
             value={position}
-            optionsData={{ absolute: "绝对", relative: "相对", '': "无" }}
+            optionsData={{ absolute: "绝对", relative: "相对", fixed: "固定", '': "无" }}
             onChange={onChangeDisplay("position")}
           />
         </Col>
@@ -135,7 +141,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
       </Row>
-      {position === "absolute" ? (
+      {(position === "absolute" || position === "fixed") ? (
         <Row className={s.row}>
           <Col span={12}>
             <NumberInput
@@ -159,7 +165,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           </Col>
         </Row>
       ) : null}
-      {position === "absolute" ? (
+      {(position === "absolute" || position === "fixed") ? (
         <Row className={s.row}>
           <Col span={12}>
             <NumberInput

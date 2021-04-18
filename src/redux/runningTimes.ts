@@ -4,35 +4,17 @@ import queryString from 'query-string';
 
 const parsed = queryString.parse(window.location.search);
 const height = window.innerHeight;
-
-const mockTableData = [
-    {
-        name: 'Eightfeet',
-        age: '18',
-        height: '170',
-        weight: '70'
-    },
-    {
-        name: 'Mike',
-        age: '20',
-        height: '168',
-        weight: '57'
-    },
-    {
-        name: 'Jimm',
-        age: '24',
-        height: '170',
-        weight: '60'
-    }
-]
+const width = window.innerWidth;
 
 const windowHeight = {
     height,
-    half: Math.floor(height/2),
-    quarter: Math.floor(height/4), 
-    oneTenth: Math.floor(height/10), 
-    oneTwentieth: Math.floor(height/20), 
-    oneThirtieth: Math.floor(height/30),
+    half: height/2,
+    quarter: height/4, 
+    oneTenth: height/10, 
+    oneTwentieth: height/20, 
+    oneThirtieth: height/30,
+    oneFourtieth: height/40,
+    oneFiftieth: height/50,
 }
 
 interface RunningTimesItem {
@@ -46,7 +28,10 @@ export const runningTimes = createModel<RootModel>()({
     state: {
         search: parsed,
         windowHeight,
-        mockTableData,
+        unit: {
+            vw: width/100,
+            vh: height/100,
+        },
     } as {
         [keys: string]: RunningTimesItem;
     }, 

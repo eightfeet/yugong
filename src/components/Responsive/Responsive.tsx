@@ -53,10 +53,6 @@ const Responsive: React.FC<Props> = () => {
 
   const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
-  useEffect(() => {
-    // setIsEditing(true);
-  }, [setIsEditing]);
-
   const ref = useRef(null);
 
   const [iframeWidth, setIframeWidth] = useState(414);

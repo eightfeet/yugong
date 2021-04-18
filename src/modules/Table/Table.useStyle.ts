@@ -17,6 +17,10 @@ const useStyles = createUseStyles<string, any>({
     colevenlast = {},
     colodd = {},
     coleven = {},
+    thcoleven={},
+    thcolodd={},
+    thcoloddfirst={},
+    thcolevenlast={},
   }) => {
     return {
       // 表格
@@ -25,7 +29,15 @@ const useStyles = createUseStyles<string, any>({
       "& td": styleCompiler(td).style,
       "& thead": {
         // 页头
-        "& tr": styleCompiler(thead).style,
+        "& tr": {
+          ...styleCompiler(thead).style,
+          "& td, th": {
+            "&:nth-child(even)": styleCompiler(thcoleven).style,
+            "&:nth-child(odd)": styleCompiler(thcolodd).style,
+            "&:first-child": styleCompiler(thcoloddfirst).style,
+            "&:last-child": styleCompiler(thcolevenlast).style,
+          },
+        }
       },
       "& tbody": {
         ...styleCompiler(tbody).style,

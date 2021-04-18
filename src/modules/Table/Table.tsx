@@ -28,8 +28,10 @@ const Table: Modules<TableProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const userClass = useStyles(style);
   const [theadDataStatu, setTheadDataStatu] = useState<
-    (string | number | JSX.Element | JSX.Element[])[]
-  >([]);
+    {
+      width: any[]
+      data: (string | number | JSX.Element | JSX.Element[])[]
+    }>();
   const [tbodyDataStatu, setTbodyDataStatu] = useState<
     (
       | string
@@ -76,10 +78,10 @@ const Table: Modules<TableProps> = (props) => {
   )
 
   /**设置表格头部 */
-  const setTheadData = useCallback((args: ArgumentsArray) => {
-    const data = getArgumentsItem(args);
-    const result = Object.keys(data).map((key) => data[key]);
-    setTheadDataStatu(result);
+  const setTheadData = useCallback((argsName: ArgumentsArray, argWidth: ArgumentsArray) => {
+    const data = getArgumentsItem(argsName);
+    const width = getArgumentsItem(argWidth);
+    setTheadDataStatu({data: data as any[], width: width as any[]});
   }, []);
 
   /**设置表格数据 */
@@ -89,7 +91,6 @@ const Table: Modules<TableProps> = (props) => {
       isConcate: ArgumentsBoolean,
       rowMap: ArgumentsArray
     ) => {
-      
       const data = getArgumentsItem(dataSource);
       setCopyDataSource(data);
       const concat = getArgumentsItem(isConcate);
@@ -184,11 +185,11 @@ const Table: Modules<TableProps> = (props) => {
           onPullUp={onPullUp}
         >
           <table className={classNames(s.table, userClass.table)}>
-            {theadDataStatu.length ? (
+            {theadDataStatu?.data.length ? (
               <thead>
                 <tr>
-                  {theadDataStatu.map((item, index) => (
-                    <th key={index} scope="col">
+                  {theadDataStatu.data.map((item, index) => (
+                    <th key={index} scope="col" style={{width: theadDataStatu.width[index]}}>
                       {item}
                     </th>
                   ))}
@@ -255,6 +256,13 @@ Table.exposeFunctions = [
         name: "设置表头项",
         html: true,
         describe: "设置表头标题，每项代表一列",
+        data: [],
+      },
+      {
+        type: "array",
+        fieldName: "setTheadWidth",
+        name: "设置表头项宽度",
+        describe: "设置表头每列宽度，每项代表一列",
         data: [],
       },
     ],

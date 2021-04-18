@@ -89,8 +89,7 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
   const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
   const cols = parseInt(getResult(`${pageData.cols}`));
   const space = parseInt(getResult(`${pageData.space}`));
-
-  // 前置数据完全准备就绪，完成onload再放行App！
+  // 前置数据完全准备就绪再放行App
   if (!isMount || !eventEmitter) {
     return null;
   }

@@ -76,6 +76,13 @@ const OutputLayout: React.FC<LayoutProps> = ({
         null
     );
 
+    useEffect(() => {
+        const topLocation = window.top?.location;
+        if (topLocation.origin === window.origin && topLocation.pathname === '/dashboard') {
+            setIsEditing(true);
+        }   
+    }, [setIsEditing])
+
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
         const { tag, value } = data;
