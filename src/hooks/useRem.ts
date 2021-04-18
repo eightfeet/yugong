@@ -7,14 +7,14 @@ function useRem() {
   const setBestFont = useDispatch<Dispatch>().controller.setBestFont;
   const uiWidth = useSelector((state: RootState) => state.pageData.UIWidth);
   const uiFontSize = useSelector((state: RootState) => state.pageData.baseFont);
-  const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
+  const setRemSize = useDispatch<Dispatch>().runningTimes.setRemSize;
     
   const resizeFn = useCallback(() => {
     let clientWidth = document.documentElement.clientWidth;
     const fontSizeValue = (uiFontSize || 1) * (clientWidth / (uiWidth || 1));
     setBestFont(fontSizeValue);
-    setRunningTimes({baseFont: fontSizeValue})
-  }, [uiFontSize, uiWidth, setBestFont, setRunningTimes]);
+    setRemSize(fontSizeValue)
+  }, [uiFontSize, uiWidth, setBestFont, setRemSize]);
   
   useEffect(() => {
     resizeFn();

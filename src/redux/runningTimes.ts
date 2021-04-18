@@ -40,5 +40,8 @@ export const runningTimes = createModel<RootModel>()({
         setRunningTimes(state, payload: RunningTimesItem) {
             return { ...state, ...payload };
         },
+        setRemSize({unit, ...other}, payload: number) {
+            return {...other, unit:{...unit, rem: payload}}
+        }
     }
 });
