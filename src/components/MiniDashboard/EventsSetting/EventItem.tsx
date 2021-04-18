@@ -3,7 +3,7 @@ import { Col, Select } from "antd";
 import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import Api from "~/components/App";
+import Api from "~/components/Output";
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
 

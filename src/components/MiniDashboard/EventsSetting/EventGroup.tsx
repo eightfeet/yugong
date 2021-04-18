@@ -12,7 +12,7 @@ import { EventsTypeItem, ExposeEvents, ExposeFunctions } from '~/types/modules';
 import ArgumentsSetting from '../ArgumentsSetting';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
-import App from '~/components/App'
+import App from '~/components/Output'
 
 interface Props {
     curentEventInfomation: ExposeEvents;

@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from "antd";
 import React, { useCallback, useState } from "react";
-import Api from "~/components/App";
+import Api from '~/components/Output';
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
 import Background from "../Background";
