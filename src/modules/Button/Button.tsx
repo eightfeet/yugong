@@ -107,7 +107,7 @@ const Button: Modules<ButtonProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <Wrapper {...props} maxWidth>
+    <Wrapper {...props} maxWidth maxHeight>
       {!hidden ? (
         <button
           onClick={onClick}
