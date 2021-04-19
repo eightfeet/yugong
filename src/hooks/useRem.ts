@@ -11,7 +11,7 @@ function useRem() {
     
   const resizeFn = useCallback(() => {
     let clientWidth = document.documentElement.clientWidth;
-    const fontSizeValue = (uiFontSize || 1) * (clientWidth / (uiWidth || 1));
+    const fontSizeValue = (uiFontSize && uiWidth) ? (uiFontSize || 1) * (clientWidth / (uiWidth || 1)) : 16;
     setBestFont(fontSizeValue);
     setRemSize(fontSizeValue)
   }, [uiFontSize, uiWidth, setBestFont, setRemSize]);
