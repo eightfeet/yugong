@@ -3,8 +3,8 @@ import IconSlider from "./icons/IconSlider";
 import IconButton from "./icons/IconButton";
 import IconText from "./icons/IconText";
 import IconImage from './icons/IconImage';
-import IconTop10 from './icons/IconTop10';
 import IconTable from './icons/IconTable';
+import IconForm from './icons/IconForm';
 
 export const MODULES = [
   {
@@ -38,10 +38,10 @@ export const MODULES = [
     icon: <Icon component={IconSlider} />
   },
   {
-    moduleName: "Leaderboard",
-    title: "Leaderboard",
-    discribe: "排行榜",
-    icon: <Icon component={IconTop10} />
+    moduleName: "Form",
+    title: "Form",
+    discribe: "表单",
+    icon: <Icon component={IconForm} />
   },
 ];
 
