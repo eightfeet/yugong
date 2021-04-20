@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useForm } from "react-hook-form";
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
@@ -13,6 +14,10 @@ export interface FormProps extends AppDataElementsTypes {
 
 const Form:Modules<FormProps> = (props) => {
     const { eventEmitter, events = {}, api} = props;
+
+    const { register, handleSubmit, formState: {errors} } = useForm();
+    const onSubmit = (data: any) => console.log(errors, data);
+
     // API请求 注意依赖关系
     useEffect(() => {
         const apiArguments = api?.find(item => item.apiId === '');
@@ -28,11 +33,22 @@ const Form:Modules<FormProps> = (props) => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    
     return (
         <Wrapper {...props}>
              <div className={s.root}>
-                 表单
-             <br /><br /><br /><br /><br /><br />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                <input {...register("firstName", {required: "请输入姓名", pattern: /^[A-Za-z]+$/i, max: 11, })} />
+                <p>{errors.firstName?.message}</p>
+                <input {...register("lastName")} placeholder="Last name" />
+                <select {...register("category")}>
+                    <option value="">Select...</option>
+                    <option value="A">Category A</option>
+                    <option value="B">Category B</option>
+                </select>
+
+                <input type="submit" />
+                </form>
              </div>
         </Wrapper>
     )
