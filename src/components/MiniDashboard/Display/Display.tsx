@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Input } from "antd";
 import Select from "./../Select";
 import s from "./Display.module.scss";
 import NumberInput from "../NumberInput";
@@ -84,24 +84,50 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     <>
       <Row className={s.row}>
         <Col span={12}>
-          <NumberInput
+          {/* <NumberInput
             label="宽度"
             unit={unit}
             min={0}
             max={100000}
             value={width}
             onChange={onChangeDisplay("width")}
-          />
+          /> */}
+            <Row gutter={4} style={{alignItems: 'center'}}>
+              <Col style={{textAlign: 'right'}} span={10}>宽度</Col>
+              <Col span={10}>
+                <Input
+                  type="text"
+                  value={width}
+                  onChange={onChangeDisplay("width")}
+                />
+              </Col>
+              <Col span={4} className={s.unit}>
+                {isNaN(parseInt(`${width}`, 10)) ? "" : unit}
+              </Col>
+            </Row>
         </Col>
         <Col span={12}>
-          <NumberInput
+          {/* <NumberInput
             label="高度"
             unit={unit}
             min={0}
             max={100000}
             value={height}
             onChange={onChangeDisplay("height")}
-          />
+          /> */}
+          <Row gutter={4} style={{alignItems: 'center'}}>
+              <Col style={{textAlign: 'right'}} span={10}>高度</Col>
+              <Col span={10}>
+                <Input
+                  type="text"
+                  value={height}
+                  onChange={onChangeDisplay("height")}
+                />
+              </Col>
+              <Col span={4} className={s.unit}>
+                {isNaN(parseInt(`${height}`, 10)) ? "" : unit}
+              </Col>
+            </Row>
         </Col>
       </Row>
       <Row className={s.row}>
