@@ -6,6 +6,7 @@ import {
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
 } from '~/types/appData';
+import { compilePlaceholderFromDataSource } from '~/core/getDataFromSource';
 
 interface objType {
     [key: string]: any;
@@ -113,11 +114,25 @@ const conversionValue: (
 
 export const display = function (styleObj: objType): resultType {
     const result: objType = {};
+    const unit = store.getState().pageData.unit;
+    const runningTimes = store.getState().runningTimes;
     for (const key in styleObj) {
         if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
             const element = styleObj[key];
             let newKey = key;
-            if (key === 'margin' || key === 'padding') {
+            if (key === 'width' || key === 'height') {
+                const checkNumStep1 = Number(element);
+                if (checkNumStep1) {
+                    result[newKey] = `${checkNumStep1}${unit}`;
+                } else {
+                    let data = compilePlaceholderFromDataSource(element, runningTimes);
+                    const checkNumStep2 = Number(data);
+                    if (checkNumStep2) {
+                        result[newKey] = `${data}${unit}`;
+                    }
+                }
+                
+            } else if (key === 'margin' || key === 'padding') {
                 const data = element.map((el: any) => {
                     const val = parseInt(el, 10);
                     if (isNaN(val)) {

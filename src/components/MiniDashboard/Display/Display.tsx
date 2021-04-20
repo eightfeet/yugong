@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Input } from "antd";
+import { Row, Col, Input, Tooltip } from "antd";
 import Select from "./../Select";
 import s from "./Display.module.scss";
 import NumberInput from "../NumberInput";
@@ -7,6 +7,7 @@ import { DisplayTypesOfStyleItems } from "types/appData";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Spacing from "../Spacing";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 interface Props {
   onChange: (result: DisplayTypesOfStyleItems) => void;
@@ -52,7 +53,6 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
 
   const onChangeDisplay = useCallback(
     (type: ChangeType) => (data: any) => {
-      console.log(333, data)
       displayData[type] = data;
       if (type === "position" && data === "relative") {
         delete displayData.left;
@@ -63,6 +63,20 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       setDisplayData({ ...displayData });
       if (onChange instanceof Function) {
         onChange(displayData);
+      }
+    },
+    [displayData, onChange]
+  );
+
+  const onChangeWidthHeight = useCallback(
+    (type: ChangeType) => (e: any) => {
+      const oprateData = { ...displayData };
+      const data = e.target.value;
+      oprateData[type] = data;
+      console.log(type, oprateData);
+      setDisplayData(oprateData);
+      if (onChange instanceof Function) {
+        onChange(oprateData);
       }
     },
     [displayData, onChange]
@@ -92,19 +106,28 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             value={width}
             onChange={onChangeDisplay("width")}
           /> */}
-            <Row gutter={4} style={{alignItems: 'center'}}>
-              <Col style={{textAlign: 'right'}} span={10}>宽度</Col>
-              <Col span={10}>
-                <Input
-                  type="text"
-                  value={width}
-                  onChange={onChangeDisplay("width")}
-                />
-              </Col>
-              <Col span={4} className={s.unit}>
-                {isNaN(parseInt(`${width}`, 10)) ? "" : unit}
-              </Col>
-            </Row>
+          <Row gutter={4} style={{ alignItems: "center" }}>
+            <Col style={{ textAlign: "right" }} span={10}>
+              宽度
+            </Col>
+            <Col span={10}>
+              <Input
+                type="text"
+                value={width}
+                placeholder={`${unit}`}
+                onChange={onChangeWidthHeight("width")}
+              />
+            </Col>
+            <Col span={2} className={s.unit}>
+              <Tooltip placement="topRight" title={<div>宽度：允许输入数字(&gt;=0)或运行时变量</div>}>
+                {isNaN(parseInt(`${width}`, 10)) ? (
+                  <InfoCircleOutlined />
+                ) : (
+                  unit
+                )}
+              </Tooltip>
+            </Col>
+          </Row>
         </Col>
         <Col span={12}>
           {/* <NumberInput
@@ -115,19 +138,28 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             value={height}
             onChange={onChangeDisplay("height")}
           /> */}
-          <Row gutter={4} style={{alignItems: 'center'}}>
-              <Col style={{textAlign: 'right'}} span={10}>高度</Col>
-              <Col span={10}>
-                <Input
-                  type="text"
-                  value={height}
-                  onChange={onChangeDisplay("height")}
-                />
-              </Col>
-              <Col span={4} className={s.unit}>
-                {isNaN(parseInt(`${height}`, 10)) ? "" : unit}
-              </Col>
-            </Row>
+          <Row gutter={4} style={{ alignItems: "center" }}>
+            <Col style={{ textAlign: "right" }} span={10}>
+              高度
+            </Col>
+            <Col span={9}>
+              <Input
+                type="text"
+                placeholder={`${unit}`}
+                value={height}
+                onChange={onChangeWidthHeight("height")}
+              />
+            </Col>
+            <Col span={2} className={s.unit}>
+              <Tooltip placement="topRight" title={<div>高度：允许输入数字(&gt;=0)或运行时变量</div>}>
+                {isNaN(parseInt(`${height}`, 10)) ? (
+                  <InfoCircleOutlined />
+                ) : (
+                  unit
+                )}
+              </Tooltip>
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Row className={s.row}>
@@ -135,7 +167,13 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="显示类型"
             value={display}
-            optionsData={{ block: "块级元素", inline: "内联元素", 'inline-block': '行内块元素', none: "隐藏", '': "无"}}
+            optionsData={{
+              block: "块级元素",
+              inline: "内联元素",
+              "inline-block": "行内块元素",
+              none: "隐藏",
+              "": "无",
+            }}
             onChange={onChangeDisplay("display")}
           />
         </Col>
@@ -143,7 +181,13 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="内容溢出"
             value={overflow}
-            optionsData={{ visible: "显示", hidden: "修剪", scroll: '滚动', auto: "自动", '': "无"}}
+            optionsData={{
+              visible: "显示",
+              hidden: "修剪",
+              scroll: "滚动",
+              auto: "自动",
+              "": "无",
+            }}
             onChange={onChangeDisplay("overflow")}
           />
         </Col>
@@ -153,7 +197,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="定位"
             value={position}
-            optionsData={{ absolute: "绝对", relative: "相对", '': "无" }}
+            optionsData={{ absolute: "绝对", relative: "相对", "": "无" }}
             onChange={onChangeDisplay("position")}
           />
         </Col>
@@ -167,7 +211,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
       </Row>
-      {(position === "absolute" || position === "fixed") ? (
+      {position === "absolute" || position === "fixed" ? (
         <Row className={s.row}>
           <Col span={12}>
             <NumberInput
@@ -191,7 +235,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           </Col>
         </Row>
       ) : null}
-      {(position === "absolute" || position === "fixed") ? (
+      {position === "absolute" || position === "fixed" ? (
         <Row className={s.row}>
           <Col span={12}>
             <NumberInput
