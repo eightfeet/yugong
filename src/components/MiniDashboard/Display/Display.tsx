@@ -127,7 +127,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="定位"
             value={position}
-            optionsData={{ absolute: "绝对", relative: "相对", fixed: "固定", '': "无" }}
+            optionsData={{ absolute: "绝对", relative: "相对", '': "无" }}
             onChange={onChangeDisplay("position")}
           />
         </Col>

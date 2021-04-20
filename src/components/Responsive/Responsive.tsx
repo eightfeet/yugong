@@ -264,7 +264,7 @@ const Responsive: React.FC<Props> = () => {
                 width: "1px",
                 border: "none",
                 minWidth: "100%",
-                minHeight: `${window.innerHeight}px`,
+                minHeight: iframeHeight,
               }}
             />
           </div>
