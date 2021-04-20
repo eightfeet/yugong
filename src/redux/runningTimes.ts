@@ -6,7 +6,7 @@ const parsed = queryString.parse(window.location.search);
 const height = window.innerHeight;
 const width = window.innerWidth;
 
-const size = {
+const windowSize = {
     WH: height,
     WW: width,
     'WW/2': width/2,
@@ -31,7 +31,7 @@ interface RunningTimesItem {
 export const runningTimes = createModel<RootModel>()({
     state: {
         search: parsed,
-        size,
+        windowSize,
         unit: {
             vw: width/100,
             vh: height/100,

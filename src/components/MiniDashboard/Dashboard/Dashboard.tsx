@@ -3,6 +3,7 @@ import ConfigurationController from '~/components/MiniDashboard/ConfigurationCon
 import s from './Dashboard.module.less';
 import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
 import {
+    ClusterOutlined,
     CodeOutlined,
     CopyOutlined,
     DeleteOutlined,
@@ -18,6 +19,7 @@ import CodeEditor from '../CodeEditor';
 import { v4 as uuidv4 } from 'uuid';
 import cloneDeep from 'lodash/cloneDeep';
 import useKeyDown from '~/hooks/useKeyDown';
+import RunningTimesModal from '../RunningTimesModal';
 
 const { confirm } = Modal;
 interface Props {}
@@ -27,6 +29,9 @@ const Dashboard: React.FC<Props> = () => {
     const [showCopyedModal, setShowCopyedModal] = useState(false);
     // 复制模块名称
     const [newModalName, setNewModalName] = useState<string>();
+
+    const [showRunningTimes, setShowRunningTimes] = useState(false);
+    const runningTimes = useSelector((state: RootState) => state.runningTimes);
 
     // appdata
     const appData = useSelector((state: RootState) => state.appData);
@@ -245,6 +250,17 @@ const Dashboard: React.FC<Props> = () => {
                     <div className={s.info}>
                         <Tooltip
                             placement="bottomRight"
+                            title="查看全局发布变量"
+                        >
+                            <ClusterOutlined
+                                className={s.delete}
+                                onClick={() => setShowRunningTimes(true)}
+                            />
+                        </Tooltip>
+                    </div>
+                    <div className={s.info}>
+                        <Tooltip
+                            placement="bottomRight"
                             title={
                                 <div className={s.tips}>
                                     <h3>复制为新模块</h3>
@@ -266,6 +282,7 @@ const Dashboard: React.FC<Props> = () => {
                     </div>
                     <div>
                         <Tooltip
+                            placement="bottomRight"
                             title={`删除 ${
                                 activationItem.moduleName ||
                                 activationItem.moduleId
@@ -327,6 +344,11 @@ const Dashboard: React.FC<Props> = () => {
                 </Row>
                 <br />
             </Modal>
+            <RunningTimesModal
+                visible={showRunningTimes}
+                data={runningTimes}
+                onCancel={() => setShowRunningTimes(false)}
+            />
         </>
     );
 };

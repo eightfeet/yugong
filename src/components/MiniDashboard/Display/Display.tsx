@@ -110,7 +110,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             <Col style={{ textAlign: "right" }} span={10}>
               宽度
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <Input
                 type="text"
                 value={width}
@@ -119,7 +119,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
               />
             </Col>
             <Col span={2} className={s.unit}>
-              <Tooltip placement="topRight" title={<div>宽度：允许输入数字(&gt;=0)或运行时变量</div>}>
+              <Tooltip placement="topRight" title={<div>宽度：允许输入数字(&gt;=0)或全局变量</div>}>
                 {isNaN(parseInt(`${width}`, 10)) ? (
                   <InfoCircleOutlined />
                 ) : (
@@ -142,7 +142,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             <Col style={{ textAlign: "right" }} span={10}>
               高度
             </Col>
-            <Col span={9}>
+            <Col span={12}>
               <Input
                 type="text"
                 placeholder={`${unit}`}
@@ -151,7 +151,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
               />
             </Col>
             <Col span={2} className={s.unit}>
-              <Tooltip placement="topRight" title={<div>高度：允许输入数字(&gt;=0)或运行时变量</div>}>
+              <Tooltip placement="topRight" title={<div>高度：允许输入数字(&gt;=0)或全局变量</div>}>
                 {isNaN(parseInt(`${height}`, 10)) ? (
                   <InfoCircleOutlined />
                 ) : (
