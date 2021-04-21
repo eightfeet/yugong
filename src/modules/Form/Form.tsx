@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from 'react';
-import { useForm } from "react-hook-form";
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
@@ -12,17 +12,21 @@ export interface FormProps extends AppDataElementsTypes {
     eventEmitter: EventEmitter;
 }
 
-const Form:Modules<FormProps> = (props) => {
-    const { eventEmitter, events = {}, api} = props;
+const Form: Modules<FormProps> = (props) => {
+    const { eventEmitter, events = {}, api } = props;
 
-    const { register, handleSubmit, formState: {errors} } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
     const onSubmit = (data: any) => console.log(errors, data);
 
     // API请求 注意依赖关系
     useEffect(() => {
-        const apiArguments = api?.find(item => item.apiId === '');
+        const apiArguments = api?.find((item) => item.apiId === '');
         requester(apiArguments || {});
-    }, [api])
+    }, [api]);
     // 基本事件
     useEffect(() => {
         // 执行挂载事件
@@ -30,38 +34,42 @@ const Form:Modules<FormProps> = (props) => {
         return () => {
             // 执行卸载事件
             eventEmitter.emit(events.unmount);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <Wrapper {...props}>
-             <div className={s.root}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("firstName", {required: "请输入姓名", pattern: /^[A-Za-z]+$/i, max: 11, })} />
+            <form onSubmit={handleSubmit(onSubmit)} className={s.root}>
+                <input
+                    {...register('firstName', {
+                        required: '请输入姓名',
+                        pattern: /^[A-Za-z]+$/i,
+                        max: 11,
+                    })}
+                />
                 <p>{errors.firstName?.message}</p>
-                <input {...register("lastName")} placeholder="Last name" />
-                <select {...register("category")}>
+                <input {...register('lastName')} placeholder="Last name" />
+                <select {...register('category')}>
                     <option value="">Select...</option>
                     <option value="A">Category A</option>
                     <option value="B">Category B</option>
                 </select>
 
                 <input type="submit" />
-                </form>
-             </div>
+            </form>
         </Wrapper>
-    )
-}
+    );
+};
 
 /**
-* 注册方法的静态描述与默认参数定义
-*/
+ * 注册方法的静态描述与默认参数定义
+ */
 Form.exposeFunctions = [];
 
 /**
-* 发布事件的静态描述
-*/
+ * 发布事件的静态描述
+ */
 Form.exposeEvents = [
     {
         name: 'mount',
@@ -70,17 +78,17 @@ Form.exposeEvents = [
     {
         name: 'unmount',
         description: '卸载',
-    }
+    },
 ];
 
 /**
-* 发布默认porps
-*/
+ * 发布默认porps
+ */
 Form.exposeDefaultProps = {};
 
 /**
-* 发布默认Api
-*/
+ * 发布默认Api
+ */
 Form.exposeApi = [];
 
 export default Form;
