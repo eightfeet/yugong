@@ -1,5 +1,14 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
@@ -14,13 +23,6 @@ export interface FormProps extends AppDataElementsTypes {
 
 const Form: Modules<FormProps> = (props) => {
     const { eventEmitter, events = {}, api } = props;
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-    const onSubmit = (data: any) => console.log(errors, data);
 
     // API请求 注意依赖关系
     useEffect(() => {
@@ -38,26 +40,84 @@ const Form: Modules<FormProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const onSubmit = useCallback((data: any) => {
+        alert(JSON.stringify(data));
+    }, []);
+
+    const defaultValues = {
+        name: '2017-05-24',
+        description: '',
+    };
+
+    const schema = Yup.object().shape({
+        name: Yup.string()
+            .required('请输入年月日')
+            .min(3, '请输入姓名大于30个字符')
+            .max(64),
+        description: Yup.string().required('请输入描述'),
+    });
+
+    const { control, handleSubmit, formState } = useForm({
+        mode: 'onChange',
+        defaultValues,
+        resolver: yupResolver(schema),
+    });
+    const { errors } = formState;
+
     return (
         <Wrapper {...props}>
-            <form onSubmit={handleSubmit(onSubmit)} className={s.root}>
-                <input
-                    {...register('firstName', {
-                        required: '请输入姓名',
-                        pattern: /^[A-Za-z]+$/i,
-                        max: 11,
-                    })}
-                />
-                <p>{errors.firstName?.message}</p>
-                <input {...register('lastName')} placeholder="Last name" />
-                <select {...register('category')}>
-                    <option value="">Select...</option>
-                    <option value="A">Category A</option>
-                    <option value="B">Category B</option>
-                </select>
-
-                <input type="submit" />
-            </form>
+            <ScopedCssBaseline>
+                <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 24 }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Controller
+                                control={control}
+                                name="name"
+                                render={({ field }) => (
+                                    <TextField
+                                        fullWidth
+                                        id="date"
+                                        label="姓名"
+                                        type="date"
+                                        error={!!errors.name}
+                                        helperText={
+                                            errors.name &&
+                                            errors.name.message
+                                        }
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Controller
+                                render={({ field }) => (
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        label="描述"
+                                        margin="dense"
+                                        error={!!errors.description}
+                                        helperText={
+                                            errors.description &&
+                                            errors.description.message
+                                        }
+                                        {...field}
+                                    />
+                                )}
+                                control={control}
+                                name="description"
+                            />
+                        </Grid>
+                    </Grid>
+                    <button type="submit" disabled={!formState.isValid}>
+                        Submit
+                    </button>
+                </form>
+            </ScopedCssBaseline>
         </Wrapper>
     );
 };

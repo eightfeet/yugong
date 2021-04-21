@@ -2,9 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 interface FormProps {
-  defaultValues: any;
-  children: JSX.Element;
-  onSubmit: () => void;
+  defaultValues?: any;
+  children: JSX.Element | JSX.Element[];
+  onSubmit: (data: any) => void;
 }
 
 
@@ -34,7 +34,7 @@ const Form = ({ defaultValues, children, onSubmit }: FormProps) => {
 export default Form;
 
 
-export function Input(data: { [x: string]: any; register: any; name: any; }) {
+export function Input(data: { [x: string]: any; register?: any; name: any; }) {
   const { register, name, ...rest } = data
   return <input {...register(name)} {...rest} />;
 }
@@ -42,8 +42,8 @@ export function Input(data: { [x: string]: any; register: any; name: any; }) {
 export function Select({ register, options, name, ...rest }: any) {
   return (
     <select {...register(name)} {...rest}>
-      {options.map((value: any) => (
-        <option value={value}>{value}</option>
+      {options.map((value: any, index: number) => (
+        <option key={index} value={value}>{value}</option>
       ))}
     </select>
   );
