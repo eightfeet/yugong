@@ -47,7 +47,7 @@ const Form: Modules<FormProps> = (props) => {
 
   const defaultValues = {
     name: "",
-    description: "",
+    description: [],
   };
 
   const schema = Yup.object().shape({
@@ -55,7 +55,7 @@ const Form: Modules<FormProps> = (props) => {
       .required("请输入年月日")
       .min(3, "请输入姓名大于30个字符")
       .max(64),
-    description: Yup.string().required("请输入描述"),
+    description: Yup.bool().oneOf([true], '请选择'),
   });
 
   const { control, handleSubmit, formState } = useForm({
@@ -78,7 +78,7 @@ const Form: Modules<FormProps> = (props) => {
               control={control}
               errors={errors.name}
             />
-            <Checkbox control={control} name="aaa" />
+            <Checkbox control={control} name="description" label="请选择" errors={errors.description}/>
           </Grid>
           <button type="submit" disabled={!formState.isValid}>
             Submit
