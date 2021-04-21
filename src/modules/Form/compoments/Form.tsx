@@ -49,3 +49,58 @@ export function Select({ register, options, name, ...rest }: any) {
   );
 }
 /**https://codesandbox.io/s/react-hook-form-smart-form-component-forked-iq89z?file=/src/components.js:0-987 */
+
+
+/*import Checkbox from '@material-ui/core/Checkbox';
+
+<Checkbox
+    checked={state.checkedF}
+    onChange={handleChange}
+    name="checkedF"
+    indeterminate
+/>
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+
+<RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
+    <FormControlLabel value="best" control={<Radio />} label="The best!" />
+    <FormControlLabel value="worst" control={<Radio />} label="The worst." />
+</RadioGroup>
+
+import Select from '@material-ui/core/Select';
+
+<Select
+    native
+    value={state.age}
+    onChange={handleChange}
+    inputProps={{
+    name: 'age',
+    id: 'age-native-simple',
+    }}
+>
+    <option aria-label="None" value="" />
+    <option value={10}>Ten</option>
+    <option value={20}>Twenty</option>
+    <option value={30}>Thirty</option>
+</Select>
+
+import Slider from '@material-ui/core/Slider';
+<Slider
+  defaultValue={0.00000005}
+  getAriaValueText={valuetext}
+  aria-labelledby="discrete-slider-small-steps"
+  step={0.00000001}
+  marks
+  min={-0.00000005}
+  max={0.0000001}
+  valueLabelDisplay="auto"
+/>
+
+import TextField from '@material-ui/core/TextField';
+<TextField
+        id="filled-secondary"
+        label="Filled secondary"
+        variant="filled"
+        color="secondary"
+      />*/
