@@ -7,6 +7,7 @@ import Wrapper from "../Wrapper";
 import s from "./Text.module.less";
 import useStyles from "./Text.useStyle";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import classNames from "classnames";
 
 export interface TextProps extends AppDataElementsTypes {
   id: string;
@@ -46,9 +47,11 @@ const Text: Modules<TextProps> = (props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(userClass.wrap);
+  
   return (
     <Wrapper {...props} maxWidth maxHeight itemAlign="top">
-      <ul className={s.text}>
+      <ul className={classNames(s.text, userClass.wrap)}>
         {textArea.map((item: any, index: number) => (
           <li key={index} className={userClass.paragraph} >
             {item}
@@ -108,11 +111,13 @@ Text.exposeDefaultProps = {
         align: "left",
       },
     },
+    wrap: {},
     paragraph: {},
     prefix: {},
   },
   styleDescription: {
-    paragraph: "段落",
+    wrap: "容器",
+    paragraph: "段落/项",
     prefix: "段落前缀",
   },
 };
