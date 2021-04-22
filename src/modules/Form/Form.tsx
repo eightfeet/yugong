@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -40,9 +40,6 @@ const Form: Modules<FormProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = useCallback((data: any) => {
-        alert(JSON.stringify(data));
-    }, []);
 
     const defaultValues = {
         name: '',
@@ -55,12 +52,18 @@ const Form: Modules<FormProps> = (props) => {
     });
   
     const RHForm = useForm({
-        mode: 'onChange',
+        mode: 'onSubmit',
         defaultValues,
         resolver: yupResolver(schema),
     });
 
-    const { handleSubmit, formState } = RHForm;
+    const { handleSubmit } = RHForm;
+
+
+    const onSubmit = useCallback((data) => {
+        console.log(data)
+    }, []);
+
 
     return (
         <Wrapper {...props} maxHeight maxWidth>
@@ -84,8 +87,8 @@ const Form: Modules<FormProps> = (props) => {
                             form={RHForm as any}
                         />
                     </Grid>
-                    <button type="submit" disabled={!formState.isValid}>
-                        Submit{`${formState.isValid}`}
+                    <button type="submit" >
+                        Submit
                     </button>
                 </form>
             </ScopedCssBaseline>

@@ -30,14 +30,12 @@ const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
       } else {
         operateValue.push(formItem.label);
       }
-      setValue(name, operateValue)
-      setValues(operateValue)
+      console.log(operateValue)
+      setValues(operateValue);
+      setValue(name, operateValue);
     },
     [name, setValue, values]
   );
-
-  console.log('values', values, getValues(name));
-  console.log("errors", errors);
 
   return (
     <Grid item xs={12}>
