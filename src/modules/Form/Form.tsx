@@ -57,7 +57,7 @@ const Form: Modules<FormProps> = (props) => {
         resolver: yupResolver(schema),
     });
 
-    const { handleSubmit } = RHForm;
+    const { handleSubmit  } = RHForm;
 
 
     const onSubmit = useCallback((data) => {
@@ -68,7 +68,7 @@ const Form: Modules<FormProps> = (props) => {
     return (
         <Wrapper {...props} maxHeight maxWidth>
             <ScopedCssBaseline>
-                <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 24 }}>
+                <form  onSubmit={handleSubmit(onSubmit)} style={{ padding: 24 }}>
                     <Grid container spacing={2}>
                         <TextField
                             name="name"

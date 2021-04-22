@@ -33,6 +33,7 @@ const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
       console.log(operateValue)
       setValues(operateValue);
       setValue(name, operateValue);
+      return (operateValue);
     },
     [name, setValue, values]
   );
@@ -56,6 +57,7 @@ const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
                 <Controller
                   name={name}
                   render={({ field }) => {
+                    // console.log(field)
                     return (
                       <MUiCheckbox
                         checked={values.includes(element.label)}
