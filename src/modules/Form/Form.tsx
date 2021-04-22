@@ -1,20 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useCallback, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import TextField from './compoments/TextField';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
-import s from './Form.module.less';
 import CheckboxGroup from './compoments/CheckboxGroup';
 
 export interface FormProps extends AppDataElementsTypes {
@@ -47,7 +42,7 @@ const Form: Modules<FormProps> = (props) => {
     };
 
     const schema = Yup.object().shape({
-        name: Yup.string().required('姓名'),
+        name: Yup.string().required('请填写姓名'),
         check: Yup.array().min(1, '请至少选择一项')
     });
   
@@ -57,13 +52,12 @@ const Form: Modules<FormProps> = (props) => {
         resolver: yupResolver(schema),
     });
 
-    const { handleSubmit  } = RHForm;
+    const { handleSubmit } = RHForm;
 
 
     const onSubmit = useCallback((data) => {
         console.log(data)
     }, []);
-
 
     return (
         <Wrapper {...props} maxHeight maxWidth>
@@ -76,8 +70,40 @@ const Form: Modules<FormProps> = (props) => {
                             type="text"
                             form={RHForm as any}
                         />
+                        <TextField
+                            name="picker"
+                            label="姓名"
+                            type="select"
+                            options={[{
+                                label: '选项1',
+                                value: 1
+                              },{
+                                label: '选项2',
+                                value: 2
+                              }]}
+                            form={RHForm as any}
+                        />
+                        <TextField
+                            name="time"
+                            label="时间"
+                            type="time"
+                            form={RHForm as any}
+                        />
+                        <TextField
+                            name="date"
+                            label="日期"
+                            type="date"
+                            form={RHForm as any}
+                        />
+                        <TextField
+                            name="datetime"
+                            label="日期时间"
+                            type="datetime"
+                            form={RHForm as any}
+                        />
                         <CheckboxGroup
                             name="check"
+                            row
                             label="请选择"
                             options={[{
                               label: '选项1',
@@ -87,7 +113,7 @@ const Form: Modules<FormProps> = (props) => {
                             form={RHForm as any}
                         />
                     </Grid>
-                    <button type="submit" >
+                    <button type="submit">
                         Submit
                     </button>
                 </form>

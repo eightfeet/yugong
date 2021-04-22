@@ -12,7 +12,11 @@ import { Controller } from "react-hook-form";
 import { FormItem, FormOptions } from "../formTypes";
 import s from "./CheckboxGroup.module.less";
 
-const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
+interface CheckboxGroupProps extends FormItem {
+  row?: boolean
+}
+
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, options = [], row }) => {
   const {
     getValues,
     setValue,
@@ -50,14 +54,13 @@ const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
             {label}
           </FormLabel>
         ) : null}
-        <FormGroup>
+        <FormGroup row={row}>
           {options.map((element, index: number) => (
             <FormControlLabel
               control={
                 <Controller
                   name={name}
                   render={({ field }) => {
-                    // console.log(field)
                     return (
                       <MUiCheckbox
                         checked={values.includes(element.label)}
@@ -81,4 +84,4 @@ const Checkbox: React.FC<FormItem> = ({ label, name, form, options = [] }) => {
   );
 };
 
-export default Checkbox;
+export default CheckboxGroup;
