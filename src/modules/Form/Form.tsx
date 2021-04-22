@@ -9,13 +9,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from './compoments/TextField';
-import Checkbox from './compoments/Checkbox';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import s from './Form.module.less';
+import CheckboxGroup from './compoments/CheckboxGroup';
 
 export interface FormProps extends AppDataElementsTypes {
     id: string;
@@ -46,31 +46,12 @@ const Form: Modules<FormProps> = (props) => {
 
     const defaultValues = {
         name: '',
-        check: [{
-            label: 'bill',
-            checked: false,
-        },{
-            label: 'luo',
-            checked: false,
-        },{
-            label: 'Manos',
-            checked: false,
-        },{
-            label: 'user120242',
-            checked: false,
-        }],
+        check: [],
     };
 
-    const CHECK_SCHEMA = Yup.object().shape({
-        checked: Yup.boolean().oneOf([true], 'Must Accept Cookie Policy')
-    })
-
     const schema = Yup.object().shape({
-        name: Yup.string()
-            .required('请输入年月日')
-            .min(3, '请输入姓名大于30个字符')
-            .max(64),
-            check: Yup.array().of(CHECK_SCHEMA)
+        name: Yup.string().required('姓名'),
+        check: Yup.array().min(1, '请至少选择一项').required('请选择')
     });
   
     const RHForm = useForm({
@@ -92,21 +73,19 @@ const Form: Modules<FormProps> = (props) => {
                             type="text"
                             form={RHForm as any}
                         />
-                        <Checkbox
+                        <CheckboxGroup
                             name="check"
                             label="请选择"
                             options={[{
                               label: '选项1',
-                              checked: false
                             },{
                               label: '选项2',
-                              checked: false
                             }]}
                             form={RHForm as any}
                         />
                     </Grid>
                     <button type="submit" disabled={!formState.isValid}>
-                        Submit
+                        Submit{`${formState.isValid}`}
                     </button>
                 </form>
             </ScopedCssBaseline>
