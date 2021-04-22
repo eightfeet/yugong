@@ -62,7 +62,7 @@ const Form: Modules<FormProps> = (props) => {
     };
 
     const CHECK_SCHEMA = Yup.object().shape({
-        checked: Yup.boolean()
+        checked: Yup.boolean().oneOf([true], 'Must Accept Cookie Policy')
     })
 
     const schema = Yup.object().shape({
