@@ -1,34 +1,36 @@
 import { Grid } from "@material-ui/core";
-import MUiTextField, { TextFieldProps } from "@material-ui/core/TextField";
+import MUiTextField from "@material-ui/core/TextField";
 import { Controller } from "react-hook-form";
+import { FormItem } from "../formTypes";
 
-interface TextFieldsProps {
-  control: any;
-  errors: any;
-  name: `${string}` | `${string}.${string}` | `${string}.${number}`;
+interface TextFidleProps extends FormItem {
+  type: string
 }
 
-const TextField: React.FC<TextFieldsProps & TextFieldProps> = ({
-  control,
-  errors,
+const TextField: React.FC<TextFidleProps> = ({
+  form,
   name,
   ...other
-}) => (
-  <Grid item xs={12}>
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <MUiTextField
-          {...other}
-          error={!!errors}
-          helperText={errors?.message}
-          {...field}
-        />
-      )}
-    />
-  </Grid>
-);
+}) => {
+  const {control, formState: { errors }} = form
+  return (
+    <Grid item xs={12}>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <MUiTextField
+            fullWidth
+            {...other}
+            error={!!errors[name]}
+            helperText={errors[name]?.message}
+            {...field}
+          />
+        )}
+      />
+    </Grid>
+  )
+};
 
 export default TextField;
 

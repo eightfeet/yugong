@@ -46,23 +46,40 @@ const Form: Modules<FormProps> = (props) => {
 
     const defaultValues = {
         name: '',
-        description: [false, false, false],
+        check: [{
+            label: 'bill',
+            checked: false,
+        },{
+            label: 'luo',
+            checked: false,
+        },{
+            label: 'Manos',
+            checked: false,
+        },{
+            label: 'user120242',
+            checked: false,
+        }],
     };
+
+    const CHECK_SCHEMA = Yup.object().shape({
+        checked: Yup.boolean()
+    })
 
     const schema = Yup.object().shape({
         name: Yup.string()
             .required('请输入年月日')
             .min(3, '请输入姓名大于30个字符')
             .max(64),
-        description: Yup.bool().oneOf([true], '请选择'),
+            check: Yup.array().of(CHECK_SCHEMA)
     });
-
-    const { control, handleSubmit, formState, setValue, getValues } = useForm({
+  
+    const RHForm = useForm({
         mode: 'onChange',
         defaultValues,
         resolver: yupResolver(schema),
     });
-    const { errors } = formState;
+
+    const { handleSubmit, formState } = RHForm;
 
     return (
         <Wrapper {...props} maxHeight maxWidth>
@@ -70,15 +87,14 @@ const Form: Modules<FormProps> = (props) => {
                 <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 24 }}>
                     <Grid container spacing={2}>
                         <TextField
-                            fullWidth
-                            label="姓名"
                             name="name"
+                            label="姓名"
                             type="text"
-                            control={control}
-                            errors={errors.name}
+                            form={RHForm as any}
                         />
                         <Checkbox
-                            control={control}
+                            name="check"
+                            label="请选择"
                             options={[{
                               label: '选项1',
                               checked: false
@@ -86,11 +102,7 @@ const Form: Modules<FormProps> = (props) => {
                               label: '选项2',
                               checked: false
                             }]}
-                            name="description"
-                            label="请选择"
-                            errors={errors.description}
-                            setValue={setValue as any}
-                            getValues={getValues as any}
+                            form={RHForm as any}
                         />
                     </Grid>
                     <button type="submit" disabled={!formState.isValid}>
