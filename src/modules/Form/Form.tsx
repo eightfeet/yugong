@@ -51,7 +51,7 @@ const Form: Modules<FormProps> = (props) => {
 
     const schema = Yup.object().shape({
         name: Yup.string().required('姓名'),
-        check: Yup.array().min(1, '请至少选择一项').required('请选择')
+        check: Yup.array().min(1, '请至少选择一项')
     });
   
     const RHForm = useForm({
