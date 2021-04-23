@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, RootState } from "~/redux/store";
 import s from "./Mixedarguments.module.less";
 import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";
 import { useCallback } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import useLocalStorage from "~/hooks/useLocalStorage";
 import { message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import Radio from "antd/lib/radio";
@@ -19,47 +16,28 @@ interface Props {
     flexible: any;
 }
 
-const Mixedarguments: React.FC<Props> = () => {
-  const activationItem = useSelector(
-    (state: RootState) => state.activationItem
-  );
-  const appData = useSelector((state: RootState) => state.appData);
-  const dispatch = useDispatch<Dispatch>();
+const Mixedarguments: React.FC<Props> = ({typeArguments}) => {
+
   const [jsonData, setJsonData] = useState<AppDataLayoutItemTypes>();
   const [jsonMode, setJsonMode] = useState<"view" | "code">("view");
 
   useEffect(() => {
-    setJsonData({ ...activationItem });
-  }, [activationItem]);
+    setJsonData({ ...typeArguments });
+  }, [typeArguments]);
 
-  const [, setLocalStorage] = useLocalStorage("appData", null);
   const jsoneditor = useRef<JSONEditor>();
   const container = useRef<any>();
 
   const onsubmit = useCallback(() => {
     try {
       var json = jsoneditor.current?.get();
-      if (
-        json &&
-        activationItem.moduleId === json.moduleId &&
-        activationItem.moduleId === json.layout?.i
-      ) {
-        setJsonData(json);
-        dispatch.activationItem.updateActivationItem(json);
-        const operateData = [...appData].map((item) => {
-          if (item.moduleId === json.moduleId) {
-            return json;
-          }
-          return item;
-        });
-        dispatch.appData.updateAppData(operateData);
-        setLocalStorage(operateData);
-        dispatch.controller.forceUpdateByStateTag();
+      if (json) {
+        console.log(json)
       }
     } catch (e) {
       return;
     }
-  }, [activationItem.moduleId, appData, dispatch.activationItem, dispatch.appData, dispatch.controller, setLocalStorage]);
+  }, []);
 
   useEffect(() => {
     if (container.current && jsonData) {
@@ -88,7 +66,7 @@ const Mixedarguments: React.FC<Props> = () => {
         <div>
           &nbsp;
           <CopyToClipboard
-            text={JSON.stringify(activationItem)}
+            text={JSON.stringify(jsonData)}
             onCopy={() => message.info("已复制到剪切板")}
           >
             <Button size="small" icon={<CopyOutlined alt="复制到剪切板" />}>
