@@ -14,7 +14,8 @@ export type ArgumentsItem =
   | ArgumentsBoolean
   | ArgumentsString
   | ArgumentsNumber
-  | ArgumentsRunningTime;
+  | ArgumentsRunningTime
+  | ArgumentsMixed;
 
 /**
  * 参数基本
@@ -88,6 +89,13 @@ export interface ArgumentsNumber extends ArgumentBase<"number"> {
  */
 export interface ArgumentsRunningTime extends ArgumentBase<"runningTime"> {
   data: string;
+}
+
+/**
+ * 注入运行时参数
+ */
+ export interface ArgumentsMixed extends ArgumentBase<"mixed"> {
+  data: any;
 }
 
 /**

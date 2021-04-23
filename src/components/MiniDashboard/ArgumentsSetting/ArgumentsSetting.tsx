@@ -269,12 +269,13 @@ const ArgumentsSetting: React.FC<Props> = ({
                         value={item.type}
                         onChange={onChangeArgType(index)}
                       >
-                        <Select.Option value="runningTime">runningTime</Select.Option>
                         <Select.Option value="string">string</Select.Option>
                         <Select.Option value="number">number</Select.Option>
                         <Select.Option value="boolean">boolean</Select.Option>
                         <Select.Option value="object">object</Select.Option>
                         <Select.Option value="array">array</Select.Option>
+                        <Select.Option value="mixed">mixed</Select.Option>
+                        <Select.Option value="runningTime">runningTime</Select.Option>
                       </Select>
                     ) : (
                       item.type
@@ -322,6 +323,11 @@ const ArgumentsSetting: React.FC<Props> = ({
                     typeArguments={item}
                     flexible={!!dataFlexible}
                   />
+                ) : null}
+                {item.type === "mixed" ? (
+                  <>
+                    页面设置
+                  </>
                 ) : null}
               </div>
             </Card>

@@ -132,17 +132,22 @@ Output.exposeEvents = [
 // 全局方法
 Output.exposeFunctions = [
   {
-    name: "fun1",
-    description: "方法1",
+    name: "injectGlobal",
+    description: "注入自定义全局数据",
     arguments: [
       {
-        type: "object",
-        name: "fun1",
-        fieldName: "fun1",
-        describe: "fun1 描述",
-        data: {
-          data: "fun1",
-        },
+        type: "string",
+        name: "变量名",
+        fieldName: "name",
+        describe: "唯一(英文)全局变量名",
+        data: '',
+      },
+      {
+        type: "mixed",
+        name: "变量值",
+        fieldName: "value",
+        describe: "请输入变量数据",
+        data: undefined,
       },
     ],
   },
