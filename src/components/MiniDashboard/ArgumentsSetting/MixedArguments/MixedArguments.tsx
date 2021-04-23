@@ -6,7 +6,6 @@ import { useCallback } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { message } from "antd";
 import { CopyOutlined, FormOutlined, SaveOutlined } from "@ant-design/icons";
-import Radio from "antd/lib/radio";
 import Button from "antd/lib/button";
 import { AppDataLayoutItemTypes, ArgumentsItem } from "~/types/appData";
 import cloneDeep from "lodash/cloneDeep";

@@ -230,7 +230,7 @@ const Pagesetting: React.FC<Props> = () => {
 
   return (
     <>
-      <Collapse bordered={false} defaultActiveKey="baseset">
+      <Collapse accordion bordered={false} defaultActiveKey="baseset">
         <Panel
           header="基本信息"
           key="baseset"
@@ -412,10 +412,9 @@ const Pagesetting: React.FC<Props> = () => {
             </Row>
           ) : null}
         </Panel>
-        <Panel header="页面挂载" key="pagemount">
+        <Panel header="初始化Api" key="pagemount">
           <div className={s.events}>
             <h4 className={s.apititle}>
-              <div className={s.title}>Api</div>
               <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
             </h4>
             <ApiConfig
@@ -425,8 +424,9 @@ const Pagesetting: React.FC<Props> = () => {
               onChange={onChangeApi}
             />
           </div>
+        </Panel>
+        <Panel header="页面事件" key="pageevent">
           <div className={s.events}>
-            <h4>事件</h4>
             <>
               {Output.exposeEvents?.map((item, index) => (
                 <EventGroup

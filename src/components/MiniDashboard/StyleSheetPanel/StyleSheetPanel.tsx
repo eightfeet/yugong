@@ -82,7 +82,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
     return (
         <div className={s.root}>
             {path ? (
-                <Collapse bordered={false}>
+                <Collapse accordion bordered={false}>
                     <Panel header="布局" key="display">
                         <Display
                             unit={unit}
