@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -36,6 +36,8 @@ const Form: Modules<FormProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    /**========================================================== */
+
     const defaultValues = {
         name: '',
         check: [],
@@ -43,13 +45,13 @@ const Form: Modules<FormProps> = (props) => {
         picker: '',
         time: '',
         datetime: '',
-        date: ''
+        date: '',
     };
 
     const schema = Yup.object().shape({
         name: Yup.string().required('请填写姓名'),
         check: Yup.array().min(1, '请至少选择一项'),
-        radio: Yup.mixed().required('请选择')
+        radio: Yup.mixed().required('请选择'),
     });
 
     const RHForm = useForm({
@@ -70,12 +72,14 @@ const Form: Modules<FormProps> = (props) => {
         // setValue('check', []);
     }, [reset]);
 
-    
-
     return (
         <Wrapper {...props} maxHeight maxWidth>
             <ScopedCssBaseline>
-                <form onSubmit={handleSubmit(onSubmit)} onReset={onReset} style={{ padding: 24 }}>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    onReset={onReset}
+                    style={{ padding: 24 }}
+                >
                     <Grid container spacing={2}>
                         <TextField
                             name="name"
@@ -138,11 +142,11 @@ const Form: Modules<FormProps> = (props) => {
                             options={[
                                 {
                                     label: '选项1',
-                                    value: '1111'
+                                    value: '1111',
                                 },
                                 {
                                     label: '选项2',
-                                    value: '2222'
+                                    value: '2222',
                                 },
                             ]}
                             form={RHForm as any}
@@ -160,7 +164,24 @@ const Form: Modules<FormProps> = (props) => {
 /**
  * 注册方法的静态描述与默认参数定义
  */
-Form.exposeFunctions = [];
+Form.exposeFunctions = [
+    {
+        name: 'setData',
+        description: '设置表单',
+        arguments: [
+            {
+                type: 'object',
+                name: 'img',
+                describe: '图片url',
+                data: {
+                    url: '',
+                    alt: '',
+                },
+                fieldName: 'img',
+            },
+        ],
+    },
+];
 
 /**
  * 发布事件的静态描述
