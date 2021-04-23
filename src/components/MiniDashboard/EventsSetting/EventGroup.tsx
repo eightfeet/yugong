@@ -169,7 +169,7 @@ const EventGroup: React.FC<Props> = ({
      */
     const getFunArguments = useCallback(
         (moduleId: string): ExposeFunctions[] => {
-            if (moduleId === 'globalEffect') {
+            if (moduleId === 'global') {
                 return App.exposeFunctions || [];
             }
             for (let index = 0; index < appData.length; index++) {

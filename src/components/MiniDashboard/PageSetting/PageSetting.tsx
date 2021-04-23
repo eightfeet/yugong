@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from "antd";
 import React, { useCallback, useState } from "react";
-import Api from '~/components/Output';
+import Output from '~/components/Output';
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
 import Background from "../Background";
@@ -428,7 +428,7 @@ const Pagesetting: React.FC<Props> = () => {
           <div className={s.events}>
             <h4>事件</h4>
             <>
-              {Api.exposeEvents?.map((item, index) => (
+              {Output.exposeEvents?.map((item, index) => (
                 <EventGroup
                   key={index}
                   value={

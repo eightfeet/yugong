@@ -3,7 +3,7 @@ import { Col, Select } from "antd";
 import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import Api from "~/components/Output";
+import Output from "~/components/Output";
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
 
@@ -57,7 +57,12 @@ const EventItem: React.FC<Props> = ({
    * 仅包含有方法导出的模块
    */
   useEffect(() => {
-    const data: ModuleListItem[] = [];
+    // 处理全局方法
+    const data: ModuleListItem[] = [{
+      name: '全局',
+      uuid: 'global',
+      type: 'global'
+    }];
     for (let index = 0; index < appData.length; index++) {
       const item = appData[index];
       // 检查可选模块是否有方法导出
@@ -97,7 +102,7 @@ const EventItem: React.FC<Props> = ({
         exposeFunctions = require(`~/modules/${result.type}`).default
           .exposeFunctions;
       } else {
-        exposeFunctions = Api.exposeFunctions || [];
+        exposeFunctions = Output.exposeFunctions || [];
       }
       setFunctionList(exposeFunctions);
     },
