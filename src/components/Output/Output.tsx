@@ -67,10 +67,19 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     eventEmitter.emit(emitList);
   }, [eventEmitter, pageData.unmountEnvents]);
 
+  const updateRunningData = useCallback(
+    () => {
+      console.log('运行时！！！！')
+      // 弹出json Editer
+    },
+    [],
+  )
+
   useMemo(() => {
     eventEmitter.addEventListener("mount", onMount);
     eventEmitter.addEventListener("unmount", onUnmount);
-  }, [eventEmitter, onMount, onUnmount]);
+    eventEmitter.addEventListener("updateRunningData", updateRunningData);
+  }, [eventEmitter, onMount, onUnmount, updateRunningData]);
 
   useEffect(() => {
     if (eventEmitter) {
