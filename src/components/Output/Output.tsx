@@ -3,13 +3,13 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OutputLayout from "~/OutputLayout";
 import EventEmitter from "~/core/EventEmitter";
 import requester from "~/core/fetch";
 import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
-import { RootState } from "~/redux/store";
+import { Dispatch, RootState } from "~/redux/store";
 import { EventsTypeItem, Modules } from "~/types/modules";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import "./Output.less";
@@ -19,6 +19,7 @@ import {
   GRID_DEFAULT_SPACE,
   ROOT_FONTSIZE,
 } from "~/core/constants";
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 interface Props {
   eventEmitter: EventEmitter;
@@ -39,6 +40,8 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     document.title = pageData.pageTitle || "\u200E";
   }, [pageData.pageTitle]);
 
+  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+
   const onMount = useCallback(async () => {
     // 1、api处理 检查是不是http-url
     const apiArguments = pageData.onLoadApi?.filter(
@@ -52,7 +55,7 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
         await requester(item);
       }
     }
-
+    
     // 3、事件处理，等待组件和eventEmitter准备
     const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
     await eventEmitter.emit(emitList);
@@ -67,19 +70,26 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     eventEmitter.emit(emitList);
   }, [eventEmitter, pageData.unmountEnvents]);
 
-  const updateRunningData = useCallback(
-    () => {
-      console.log('运行时！！！！')
+  const injectGlobal = useCallback(
+    (name, value) => {
+      const argName = getArgumentsItem(name);
+      const argValue = getArgumentsItem(value)
+      if (argName && argValue) {
+        setRunningTimes({[`${argName}`]: argValue});
+        console.log('运行时！！！！', argName, argValue)
+      } else {
+        console.error('注入自定义全局数据时缺少属性名或值！')
+      }
       // 弹出json Editer
     },
-    [],
+    [setRunningTimes],
   )
-
+  // 全局未做uuid前缀处理，这里需要手动加上global标签
   useMemo(() => {
-    eventEmitter.addEventListener("mount", onMount);
-    eventEmitter.addEventListener("unmount", onUnmount);
-    eventEmitter.addEventListener("updateRunningData", updateRunningData);
-  }, [eventEmitter, onMount, onUnmount, updateRunningData]);
+    eventEmitter.addEventListener("global/mount", onMount);
+    eventEmitter.addEventListener("global/unmount", onUnmount);
+    eventEmitter.addEventListener("global/injectGlobal", injectGlobal);
+  }, [eventEmitter, onMount, onUnmount, injectGlobal]);
 
   useEffect(() => {
     if (eventEmitter) {

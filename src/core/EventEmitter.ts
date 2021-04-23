@@ -27,6 +27,7 @@ class EventEmitter {
    */
   public emit(queues: EventEmitterEmitArgs[] = []) {
     const queuesArray = async () => {
+      
       for (let i = 0; i < queues.length; i++) {
         const item = queues[i];
         // 执行方法时发放对应参数,当参数没有定义时，使用模块对应方法的默认参数

@@ -1,8 +1,11 @@
 import parse from "html-react-parser";
+import cloneDeep from "lodash/cloneDeep";
+import set from "lodash/set";
 import { store } from "~/redux/store";
 import { AnyObjectType, ArgumentsItem } from "~/types/appData";
 import getBooleanData from "./getBooleanData";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
+import deepForEach from "./helper/deepForeach";
 
 /**
  * 单个参数获取数据源中的数据
@@ -52,6 +55,17 @@ export const getArgumentsItem = (
       });
       result = objdata;
       break;
+    case "mixed": 
+      /**这里做一层运行时数据替换， 并不推荐在混合数据里面使用运行时数据*/
+      const copyDate = cloneDeep(argmentsDataItem.data)
+      deepForEach(argmentsDataItem.data, (value: any, key:any, subject: any, path: any) => {
+        if (typeof value === 'string') {
+          const res = getResult(value, dataSource)
+          set(copyDate, `${path}`, res)
+        }
+      });
+      result = copyDate;
+      break
     case "boolean":
       const {
         comparableAverageA,
