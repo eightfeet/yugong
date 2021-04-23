@@ -12,6 +12,8 @@ import BooleanArguments from "./BooleanArguments";
 import ObjectArguments from "./ObjectArguments";
 import RunningTimesModal from "~/components/MiniDashboard/RunningTimesModal";
 import HtmlSuffix from "./HtmlSuffix";
+import MixedArguments from "./MixedArguments";
+import classNames from "classnames";
 
 interface Props {
   /**
@@ -216,7 +218,9 @@ const ArgumentsSetting: React.FC<Props> = ({
             : undefined;
           return (
             <Card
-              className={s.card}
+              className={classNames(s.card, {
+                [s.mixedcard]: item.type === "mixed"
+              })}
               key={`${index}`}
               title={
                 <div className={s.cardtitle}>
@@ -325,9 +329,11 @@ const ArgumentsSetting: React.FC<Props> = ({
                   />
                 ) : null}
                 {item.type === "mixed" ? (
-                  <>
-                    页面设置
-                  </>
+                  <MixedArguments 
+                    onChange={onChangeObjType(index)}
+                    typeArguments={item}
+                    flexible={!!dataFlexible}
+                  />
                 ) : null}
               </div>
             </Card>
