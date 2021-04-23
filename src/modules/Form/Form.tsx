@@ -11,6 +11,7 @@ import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import CheckboxGroup from './compoments/CheckboxGroup';
+import RadioGroup from './compoments/RadioGroup';
 
 export interface FormProps extends AppDataElementsTypes {
     id: string;
@@ -35,34 +36,43 @@ const Form: Modules<FormProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     const defaultValues = {
         name: '',
         check: [],
+        radio: '',
+        picker: '',
+        time: '',
+        datetime: '',
+        date: ''
     };
 
     const schema = Yup.object().shape({
         name: Yup.string().required('请填写姓名'),
-        check: Yup.array().min(1, '请至少选择一项')
+        check: Yup.array().min(1, '请至少选择一项'),
     });
-  
+
     const RHForm = useForm({
         mode: 'onSubmit',
         defaultValues,
         resolver: yupResolver(schema),
     });
 
-    const { handleSubmit } = RHForm;
-
+    const { handleSubmit, reset, setValue } = RHForm;
 
     const onSubmit = useCallback((data) => {
-        console.log(data)
+        console.log(data);
     }, []);
+
+    const onReset = useCallback(() => {
+        reset();
+        // 处理checkbox
+        setValue('check', []);
+    }, [reset, setValue]);
 
     return (
         <Wrapper {...props} maxHeight maxWidth>
             <ScopedCssBaseline>
-                <form  onSubmit={handleSubmit(onSubmit)} style={{ padding: 24 }}>
+                <form onSubmit={handleSubmit(onSubmit)} onReset={onReset} style={{ padding: 24 }}>
                     <Grid container spacing={2}>
                         <TextField
                             name="name"
@@ -74,13 +84,16 @@ const Form: Modules<FormProps> = (props) => {
                             name="picker"
                             label="姓名"
                             type="select"
-                            options={[{
-                                label: '选项1',
-                                value: 1
-                              },{
-                                label: '选项2',
-                                value: 2
-                              }]}
+                            options={[
+                                {
+                                    label: '选项1',
+                                    value: 1,
+                                },
+                                {
+                                    label: '选项2',
+                                    value: 2,
+                                },
+                            ]}
                             form={RHForm as any}
                         />
                         <TextField
@@ -105,17 +118,35 @@ const Form: Modules<FormProps> = (props) => {
                             name="check"
                             row
                             label="请选择"
-                            options={[{
-                              label: '选项1',
-                            },{
-                              label: '选项2',
-                            }]}
+                            options={[
+                                {
+                                    label: '选项1',
+                                },
+                                {
+                                    label: '选项2',
+                                },
+                            ]}
+                            form={RHForm as any}
+                        />
+                        <RadioGroup
+                            name="radio"
+                            row
+                            label="RadioGroup 选择"
+                            options={[
+                                {
+                                    label: '选项1',
+                                    value: '1111'
+                                },
+                                {
+                                    label: '选项2',
+                                    value: '2222'
+                                },
+                            ]}
                             form={RHForm as any}
                         />
                     </Grid>
-                    <button type="submit">
-                        Submit
-                    </button>
+                    <button type="submit">Submit</button>
+                    <button type="reset">重置</button>
                 </form>
             </ScopedCssBaseline>
         </Wrapper>
