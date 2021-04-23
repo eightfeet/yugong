@@ -39,7 +39,7 @@ const Form: Modules<FormProps> = (props) => {
     const defaultValues = {
         name: '',
         check: [],
-        radio: '',
+        radio: null,
         picker: '',
         time: '',
         datetime: '',
@@ -49,6 +49,7 @@ const Form: Modules<FormProps> = (props) => {
     const schema = Yup.object().shape({
         name: Yup.string().required('请填写姓名'),
         check: Yup.array().min(1, '请至少选择一项'),
+        radio: Yup.mixed().required('请选择')
     });
 
     const RHForm = useForm({
@@ -57,7 +58,7 @@ const Form: Modules<FormProps> = (props) => {
         resolver: yupResolver(schema),
     });
 
-    const { handleSubmit, reset, setValue } = RHForm;
+    const { handleSubmit, reset } = RHForm;
 
     const onSubmit = useCallback((data) => {
         console.log(data);
@@ -65,9 +66,11 @@ const Form: Modules<FormProps> = (props) => {
 
     const onReset = useCallback(() => {
         reset();
-        // 处理checkbox
-        setValue('check', []);
-    }, [reset, setValue]);
+        // 处理checkbox toDo 这样处理不作用
+        // setValue('check', []);
+    }, [reset]);
+
+    
 
     return (
         <Wrapper {...props} maxHeight maxWidth>
@@ -145,7 +148,8 @@ const Form: Modules<FormProps> = (props) => {
                             form={RHForm as any}
                         />
                     </Grid>
-                    <button type="submit">Submit</button>
+
+                    <button type="submit">提交</button>
                     <button type="reset">重置</button>
                 </form>
             </ScopedCssBaseline>
