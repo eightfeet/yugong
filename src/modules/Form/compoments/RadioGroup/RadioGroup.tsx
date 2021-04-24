@@ -43,9 +43,10 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
                 <Controller
                     name={fieldName}
                     control={control}
+                    
                     render={({ field }) => {
                         return (
-                            <MUiRadioGroup row={row} aria-label={label} {...field}>
+                            <MUiRadioGroup row={row} aria-label={label} {...field} value={field.value || ''}>
                                 {options.map((element, index: number) => (
                                     <FormControlLabel
                                         key={index}

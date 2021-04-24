@@ -7,39 +7,41 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import MUiCheckbox from "@material-ui/core/Checkbox";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Controller } from "react-hook-form";
+import isType from "~/core/helper/isType";
 import { FormItem, FormOptions } from "../formTypes";
 import s from "./CheckboxGroup.module.less";
 
 interface CheckboxGroupProps extends FormItem {
-  row?: boolean
+  row?: boolean;
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, fieldName, form, options = [], row }) => {
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
+  label,
+  fieldName,
+  form,
+  options = [],
+  row,
+}) => {
   const {
-    getValues,
-    setValue,
     control,
     formState: { errors },
   } = form;
 
-  const [values, setValues] = useState(getValues(fieldName) || [])
 
   const handleSelect = useCallback(
-    (formItem: FormOptions) => {
-      let operateValue = [...values];
-      if (operateValue.includes(formItem.label)) {
-        operateValue = operateValue.filter(ele => ele !== formItem.label);
+    (element: FormOptions, opreatValue) => {
+      if (!isType(opreatValue, "Array")) {
+        return [element.value]
+      } else if(opreatValue.includes(element.value)) {
+        return opreatValue.filter((item: any) => item !== element.value);
       } else {
-        operateValue.push(formItem.label);
+        opreatValue.push(element.value);
+        return [...opreatValue];
       }
-      console.log(operateValue)
-      setValues(operateValue);
-      setValue(fieldName, operateValue);
-      return (operateValue);
     },
-    [fieldName, setValue, values]
+    []
   );
 
   return (
@@ -54,30 +56,31 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, fieldName, form, o
             {label}
           </FormLabel>
         ) : null}
-        <FormGroup row={row}>
-          {options.map((element, index: number) => (
-            <FormControlLabel
-              control={
-                <Controller
-                  name={fieldName}
-                  render={({ field }) => {
-                    return (
+
+        <Controller
+          name={fieldName}
+          control={control}
+          render={({ field }) => {
+            return (
+              <FormGroup>
+                {options.map((element, index: number) => (
+                  <FormControlLabel
+                    key={index}
+                    control={
                       <MUiCheckbox
-                        checked={values.includes(element.label)}
-                        onChange={() =>
-                          field.onChange(handleSelect(element))
-                        }
+                        onChange={(event: any) => {
+                          field.onChange(handleSelect(element, field.value));
+                        }}
+                        checked={Array.isArray(field.value) && field.value.includes(element.value)}
                       />
-                    );
-                  }}
-                  control={control}
-                />
-              }
-              key={index}
-              label={element.label}
-            />
-          ))}
-        </FormGroup>
+                    }
+                    label={element.label}
+                  />
+                ))}
+              </FormGroup>
+            );
+          }}
+        />
         <FormHelperText>{errors[fieldName]?.message}</FormHelperText>
       </FormControl>
     </Grid>

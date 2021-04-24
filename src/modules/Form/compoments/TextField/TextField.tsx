@@ -53,6 +53,7 @@ const TextField: React.FC<TextFidleProps> = ({
                         error={!!errors[fieldName]}
                         helperText={errors[fieldName]?.message}
                         {...field}
+                        value={field.value || ''}
                     >
                         <>
                             <option value={undefined}>请选择</option>
