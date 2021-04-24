@@ -49,8 +49,8 @@ const Form: Modules<FormProps> = (props) => {
     };
 
     const schema = Yup.object().shape({
-        name: Yup.string().required('请填写姓名'),
-        check: Yup.array().min(1, '请至少选择一项'),
+        name: Yup.string().required('请填写姓名').min(3, '请至少输入3个字符').max(5, '不能大于5个字符'),
+        check: Yup.array().min(1, '请至少选择一项').required('请填xxx'),
         radio: Yup.mixed().required('请选择'),
     });
 
@@ -133,6 +133,7 @@ const Form: Modules<FormProps> = (props) => {
                                     label: '选项2',
                                 },
                             ]}
+                            type="checkboxgroup"
                             form={RHForm as any}
                         />
                         <RadioGroup
@@ -149,6 +150,7 @@ const Form: Modules<FormProps> = (props) => {
                                     value: '2222',
                                 },
                             ]}
+                            type="radiogroup"
                             form={RHForm as any}
                         />
                     </Grid>
