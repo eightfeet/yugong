@@ -11,7 +11,7 @@ const timeTypes = ['date', 'datetime', 'time'];
 
 const TextField: React.FC<TextFidleProps> = ({
     form,
-    name,
+    fieldName,
     type,
     options,
     ...other
@@ -44,14 +44,14 @@ const TextField: React.FC<TextFidleProps> = ({
         <Grid item xs={12}>
             <Controller
                 control={control}
-                name={name}
+                name={fieldName}
                 render={({ field }) => (
                     <MUiTextField
                         fullWidth
                         {...typeProps}
                         {...other}
-                        error={!!errors[name]}
-                        helperText={errors[name]?.message}
+                        error={!!errors[fieldName]}
+                        helperText={errors[fieldName]?.message}
                         {...field}
                     >
                         <>

@@ -18,7 +18,7 @@ interface RadioGroupProps extends FormItem {
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
     label,
-    name,
+    fieldName,
     form,
     options = [],
     row,
@@ -33,7 +33,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
             <FormControl
                 className={s.fieldset}
                 component="fieldset"
-                error={!!errors[name]}
+                error={!!errors[fieldName]}
             >
                 {label ? (
                     <FormLabel className={s.legend} component="legend">
@@ -41,7 +41,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
                     </FormLabel>
                 ) : null}
                 <Controller
-                    name={name}
+                    name={fieldName}
                     control={control}
                     render={({ field }) => {
                         return (
@@ -58,7 +58,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
                         );
                     }}
                 />
-                <FormHelperText>{errors[name]?.message}</FormHelperText>
+                <FormHelperText>{errors[fieldName]?.message}</FormHelperText>
             </FormControl>
         </Grid>
     );

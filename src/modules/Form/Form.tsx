@@ -82,13 +82,13 @@ const Form: Modules<FormProps> = (props) => {
                 >
                     <Grid container spacing={2}>
                         <TextField
-                            name="name"
+                            fieldName="name"
                             label="姓名"
                             type="text"
                             form={RHForm as any}
                         />
                         <TextField
-                            name="picker"
+                            fieldName="picker"
                             label="姓名"
                             type="select"
                             options={[
@@ -104,25 +104,25 @@ const Form: Modules<FormProps> = (props) => {
                             form={RHForm as any}
                         />
                         <TextField
-                            name="time"
+                            fieldName="time"
                             label="时间"
                             type="time"
                             form={RHForm as any}
                         />
                         <TextField
-                            name="date"
+                            fieldName="date"
                             label="日期"
                             type="date"
                             form={RHForm as any}
                         />
                         <TextField
-                            name="datetime"
+                            fieldName="datetime"
                             label="日期时间"
                             type="datetime"
                             form={RHForm as any}
                         />
                         <CheckboxGroup
-                            name="check"
+                            fieldName="check"
                             row
                             label="请选择"
                             options={[
@@ -136,7 +136,7 @@ const Form: Modules<FormProps> = (props) => {
                             form={RHForm as any}
                         />
                         <RadioGroup
-                            name="radio"
+                            fieldName="radio"
                             row
                             label="RadioGroup 选择"
                             options={[

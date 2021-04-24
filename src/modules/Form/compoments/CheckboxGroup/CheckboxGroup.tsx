@@ -16,7 +16,7 @@ interface CheckboxGroupProps extends FormItem {
   row?: boolean
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, options = [], row }) => {
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, fieldName, form, options = [], row }) => {
   const {
     getValues,
     setValue,
@@ -24,7 +24,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, option
     formState: { errors },
   } = form;
 
-  const [values, setValues] = useState(getValues(name) || [])
+  const [values, setValues] = useState(getValues(fieldName) || [])
 
   const handleSelect = useCallback(
     (formItem: FormOptions) => {
@@ -36,10 +36,10 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, option
       }
       console.log(operateValue)
       setValues(operateValue);
-      setValue(name, operateValue);
+      setValue(fieldName, operateValue);
       return (operateValue);
     },
-    [name, setValue, values]
+    [fieldName, setValue, values]
   );
 
   return (
@@ -47,7 +47,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, option
       <FormControl
         className={s.fieldset}
         component="fieldset"
-        error={!!errors[name]}
+        error={!!errors[fieldName]}
       >
         {label ? (
           <FormLabel className={s.legend} component="legend">
@@ -59,7 +59,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, option
             <FormControlLabel
               control={
                 <Controller
-                  name={name}
+                  name={fieldName}
                   render={({ field }) => {
                     return (
                       <MUiCheckbox
@@ -78,7 +78,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, form, option
             />
           ))}
         </FormGroup>
-        <FormHelperText>{errors[name]?.message}</FormHelperText>
+        <FormHelperText>{errors[fieldName]?.message}</FormHelperText>
       </FormControl>
     </Grid>
   );
