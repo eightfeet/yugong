@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { set, useForm } from "react-hook-form";
-import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -12,10 +11,9 @@ import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import CheckboxGroup from "./compoments/CheckboxGroup";
 import RadioGroup from "./compoments/RadioGroup";
-import { RootState } from "~/redux/store";
-import { useSelector } from "react-redux";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { FormArguments } from "./compoments/formTypes";
+import { compileFormData } from "./helper";
 
 export interface FormProps extends AppDataElementsTypes {
   id: string;
@@ -28,6 +26,7 @@ const Form: Modules<FormProps> = (props) => {
     {}
   );
   const [formLists, setFormLists] = useState<FormArguments[]>();
+  const [schema, setSchema] = useState<any>();
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -46,16 +45,12 @@ const Form: Modules<FormProps> = (props) => {
 
   const setFormData = useCallback((name: ArgumentsItem) => {
     const list = getArgumentsItem(name) || [];
-    const oprateDefaultValue: any = {};
-    (list as any[])?.forEach((item: FormArguments) => {
-        if (item.defaultValue) {
-            oprateDefaultValue[item.fieldName] = item.defaultValue;
-        }
-    });
-    console.log('oprateDefaultValue', oprateDefaultValue)
-    setDefaultValues(oprateDefaultValue);
+    const result = compileFormData(list as FormArguments[]);
+    setSchema(result.schema);
+    setDefaultValues(result.defaultValue);
     setFormLists(list as FormArguments[]);
   }, []);
+  
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
     eventEmitter.addEventListener("setFormData", setFormData);
@@ -63,22 +58,13 @@ const Form: Modules<FormProps> = (props) => {
 
   /**========================================================== */
 
-  const schema = Yup.object().shape({
-    name: Yup.string()
-      .required("请填写姓名")
-      .min(3, "请至少输入3个字符")
-      .max(5, "不能大于5个字符"),
-    check: Yup.array().min(1, "请至少选择一项").required("请填xxx"),
-    radio: Yup.mixed().required("请选择"),
-  });
-
   const RHForm = useForm({
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues,
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
 
-  const { handleSubmit, reset } = RHForm;
+  const { handleSubmit, reset, formState } = RHForm;
 
   const onSubmit = useCallback((data) => {
     console.log(data);
@@ -132,7 +118,7 @@ const Form: Modules<FormProps> = (props) => {
               })}
             </Grid>
 
-            <button type="submit">提交</button>
+            <button type="submit" disabled={!formState.isValid}>提交</button>
             <button type="reset">重置</button>
           </form>
         </ScopedCssBaseline>
