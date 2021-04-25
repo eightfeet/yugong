@@ -75,7 +75,7 @@ const Form: Modules<FormProps> = (props) => {
     // 处理checkbox toDo 这样处理不作用
     // setValue('check', []);
   }, [reset]);
-  
+
   return (
     <Wrapper {...props} maxHeight maxWidth>
       {!!formLists?.length ? (
@@ -159,6 +159,10 @@ Form.exposeEvents = [
   {
     name: "unmount",
     description: "卸载",
+  },
+  {
+    name: "submit",
+    description: "提交表单",
   },
 ];
 

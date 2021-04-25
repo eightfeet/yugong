@@ -84,12 +84,26 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     },
     [setRunningTimes],
   )
+
+  // 页面重定向
+  const redirect = useCallback(
+      (url, medth) => {
+        const argUrl = getArgumentsItem(url);
+        const argMedth = getArgumentsItem(medth);
+
+        console.log(argUrl, argMedth)
+      },
+      [],
+    )
+
+
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   useMemo(() => {
     eventEmitter.addEventListener("global/mount", onMount);
     eventEmitter.addEventListener("global/unmount", onUnmount);
     eventEmitter.addEventListener("global/injectGlobal", injectGlobal);
-  }, [eventEmitter, onMount, onUnmount, injectGlobal]);
+    eventEmitter.addEventListener("global/redirect", redirect);
+  }, [eventEmitter, onMount, onUnmount, injectGlobal, redirect]);
 
   useEffect(() => {
     if (eventEmitter) {
@@ -162,8 +176,17 @@ Output.exposeFunctions = [
     ],
   },
   {
-    name: "fun2",
-    description: "方法2",
+    name: "redirect",
+    description: "页面重定向",
+    arguments: [
+      {
+        type: "string",
+        name: "跳转(-1或跳转url)",
+        fieldName: "url",
+        describe: "等于-1时浏览器返回，等于url时页面跳转到url",
+        data: '',
+      }
+    ]
   },
 ];
 

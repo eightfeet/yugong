@@ -24,7 +24,10 @@ export const getArgumentsItem = (
   | string
   | JSX.Element
   | JSX.Element[] => {
-  // if (!argmentsDataItem) return;
+    
+  // 数据不存在时原状态返回
+  if (!argmentsDataItem) return argmentsDataItem;
+  console.log('argmentsDataItem', argmentsDataItem)
   let result = undefined;
   const toJSX = argmentsDataItem.html;
   switch (argmentsDataItem.type) {
