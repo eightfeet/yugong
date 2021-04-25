@@ -87,11 +87,18 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
 
   // 页面重定向
   const redirect = useCallback(
-      (url, medth) => {
+      (url, isReplace) => {
         const argUrl = getArgumentsItem(url);
-        const argMedth = getArgumentsItem(medth);
-
-        console.log(argUrl, argMedth)
+        const argIsReplace = getArgumentsItem(isReplace);
+        if (argUrl === '-1') {
+          window.history.back()
+        } else if (isUrl(argUrl as string)) {
+          if (argIsReplace) {
+            window.location.replace(argUrl as string)
+          } else {
+            window.location.href = argUrl as string;
+          }
+        }
       },
       [],
     )
@@ -185,6 +192,17 @@ Output.exposeFunctions = [
         fieldName: "url",
         describe: "等于-1时浏览器返回，等于url时页面跳转到url",
         data: '',
+      },
+      {
+        type: "boolean",
+        name: "跳转方法",
+        fieldName: "isReplace",
+        describe: "默认false，true时使用replace重定向，浏览器将无法回退到当前页面",
+        data: {
+          comparableAverageA: "0",
+          method: "===",
+          comparableAverageB: "1"
+        },
       }
     ]
   },
