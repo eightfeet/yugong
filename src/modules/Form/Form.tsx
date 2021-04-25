@@ -14,6 +14,9 @@ import RadioGroup from "./compoments/RadioGroup";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { FormArguments } from "./compoments/formTypes";
 import { compileFormData } from "./helper";
+import s from './Form.module.less';
+import useStyles from "./Form.useStyle";
+import classNames from "classnames";
 
 export interface FormProps extends AppDataElementsTypes {
   id: string;
@@ -21,12 +24,15 @@ export interface FormProps extends AppDataElementsTypes {
 }
 
 const Form: Modules<FormProps> = (props) => {
-  const { eventEmitter, events = {}, api } = props;
+  const { eventEmitter, events = {}, api, style } = props;
   const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>(
     {}
   );
   const [formLists, setFormLists] = useState<FormArguments[]>();
   const [schema, setSchema] = useState<any>();
+
+  const userClass = useStyles(style);
+
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -81,9 +87,9 @@ const Form: Modules<FormProps> = (props) => {
       {!!formLists?.length ? (
         <ScopedCssBaseline>
           <form
+            className={classNames(s.root, userClass.wrap)}
             onSubmit={handleSubmit(onSubmit)}
             onReset={onReset}
-            style={{ padding: 24 }}
           >
             <Grid container spacing={2}>
               {formLists?.map(({ type, row, ...other }, index) => {
@@ -169,7 +175,15 @@ Form.exposeEvents = [
 /**
  * 发布默认porps
  */
-Form.exposeDefaultProps = {};
+Form.exposeDefaultProps = {
+  style:{
+    basic:{},
+    wrap:{}
+  },
+  styleDescription: {
+    wrap: '包裹器'
+  }
+};
 
 /**
  * 发布默认Api
