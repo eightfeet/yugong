@@ -62,7 +62,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
           control={control}
           render={({ field }) => {
             return (
-              <FormGroup>
+              <FormGroup row={row}>
                 {options.map((element, index: number) => (
                   <FormControlLabel
                     key={index}

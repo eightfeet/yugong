@@ -27,7 +27,6 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
         control,
         formState: { errors },
     } = form;
-
     return (
         <Grid item xs={12}>
             <FormControl

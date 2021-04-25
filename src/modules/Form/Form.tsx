@@ -75,7 +75,7 @@ const Form: Modules<FormProps> = (props) => {
     // 处理checkbox toDo 这样处理不作用
     // setValue('check', []);
   }, [reset]);
-
+  
   return (
     <Wrapper {...props} maxHeight maxWidth>
       {!!formLists?.length ? (
@@ -86,11 +86,12 @@ const Form: Modules<FormProps> = (props) => {
             style={{ padding: 24 }}
           >
             <Grid container spacing={2}>
-              {formLists?.map(({ type, ...other }, index) => {
+              {formLists?.map(({ type, row, ...other }, index) => {
                 if (type === "checkboxgroup") {
                   return (
                     <CheckboxGroup
                       key={index}
+                      row={row}
                       {...other}
                       type="checkboxgroup"
                       form={RHForm as any}
@@ -101,6 +102,7 @@ const Form: Modules<FormProps> = (props) => {
                   return (
                     <RadioGroup
                       key={index}
+                      row={row}
                       {...other}
                       type="radiogroup"
                       form={RHForm as any}
