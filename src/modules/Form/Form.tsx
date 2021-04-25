@@ -14,7 +14,7 @@ import RadioGroup from "./compoments/RadioGroup";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { FormArguments } from "./compoments/formTypes";
 import { compileFormData } from "./helper";
-import s from './Form.module.less';
+import s from "./Form.module.less";
 import useStyles from "./Form.useStyle";
 import classNames from "classnames";
 
@@ -56,7 +56,7 @@ const Form: Modules<FormProps> = (props) => {
     setDefaultValues(result.defaultValue);
     setFormLists(list as FormArguments[]);
   }, []);
-  
+
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
     eventEmitter.addEventListener("setFormData", setFormData);
@@ -85,51 +85,57 @@ const Form: Modules<FormProps> = (props) => {
   return (
     <Wrapper {...props} maxHeight maxWidth>
       {!!formLists?.length ? (
-        <ScopedCssBaseline>
-          <form
-            className={classNames(s.root, userClass.wrap)}
-            onSubmit={handleSubmit(onSubmit)}
-            onReset={onReset}
-          >
-            <Grid container spacing={2}>
-              {formLists?.map(({ type, row, ...other }, index) => {
-                if (type === "checkboxgroup") {
+        <div className={classNames(s.root, userClass.wrap)}>
+          <ScopedCssBaseline>
+            <form
+              className={s.form}
+              onSubmit={handleSubmit(onSubmit)}
+              onReset={onReset}
+            >
+              <h3 className={s.header}>header</h3>
+              <Grid container spacing={2}>
+                {formLists?.map(({ type, row, ...other }, index) => {
+                  if (type === "checkboxgroup") {
+                    return (
+                      <CheckboxGroup
+                        key={index}
+                        row={row}
+                        {...other}
+                        type="checkboxgroup"
+                        form={RHForm as any}
+                      />
+                    );
+                  }
+                  if (type === "radiogroup") {
+                    return (
+                      <RadioGroup
+                        key={index}
+                        row={row}
+                        {...other}
+                        type="radiogroup"
+                        form={RHForm as any}
+                      />
+                    );
+                  }
                   return (
-                    <CheckboxGroup
+                    <TextField
                       key={index}
-                      row={row}
+                      type={type}
                       {...other}
-                      type="checkboxgroup"
                       form={RHForm as any}
                     />
                   );
-                }
-                if (type === "radiogroup") {
-                  return (
-                    <RadioGroup
-                      key={index}
-                      row={row}
-                      {...other}
-                      type="radiogroup"
-                      form={RHForm as any}
-                    />
-                  );
-                }
-                return (
-                  <TextField
-                    key={index}
-                    type={type}
-                    {...other}
-                    form={RHForm as any}
-                  />
-                );
-              })}
-            </Grid>
-
-            <button type="submit" disabled={!formState.isValid}>提交</button>
-            <button type="reset">重置</button>
-          </form>
-        </ScopedCssBaseline>
+                })}
+              </Grid>
+              <div className={s.footer}>
+                <button type="submit" disabled={!formState.isValid}>
+                  提交
+                </button>
+                <button type="reset">重置</button>
+              </div>
+            </form>
+          </ScopedCssBaseline>
+        </div>
       ) : null}
     </Wrapper>
   );
@@ -176,13 +182,13 @@ Form.exposeEvents = [
  * 发布默认porps
  */
 Form.exposeDefaultProps = {
-  style:{
-    basic:{},
-    wrap:{}
+  style: {
+    basic: {},
+    wrap: {},
   },
   styleDescription: {
-    wrap: '包裹器'
-  }
+    wrap: "包裹器",
+  },
 };
 
 /**

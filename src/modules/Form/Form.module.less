@@ -1,11 +1,36 @@
-.notchedOutline {
-    border-width: 1px;
-    border-color: yellow !important;
-    color: green
-}
 
 .root {
-    background-color: #fff;
     box-sizing: border-box;
-    overflow-y: auto;
+    height: 100%;
+    overflow: auto !important;
+    background-color:transparent;
+    display: flex;
+    :global {
+        .MuiGrid-container {
+            margin: 0;
+            width: 100%;
+        }
+
+        .MuiScopedCssBaseline-root {
+            background-color:transparent;
+            display: flex;
+            flex: auto;
+        }
+    }
+
+    form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header, .footer {
+        margin: 0;
+        padding: 0;
+    }
+
+    .content {
+        height: 100%;
+        overflow: auto;
+    }
 }
