@@ -36,7 +36,6 @@ export const compileFormData = (
           try {
             validatelist[item.fieldName] = Object.keys(element).reduce(
               (previousValue, subKey) => {
-                console.log("subKey", subKey);
                 return previousValue[subKey](...(element[subKey] || []));
               },
               validateFn()
