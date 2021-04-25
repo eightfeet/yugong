@@ -20,6 +20,7 @@ import {
   ROOT_FONTSIZE,
 } from "~/core/constants";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import { initTrack, trackEvent, trackPageView } from "~/core/tracking";
 
 interface Props {
   eventEmitter: EventEmitter;
@@ -27,6 +28,14 @@ interface Props {
 }
 
 const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
+  // 创建百度页面统计, 只做一次创建
+  useEffect(() => {
+    const { statisticsId } = pageData;
+    if (statisticsId) {
+      initTrack(statisticsId);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
   const rootFontsize =
     useSelector((state: RootState) => state.controller.bestFont) ||
@@ -85,23 +94,44 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     [setRunningTimes],
   )
 
-  // 页面重定向
-  const redirect = useCallback(
-      (url, isReplace) => {
+  // 页面百度统计
+  const trackPageViewBD = useCallback(
+      (url) => {
+        console.log(5555, url)
         const argUrl = getArgumentsItem(url);
-        const argIsReplace = getArgumentsItem(isReplace);
-        if (argUrl === '-1') {
-          window.history.back()
-        } else if (isUrl(argUrl as string)) {
-          if (argIsReplace) {
-            window.location.replace(argUrl as string)
-          } else {
-            window.location.href = argUrl as string;
-          }
-        }
+        trackPageView(argUrl)
       },
       [],
     )
+  
+    // 事件百度统计
+  const trackEventBD = useCallback(
+    (category, action, optLabel) => {
+      const argCategory = getArgumentsItem(category);
+      const argAction = getArgumentsItem(action);
+      const argOptLabel = getArgumentsItem(optLabel);
+      trackEvent(argCategory, argAction, argOptLabel);
+    },
+    [],
+  )
+
+  // 页面重定向
+  const redirect = useCallback(
+    (url, isReplace) => {
+      const argUrl = getArgumentsItem(url);
+      const argIsReplace = getArgumentsItem(isReplace);
+      if (argUrl === '-1') {
+        window.history.back()
+      } else if (isUrl(argUrl as string)) {
+        if (argIsReplace) {
+          window.location.replace(argUrl as string)
+        } else {
+          window.location.href = argUrl as string;
+        }
+      }
+    },
+    [],
+  )
 
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
@@ -110,7 +140,9 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     eventEmitter.addEventListener("global/unmount", onUnmount);
     eventEmitter.addEventListener("global/injectGlobal", injectGlobal);
     eventEmitter.addEventListener("global/redirect", redirect);
-  }, [eventEmitter, onMount, onUnmount, injectGlobal, redirect]);
+    eventEmitter.addEventListener("global/trackPageViewBD", trackPageViewBD);
+    eventEmitter.addEventListener("global/trackEventBD", trackEventBD);
+  }, [eventEmitter, onMount, onUnmount, injectGlobal, redirect, trackPageViewBD, trackEventBD]);
 
   useEffect(() => {
     if (eventEmitter) {
@@ -203,6 +235,46 @@ Output.exposeFunctions = [
           method: "===",
           comparableAverageB: "1"
         },
+      }
+    ]
+  },
+  {
+    name: "trackPageViewBD",
+    description: "百度页面统计",
+    arguments: [
+      {
+        type: "string",
+        name: "路径",
+        fieldName: "url",
+        describe: '必填，以"/"开头，访问当前页面时百度统计将以此路径作为统计标识',
+        data: '',
+      }
+    ]
+  },
+  {
+    name: "trackEventBD",
+    description: "百度事件统计",
+    arguments: [
+      {
+        type: "string",
+        name: "类型",
+        fieldName: "category",
+        describe: '要监控的目标的类型名称	不填、填"-"的事件会被抛弃',
+        data: '',
+      },
+      {
+        type: "string",
+        name: "动作",
+        fieldName: "action",
+        describe: '用户跟网页进行交互的动作名称	不填、填"-"的事件会被抛弃',
+        data: '',
+      },
+      {
+        type: "string",
+        name: "信息(可选)",
+        fieldName: "optLabel",
+        describe: '事件的一些额外信息	不填、填"-"代表此项为空',
+        data: '',
       }
     ]
   },
