@@ -92,46 +92,48 @@ const Form: Modules<FormProps> = (props) => {
               onSubmit={handleSubmit(onSubmit)}
               onReset={onReset}
             >
-              <h3 className={s.header}>header</h3>
-              <Grid container spacing={2}>
-                {formLists?.map(({ type, row, ...other }, index) => {
-                  if (type === "checkboxgroup") {
+              <h3 className={classNames(s.header, userClass.header)}>header</h3>
+              <div className={classNames(s.container, userClass.container)}>
+                <Grid container spacing={2}>
+                  {formLists?.map(({ type, row, ...other }, index) => {
+                    if (type === "checkboxgroup") {
+                      return (
+                        <CheckboxGroup
+                          key={index}
+                          row={row}
+                          {...other}
+                          type="checkboxgroup"
+                          form={RHForm as any}
+                        />
+                      );
+                    }
+                    if (type === "radiogroup") {
+                      return (
+                        <RadioGroup
+                          key={index}
+                          row={row}
+                          {...other}
+                          type="radiogroup"
+                          form={RHForm as any}
+                        />
+                      );
+                    }
                     return (
-                      <CheckboxGroup
+                      <TextField
                         key={index}
-                        row={row}
+                        type={type}
                         {...other}
-                        type="checkboxgroup"
                         form={RHForm as any}
                       />
                     );
-                  }
-                  if (type === "radiogroup") {
-                    return (
-                      <RadioGroup
-                        key={index}
-                        row={row}
-                        {...other}
-                        type="radiogroup"
-                        form={RHForm as any}
-                      />
-                    );
-                  }
-                  return (
-                    <TextField
-                      key={index}
-                      type={type}
-                      {...other}
-                      form={RHForm as any}
-                    />
-                  );
-                })}
-              </Grid>
-              <div className={s.footer}>
-                <button type="submit" disabled={!formState.isValid}>
+                  })}
+                </Grid>
+              </div>
+              <div className={classNames(s.footer, userClass.footer)}>
+                <button className={userClass.oknormal} type="submit" disabled={!formState.isValid}>
                   提交
                 </button>
-                <button type="reset">重置</button>
+                <button className={userClass.resetnormal} type="reset">重置</button>
               </div>
             </form>
           </ScopedCssBaseline>
@@ -185,9 +187,23 @@ Form.exposeDefaultProps = {
   style: {
     basic: {},
     wrap: {},
+    header: {},
+    container: {},
+    footer: {},
+    button: {},
+    oknormal: {},
+    okdisabled: {},
+    resetnormal: {},
   },
   styleDescription: {
     wrap: "包裹器",
+    header: "头部",
+    container: "内容",
+    footer: "脚部",
+    button: "按钮",
+    oknormal: "提交按钮",
+    okdisabled: "提交按钮禁用",
+    resetnormal: "重置按钮",
   },
 };
 
