@@ -11,7 +11,6 @@ const getDefaultArgumentsByEventName = (name: string): ArgumentsItem[] | undefin
     const grounp = name.split('/');
     const appData = store.getState().appData;
     const module = appData.find(item => item.moduleId === grounp[0]);
-    console.log('module', module)
     if (module?.type) {
         const exposeFunctions: ExposeFunctions[] = require(`~/modules/${module?.type}`).default?.exposeFunctions;
         const defaultFunction = exposeFunctions.find(element => element.name === grounp[1]);

@@ -85,7 +85,6 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
       const argValue = getArgumentsItem(value)
       if (argName && argValue) {
         setRunningTimes({[`${argName}`]: argValue});
-        console.log('运行时！！！！', argName, argValue)
       } else {
         console.error('注入自定义全局数据时缺少属性名或值！')
       }
@@ -97,7 +96,6 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
   // 页面百度统计
   const trackPageViewBD = useCallback(
       (url) => {
-        console.log(5555, url)
         const argUrl = getArgumentsItem(url);
         trackPageView(argUrl)
       },
