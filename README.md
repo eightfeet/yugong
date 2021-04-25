@@ -1,3 +1,8 @@
+## to do list
+- 优化编辑器
+- 配置活动
+- 模板层设计！！！
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
