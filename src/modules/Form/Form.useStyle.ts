@@ -17,6 +17,17 @@ const useStyles = createUseStyles<string, any>({
     resetnormal: (style) => ({
         '& button': styleCompiler(style.resetnormal).style || {}
     }),
+    formitem: (style) => ({
+        '& .MuiGrid-item': styleCompiler(style.formitem).style || {},
+        '& .MuiSvgIcon-root': styleCompiler(style.icon).style || {},
+        '& .MuiInput-underline:before': styleCompiler(style.baseline).style || {},
+        '& .MuiInput-underline:after': styleCompiler(style.baselineact).style || {},
+        '& .MuiInput-underline.Mui-error:before': styleCompiler(style.errorbaseline).style || {},
+        '& .MuiInput-underline.Mui-error:after': styleCompiler(style.errorbaselineact).style || {},
+        '& .MuiFormLabel-root': styleCompiler(style.label).style || {},
+        '& .MuiFormLabel-root.Mui-error': styleCompiler(style.errorlabel).style || {},
+        
+    })
 });
 
 export default useStyles;

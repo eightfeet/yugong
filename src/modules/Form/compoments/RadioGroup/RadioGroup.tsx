@@ -11,9 +11,11 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { FormItem } from '../formTypes';
 import s from './RadioGroup.module.less';
+import classNames from 'classnames';
 
 interface RadioGroupProps extends FormItem {
     row?: boolean;
+    className?: string;
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
@@ -22,13 +24,14 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
     form,
     options = [],
     row,
+    className,
 }) => {
     const {
         control,
         formState: { errors },
     } = form;
     return (
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classNames(className)}>
             <FormControl
                 className={s.fieldset}
                 component="fieldset"

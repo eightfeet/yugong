@@ -92,7 +92,7 @@ const Form: Modules<FormProps> = (props) => {
               onReset={onReset}
             >
               <h3 className={classNames(s.header, userClass.header)}>header</h3>
-              <div className={classNames(s.container, userClass.container)}>
+              <div className={classNames(s.container, userClass.container, userClass.formitem)}>
                 <Grid container spacing={2}>
                   {formLists?.map(({ type, row, ...other }, index) => {
                     if (type === "checkboxgroup") {
@@ -103,6 +103,7 @@ const Form: Modules<FormProps> = (props) => {
                           {...other}
                           type="checkboxgroup"
                           form={RHForm as any}
+                          className={userClass.formitem}
                         />
                       );
                     }
@@ -114,6 +115,7 @@ const Form: Modules<FormProps> = (props) => {
                           {...other}
                           type="radiogroup"
                           form={RHForm as any}
+                          className={userClass.formitem}
                         />
                       );
                     }
@@ -123,6 +125,7 @@ const Form: Modules<FormProps> = (props) => {
                         type={type}
                         {...other}
                         form={RHForm as any}
+                        className={userClass.formitem}
                       />
                     );
                   })}
@@ -193,6 +196,14 @@ Form.exposeDefaultProps = {
     wrap: {},
     header: {},
     container: {},
+    formitem: {},
+    label: {},
+    errorlabel: {},
+    icon: {},
+    baseline: {},
+    baselineact: {},
+    errorbaseline: {},
+    errorbaselineact: {},
     footer: {},
     button: {},
     oknormal: {},
@@ -203,6 +214,14 @@ Form.exposeDefaultProps = {
     wrap: "包裹器",
     header: "头部",
     container: "内容",
+    formitem: "表单项",
+    label: "标签",
+    errorlabel: "错误标签",
+    icon: "图标",
+    baseline: "输入框",
+    baselineact: "输入框激活",
+    errorbaseline: "错误输入框",
+    errorbaselineact: "错误输入框激活",
     footer: "脚部",
     button: "按钮",
     oknormal: "提交按钮",

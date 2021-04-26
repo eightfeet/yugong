@@ -7,9 +7,27 @@
             width: 100%;
         }
 
+        input:-internal-autofill-selected {
+          background-color: transparent !important;
+        }
+
+        ::-webkit-calendar-picker-indicator{
+          opacity: 0.3;
+        }
+
         .MuiScopedCssBaseline-root {
             background-color:transparent;
+            color: inherit;
         }
+
+        .MuiInputBase-root, .MuiScopedCssBaseline-root, .MuiSvgIcon-root, .MuiRadio-root, .MuiCheckbox-root, .MuiFormLabel-root {
+            color: inherit;
+        }
+
+        .MuiTypography-body1 {
+          font-size: inherit;
+        }
+        
     }
 
     .container, .header, .footer {

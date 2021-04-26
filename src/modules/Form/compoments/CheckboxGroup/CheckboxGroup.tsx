@@ -7,6 +7,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import MUiCheckbox from "@material-ui/core/Checkbox";
+import classNames from "classnames";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
 import isType from "~/core/helper/isType";
@@ -15,6 +16,7 @@ import s from "./CheckboxGroup.module.less";
 
 interface CheckboxGroupProps extends FormItem {
   row?: boolean;
+  className?: string;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
@@ -23,6 +25,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   form,
   options = [],
   row,
+  className
 }) => {
   const {
     control,
@@ -45,7 +48,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   );
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} className={classNames(className)}>
       <FormControl
         className={s.fieldset}
         component="fieldset"

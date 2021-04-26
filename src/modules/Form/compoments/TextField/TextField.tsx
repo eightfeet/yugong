@@ -1,10 +1,12 @@
 import { Grid } from '@material-ui/core';
 import MUiTextField from '@material-ui/core/TextField';
+import classNames from 'classnames';
 import { Controller } from 'react-hook-form';
 import { FormItem } from '../formTypes';
 
 interface TextFidleProps extends FormItem {
     type: 'text' | 'date' | 'datetime' | 'time' | 'select';
+    className?: string;
 }
 
 const timeTypes = ['date', 'datetime', 'time'];
@@ -14,6 +16,7 @@ const TextField: React.FC<TextFidleProps> = ({
     fieldName,
     type,
     options,
+    className,
     ...other
 }) => {
     const {
@@ -36,12 +39,15 @@ const TextField: React.FC<TextFidleProps> = ({
         typeProps.SelectProps = {
             native: true,
         };
+        typeProps.InputLabelProps = {
+            shrink: true,
+        };
     } else {
         typeProps.type = type;
     }
 
     return (
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classNames(className)}>
             <Controller
                 control={control}
                 name={fieldName}
