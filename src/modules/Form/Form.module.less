@@ -1,6 +1,7 @@
 
 .root {
     box-sizing: border-box;
+    font-size: 1rem;
     :global {
         .MuiGrid-container {
             margin: 0;
@@ -24,8 +25,12 @@
             color: inherit;
         }
 
-        .MuiTypography-body1 {
+        .MuiSvgIcon-root, .MuiIconButton-root, .MuiTypography-body1, .MuiInputBase-root {
           font-size: inherit;
+        }
+
+        .MuiFormLabel-root.Mui-focused {
+          color: inherit;
         }
         
     }
