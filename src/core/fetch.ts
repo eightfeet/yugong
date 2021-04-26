@@ -5,6 +5,7 @@ import { store } from "~/redux/store";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 import loading from "./loading";
 import isType from "./helper/isType";
+import message from '~/components/Message';
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { method, body, headers, mode, credentials } = apiArguments;
@@ -106,6 +107,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     }
     return result;
   } catch (error) {
+    message.create();
     loading.hide();
     // 失败发布
     if (errorPublic?.length) {
