@@ -23,6 +23,13 @@ export interface FormProps extends AppDataElementsTypes {
   eventEmitter: EventEmitter;
 }
 
+interface Config {
+  variant?: 'outlined' | 'filled' | 'standard',
+  title?: any,
+  submittext?: any,
+  resettext?: any
+}
+
 const Form: Modules<FormProps> = (props) => {
   const { eventEmitter, events = {}, api, style } = props;
   const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>(
@@ -30,7 +37,7 @@ const Form: Modules<FormProps> = (props) => {
   );
   const [formLists, setFormLists] = useState<FormArguments[]>();
   const [schema, setSchema] = useState<any>();
-
+  const [config, setConfig] = useState<Config>({});
   const userClass = useStyles(style);
   // API请求 注意依赖关系
   useEffect(() => {
@@ -56,10 +63,27 @@ const Form: Modules<FormProps> = (props) => {
     setFormLists(list as FormArguments[]);
   }, []);
 
+  const setFormConfig = useCallback(
+    (forminput, formtitle, formsubmittext, formresettext) => {
+      const argforminput = getArgumentsItem(forminput);
+      const argformtitle = getArgumentsItem(formtitle);
+      const argformsubmittext = getArgumentsItem(formsubmittext);
+      const argformresettext = getArgumentsItem(formresettext);
+      setConfig({
+        variant: argforminput as any,
+        title: argformtitle,
+        submittext: argformsubmittext,
+        resettext: argformresettext
+      });
+    },
+    []
+  );
+
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
     eventEmitter.addEventListener("setFormData", setFormData);
-  }, [eventEmitter, setFormData]);
+    eventEmitter.addEventListener("setFormConfig", setFormConfig);
+  }, [eventEmitter, setFormData, setFormConfig]);
 
   /**========================================================== */
 
@@ -71,21 +95,18 @@ const Form: Modules<FormProps> = (props) => {
 
   const { handleSubmit, reset, formState } = RHForm;
 
-  const onSubmit = useCallback(async (data) => {
-    const apiArguments = api?.find((item) => item.apiId === "afterClick");
-    if (apiArguments) {
-      apiArguments.body = [{type: 'mixed', fieldName: 'formdata', data }];
-      await requester(apiArguments || {}, true);
-      // try {
-        
-      // } catch (error) {
-      //   console.error(error)
-      // }
-    }
-    console.log('apiArguments', apiArguments, data)
-    // 执行提交后续事务
-    eventEmitter.emit(events.submit);
-  }, [api, eventEmitter, events.submit]);
+  const onSubmit = useCallback(
+    async (data) => {
+      const apiArguments = api?.find((item) => item.apiId === "afterClick");
+      if (apiArguments) {
+        apiArguments.body = [{ type: "mixed", fieldName: "formdata", data }];
+        await requester(apiArguments || {}, true);
+      }
+      // 执行提交后续事务
+      eventEmitter.emit(events.submit);
+    },
+    [api, eventEmitter, events.submit]
+  );
 
   const onReset = useCallback(() => {
     reset();
@@ -103,8 +124,16 @@ const Form: Modules<FormProps> = (props) => {
               onSubmit={handleSubmit(onSubmit)}
               onReset={onReset}
             >
-              <h3 className={classNames(s.header, userClass.header)}>header</h3>
-              <div className={classNames(s.container, userClass.container, userClass.formitem)}>
+              <h3 className={classNames(s.header, userClass.header)}>
+                {config?.title || 'header'}
+              </h3>
+              <div
+                className={classNames(
+                  s.container,
+                  userClass.container,
+                  userClass.formitem
+                )}
+              >
                 <Grid container spacing={2}>
                   {formLists?.map(({ type, row, ...other }, index) => {
                     if (type === "checkboxgroup") {
@@ -134,6 +163,7 @@ const Form: Modules<FormProps> = (props) => {
                     return (
                       <TextField
                         key={index}
+                        variant={config.variant}
                         type={type}
                         {...other}
                         form={RHForm as any}
@@ -146,13 +176,12 @@ const Form: Modules<FormProps> = (props) => {
               <div className={classNames(s.footer, userClass.footer)}>
                 <label className={userClass.oknormal}>
                   <button type="submit" disabled={!formState.isValid}>
-                    提交
+                    {config?.submittext ||  '提交'}
                   </button>
                 </label>
                 <label className={userClass.resetnormal}>
-                  <button type="reset">重置</button>
+                  <button type="reset">{config?.resettext ||  '重置'}</button>
                 </label>
-                
               </div>
             </form>
           </ScopedCssBaseline>
@@ -176,6 +205,40 @@ Form.exposeFunctions = [
         describe: "设置表单数据",
         data: "",
         fieldName: "formdata",
+      },
+    ],
+  },
+  {
+    name: "setFormConfig",
+    description: "设置表单功能",
+    arguments: [
+      {
+        type: "string",
+        name: "输入框",
+        describe: "standard,outlined或filled默认standard",
+        data: "",
+        fieldName: "forminput",
+      },
+      {
+        type: "string",
+        name: "表单标题",
+        describe: "设置表单标题文字",
+        data: "",
+        fieldName: "formtitle",
+      },
+      {
+        type: "string",
+        name: "提交按钮",
+        describe: "设置提交按钮文字",
+        data: "提交",
+        fieldName: "formsubmittext",
+      },
+      {
+        type: "string",
+        name: "重置按钮",
+        describe: "设置重置按钮文字",
+        data: "重置",
+        fieldName: "formresettext",
       },
     ],
   },
@@ -245,10 +308,12 @@ Form.exposeDefaultProps = {
 /**
  * 发布默认Api
  */
-Form.exposeApi = [{
-  apiId: "afterClick",
-  name: "提交表单(由提交表单事件自动收集表单数据)",
-  hideBodyInput: true
-}];
+Form.exposeApi = [
+  {
+    apiId: "afterClick",
+    name: "提交表单(由提交表单事件自动收集表单数据)",
+    hideBodyInput: true,
+  },
+];
 
 export default Form;

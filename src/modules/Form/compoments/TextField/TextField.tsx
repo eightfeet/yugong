@@ -7,6 +7,7 @@ import { FormItem } from '../formTypes';
 interface TextFidleProps extends FormItem {
     type: 'text' | 'date' | 'datetime' | 'time' | 'select';
     className?: string;
+    variant?: string;
 }
 
 const timeTypes = ['date', 'datetime', 'time'];
@@ -17,6 +18,7 @@ const TextField: React.FC<TextFidleProps> = ({
     type,
     options,
     className,
+    variant,
     ...other
 }) => {
     const {
@@ -54,6 +56,7 @@ const TextField: React.FC<TextFidleProps> = ({
                 render={({ field }) => (
                     <MUiTextField
                         fullWidth
+                        variant={variant || 'standard'}
                         {...typeProps}
                         {...other}
                         error={!!errors[fieldName]}
