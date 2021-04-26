@@ -32,7 +32,6 @@ const Form: Modules<FormProps> = (props) => {
   const [schema, setSchema] = useState<any>();
 
   const userClass = useStyles(style);
-
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -130,10 +129,15 @@ const Form: Modules<FormProps> = (props) => {
                 </Grid>
               </div>
               <div className={classNames(s.footer, userClass.footer)}>
-                <button className={userClass.oknormal} type="submit" disabled={!formState.isValid}>
-                  提交
-                </button>
-                <button className={userClass.resetnormal} type="reset">重置</button>
+                <label className={userClass.oknormal}>
+                  <button type="submit" disabled={!formState.isValid}>
+                    提交
+                  </button>
+                </label>
+                <label className={userClass.resetnormal}>
+                  <button type="reset">重置</button>
+                </label>
+                
               </div>
             </form>
           </ScopedCssBaseline>

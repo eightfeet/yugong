@@ -11,10 +11,12 @@ const useStyles = createUseStyles<string, any>({
         '& button': (styleCompiler(style.button).style || {})
     }),
     oknormal: (style) => ({
-        ...styleCompiler(style.oknormal).style || {},
-        '& disabled': styleCompiler(style.okdisabled).style || {},
+        '& button': styleCompiler(style.oknormal).style || {},
+        '& button:disabled': styleCompiler(style.okdisabled).style || {},
     }),
-    resetnormal: (style) => styleCompiler(style.resetnormal).style || {},
+    resetnormal: (style) => ({
+        '& button': styleCompiler(style.resetnormal).style || {}
+    }),
 });
 
 export default useStyles;
