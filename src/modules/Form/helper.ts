@@ -36,7 +36,12 @@ export const compileFormData = (
           try {
             validatelist[item.fieldName] = Object.keys(element).reduce(
               (previousValue, subKey) => {
-                return previousValue[subKey](...(element[subKey] || []));
+                const args = [...(element[subKey] || [])];
+                // 处理正则
+                if (subKey === 'matches') {
+                  args[0]= new RegExp(args[0])
+                }
+                return previousValue[subKey](...args);
               },
               validateFn()
             );
