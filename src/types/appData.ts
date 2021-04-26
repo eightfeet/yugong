@@ -120,6 +120,7 @@ export interface Api {
   url?: string;
   method?: RequestInit["method"];
   headers?: RequestInit["headers"];
+  hideBodyInput?: boolean;
   body?: ArgumentsItem[];
   credentials?: RequestInit["credentials"];
   mode?: RequestInit["mode"];

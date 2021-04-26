@@ -4,8 +4,9 @@ import { getArguments } from "./getArgumentsTypeDataFromDataSource";
 import { store } from "~/redux/store";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 import loading from "./loading";
+import isType from "./helper/isType";
 
-const requester = async (apiArguments: Api) => {
+const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { method, body, headers, mode, credentials } = apiArguments;
 
   if (!apiArguments.url) {
@@ -36,8 +37,19 @@ const requester = async (apiArguments: Api) => {
       }
     }
   }
+  
   // 关联body
   let bodyData: any = getArguments(body || []);
+
+  // 解构api时只取第一个参数
+  if (isDestructuring && isType(bodyData, 'Object')) {
+    let temp = {}
+    Object.keys(bodyData).some(key => {
+      temp = bodyData[key];
+      return true;
+    })
+    bodyData = temp;
+  }
 
   // 处理Url
   let urlData = url;
@@ -79,12 +91,12 @@ const requester = async (apiArguments: Api) => {
   throw res;
 };
 
-const bootstrap = async (apiArguments: Api) => {
+const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { successPublic, errorPublic } = apiArguments;
   const setRunningTimes = store.dispatch.runningTimes.setRunningTimes;
   try {
     loading.show();
-    const result = await requester(apiArguments);
+    const result = await requester(apiArguments, isDestructuring);
     loading.hide();
     // 处理请求结果
     // 成功发布

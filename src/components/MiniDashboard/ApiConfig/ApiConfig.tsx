@@ -318,7 +318,7 @@ const Apiconfig: React.FC<Props> = ({
                   />
                 </Col>
               </Row>
-              <Row className={s.row} gutter={4}>
+              {item.hideBodyInput ?  null : <Row className={s.row} gutter={4}>
                 <Col span={24}>
                   <Button
                     onClick={onHandleUserArg(index, "body")}
@@ -327,7 +327,7 @@ const Apiconfig: React.FC<Props> = ({
                     入参设置
                   </Button>
                 </Col>
-              </Row>
+              </Row>}
               <Divider orientation="left" plain>
                 请求结果发布
               </Divider>

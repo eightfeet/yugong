@@ -71,9 +71,21 @@ const Form: Modules<FormProps> = (props) => {
 
   const { handleSubmit, reset, formState } = RHForm;
 
-  const onSubmit = useCallback((data) => {
-    console.log(data);
-  }, []);
+  const onSubmit = useCallback(async (data) => {
+    const apiArguments = api?.find((item) => item.apiId === "afterClick");
+    if (apiArguments) {
+      apiArguments.body = [{type: 'mixed', fieldName: 'formdata', data }];
+      await requester(apiArguments || {}, true);
+      // try {
+        
+      // } catch (error) {
+      //   console.error(error)
+      // }
+    }
+    console.log('apiArguments', apiArguments, data)
+    // 执行提交后续事务
+    eventEmitter.emit(events.submit);
+  }, [api, eventEmitter, events.submit]);
 
   const onReset = useCallback(() => {
     reset();
@@ -183,7 +195,7 @@ Form.exposeEvents = [
   },
   {
     name: "submit",
-    description: "提交表单",
+    description: "提交表单（Api请求后）",
   },
 ];
 
@@ -233,6 +245,10 @@ Form.exposeDefaultProps = {
 /**
  * 发布默认Api
  */
-Form.exposeApi = [];
+Form.exposeApi = [{
+  apiId: "afterClick",
+  name: "提交表单(由提交表单事件自动收集表单数据)",
+  hideBodyInput: true
+}];
 
 export default Form;
