@@ -1,46 +1,13 @@
 
 .root {
     box-sizing: border-box;
-    font-size: 1.2rem;
-    :global {
-        .MuiGrid-container {
-            margin: 0;
-            width: 100%;
-        }
-
-        input:-internal-autofill-selected {
-          background-color: transparent !important;
-        }
-
-        ::-webkit-calendar-picker-indicator{
-          opacity: 0.3;
-        }
-
-        .MuiScopedCssBaseline-root {
-            background-color:transparent;
-            color: inherit;
-        }
-        
-        .MuiInputBase-root, .MuiScopedCssBaseline-root, .MuiSvgIcon-root, .MuiRadio-root, .MuiCheckbox-root, .MuiFormLabel-root {
-            color: inherit;
-        }
-
-        .MuiScopedCssBaseline-root, .MuiSvgIcon-root, .MuiIconButton-root, .MuiTypography-body1, .MuiInputBase-root {
-          font-size: inherit;
-        }
-
-        .MuiFormLabel-root.Mui-focused {
-          color: inherit;
-        }
-        
-    }
 
     .container, .header, .footer {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
+        box-sizing: content-box;
     }
-    
+
     .footer {
         button {
             -webkit-appearance: none;
@@ -69,4 +36,38 @@
           }
     }
 
+}
+
+
+.root :global {
+  .MuiGrid-container {
+      margin: 0;
+      width: 100%;
+  }
+
+  input:-internal-autofill-selected {
+    background-color: transparent !important;
+  }
+
+  ::-webkit-calendar-picker-indicator{
+    opacity: 0.3;
+  }
+
+  .MuiScopedCssBaseline-root {
+      background-color:transparent;
+      color: inherit;
+  }
+
+  .MuiInputBase-root, .MuiScopedCssBaseline-root, .MuiSvgIcon-root, .MuiRadio-root, .MuiCheckbox-root, .MuiFormLabel-root {
+      color: inherit;
+  }
+
+  .MuiSvgIcon-root, .MuiIconButton-root, .MuiTypography-body1, .MuiInputBase-root {
+    font-size: inherit;
+  }
+
+  .MuiFormLabel-root.Mui-focused {
+    color: inherit;
+  }
+  
 }

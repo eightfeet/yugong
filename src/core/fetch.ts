@@ -107,7 +107,10 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     }
     return result;
   } catch (error) {
+    console.log(1)
     message.create();
+    console.log(2);
+    
     loading.hide();
     // 失败发布
     if (errorPublic?.length) {

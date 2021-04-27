@@ -118,7 +118,7 @@ const Form: Modules<FormProps> = (props) => {
     <Wrapper {...props} maxHeight maxWidth>
       {!!formLists?.length ? (
         <div className={classNames(s.root, userClass.wrap)}>
-          <ScopedCssBaseline>
+          <ScopedCssBaseline classes={{root: s.rootform}}>
             <form
               className={s.form}
               onSubmit={handleSubmit(onSubmit)}
