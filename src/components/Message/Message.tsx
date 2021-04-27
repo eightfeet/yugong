@@ -10,7 +10,6 @@ class Message {
         document.body.appendChild(this.MessageNode);
         this.msgRef = createRef();
         ReactDOM.render(<MessageAlert ref={this.msgRef} />, this.MessageNode);
-        console.log('this.msgRef', this.msgRef)
     }
 
     /**

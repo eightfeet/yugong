@@ -166,7 +166,9 @@ const OutputLayout: React.FC<LayoutProps> = ({
 
     const renderGridItem = () => {
         const maxH = Math.floor(windowsHeight / rowHeight);
-        return appData.map((item) => {
+        const copyData = [...appData];
+        const optAppdata = copyData.filter(fItem => fItem.layout?.w!==0 || fItem.layout?.h!==0);
+        return optAppdata.map((item) => {
             // 确保宽度不超过屏幕栅格
             if (item.layout && item.layout.h > maxH) {
                 item.layout.h = maxH;

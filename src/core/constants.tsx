@@ -5,6 +5,7 @@ import IconText from "./icons/IconText";
 import IconImage from './icons/IconImage';
 import IconTable from './icons/IconTable';
 import IconForm from './icons/IconForm';
+import IconModal from './icons/IconModal';
 
 export const MODULES = [
   {
@@ -42,6 +43,12 @@ export const MODULES = [
     title: "Form",
     discribe: "表单",
     icon: <Icon component={IconForm} />
+  },
+  {
+    moduleName: "Modal",
+    title: "Modal",
+    discribe: "对话框",
+    icon: <Icon component={IconModal} />
   },
 ];
 
