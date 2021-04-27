@@ -8,14 +8,10 @@ const useStyles = createUseStyles<string, any>({
     container: (style) => styleCompiler(style.container).style || {},
     footer: (style) => ({
         ...styleCompiler(style.footer).style || {},
-        '& button': (styleCompiler(style.button).style || {})
-    }),
-    oknormal: (style) => ({
-        '& button': styleCompiler(style.oknormal).style || {},
-        '& button:disabled': styleCompiler(style.okdisabled).style || {},
-    }),
-    resetnormal: (style) => ({
-        '& button': styleCompiler(style.resetnormal).style || {}
+        '& button': (styleCompiler(style.button).style || {}),
+        '& .form_ok': styleCompiler(style.oknormal).style || {},
+        '& .form_ok:disabled': styleCompiler(style.okdisabled).style || {},
+        '& .form_reset': styleCompiler(style.resetnormal).style || {}
     }),
     formitem: (style) => ({
         '& .MuiGrid-item': styleCompiler(style.formitem).style || {},

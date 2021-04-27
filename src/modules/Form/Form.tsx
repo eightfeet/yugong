@@ -174,14 +174,10 @@ const Form: Modules<FormProps> = (props) => {
                 </Grid>
               </div>
               <div className={classNames(s.footer, userClass.footer)}>
-                <label className={userClass.oknormal}>
-                  <button type="submit" disabled={!formState.isValid}>
+                  <button type="submit" className="form_ok" disabled={!formState.isValid}>
                     {config?.submittext ||  '提交'}
                   </button>
-                </label>
-                <label className={userClass.resetnormal}>
-                  <button type="reset">{config?.resettext ||  '重置'}</button>
-                </label>
+                  <button type="reset" className="form_reset">{config?.resettext ||  '重置'}</button>
               </div>
             </form>
           </ScopedCssBaseline>
