@@ -10,14 +10,54 @@ class Message {
         document.body.appendChild(this.MessageNode);
         this.msgRef = createRef();
         ReactDOM.render(<MessageAlert ref={this.msgRef} />, this.MessageNode);
+        console.log('this.msgRef', this.msgRef)
     }
 
     /**
-     * create
+     * Default
      */
-    public create(message: JSX.Element | string) {
-        this.msgRef.current?.show(message)
+    public default(message: JSX.Element | string) {
+        this.msgRef.current?.show(message, { 
+            variant: 'default'
+        })
     }
+
+    /**
+     * Success
+     */
+     public success(message: JSX.Element | string) {
+        this.msgRef.current?.show(message, { 
+            variant: 'success'
+        })
+    }
+
+    /**
+     * Error
+     */
+     public error(message: JSX.Element | string) {
+        this.msgRef.current?.show(message, { 
+            variant: 'error'
+        })
+    }
+
+    /**
+     * Warning
+     */
+     public warning(message: JSX.Element | string) {
+        this.msgRef.current?.show(message, { 
+            variant: 'warning'
+        })
+    }
+
+    /**
+     * Info
+     */
+     public info(message: JSX.Element | string) {
+        this.msgRef.current?.show(message, { 
+            variant: 'info'
+        })
+    }
+
 }
 
 export default new Message();

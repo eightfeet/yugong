@@ -1,50 +1,36 @@
-import { forwardRef, Component } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
+import { forwardRef, useImperativeHandle } from 'react';
+import { SnackbarProvider, useSnackbar, OptionsObject } from 'notistack';
+import Slide from '@material-ui/core/Slide';
+import isType from '~/core/helper/isType';
 
-class MessageAlert extends Component<
-    {},
-    {
-        vertical: 'top' | 'bottom';
-        horizontal: 'center' | 'left' | 'right';
-        open: boolean;
-        message: string;
-    }
-> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            open: false,
-            vertical: 'top',
-            horizontal: 'center',
-            message: '',
-        };
-    }
-    show = (message: string) => {
-        this.setState({
-            open: true,
-            message,
-        });
+function MyApp({ innerRef }: any) {
+    const { enqueueSnackbar } = useSnackbar();
+
+    const show = (message: string, options: OptionsObject) => {
+        if (isType(message, 'String') && message.length) {
+            console.log('options', options)
+            enqueueSnackbar(message, {
+                ...options,
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                },
+                TransitionComponent: Slide as any,
+            });
+        }
     };
-    hide = () => {
-        this.setState({
-            open: false,
-            message: '',
-        });
-    };
-    render() {
-        const { vertical, horizontal, open, message } = this.state;
-        return (
-            <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                onClose={this.hide}
-                message={message}
-                key={vertical + horizontal}
-            />
-        );
-    }
+
+    useImperativeHandle(innerRef, () => ({
+        show,
+    }));
+
+    return null;
 }
 
 export default forwardRef((_, ref) => {
-    return <MessageAlert ref={ref as any} />;
+    return (
+        <SnackbarProvider maxSnack={3} >
+            <MyApp innerRef={ref} />
+        </SnackbarProvider>
+    );
 });
