@@ -108,7 +108,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     return result;
   } catch (error) {
     console.log(1)
-    message.create();
+    message.create('请求失败');
     console.log(2);
     
     loading.hide();
