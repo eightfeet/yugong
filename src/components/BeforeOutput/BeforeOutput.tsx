@@ -15,6 +15,7 @@ const Beforeoutput: React.FC<Props> = () => {
   const { getPageData } = useDispatch<Dispatch>().pageData;
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const activationItem = useSelector((state: RootState) => state.activationItem);
   
   // 缓存
   const [appDataLocalStoreData] = useLocalStorage("appData", null);
@@ -22,7 +23,6 @@ const Beforeoutput: React.FC<Props> = () => {
   const [isAppdataReady, setIsAppdataReady] = useState(false);
   const [isPagedataReady, setIsPagedataReady] = useState(false);
   const [isEventEmitterReady, setIsEventEmitterReady] = useState(false);
-  const sendMessage = usePostMessage(() => {});
 
   // 创建全站事件处理器
   const eventEmitter = useMemo(() => {
@@ -32,6 +32,14 @@ const Beforeoutput: React.FC<Props> = () => {
     setIsEventEmitterReady(true)
     return env;
   }, []);
+
+  const sendMessage = usePostMessage(({tag, value}) => {
+    if (tag === 'playEventEmit' && value === true) {
+      const env = eventEmitter.bind(activationItem.moduleId)
+      // to do env
+      console.log(env.emit())
+    }
+  });
 
   // 数据初始化，获取页面数据
   useMemo(() => {

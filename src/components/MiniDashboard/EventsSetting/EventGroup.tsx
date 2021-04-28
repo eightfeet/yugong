@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import s from './EventGroup.module.less';
-import {
+import Icon, {
     MinusOutlined,
     PlusOutlined,
     SettingOutlined,
@@ -12,7 +12,8 @@ import { EventsTypeItem, ExposeEvents, ExposeFunctions } from '~/types/modules';
 import ArgumentsSetting from '../ArgumentsSetting';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
-import App from '~/components/Output'
+import App from '~/components/Output';
+import Play from './play'
 
 interface Props {
     curentEventInfomation: ExposeEvents;
@@ -21,6 +22,7 @@ interface Props {
         curentEventInfomation: ExposeEvents,
         data: EventsTypeItem[]
     ) => void;
+    onPlay: () => void;
 }
 
 interface EventDataList {
@@ -61,6 +63,7 @@ const EventGroup: React.FC<Props> = ({
     curentEventInfomation,
     value,
     onChange,
+    onPlay,
 }) => {
     // 当前模块发布的事件状态清单
     const [currentModuleEvents, setCurrentModuleEvents] = useState<
@@ -216,7 +219,14 @@ const EventGroup: React.FC<Props> = ({
                 <div className={s.menu}>
                     <Button
                         size="small"
-                        icon={<PlusOutlined onClick={onPlus} />}
+                        icon={<Icon component={Play} />}
+                        onClick={onPlay}
+                    />
+                    &nbsp;&nbsp;
+                    <Button
+                        size="small"
+                        onClick={onPlus}
+                        icon={<PlusOutlined />}
                     />
                 </div>
             </div>

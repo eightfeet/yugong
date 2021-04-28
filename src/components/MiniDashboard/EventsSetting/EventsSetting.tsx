@@ -5,6 +5,7 @@ import { RootState } from "~/redux/store";
 import EventGroup from "./EventGroup";
 import useMergeAppData from "~/hooks/useMergeAppData";
 import { EventsType, EventsTypeItem, ExposeEvents } from "~/types/modules";
+import usePostMessage from "~/hooks/usePostMessage";
 
 /**
  * 确定当前激活组件是否向全局发布事件
@@ -17,6 +18,8 @@ const EventsSetting: React.FC<Props> = () => {
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
+
+  const sendMessage = usePostMessage(() => {})
   
   const { events, type, moduleId } = activationItem;
 
@@ -45,6 +48,21 @@ const EventsSetting: React.FC<Props> = () => {
     [],
   )
 
+  const onPlay = useCallback(
+    () => {
+      const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
+            .contentWindow;
+      sendMessage(
+        {
+            tag: 'playEventEmit',
+            value: true,
+        },
+        win
+    );
+    },
+    [sendMessage],
+  )
+
   if (!moduleId) return null;
   // 当前激活项模块是否向全局发布事件，
   const exposeEvents: ExposeEvents[] = require(`~/modules/${type}`).default
@@ -59,6 +77,7 @@ const EventsSetting: React.FC<Props> = () => {
         value={getCurentEventByEventName(element.name, events)}
         curentEventInfomation={element}
         onChange={onChangeEventGroup}
+        onPlay={onPlay}
       />))
     }
   </div>;

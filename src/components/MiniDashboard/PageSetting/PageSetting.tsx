@@ -437,6 +437,7 @@ const Pagesetting: React.FC<Props> = () => {
                       : pageData.unmountEnvents || []
                   }
                   curentEventInfomation={item}
+                  onPlay={() => console.log(2222)}
                   onChange={onChangeEnv}
                 />
               ))}
