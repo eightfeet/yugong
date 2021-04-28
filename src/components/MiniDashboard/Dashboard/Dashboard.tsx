@@ -92,6 +92,8 @@ const Dashboard: React.FC<Props> = () => {
         const optAppData = reject([...appData], { moduleId });
         const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
             .contentWindow;
+        updateAppData(optAppData);
+        removeActivationItem();
         sendMessage(
             {
                 tag: 'updateAppData',
@@ -106,37 +108,38 @@ const Dashboard: React.FC<Props> = () => {
             },
             win
         );
-        removeActivationItem();
         setIsDeleteComp(false);
-    }, [appData, moduleId, removeActivationItem, sendMessage]);
+    }, [appData, moduleId, removeActivationItem, sendMessage, updateAppData]);
 
-    const confirmModal = useCallback(
-        () =>{
-            if (isDeleteComp) return;
-            setIsDeleteComp(true);
-            confirm({
-                content: (
-                    <div>
-                        <h3>确定删除</h3>
-                        <br />
-                        模块名称：{activationItem.moduleName}
-                        <br />
-                        Id: {activationItem.moduleId}
-                    </div>
-                ),
-                okText: '确定',
-                cancelText: '取消',
-                onCancel: () => setIsDeleteComp(false),
-                onOk: delModule,
-            })
-        },
-        [isDeleteComp, activationItem.moduleName, activationItem.moduleId, delModule]
-    );
-    
+    const confirmModal = useCallback(() => {
+        if (isDeleteComp) return;
+        setIsDeleteComp(true);
+        confirm({
+            content: (
+                <div>
+                    <h3>确定删除</h3>
+                    <br />
+                    模块名称：{activationItem.moduleName}
+                    <br />
+                    Id: {activationItem.moduleId}
+                </div>
+            ),
+            okText: '确定',
+            cancelText: '取消',
+            onCancel: () => setIsDeleteComp(false),
+            onOk: delModule,
+        });
+    }, [
+        isDeleteComp,
+        activationItem.moduleName,
+        activationItem.moduleId,
+        delModule,
+    ]);
+
     // 模块删除快捷键
     // key deletd
     useKeyDown((event) => {
-        if(!isDeleteComp){
+        if (!isDeleteComp) {
             event.preventDefault();
             confirmModal();
         }
@@ -145,7 +148,7 @@ const Dashboard: React.FC<Props> = () => {
     // =====================================模块复制=======================================//
     // copyData
     const beforCopyModule = useCallback(() => {
-        setNewModalName(`${activationItem.moduleName} 拷贝`)
+        setNewModalName(`${activationItem.moduleName} 拷贝`);
         setShowCopyedModal(true);
     }, [activationItem.moduleName]);
 
@@ -177,7 +180,14 @@ const Dashboard: React.FC<Props> = () => {
         updateActivationItem(oprateActivationItem);
         // 初始化复制窗口
         initCopyModule();
-    }, [activationItem, appData, newModalName, updateAppData, updateActivationItem, initCopyModule]);
+    }, [
+        activationItem,
+        appData,
+        newModalName,
+        updateAppData,
+        updateActivationItem,
+        initCopyModule,
+    ]);
 
     // 处理键盘事件
     // 模拟模块复制
@@ -189,7 +199,7 @@ const Dashboard: React.FC<Props> = () => {
             event.preventDefault();
             copyModule();
         }
-    }, 'Enter')
+    }, 'Enter');
 
     return (
         <>
