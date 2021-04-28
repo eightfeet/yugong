@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Tooltip } from "antd";
 import s from "./EventGroup.module.less";
 import Icon, {
   MinusOutlined,
@@ -209,23 +209,24 @@ const EventGroup: React.FC<Props> = ({
     []
   );
 
-  const onPlayEnv = useCallback(
-      () => {
-          onPlay(curentEventInfomation, value);
-      },
-      [curentEventInfomation, onPlay, value],
-  )
+  const onPlayEnv = useCallback(() => {
+    onPlay(curentEventInfomation, value);
+  }, [curentEventInfomation, onPlay, value]);
 
   return (
     <>
       <div className={s.divide}>
         <div className={s.title}>{curentEventInfomation.description}</div>
         <div className={s.menu}>
-          <Button
-            size="small"
-            icon={<Icon component={Play} />}
-            onClick={onPlayEnv}
-          />
+          {!!value.length ? (
+            <Tooltip mouseEnterDelay={1} title={`${curentEventInfomation.description}事件模拟`}>
+              <Button
+                size="small"
+                icon={<Icon component={Play} />}
+                onClick={onPlayEnv}
+              />
+            </Tooltip>
+          ) : null}
           &nbsp;&nbsp;
           <Button size="small" onClick={onPlus} icon={<PlusOutlined />} />
         </div>
