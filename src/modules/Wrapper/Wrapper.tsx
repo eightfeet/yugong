@@ -74,6 +74,11 @@ const Wrapper: React.FC<Props> = ({
   if (maxHeight && sizes.height !== undefined && sizes.height !== null) {
     defaultSize.height = `${Math.floor(sizes.height)}px`;
   }
+  /*是否为隐藏模块*/
+  const isHide = (layout?.w === 0 || layout?.h === 0);
+  if (isHide) {
+    defaultSize.width = defaultSize.height = 'auto';
+  }
   return (
     <div
       className={classNames(s.touchwrap, {
