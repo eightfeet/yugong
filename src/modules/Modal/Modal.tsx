@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
-import { AppDataElementsTypes } from '~/types/appData';
+import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import useModal from '~/hooks/useModal';
@@ -27,12 +27,11 @@ const Modal: Modules<ModalProps> = (props) => {
     const { createModal, hideModal } = useModal(params);
 
     const show =  useCallback(
-        (header, article) => {
-            const argHeader = getArgumentsItem(header);
-            const argArticle = getArgumentsItem(article);
+        (data) => {
+            const {header, article} = getArgumentsItem(data) as AnyObjectType;
             createModal({
-                header: argHeader as string,
-                article: argArticle as string
+                header,
+                article
             })
         },
         [createModal],

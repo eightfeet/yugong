@@ -28,7 +28,7 @@ export const getArgumentsItem = (
   // 数据不存在时原状态返回
   if (!argmentsDataItem) return argmentsDataItem;
   let result = undefined;
-  const toJSX = argmentsDataItem.html;
+  const toJSX = (argmentsDataItem.html === true);
   switch (argmentsDataItem.type) {
     case "runningTime":
       result = store.getState().runningTimes[argmentsDataItem.data];
