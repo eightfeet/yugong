@@ -300,13 +300,13 @@ const ArgumentsSetting: React.FC<Props> = ({
                     placeholder={`请输入值,${item.describe || ""}`}
                     value={item.data}
                     type="text"
-                    suffix={item.html ? <HtmlSuffix /> : null}
+                    suffix={!!item.html ? <HtmlSuffix /> : null}
                   />
                 ) : null}
                 {item.type === "object" ? (
                   <ObjectArguments
                     describe={item.describe}
-                    htmlInput={item.html}
+                    htmlInput={!!item.html}
                     onChange={onChangeObjType(index)}
                     typeArguments={item}
                     flexible={!!dataFlexible}
@@ -314,7 +314,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                 ) : null}
                 {item.type === "array" ? (
                   <ArrayArguments
-                    htmlInput={item.html}
+                    htmlInput={!!item.html}
                     describe={item.describe}
                     onChange={onChangeObjType(index)}
                     typeArguments={item}

@@ -36,7 +36,7 @@ interface ArgumentBase<T> {
   /**
    * 允许html参数
    */
-  html?: boolean;
+  html?: boolean | 'innerhtml';
   /**
    * 参数类型
    */

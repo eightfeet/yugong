@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes } from '~/types/appData';
@@ -6,6 +6,7 @@ import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import useModal from '~/hooks/useModal';
 import { buildParams } from './defaultParams';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 
 export interface ModalProps extends AppDataElementsTypes {
     id: string;
@@ -25,11 +26,23 @@ const Modal: Modules<ModalProps> = (props) => {
     // 创建模块
     const { createModal, hideModal } = useModal(params);
 
+    const show =  useCallback(
+        (header, article) => {
+            const argHeader = getArgumentsItem(header);
+            const argArticle = getArgumentsItem(article);
+            createModal({
+                header: argHeader as string,
+                article: argArticle as string
+            })
+        },
+        [createModal],
+    )
+
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {
-        eventEmitter.addEventListener('createModal', createModal);
+        eventEmitter.addEventListener('createModal', show);
         eventEmitter.addEventListener('hideModal', hideModal);
-    }, [eventEmitter, createModal, hideModal]);
+    }, [eventEmitter, show, hideModal]);
 
     // API请求 注意依赖关系
     useEffect(() => {
@@ -52,7 +65,29 @@ const Modal: Modules<ModalProps> = (props) => {
 /**
  * 注册方法的静态描述与默认参数定义
  */
-Modal.exposeFunctions = [];
+Modal.exposeFunctions = [
+    {
+        name: 'createModal',
+        description: '显示弹窗',
+        arguments: [
+            {
+                type: 'object',
+                name: '数据',
+                describe: '对话框数据',
+                html: 'innerhtml',
+                data: {
+                    header: '<h3>header</h3>',
+                    article: '',
+                },
+                fieldName: 'modaldata',
+            },
+        ],
+    },
+    {
+        name: 'hideModal',
+        description: '隐藏弹窗'
+    },
+];
 
 /**
  * 发布事件的静态描述
