@@ -12,6 +12,13 @@ export interface ModalProps extends AppDataElementsTypes {
 
 const Modal:Modules<ModalProps> = (props) => {
     const { eventEmitter, events = {}, api} = props;
+    // 创建模块
+    useEffect(() => {
+        console.log(111)
+        return () => {
+            console.log(222)
+        }
+    }, [])
     // API请求 注意依赖关系
     useEffect(() => {
         const apiArguments = api?.find(item => item.apiId === '');

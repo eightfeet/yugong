@@ -47,7 +47,6 @@ const Text: Modules<TextProps> = (props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(userClass.wrap);
   
   return (
     <Wrapper {...props} maxWidth maxHeight itemAlign="top">

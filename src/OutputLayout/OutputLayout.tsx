@@ -62,7 +62,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
     const { updateAppData } = useDispatch<Dispatch>().appData;
     const { updatePage } = useDispatch<Dispatch>().pageData;
     const { setEditingId, setIsEditing } = useDispatch<Dispatch>().controller;
-    const {removeActivationItem} = useDispatch<Dispatch>().activationItem;
+    const { removeActivationItem } = useDispatch<Dispatch>().activationItem;
 
     const pageData = useSelector((state: RootState) => state.pageData);
     const appData = useSelector((state: RootState) => state.appData);
@@ -71,17 +71,17 @@ const OutputLayout: React.FC<LayoutProps> = ({
 
     const ref = useRef(null);
     // 缓存
-    const [, setAppdataLocalStorage] = useLocalStorage(
-        'appData',
-        null
-    );
+    const [, setAppdataLocalStorage] = useLocalStorage('appData', null);
 
     useEffect(() => {
         const topLocation = window.top?.location;
-        if (topLocation.origin === window.origin && topLocation.pathname === '/dashboard') {
+        if (
+            topLocation.origin === window.origin &&
+            topLocation.pathname === '/dashboard'
+        ) {
             setIsEditing(true);
-        }   
-    }, [setIsEditing])
+        }
+    }, [setIsEditing]);
 
     // 接收与处理message
     const sendMessage = usePostMessage((data) => {
@@ -136,7 +136,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
         },
         [appData, sendMessage, setAppdataLocalStorage, updateAppData]
     );
-    
+
     const generateStyle = useCallback(() => {
         const gradient = backgroundGradient(
             pageData.style?.backgroundGradient || {}
@@ -164,10 +164,35 @@ const OutputLayout: React.FC<LayoutProps> = ({
         );
     }, [runningTimes, sendMessage]);
 
+    const renderNoDisplay = () => {
+        const copyData = [...appData];
+        const optAppdata = copyData.filter(
+            (fItem) => fItem.layout?.w === 0 || fItem.layout?.h === 0
+        );
+        return optAppdata.map((item) => {
+            // 事件处理器的bind方法将事件处理器绑定到各个组件
+            const itemMerge = {
+                eventEmitter: eventEmitter.bind(item.moduleId),
+                ...item,
+            };
+            return (
+                <div
+                    key={item.layout?.i}
+                    className={s.nodisplay}
+                    id={item.layout?.i}
+                >
+                    <Elements id={item.layout?.i} {...itemMerge} />
+                </div>
+            );
+        });
+    };
+
     const renderGridItem = () => {
         const maxH = Math.floor(windowsHeight / rowHeight);
         const copyData = [...appData];
-        const optAppdata = copyData.filter(fItem => fItem.layout?.w!==0 || fItem.layout?.h!==0);
+        const optAppdata = copyData.filter(
+            (fItem) => fItem.layout?.w !== 0 && fItem.layout?.h !== 0
+        );
         return optAppdata.map((item) => {
             // 确保宽度不超过屏幕栅格
             if (item.layout && item.layout.h > maxH) {
@@ -219,17 +244,16 @@ const OutputLayout: React.FC<LayoutProps> = ({
 
     return (
         <div className={s.layout} ref={ref} style={generateStyle()}>
-            <>
-                {isEditing ? (
-                    <GridLine
-                        width={window.innerWidth}
-                        cols={cols}
-                        rowHeight={rowHeight}
-                        height={document.body.scrollHeight}
-                        space={space}
-                    />
-                ) : null}
-            </>
+            {isEditing ? (
+                <GridLine
+                    width={window.innerWidth}
+                    cols={cols}
+                    rowHeight={rowHeight}
+                    height={document.body.scrollHeight}
+                    space={space}
+                />
+            ) : null}
+            {renderNoDisplay()}
             <>{renderGridLayout()}</>
         </div>
     );
