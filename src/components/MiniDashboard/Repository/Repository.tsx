@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
 import s from "./Repository.module.less";
 import useKeyDown from "~/hooks/useKeyDown";
+import useLocalStorage from "~/hooks/useLocalStorage";
 
 interface ModalType {
   moduleName: AppDataModuleTypes;
@@ -25,6 +26,8 @@ const Repository: React.FC = () => {
   const [newModalName, setNewModalName] = useState<string>();
   const appData = useSelector((state: RootState) => state.appData);
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
+  // 缓存
+  const [, setAppdataLocalStorage] = useLocalStorage('appData', null);
 
   const onStopDrag = useCallback(
     (module: ModalType) => (e: any) => {
@@ -45,10 +48,12 @@ const Repository: React.FC = () => {
   const onAddItem = useCallback(
     (data: AppDataLayoutItemTypes) => {
       // Add a new item. It must have a unique key!
-      const optAppData = [...appData];
-      updateAppData(optAppData.concat(data));
+      const optAppData = [...appData].concat(data);
+      updateAppData(optAppData);
+      // 做一层本地数据存储更新
+      setAppdataLocalStorage(optAppData);
     },
-    [appData, updateAppData]
+    [appData, setAppdataLocalStorage, updateAppData]
   );
 
   const createModal = useCallback(

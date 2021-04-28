@@ -164,6 +164,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
         );
     }, [runningTimes, sendMessage]);
 
+    // 渲染不展示模块
     const renderNoDisplay = () => {
         const copyData = [...appData];
         const optAppdata = copyData.filter(
