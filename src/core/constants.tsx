@@ -48,6 +48,7 @@ export const MODULES = [
     moduleName: "Modal",
     title: "Modal",
     discribe: "对话框",
+    tips: "对话框属于隐形模块，请在设置面板中选择编辑",
     icon: <Icon component={IconModal} />
   },
 ];

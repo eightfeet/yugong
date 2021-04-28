@@ -14,6 +14,7 @@ interface ModalType {
   moduleName: AppDataModuleTypes;
   title: string;
   discribe: string;
+  tips?: string;
 }
 
 interface ModalTypeIcon extends ModalType {
@@ -145,7 +146,9 @@ const Repository: React.FC = () => {
         visible={!!addedModal}
         footer={null}
         onCancel={() => setAddedModal(undefined)}
+        bodyStyle={{padding: '20px 10px 30px 10px',}}
       >
+        {addedModal?.tips ? <p className={s.infomation}>{addedModal?.tips}</p> : null}
         <Row gutter={[16, 16]}>
           <Col span={3}></Col>
           <Col span={15}>
@@ -164,7 +167,7 @@ const Repository: React.FC = () => {
             </Button>
           </Col>
         </Row>
-        <br />
+        
       </Modal>
     </>
   );
