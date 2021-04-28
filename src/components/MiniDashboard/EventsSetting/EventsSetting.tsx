@@ -49,13 +49,16 @@ const EventsSetting: React.FC<Props> = () => {
   )
 
   const onPlay = useCallback(
-    () => {
+    (curentEventInfomation: ExposeEvents, data: EventsTypeItem[]) => {
       const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
             .contentWindow;
       sendMessage(
         {
             tag: 'playEventEmit',
-            value: true,
+            value: {
+              event: curentEventInfomation,
+              args: data
+            },
         },
         win
     );

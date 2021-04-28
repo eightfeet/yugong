@@ -33,13 +33,7 @@ const Beforeoutput: React.FC<Props> = () => {
     return env;
   }, []);
 
-  const sendMessage = usePostMessage(({tag, value}) => {
-    if (tag === 'playEventEmit' && value === true) {
-      const env = eventEmitter.bind(activationItem.moduleId)
-      // to do env
-      console.log(env.emit())
-    }
-  });
+  const sendMessage = usePostMessage(() => {});
 
   // 数据初始化，获取页面数据
   useMemo(() => {

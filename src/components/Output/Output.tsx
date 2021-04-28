@@ -21,6 +21,7 @@ import {
 } from "~/core/constants";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { initTrack, trackEvent, trackPageView } from "~/core/tracking";
+import usePostMessage from "~/hooks/usePostMessage";
 
 interface Props {
   eventEmitter: EventEmitter;
@@ -155,6 +156,14 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
       }
     };
   }, [eventEmitter, onUnmount]);
+
+  usePostMessage(({tag, value}) => {
+    if (tag === 'playEventEmit') {
+      if (eventEmitter) {
+        eventEmitter.emit(value.args);
+      }
+    }
+  });
 
   const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
   const cols = parseInt(getResult(`${pageData.cols}`));
