@@ -113,8 +113,23 @@ const Modal: Modules<ModalProps> = (props) => {
         rootDom.className = `${s.modalinit} ${userClass.root}`;
       }
     },
-    [MId, createModal, modal, userClass.root]
+    [MId, btnstate, createModal, modal, userClass.root]
   );
+
+  const setButton = useCallback(
+    (isOk, isCancel, buttontext) => {
+      const argIsOk = getArgumentsItem(isOk);
+      const argIsCancel = getArgumentsItem(isCancel);
+      const { okText, cancelText } = getArgumentsItem(buttontext) as any;
+      setbtnstate({
+          isOk: argIsOk as boolean,
+          okText,
+          isCancel: argIsCancel as boolean,
+          cancelText,
+        });
+    },
+    [],
+  )
 
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
@@ -122,7 +137,8 @@ const Modal: Modules<ModalProps> = (props) => {
     eventEmitter.addEventListener("setAnimation", setAnimation);
     eventEmitter.addEventListener("createModal", show);
     eventEmitter.addEventListener("hideModal", hideModal);
-  }, [eventEmitter, show, hideModal, setOnOff, setAnimation]);
+    eventEmitter.addEventListener("setButton", setButton);
+  }, [eventEmitter, show, hideModal, setOnOff, setAnimation, setButton]);
 
   // API请求 注意依赖关系
   useEffect(() => {
@@ -192,6 +208,45 @@ Modal.exposeFunctions = [
           method: "===",
         },
         fieldName: "shouldCloseOnOverlayClick",
+      },
+    ],
+  },
+  {
+    name: "setButton",
+    description: "设置按钮",
+    arguments: [
+      {
+        type: "boolean",
+        name: "显示确认按钮",
+        describe: "条件成立显示确认按钮",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "0",
+          method: "===",
+        },
+        fieldName: "isOk",
+      },
+      {
+        type: "boolean",
+        name: "显示取消按钮",
+        describe: "条件成立显示取消按钮",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "1",
+          method: "===",
+        },
+        fieldName: "isCancel",
+      },
+      {
+        type: "object",
+        name: "按钮文字",
+        describe:
+          '设置按钮文字',
+        data: {
+          okText: '确定',
+          cancelText: '取消'
+        },
+        fieldName: "buttontext",
       },
     ],
   },
