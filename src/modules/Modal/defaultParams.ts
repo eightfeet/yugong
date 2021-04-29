@@ -22,10 +22,12 @@ interface parames {
     closable?: boolean;
     /**点击背景层关闭弹窗 默认false */
     shouldCloseOnOverlayClick?: boolean;
+    parentId?: string;
 }
 
 export const buildParams = ({
     id,
+    parentId,
     animationType,
     animationDuration,
     closable,
@@ -33,6 +35,7 @@ export const buildParams = ({
 }: parames): ModalParameters => {
     return {
         id, // 所创建弹窗的id 不传可自动生成id（modal + 时间戳 + 100以内的随机数）
+        parentId,
         zIndex: 100, // modal的层级关系，默认100
         animation: {
             form: animationType,

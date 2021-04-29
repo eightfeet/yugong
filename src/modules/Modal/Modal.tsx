@@ -7,6 +7,8 @@ import Wrapper from '../Wrapper';
 import useModal from '~/hooks/useModal';
 import { buildParams } from './defaultParams';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import useStyles from './Module.useStyles';
+import s from './Modal.module.less';
 
 export interface ModalProps extends AppDataElementsTypes {
     id: string;
@@ -14,7 +16,7 @@ export interface ModalProps extends AppDataElementsTypes {
 }
 
 const Modal: Modules<ModalProps> = (props) => {
-    const { eventEmitter, events = {}, api, moduleId } = props;
+    const { eventEmitter, events = {}, api, moduleId, style } = props;
     const MId = `MD${moduleId}`;
     const params = buildParams({
         id: MId,
@@ -24,7 +26,14 @@ const Modal: Modules<ModalProps> = (props) => {
         shouldCloseOnOverlayClick: true,
     });
     // 创建模块
-    const { createModal, hideModal } = useModal(params);
+    const { createModal, hideModal, modal } = useModal(params);
+    const userClass = useStyles(MId)(style);
+    useEffect(() => {
+        const rootDom = document.getElementById(MId);
+        if (rootDom && userClass.root) {
+            rootDom.className = `${s.modalinit} ${userClass.root}`;
+        }
+    }, [userClass.root, MId, modal])
 
     const show =  useCallback(
         (data) => {
@@ -112,6 +121,27 @@ Modal.exposeDefaultProps = {
         x: 0,
         y: 0,
     },
+    style: {
+        basic: {},
+        overlay: {},
+        content: {},
+        header: {},
+        article: {},
+        close: {},
+        modify1: {},
+        modify2: {},
+        modify3: {}
+    },
+    styleDescription: {
+        overlay: "覆盖层",
+        content: "内容区",
+        header: "头部",
+        article: "文本区",
+        close: "关闭按钮",
+        modify1: "修饰器1",
+        modify2: "修饰器2",
+        modify3: "修饰器3"
+    }
 };
 
 /**

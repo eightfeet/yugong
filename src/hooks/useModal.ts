@@ -26,7 +26,7 @@ const useModal = (parameters: ModalParameters) => {
     return ref.current?.hide(doNotRemove) || Promise.reject('modal is not ready yet!');
   }, []);
 
-  return { createModal, hideModal }
+  return { createModal, hideModal, modal: ref.current }
 };
 
 export default useModal;
