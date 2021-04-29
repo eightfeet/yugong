@@ -15,8 +15,8 @@ export interface ModalProps extends AppDataElementsTypes {
     eventEmitter: EventEmitter;
 }
 
-interface uerParams {
-    animationType:
+interface UseParams {
+    animationType?:
         | 'fadeInLeft'
         | 'fadeInRight'
         | 'fadeInDown'
@@ -28,49 +28,62 @@ interface uerParams {
         | 'zoomIn'
         | 'flipInX'
         | 'flipInY';
-    animationDuration: string;
-    closable: boolean;
-    shouldCloseOnOverlayClick: boolean;
+    animationDuration?: string;
+    closable?: boolean;
+    shouldCloseOnOverlayClick?: boolean;
 }
 
 const Modal: Modules<ModalProps> = (props) => {
     const { eventEmitter, events = {}, api, moduleId, style } = props;
-    const [uerParams, setUserParams] = useState<uerParams>();
+    const [useParams, setUserParams] = useState<UseParams>();
 
     const MId = `MD${moduleId}`;
     const params = buildParams({
         id: MId,
-        animationType: 'fadeInDown',
+        animationType: 'fadeInRight',
         animationDuration: '0.2ms',
         closable: true,
         shouldCloseOnOverlayClick: true,
-        ...(uerParams || {}),
+        ...(useParams || {}),
     });
 
     // 创建模块
     const { createModal, hideModal, modal } = useModal(params);
     const userClass = useStyles(MId)(style);
 
-    const setModal = useCallback(
+    const setOnOff = useCallback(
         (
             closable,
             shouldCloseOnOverlayClick,
-            animationType,
-            animationDuration
         ) => {
             const argclosable = getArgumentsItem(closable);
             const argshouldCloseOnOverlayClick = getArgumentsItem(shouldCloseOnOverlayClick);
-            const arganimationDuration = getArgumentsItem(animationDuration);
-            const arganimationType = getArgumentsItem(animationType);
             setUserParams({
-                animationType: arganimationType as uerParams['animationType'],
-                animationDuration: arganimationDuration as string,
+                ...useParams,
                 closable: argclosable as boolean,
                 shouldCloseOnOverlayClick: argshouldCloseOnOverlayClick as boolean,
             });
         },
-        []
+        [useParams]
     );
+
+    const setAnimation = useCallback(
+        (
+            animationType,
+            animationDuration,
+        ) => {
+            const arganimationDuration = getArgumentsItem(animationDuration);
+            const arganimationType = getArgumentsItem(animationType);
+            console.log(arganimationDuration, arganimationType)
+            setUserParams({
+                ...useParams,
+                animationDuration: arganimationDuration as string,
+                animationType: arganimationType as UseParams['animationType'],
+            });
+        },
+        [useParams]
+    );
+
 
     const show = useCallback(
         (data) => {
@@ -89,10 +102,11 @@ const Modal: Modules<ModalProps> = (props) => {
 
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {
-        eventEmitter.addEventListener('setModal', setModal);
+        eventEmitter.addEventListener('setOnOff', setOnOff);
+        eventEmitter.addEventListener('setAnimation', setAnimation);
         eventEmitter.addEventListener('createModal', show);
         eventEmitter.addEventListener('hideModal', hideModal);
-    }, [eventEmitter, show, hideModal, setModal]);
+    }, [eventEmitter, show, hideModal, setOnOff, setAnimation]);
 
     // API请求 注意依赖关系
     useEffect(() => {
@@ -138,8 +152,8 @@ Modal.exposeFunctions = [
         description: '隐藏弹窗',
     },
     {
-        name: 'setModal',
-        description: '设置弹窗',
+        name: 'setOnOff',
+        description: '设置开关',
         arguments: [
             {
                 type: 'boolean',
@@ -162,7 +176,13 @@ Modal.exposeFunctions = [
                     method: '===',
                 },
                 fieldName: 'shouldCloseOnOverlayClick',
-            },
+            }
+        ],
+    },
+    {
+        name: 'setAnimation',
+        description: '设置动画',
+        arguments: [
             {
                 type: 'string',
                 name: '动画类型',
