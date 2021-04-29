@@ -21,30 +21,28 @@ const Modal: Modules<ModalProps> = (props) => {
     const params = buildParams({
         id: MId,
         animationType: 'fadeInDown',
-        animationDuration: '0.5ms',
+        animationDuration: '0.2ms',
         closable: true,
         shouldCloseOnOverlayClick: true,
     });
     // 创建模块
     const { createModal, hideModal, modal } = useModal(params);
     const userClass = useStyles(MId)(style);
-    useEffect(() => {
-        const rootDom = document.getElementById(MId);
-        if (rootDom && userClass.root) {
-            rootDom.className = `${s.modalinit} ${userClass.root}`;
-        }
-    }, [userClass.root, MId, modal])
 
-    const show =  useCallback(
+    const show = useCallback(
         (data) => {
-            const {header, article} = getArgumentsItem(data) as AnyObjectType;
+            const { header, article } = getArgumentsItem(data) as AnyObjectType;
             createModal({
                 header,
-                article
-            })
+                article,
+            });
+            const rootDom = document.getElementById(MId);
+            if (rootDom && modal) {
+                rootDom.className = `${s.modalinit} ${userClass.root}`;
+            }
         },
-        [createModal],
-    )
+        [MId, createModal, modal, userClass.root]
+    );
 
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {
@@ -93,7 +91,7 @@ Modal.exposeFunctions = [
     },
     {
         name: 'hideModal',
-        description: '隐藏弹窗'
+        description: '隐藏弹窗',
     },
 ];
 
@@ -130,18 +128,18 @@ Modal.exposeDefaultProps = {
         close: {},
         modify1: {},
         modify2: {},
-        modify3: {}
+        modify3: {},
     },
     styleDescription: {
-        overlay: "覆盖层",
-        content: "内容区",
-        header: "头部",
-        article: "文本区",
-        close: "关闭按钮",
-        modify1: "修饰器1",
-        modify2: "修饰器2",
-        modify3: "修饰器3"
-    }
+        overlay: '覆盖层',
+        content: '内容区',
+        header: '头部',
+        article: '文本区',
+        close: '关闭按钮',
+        modify1: '修饰层',
+        modify2: '修饰层',
+        modify3: '修饰层',
+    },
 };
 
 /**

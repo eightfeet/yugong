@@ -15,7 +15,6 @@ const Beforeoutput: React.FC<Props> = () => {
   const { getPageData } = useDispatch<Dispatch>().pageData;
 
   const pageData = useSelector((state: RootState) => state.pageData);
-  const activationItem = useSelector((state: RootState) => state.activationItem);
   
   // 缓存
   const [appDataLocalStoreData] = useLocalStorage("appData", null);

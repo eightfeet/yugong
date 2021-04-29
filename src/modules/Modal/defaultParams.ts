@@ -44,6 +44,7 @@ export const buildParams = ({
         closable, // modal是否可关闭 默认true
         shouldCloseOnOverlayClick, // 点击背景层关闭弹窗 默认false
         style: {
+            close: {fontStyle: 'normal'}
         },
     };
 };

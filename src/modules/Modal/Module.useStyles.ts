@@ -12,7 +12,6 @@ import styleCompiler from "~/compiler";
 
 const useStyles = (id: string) => createUseStyles<string, any>({
     root: (style) => {
-        console.log(222, style)
         return {
           ...(styleCompiler(style.normal).style || {}),
           [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
