@@ -130,6 +130,7 @@ Modal.exposeDefaultProps = {
         modify1: {},
         modify2: {},
         modify3: {},
+        modify4: {},
     },
     styleDescription: {
         overlay: '覆盖层',
@@ -141,6 +142,7 @@ Modal.exposeDefaultProps = {
         modify1: '修饰层',
         modify2: '修饰层',
         modify3: '修饰层',
+        modify4: '修饰层',
     },
 };
 

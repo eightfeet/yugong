@@ -20,7 +20,10 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_header`]: (styleCompiler(style.header).style || {}),
           [`& .${id}_article`]: (styleCompiler(style.article).style || {}),
           [`& .${id}_close`]: (styleCompiler(style.close).style || {}),
-          [`& .${id}_modify:first-child`]: (styleCompiler(style.modify1).style || {})
+          [`& .${id}_modify:first-child`]: (styleCompiler(style.modify1).style || {}),
+          [`& .${id}_modify:nth-child(1)`]: (styleCompiler(style.modify2).style || {}),
+          [`& .${id}_modify:nth-child(2)`]: (styleCompiler(style.modify3).style || {}),
+          [`& .${id}_modify:nth-child(3)`]: (styleCompiler(style.modify4).style || {})
         };
       },
 });
