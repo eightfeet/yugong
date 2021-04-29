@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
@@ -15,8 +15,28 @@ export interface ModalProps extends AppDataElementsTypes {
     eventEmitter: EventEmitter;
 }
 
+interface uerParams {
+    animationType:
+        | 'fadeInLeft'
+        | 'fadeInRight'
+        | 'fadeInDown'
+        | 'fadeInUp'
+        | 'zoomInLeft'
+        | 'zoomInRight'
+        | 'zoomInDown'
+        | 'zoomInUp'
+        | 'zoomIn'
+        | 'flipInX'
+        | 'flipInY';
+    animationDuration: string;
+    closable: boolean;
+    shouldCloseOnOverlayClick: boolean;
+}
+
 const Modal: Modules<ModalProps> = (props) => {
     const { eventEmitter, events = {}, api, moduleId, style } = props;
+    const [uerParams, setUserParams] = useState<uerParams>();
+
     const MId = `MD${moduleId}`;
     const params = buildParams({
         id: MId,
@@ -24,10 +44,33 @@ const Modal: Modules<ModalProps> = (props) => {
         animationDuration: '0.2ms',
         closable: true,
         shouldCloseOnOverlayClick: true,
+        ...(uerParams || {}),
     });
+
     // 创建模块
     const { createModal, hideModal, modal } = useModal(params);
     const userClass = useStyles(MId)(style);
+
+    const setModal = useCallback(
+        (
+            closable,
+            shouldCloseOnOverlayClick,
+            animationType,
+            animationDuration
+        ) => {
+            const argclosable = getArgumentsItem(closable);
+            const argshouldCloseOnOverlayClick = getArgumentsItem(shouldCloseOnOverlayClick);
+            const arganimationDuration = getArgumentsItem(animationDuration);
+            const arganimationType = getArgumentsItem(animationType);
+            setUserParams({
+                animationType: arganimationType as uerParams['animationType'],
+                animationDuration: arganimationDuration as string,
+                closable: argclosable as boolean,
+                shouldCloseOnOverlayClick: argshouldCloseOnOverlayClick as boolean,
+            });
+        },
+        []
+    );
 
     const show = useCallback(
         (data) => {
@@ -46,9 +89,10 @@ const Modal: Modules<ModalProps> = (props) => {
 
     // 向eventEmitter注册事件，向外公布
     useMemo(() => {
+        eventEmitter.addEventListener('setModal', setModal);
         eventEmitter.addEventListener('createModal', show);
         eventEmitter.addEventListener('hideModal', hideModal);
-    }, [eventEmitter, show, hideModal]);
+    }, [eventEmitter, show, hideModal, setModal]);
 
     // API请求 注意依赖关系
     useEffect(() => {
@@ -92,6 +136,49 @@ Modal.exposeFunctions = [
     {
         name: 'hideModal',
         description: '隐藏弹窗',
+    },
+    {
+        name: 'setModal',
+        description: '设置弹窗',
+        arguments: [
+            {
+                type: 'boolean',
+                name: '是否可关闭',
+                describe: '控制弹窗有无关闭按钮',
+                data: {
+                    comparableAverageA: '0',
+                    comparableAverageB: '0',
+                    method: '===',
+                },
+                fieldName: 'closable',
+            },
+            {
+                type: 'boolean',
+                name: '点击背景可关闭',
+                describe: '点击蒙层背景关闭弹窗',
+                data: {
+                    comparableAverageA: '0',
+                    comparableAverageB: '1',
+                    method: '===',
+                },
+                fieldName: 'shouldCloseOnOverlayClick',
+            },
+            {
+                type: 'string',
+                name: '动画类型',
+                describe:
+                    '动画类型包含 "fadeInLeft" | "fadeInRight" | "fadeInDown" | "fadeInUp" | "zoomInLeft" | "zoomInRight" | "zoomInDown" | "zoomInUp" | "zoomIn" | "flipInX" | "flipInY"',
+                data: '',
+                fieldName: 'animationType',
+            },
+            {
+                type: 'string',
+                name: '动画时间',
+                describe: '转场动画时长(默认0.2s)',
+                data: '',
+                fieldName: 'animationDuration',
+            },
+        ],
     },
 ];
 
