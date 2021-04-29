@@ -38,6 +38,8 @@ interface Btnstate {
   okText: string;
   isCancel: boolean;
   cancelText: string;
+  isOkDisabled: boolean;
+  isCancelDisabled: boolean;
 }
 
 const Modal: Modules<ModalProps> = (props) => {
@@ -52,6 +54,9 @@ const Modal: Modules<ModalProps> = (props) => {
     closable: true,
     shouldCloseOnOverlayClick: true,
     ...(useParams || {}),
+    onCancel: () => {
+      eventEmitter.emit(events.onCancel);
+    },
   });
 
   const [btnstate, setbtnstate] = useState<Btnstate>({
@@ -59,6 +64,8 @@ const Modal: Modules<ModalProps> = (props) => {
     okText: "确定",
     isCancel: true,
     cancelText: "取消",
+    isOkDisabled: false,
+    isCancelDisabled: false,
   });
 
   // 创建模块
@@ -84,7 +91,6 @@ const Modal: Modules<ModalProps> = (props) => {
     (animationType, animationDuration) => {
       const arganimationDuration = getArgumentsItem(animationDuration);
       const arganimationType = getArgumentsItem(animationType);
-      console.log(arganimationDuration, arganimationType);
       setUserParams({
         ...useParams,
         animationDuration: arganimationDuration as string,
@@ -97,9 +103,24 @@ const Modal: Modules<ModalProps> = (props) => {
   const show = useCallback(
     (data) => {
       const { header, article } = getArgumentsItem(data) as AnyObjectType;
-      const {isOk, okText, isCancel, cancelText} = btnstate;
-      const btnNodeOk = isOk ? `<button>${okText}</button>` : '';
-      const btnNodeCancel = isCancel ? `<button>${cancelText}</button>` : '';
+      const {
+        isOk,
+        okText,
+        isCancel,
+        cancelText,
+        isCancelDisabled,
+        isOkDisabled,
+      } = btnstate;
+      const btnNodeOk = isOk
+        ? `<button ${
+            isOkDisabled ? "disabled" : ""
+          } class="${MId}_ok" id="${MId}_ok">${okText}</button>`
+        : "";
+      const btnNodeCancel = isCancel
+        ? `<button ${
+            isCancelDisabled ? "disabled" : ""
+          } class="${MId}_cancel" id="${MId}_cancel">${cancelText}</button>`
+        : "";
       createModal({
         header,
         article,
@@ -107,29 +128,61 @@ const Modal: Modules<ModalProps> = (props) => {
           btnNodeOk || btnNodeCancel
             ? `<div>${btnNodeOk || ""}${btnNodeCancel || ""}</div>`
             : undefined,
+      }).then(() => {
+        if (isOk) {
+          const okNode = document.getElementById(`${MId}_ok`);
+          okNode!.onclick = async () => {
+            // onOk
+            await eventEmitter.emit(events.onOk);
+            hideModal(false);
+          };
+        }
+        if (isCancel) {
+          const cancelNode = document.getElementById(`${MId}_cancel`);
+          cancelNode!.onclick = async () => {
+            // onCancel
+            hideModal(false);
+            eventEmitter.emit(events.onCancel);
+          };
+        }
       });
       const rootDom = document.getElementById(MId);
       if (rootDom && modal) {
         rootDom.className = `${s.modalinit} ${userClass.root}`;
       }
     },
-    [MId, btnstate, createModal, modal, userClass.root]
+    [
+      MId,
+      btnstate,
+      createModal,
+      eventEmitter,
+      events.onCancel,
+      events.onOk,
+      hideModal,
+      modal,
+      userClass.root,
+    ]
   );
 
   const setButton = useCallback(
-    (isOk, isCancel, buttontext) => {
+    (isOk, isOkDisabled, isCancel, isCancelDisabled, buttontext) => {
       const argIsOk = getArgumentsItem(isOk);
+      const argIsOkDisabled = getArgumentsItem(isOkDisabled);
       const argIsCancel = getArgumentsItem(isCancel);
+      const argIsCancelDisabled = getArgumentsItem(isCancelDisabled);
+
       const { okText, cancelText } = getArgumentsItem(buttontext) as any;
       setbtnstate({
-          isOk: argIsOk as boolean,
-          okText,
-          isCancel: argIsCancel as boolean,
-          cancelText,
-        });
+        isOk: argIsOk as boolean,
+        isOkDisabled: argIsOkDisabled as boolean,
+        okText,
+        isCancel: argIsCancel as boolean,
+        isCancelDisabled: argIsCancelDisabled as boolean,
+        cancelText,
+      });
     },
-    [],
-  )
+    []
+  );
 
   // 向eventEmitter注册事件，向外公布
   useMemo(() => {
@@ -228,6 +281,17 @@ Modal.exposeFunctions = [
       },
       {
         type: "boolean",
+        name: "禁用确认按钮",
+        describe: "条件成立禁用确认按钮",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "1",
+          method: "===",
+        },
+        fieldName: "isOkDisabled",
+      },
+      {
+        type: "boolean",
         name: "显示取消按钮",
         describe: "条件成立显示取消按钮",
         data: {
@@ -238,13 +302,23 @@ Modal.exposeFunctions = [
         fieldName: "isCancel",
       },
       {
+        type: "boolean",
+        name: "禁用取消按钮",
+        describe: "条件成立禁用取消按钮",
+        data: {
+          comparableAverageA: "0",
+          comparableAverageB: "1",
+          method: "===",
+        },
+        fieldName: "isCancelDisabled",
+      },
+      {
         type: "object",
         name: "按钮文字",
-        describe:
-          '设置按钮文字',
+        describe: "设置按钮文字",
         data: {
-          okText: '确定',
-          cancelText: '取消'
+          okText: "确定",
+          cancelText: "取消",
         },
         fieldName: "buttontext",
       },
@@ -285,6 +359,14 @@ Modal.exposeEvents = [
     name: "unmount",
     description: "卸载",
   },
+  {
+    name: "onOk",
+    description: "确认",
+  },
+  {
+    name: "onCancel",
+    description: "取消/关闭",
+  },
 ];
 
 /**
@@ -305,6 +387,10 @@ Modal.exposeDefaultProps = {
     header: {},
     article: {},
     close: {},
+    ok: {},
+    okdisabled: {},
+    cancel: {},
+    canceldisabled: {},
     modify1: {},
     modify2: {},
     modify3: {},
@@ -316,7 +402,11 @@ Modal.exposeDefaultProps = {
     content: "内容区",
     header: "头部",
     article: "文本区",
-    close: "关闭按钮",
+    close: "关闭图标",
+    ok: "确认按钮",
+    okdisabled: "确认禁用",
+    cancel: "取消按钮",
+    canceldisabled: "取消禁用",
     modify1: "修饰层",
     modify2: "修饰层",
     modify3: "修饰层",

@@ -23,6 +23,7 @@ interface parames {
     /**点击背景层关闭弹窗 默认false */
     shouldCloseOnOverlayClick?: boolean;
     parentId?: string;
+    onCancel: () => void;
 }
 
 export const buildParams = ({
@@ -32,6 +33,7 @@ export const buildParams = ({
     animationDuration,
     closable,
     shouldCloseOnOverlayClick,
+    onCancel,
 }: parames): ModalParameters => {
     return {
         id, // 所创建弹窗的id 不传可自动生成id（modal + 时间戳 + 100以内的随机数）
@@ -48,5 +50,6 @@ export const buildParams = ({
             modify: [{fontStyle: 'normal'}, {fontStyle: 'normal'}, {fontStyle: 'normal'}],
         },
         customModifyZIndex: true,
+        onCancel,
     };
 };

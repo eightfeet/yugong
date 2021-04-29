@@ -23,7 +23,11 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_modify:first-child`]: (styleCompiler(style.modify1).style || {}),
           [`& .${id}_modify:nth-child(1)`]: (styleCompiler(style.modify2).style || {}),
           [`& .${id}_modify:nth-child(2)`]: (styleCompiler(style.modify3).style || {}),
-          [`& .${id}_modify:nth-child(3)`]: (styleCompiler(style.modify4).style || {})
+          [`& .${id}_modify:nth-child(3)`]: (styleCompiler(style.modify4).style || {}),
+          [`& .${id}_ok`]: (styleCompiler(style.ok).style || {}),
+          [`& .${id}_ok:disabled`]: (styleCompiler(style.okdisabled).style || {}),
+          [`& .${id}_cancel`]: (styleCompiler(style.cancel).style || {}),
+          [`& .${id}_cancel:disabled`]: (styleCompiler(style.canceldisabled).style || {})
         };
       },
 });
