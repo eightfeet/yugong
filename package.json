@@ -5,7 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@eightfeet/loading": "^2.0.4",
-    "@eightfeet/modal": "^2.2.16",
+    "@eightfeet/modal": "^2.2.18",
     "@hookform/resolvers": "^2.4.0",
     "@material-ui/core": "^4.11.3",
     "@rematch/core": "^2.0.0",

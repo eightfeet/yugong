@@ -15,10 +15,12 @@ const useStyles = (id: string) => createUseStyles<string, any>({
         return {
           ...(styleCompiler(style.normal).style || {}),
           [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
-          [`& .${id}_content`]: (styleCompiler(style.content).style || {}),
+          [`& .${id}_content`]: (styleCompiler(style.container).style || {}),
+          [`& .${id}_modules`]: (styleCompiler(style.content).style || {}),
           [`& .${id}_header`]: (styleCompiler(style.header).style || {}),
           [`& .${id}_article`]: (styleCompiler(style.article).style || {}),
-          [`& .${id}_close`]: (styleCompiler(style.close).style || {})
+          [`& .${id}_close`]: (styleCompiler(style.close).style || {}),
+          [`& .${id}_modify:first-child`]: (styleCompiler(style.modify1).style || {})
         };
       },
 });

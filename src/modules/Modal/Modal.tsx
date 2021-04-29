@@ -122,6 +122,7 @@ Modal.exposeDefaultProps = {
     style: {
         basic: {},
         overlay: {},
+        container: {},
         content: {},
         header: {},
         article: {},
@@ -132,6 +133,7 @@ Modal.exposeDefaultProps = {
     },
     styleDescription: {
         overlay: '覆盖层',
+        container: '容器',
         content: '内容区',
         header: '头部',
         article: '文本区',
