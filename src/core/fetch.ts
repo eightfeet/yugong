@@ -92,6 +92,13 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   throw res;
 };
 
+/**
+ *
+ * api 请求
+ * @param {Api} apiArguments api参数
+ * @param {boolean} [isDestructuring] 是否解构结果，将数据打平
+ * @return {*} 
+ */
 const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { successPublic, errorPublic } = apiArguments;
   const setRunningTimes = store.dispatch.runningTimes.setRunningTimes;

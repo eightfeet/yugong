@@ -102,6 +102,7 @@ const Modal: Modules<ModalProps> = (props) => {
         [useParams]
     );
 
+
     const show = useCallback(
         (data) => {
             const { header, article } = getArgumentsItem(data) as AnyObjectType;
@@ -136,8 +137,6 @@ const Modal: Modules<ModalProps> = (props) => {
                         <IconCancel />,
                         closeIconNode
                       );
-                    // IconCancel
-                    console.log(333, closeIconNode)
                 }
                 // 确定按钮
                 if (isOk) {
@@ -146,6 +145,9 @@ const Modal: Modules<ModalProps> = (props) => {
                         okNode?.setAttribute('disabled', 'disabled')
                     }
                     okNode!.onclick = async () => {
+                        // 确定api
+                        const apiArguments = api?.find((item) => item.apiId === "onOkApi");
+                        if (apiArguments) await requester(apiArguments);
                         // onOk
                         await eventEmitter.emit(events.onOk);
                         hideModal(false);
@@ -158,6 +160,9 @@ const Modal: Modules<ModalProps> = (props) => {
                         cancelNode?.setAttribute('disabled', 'disabled')
                     }
                     cancelNode!.onclick = async () => {
+                        // 取消api
+                        const apiArguments = api?.find((item) => item.apiId === "onCancelApi");
+                        if (apiArguments) await requester(apiArguments);
                         // onCancel
                         hideModal(false);
                         eventEmitter.emit(events.onCancel);
@@ -169,7 +174,7 @@ const Modal: Modules<ModalProps> = (props) => {
                 rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
         },
-        [MId, btnstate, createModal, eventEmitter, events.onCancel, events.onOk, hideModal, modal, params.closable, userClass.root]
+        [MId, api, btnstate, createModal, eventEmitter, events.onCancel, events.onOk, hideModal, modal, params.closable, userClass.root]
     );
 
     const setButton = useCallback(
@@ -430,6 +435,14 @@ Modal.exposeDefaultProps = {
 /**
  * 发布默认Api
  */
-Modal.exposeApi = [];
+Modal.exposeApi = [{
+    apiId: "onOkApi",
+    name: "确定",
+    description: "确认弹窗时可以调用api"
+  },{
+    apiId: "onCancelApi",
+    name: "取消",
+    description: "确认弹窗时可以调用api"
+  }];
 
 export default Modal;
