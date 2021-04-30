@@ -8,7 +8,9 @@ import useModal from '~/hooks/useModal';
 import { buildParams } from './defaultParams';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import useStyles from './Module.useStyles';
+import IconCancel from './IconCancel';
 import s from './Modal.module.less';
+import ReactDOM from 'react-dom';
 
 export interface ModalProps extends AppDataElementsTypes {
     id: string;
@@ -127,6 +129,17 @@ const Modal: Modules<ModalProps> = (props) => {
                 article,
                 footer,
             }).then(() => {
+                // 关闭图标
+                if (params.closable) {
+                    const closeIconNode = document.querySelector(`.${MId}_close`);
+                    ReactDOM.render(
+                        <IconCancel />,
+                        closeIconNode
+                      );
+                    // IconCancel
+                    console.log(333, closeIconNode)
+                }
+                // 确定按钮
                 if (isOk) {
                     const okNode = document.getElementById(`${MId}_ok`);
                     if (isOkDisabled) {
@@ -138,6 +151,7 @@ const Modal: Modules<ModalProps> = (props) => {
                         hideModal(false);
                     };
                 }
+                // 取消按钮
                 if (isCancel) {
                     const cancelNode = document.getElementById(`${MId}_cancel`);
                     if (isCancelDisabled) {
@@ -155,17 +169,7 @@ const Modal: Modules<ModalProps> = (props) => {
                 rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
         },
-        [
-            MId,
-            btnstate,
-            createModal,
-            eventEmitter,
-            events.onCancel,
-            events.onOk,
-            hideModal,
-            modal,
-            userClass.root,
-        ]
+        [MId, btnstate, createModal, eventEmitter, events.onCancel, events.onOk, hideModal, modal, params.closable, userClass.root]
     );
 
     const setButton = useCallback(
@@ -390,7 +394,12 @@ Modal.exposeDefaultProps = {
         content: {},
         header: {},
         article: {},
-        close: {},
+        close: {
+            display: {
+                width: 10,
+                height: 10,
+            }
+        },
         ok: {},
         okdisabled: {},
         cancel: {},
