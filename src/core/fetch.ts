@@ -9,13 +9,13 @@ import message from '~/components/Message';
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { method, body, headers, mode, credentials } = apiArguments;
-
+  
   if (!apiArguments.url) {
-    console.warn("api缺少url")
+    console.warn(`api(${apiArguments.name})缺少url`)
     return {}
   }
   if (!method) {
-    console.warn("api缺少method")
+    console.warn(`api(${apiArguments.name})缺少method`)
     return {}
   }
 
