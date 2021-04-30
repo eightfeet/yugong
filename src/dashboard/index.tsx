@@ -7,16 +7,13 @@ import 'whatwg-fetch';
 import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 import reportWebVitals from "~/reportWebVitals";
-import Layout from "~/components/Layout";
-import Responsive from "~/components/Responsive";
+import DashboardApp from "~/components/DashboardApp";
 import { Provider } from "react-redux";
 import { store } from "~/redux/store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <Layout>
-      <Responsive />
-    </Layout>
+    <DashboardApp />
   </Provider>,
   document.getElementById("root")
 );

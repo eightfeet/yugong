@@ -3,32 +3,31 @@ import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
   GroupOutlined,
-  FileAddOutlined,
 } from '@ant-design/icons';
-import s from './Layout.module.less'
+import {
+  useLocation,
+  Link
+} from "react-router-dom";
+import s from './Layout.module.less';
+import menus from './../minu';
 const { Header, Sider, Content } = Layout;
 
 
 interface Props {}
 const MainLayout: React.FC<Props> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(true);
+  let location = useLocation();
+
   return (
     <Layout>
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
         <div className={s.logo} ><GroupOutlined /> {collapsed ? '' : 'YUG'}</div>
-        <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<FileAddOutlined />}>
-            创建
-          </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
-          </Menu.Item>
+        <Menu theme="light" mode="inline" defaultSelectedKeys={[location.pathname]}>
+          {menus.map(item => <Menu.Item key={item.path} icon={item.icon}>
+            {item.name}
+            <Link to={item.path || '/'} />
+          </Menu.Item>)}
         </Menu>
       </Sider>
       <Layout className="site-layout">
