@@ -23,7 +23,9 @@ import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
 import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
+import loading from "~/core/loading";
 
+let pageReady = false;
 interface Props {}
 const Responsive: React.FC<Props> = () => {
   /**
@@ -116,6 +118,16 @@ const Responsive: React.FC<Props> = () => {
   }, [isEditing, sendMessage, setIsEditing, win]);
 
   useEffect(() => {
+    if (win && !pageReady) {
+      pageReady = true;
+      loading.show();
+      win.onload = () => {
+        loading.hide();
+      };
+    }
+  }, [win])
+
+  useEffect(() => {
     sendMessage({ tag: "setIsEditing", value: true }, win);
     setIsEditing(true);
   }, [sendMessage, setIsEditing, win]);
@@ -139,7 +151,7 @@ const Responsive: React.FC<Props> = () => {
 
   const onChangeRule = (width: any, height: any) => {
     setIframeWidth(width);
-    setIframeHeight(height);
+    setIframeHeight(height || (window.innerHeight - 140));
     if (win) {
       sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }

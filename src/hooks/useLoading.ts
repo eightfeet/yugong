@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import Loading, { LoadingParameters } from "@eightfeet/loading";
 
-const useModal = (parameters: LoadingParameters) => {
+const useLoading = (parameters: LoadingParameters) => {
   const ref = useRef<Loading>();
   useEffect(() => {
     ref.current = new Loading(parameters);
@@ -26,4 +26,4 @@ const useModal = (parameters: LoadingParameters) => {
   return { showLoading, hideLoading }
 };
 
-export default useModal;
+export default useLoading;
