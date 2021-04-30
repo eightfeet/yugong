@@ -3,10 +3,10 @@ import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
   GroupOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 import s from './Layout.module.less'
 const { Header, Sider, Content } = Layout;
@@ -20,8 +20,8 @@ const MainLayout: React.FC<Props> = ({ children }) => {
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
         <div className={s.logo} ><GroupOutlined /> {collapsed ? '' : 'YUG'}</div>
         <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1
+          <Menu.Item key="1" icon={<FileAddOutlined />}>
+            创建
           </Menu.Item>
           <Menu.Item key="2" icon={<VideoCameraOutlined />}>
             nav 2
