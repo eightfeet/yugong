@@ -122,6 +122,8 @@ const Dashboard: React.FC<Props> = () => {
                     模块名称：{activationItem.moduleName}
                     <br />
                     Id: {activationItem.moduleId}
+                    <br />
+                    <span className={s.warn}>当前模块将被移除，请手动清除其他模块事件中引用的当前模块方法。</span>
                 </div>
             ),
             okText: '确定',

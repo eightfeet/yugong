@@ -78,7 +78,6 @@ const useAppDashboardDataSync = (targetWindow?: Window) => {
                 }
                 break;
             case 'updateAppData':
-                console.log('更新')
                 // diff
                 if (!deepEqual(state.appData, value)) {
                     appData.updateAppData(value);

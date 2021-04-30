@@ -76,10 +76,12 @@ class EventEmitter {
   }
 
   public clear(id: string) {
+    if (!id.length) return;
     for (const eventName in this.events) {
       if (Object.prototype.hasOwnProperty.call(this.events, eventName)) {
-        const element = this.events[eventName];
-        console.log("清除", element);
+        if(eventName.indexOf(id) !== -1) {
+          delete this.events[eventName];
+        }
       }
     }
   }

@@ -67,7 +67,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
     const pageData = useSelector((state: RootState) => state.pageData);
     const appData = useSelector((state: RootState) => state.appData);
     const runningTimes = useSelector((state: RootState) => state.runningTimes);
-    const { isEditing } = useSelector((state: RootState) => state.controller);
+    const { isEditing, editingId } = useSelector((state: RootState) => state.controller);
 
     const ref = useRef(null);
     // 缓存
@@ -92,9 +92,11 @@ const OutputLayout: React.FC<LayoutProps> = ({
                 break;
             case 'updateAppData':
                 updateAppData(value);
+                setAppdataLocalStorage(value);
                 break;
             case 'removeActivationItem':
                 removeActivationItem();
+                eventEmitter.clear(editingId || '')
                 break;
             case 'id':
                 setEditingId(value);

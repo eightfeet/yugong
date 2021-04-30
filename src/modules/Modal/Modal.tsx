@@ -51,7 +51,7 @@ const Modal: Modules<ModalProps> = (props) => {
     const MId = `MD${moduleId}`;
     const params = buildParams({
         id: MId,
-        animationType: 'fadeInRight',
+        animationType: 'zoomIn',
         animationDuration: '0.2ms',
         closable: true,
         shouldCloseOnOverlayClick: true,
