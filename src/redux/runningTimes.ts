@@ -25,20 +25,22 @@ interface RunningTimesItem {
     [keys: string]: any;
 }
 
+const defaultData : {
+    [keys: string]: RunningTimesItem;
+} = {
+    search: parsed,
+    windowSize,
+    unit: {
+        vw: width/100,
+        vh: height/100,
+    },
+};
+
 /**
  * 全局变量，被动增加，被动使用，
  */
 export const runningTimes = createModel<RootModel>()({
-    state: {
-        search: parsed,
-        windowSize,
-        unit: {
-            vw: width/100,
-            vh: height/100,
-        },
-    } as {
-        [keys: string]: RunningTimesItem;
-    }, 
+    state: defaultData, 
 
     reducers: {
         setRunningTimes(state, payload: RunningTimesItem) {
@@ -46,6 +48,9 @@ export const runningTimes = createModel<RootModel>()({
         },
         setRemSize({unit, ...other}, payload: number) {
             return {...other, unit:{...unit, rem: payload}}
+        },
+        initRunningTimes() {
+            return defaultData
         }
     }
 });

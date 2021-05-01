@@ -51,19 +51,21 @@ try {
     console.warn(error)
 }
 
+const defaultData: PageData = {
+    pageTitle: DEFAULT_PAGE_TITLE,
+    style: {},
+    unit: DEFAULT_UNIT,
+    toUnit: DEFAULT_TO_UNIT,
+    onLoadApi: [],
+    mountEnvents: [],
+    unmountEnvents: [],
+    cols: localPageData.cols || GRID_DEFAULT_COLS,
+    rowHeight: localPageData.rowHeight || GRID_DEFAULT_ROWHEIGHT,
+    space: localPageData.space || GRID_DEFAULT_SPACE
+};
+
 export const pageData = createModel<RootModel>()({
-    state: {
-        pageTitle: DEFAULT_PAGE_TITLE,
-        style: {},
-        unit: DEFAULT_UNIT,
-        toUnit: DEFAULT_TO_UNIT,
-        onLoadApi: [],
-        mountEnvents: [],
-        unmountEnvents: [],
-        cols: localPageData.cols || GRID_DEFAULT_COLS,
-        rowHeight: localPageData.rowHeight || GRID_DEFAULT_ROWHEIGHT,
-        space: localPageData.space || GRID_DEFAULT_SPACE
-    } as PageData, // typed complex state
+    state: defaultData, // typed complex state
     reducers: {
         updatePage(state, payload: PageData) {
             return { ...state, ...payload };
@@ -89,6 +91,9 @@ export const pageData = createModel<RootModel>()({
                 onLoadEnvents: payload,
             };
         },
+        initPageData(){
+            return defaultData
+        }
     },
     effects: (dispach) => {
         const updatePage = dispach.pageData.updatePage;

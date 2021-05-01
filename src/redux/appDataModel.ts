@@ -16,6 +16,9 @@ export const appData = createModel<RootModel>()({
         updateAppData(_, payload: AppDataListTypes) {
             return [...payload];
         },
+        initAppData(){
+            return []
+        }
     },
     effects: (dispach) => {
         const updateAppData = dispach.appData.updateAppData;

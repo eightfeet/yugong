@@ -1,17 +1,19 @@
 import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 
+const defaultData: {
+    stateTag?: boolean;
+    isEditing?: boolean;
+    editingId?: string;
+    bestFont?: number
+} = {
+    stateTag: false,
+    isEditing: false,
+    editingId: '',
+}
+
 export const controller = createModel<RootModel>()({
-    state: {
-        stateTag: false,
-        isEditing: false,
-        editingId: '',
-    } as {
-        stateTag?: boolean;
-        isEditing?: boolean;
-        editingId?: string;
-        bestFont?: number
-    }, // typed complex state
+    state: defaultData, // typed complex state
     reducers: {
         setStateTag(state, payload: boolean) {
             return { ...state, stateTag: payload };
@@ -24,6 +26,9 @@ export const controller = createModel<RootModel>()({
         },
         setBestFont(state, payload: number) {
             return { ...state, bestFont: payload };
+        },
+        initController(){
+            return defaultData;
         }
     },
     effects: (dispatch) => {
