@@ -7,6 +7,7 @@ import {
   CloseOutlined,
   EditOutlined,
   EyeOutlined,
+  FileAddOutlined,
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -21,6 +22,7 @@ import Draggable from "react-draggable";
 import Ruler from "./Ruler";
 import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
+import CreateProject from '../CreateProject';
 import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
 import loading from "~/core/loading";
@@ -62,6 +64,7 @@ const Responsive: React.FC<Props> = () => {
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
+  const [isCreate, setIsCreate] = useState(true);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -125,7 +128,7 @@ const Responsive: React.FC<Props> = () => {
         loading.hide();
       };
     }
-  }, [win])
+  }, [win]);
 
   useEffect(() => {
     sendMessage({ tag: "setIsEditing", value: true }, win);
@@ -137,6 +140,10 @@ const Responsive: React.FC<Props> = () => {
     sendMessage({ tag: "setIsEditing", value: states }, win);
     setIsEditing(states);
   }, [isEditing, sendMessage, setIsEditing, win]);
+
+  const toggleCreate = useCallback(() => {
+    setIsCreate(!isCreate);
+  }, [isCreate]);
 
   // 收发处理，编辑完数据后通过sendMessage向子窗口发送最新数据。
   useEffect(() => {
@@ -151,7 +158,7 @@ const Responsive: React.FC<Props> = () => {
 
   const onChangeRule = (width: any, height: any) => {
     setIframeWidth(width);
-    setIframeHeight(height || (window.innerHeight - 140));
+    setIframeHeight(height || window.innerHeight - 140);
     if (win) {
       sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }
@@ -177,112 +184,125 @@ const Responsive: React.FC<Props> = () => {
   }, [removeActivationItem, sendMessage, win]);
 
   return (
-    <div className={s.main}>
-      {showDashboard && isEditing ? (
-        <Draggable
-          axis="both"
-          handle={`.${s.header}`}
-          onDrag={() => setOpacity("0.5")}
-          onStop={() => setOpacity("1")}
-        >
-          <div className={s.dashboard} style={{ opacity }}>
-            <div className={s.header}>
-              <h3>设置面板</h3>
-              <CloseOutlined className={s.icon} onClick={hideDashboard} />
-            </div>
-            <MiniDashboard />
-          </div>
-        </Draggable>
-      ) : null}
-      <div>
-        {!isEditing ? (
-          <Button
-            type="primary"
-            className={s.toggle}
-            onClick={toggleEdit}
-            icon={<EditOutlined />}
-          />
-        ) : null}
-        {isEditing ? (
-          <Button
-            type="primary"
-            className={s.toggle}
-            onClick={toggleEdit}
-            icon={<EyeOutlined />}
-          />
-        ) : null}
-        &nbsp;
-        <Button
-          type="primary"
-          icon={<SettingOutlined />}
-          onClick={() => setShowPageDrawer(true)}
-        >
-          页面
-        </Button>
-        &nbsp;
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setShowDrawer(true)}
-        >
-          组件
-        </Button>
-      </div>
-      <Ruler onChange={onChangeRule} />
-      <Drawer
-        className={s.drawer}
-        title="页面设置"
-        width={550}
-        onClose={() => setShowPageDrawer(false)}
-        visible={showPageDrawer}
-        bodyStyle={{ padding: "0", overflow: "auto" }}
-        maskStyle={{ backgroundColor: "transparent" }}
-        footer={null}
-      >
-        <PageSetting />
-      </Drawer>
-      <Drawer
-        className={s.drawer}
-        title="组件库"
-        width={550}
-        onClose={() => setShowDrawer(false)}
-        visible={showDrawer}
-        bodyStyle={{ padding: "10px 10px 80px 10px" }}
-        maskStyle={{ backgroundColor: "transparent" }}
-        footer={null}
-      >
-        <Repository />
-      </Drawer>
-      <div className={s.box}>
-        <div
-          className={classNames({
-            [s.viewbg]: !isEditing,
-          })}
-          style={{ transition: "all 0.5s" }}
-        />
-        {!stateTag ? (
-          <div
-            className={s.iframebox}
-            style={
-              iframeWidth ? { width: iframeWidth, height: iframeHeight } : {}
-            }
-          >
-            <iframe
-              ref={ref}
-              id="wrapiframe"
-              title="wrapiframe"
-              src={`/${window.location.search}`}
-              style={{
-                width: "1px",
-                border: "none",
-                minWidth: "100%",
-                minHeight: iframeHeight,
-              }}
+    <>
+      {
+        isCreate ? <CreateProject goBack={() => toggleCreate()} /> :
+        <div className={s.main}>
+          {showDashboard && isEditing ? (
+            <Draggable
+              axis="both"
+              handle={`.${s.header}`}
+              onDrag={() => setOpacity("0.5")}
+              onStop={() => setOpacity("1")}
+            >
+              <div className={s.dashboard} style={{ opacity }}>
+                <div className={s.header}>
+                  <h3>设置面板</h3>
+                  <CloseOutlined className={s.icon} onClick={hideDashboard} />
+                </div>
+                <MiniDashboard />
+              </div>
+            </Draggable>
+          ) : null}
+          <div>
+            <Button
+              type="primary"
+              onClick={toggleCreate}
+              icon={<FileAddOutlined />}
             />
+            &nbsp;
+            {!isEditing ? (
+              <Button
+                type="primary"
+                className={s.toggle}
+                onClick={toggleEdit}
+                icon={<EditOutlined />}
+              />
+            ) : null}
+            {isEditing ? (
+              <Button
+                type="primary"
+                className={s.toggle}
+                onClick={toggleEdit}
+                icon={<EyeOutlined />}
+              />
+            ) : null}
+            &nbsp;
+            <Button
+              type="primary"
+              icon={<SettingOutlined />}
+              onClick={() => setShowPageDrawer(true)}
+            >
+              页面
+            </Button>
+            &nbsp;
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setShowDrawer(true)}
+            >
+              组件
+            </Button>
           </div>
-        ) : null}
-      </div>
-    </div>
+          <Ruler onChange={onChangeRule} />
+          <Drawer
+            className={s.drawer}
+            title="页面设置"
+            width={550}
+            onClose={() => setShowPageDrawer(false)}
+            visible={showPageDrawer}
+            bodyStyle={{ padding: "0", overflow: "auto" }}
+            maskStyle={{ backgroundColor: "transparent" }}
+            footer={null}
+          >
+            <PageSetting />
+          </Drawer>
+          <Drawer
+            className={s.drawer}
+            title="组件库"
+            width={550}
+            onClose={() => setShowDrawer(false)}
+            visible={showDrawer}
+            bodyStyle={{ padding: "10px 10px 80px 10px" }}
+            maskStyle={{ backgroundColor: "transparent" }}
+            footer={null}
+          >
+            <Repository />
+          </Drawer>
+          <div className={s.box}>
+            <div
+              className={classNames({
+                [s.viewbg]: !isEditing,
+              })}
+              style={{ transition: "all 0.5s" }}
+            />
+            {!stateTag ? (
+              <div
+                className={s.iframebox}
+                style={
+                  iframeWidth
+                    ? { width: iframeWidth, height: iframeHeight }
+                    : {}
+                }
+              >
+                <iframe
+                  ref={ref}
+                  id="wrapiframe"
+                  title="wrapiframe"
+                  src={`/${window.location.search}`}
+                  style={{
+                    width: "1px",
+                    border: "none",
+                    minWidth: "100%",
+                    minHeight: iframeHeight,
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      }
+    </>
   );
 };
 

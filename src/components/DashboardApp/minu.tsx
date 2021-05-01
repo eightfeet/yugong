@@ -1,4 +1,4 @@
-import { DashboardOutlined, FileAddOutlined } from "@ant-design/icons";
+import { DashboardOutlined, ProjectOutlined } from "@ant-design/icons";
 import React from "react";
 
 export interface MenuDataItem {
@@ -22,7 +22,7 @@ const menu: MenuDataItem[] = [
     {
         path: '/project',
         name: '创建项目',
-        icon: <FileAddOutlined />
+        icon: <ProjectOutlined />
     }
 ];
 

@@ -1,6 +1,6 @@
 module.exports = {
-    "@primary-color": "#1890ff",// primary color for all components
-    "@link-color": "#1890ff",// link color
+    "@primary-color": "#2626bc",// primary color for all components
+    "@link-color": "#2626bc",// link color
     "@success-color": "#52c41a",// success state color
     "@warning-color": "#faad14",// warning state color
     "@error-color": "#f5222d",// error state color
