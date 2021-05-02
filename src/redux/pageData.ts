@@ -55,6 +55,7 @@ try {
     console.warn(error)
 }
 
+
 const defaultData: PageData = {
     pageTitle: DEFAULT_PAGE_TITLE,
     style: {},

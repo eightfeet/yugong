@@ -18,22 +18,16 @@ interface Props {
 const Createproject: React.FC<Props> = ({ goBack }) => {
   const [localAppData] = useLocalStorage("appData", null);
   const [localPageData] = useLocalStorage("pageData", null);
-  console.log("localPageData", localPageData);
   const dispatch = useDispatch<Dispatch>();
 
   const initData = useCallback(() => {
+    window.localStorage.removeItem("pageData");
+    window.localStorage.removeItem("appData");
     dispatch.pageData.initPageData();
     dispatch.controller.initController();
     dispatch.activationItem.removeActivationItem();
     dispatch.appData.initAppData();
-    window.localStorage.removeItem("pageData");
-    window.localStorage.removeItem("appData");
-  }, [
-    dispatch.activationItem,
-    dispatch.appData,
-    dispatch.controller,
-    dispatch.pageData,
-  ]);
+  }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData]);
 
   const createBlank = useCallback(() => {
     /**初始化 */
