@@ -25,6 +25,7 @@ import PageSetting from "../MiniDashboard/PageSetting";
 import CreateProject from '../CreateProject';
 import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
+import useLocalStorage from "~/hooks/useLocalStorage";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -49,6 +50,8 @@ const Responsive: React.FC<Props> = () => {
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const updatePageData = useDispatch<Dispatch>().pageData.updatePage;
+  const setWindowHeight = useDispatch<Dispatch>().pageData.setWindowHeight;
+  const setWindowWidth = useDispatch<Dispatch>().pageData.setWindowWidth;
   const updateActivationItem = useDispatch<Dispatch>().activationItem
     .updateActivationItem;
   const removeActivationItem = useDispatch<Dispatch>().activationItem
@@ -58,8 +61,9 @@ const Responsive: React.FC<Props> = () => {
 
   const ref = useRef(null);
 
-  const [iframeWidth, setIframeWidth] = useState(414);
-  const [iframeHeight, setIframeHeight] = useState(736);
+  const pageData = useSelector((state: RootState) => state.pageData);
+
+  const [, setLocalPageData] = useLocalStorage('pageData', null)
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
@@ -145,10 +149,15 @@ const Responsive: React.FC<Props> = () => {
     );
   }, [sendMessage, win, appData]);
 
-  const onChangeRule = (width: any, height: any) => {
-    setIframeWidth(width);
-    setIframeHeight(height || window.innerHeight - 140);
+  const onChangeRule = (width: number, height: number = (window.innerHeight - 140)) => {
+    setWindowWidth(width);
+    setWindowHeight(height);
+    const optPageData = {...pageData};
+    optPageData.windowWidth = width;
+    optPageData.windowHeight = height;
+    setLocalPageData(optPageData);
     if (win) {
+      sendMessage({ tag: "updatePage", value: true }, win);
       sendMessage({ tag: "setIsEditing", value: isEditing }, win);
     }
     setIsEditing(true);
@@ -268,11 +277,7 @@ const Responsive: React.FC<Props> = () => {
             {!stateTag ? (
               <div
                 className={s.iframebox}
-                style={
-                  iframeWidth
-                    ? { width: iframeWidth, height: iframeHeight }
-                    : {}
-                }
+                style={{ width: pageData.windowWidth === -1 ? `100%` : `${pageData.windowWidth}px`, height: `${pageData.windowHeight}px` }}
               >
                 <iframe
                   ref={ref}
@@ -283,7 +288,7 @@ const Responsive: React.FC<Props> = () => {
                     width: "1px",
                     border: "none",
                     minWidth: "100%",
-                    minHeight: iframeHeight,
+                    minHeight: `${pageData.windowHeight}px`,
                   }}
                 />
               </div>

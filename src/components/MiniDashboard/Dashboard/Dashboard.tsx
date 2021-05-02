@@ -287,7 +287,7 @@ const Dashboard: React.FC<Props> = () => {
                             }
                         >
                             <CopyOutlined
-                                alt="复制微信新块"
+                                alt="复制模块"
                                 onClick={beforCopyModule}
                             />
                         </Tooltip>

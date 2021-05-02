@@ -1,5 +1,5 @@
 import { createModel } from '@rematch/core';
-import { DEFAULT_PAGE_TITLE, DEFAULT_TO_UNIT, DEFAULT_UNIT, GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE } from '~/core/constants';
+import { DEFAULT_PAGE_HEIGHT, DEFAULT_PAGE_TITLE, DEFAULT_PAGE_WIDTH, DEFAULT_TO_UNIT, DEFAULT_UNIT, GRID_DEFAULT_COLS, GRID_DEFAULT_ROWHEIGHT, GRID_DEFAULT_SPACE } from '~/core/constants';
 import {
     Api,
     BackgroundCommonTypesOfStyleItems,
@@ -24,7 +24,7 @@ export interface PageData {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
     };
-    /* api */
+    /* api */ 
     onLoadApi?: Api[];
     /* 挂载事件 */
     mountEnvents?: EventsTypeItem[];
@@ -38,6 +38,10 @@ export interface PageData {
     space?:number;
     /* 删格行高*/
     rowHeight?: number;
+    /** window height */
+    windowWidth?: number;
+    /** window width */
+    windowHeight?: number;
 }
 
 // grid 部分参数无法热更新，这里优先使用最正确的数据，然后使用默认数据
@@ -61,7 +65,9 @@ const defaultData: PageData = {
     unmountEnvents: [],
     cols: localPageData.cols || GRID_DEFAULT_COLS,
     rowHeight: localPageData.rowHeight || GRID_DEFAULT_ROWHEIGHT,
-    space: localPageData.space || GRID_DEFAULT_SPACE
+    space: localPageData.space || GRID_DEFAULT_SPACE,
+    windowWidth: localPageData.windowWidth || DEFAULT_PAGE_WIDTH,
+    windowHeight: localPageData.windowHeight || DEFAULT_PAGE_HEIGHT
 };
 
 export const pageData = createModel<RootModel>()({
@@ -93,6 +99,12 @@ export const pageData = createModel<RootModel>()({
         },
         initPageData(){
             return defaultData
+        },
+        setWindowWidth(state, payload: number) {
+            return {...state, windowWidth: payload}
+        },
+        setWindowHeight(state, payload: number) {
+            return {...state, windowHeight: payload}
         }
     },
     effects: (dispach) => {
