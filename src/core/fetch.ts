@@ -5,18 +5,18 @@ import { store } from "~/redux/store";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 import loading from "./loading";
 import isType from "./helper/isType";
-import message from '~/components/Message';
+import message from "~/components/Message";
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { method, body, headers, mode, credentials } = apiArguments;
-  
+
   if (!apiArguments.url) {
-    console.warn(`api(${apiArguments.name})缺少url`)
-    return {}
+    console.warn(`api(${apiArguments.name})缺少url`);
+    return {};
   }
   if (!method) {
-    console.warn(`api(${apiArguments.name})缺少method`)
-    return {}
+    console.warn(`api(${apiArguments.name})缺少method`);
+    return {};
   }
 
   // 从runningTime翻译Api数据;
@@ -38,34 +38,41 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
       }
     }
   }
-  
+
   // 关联body
   let bodyData: any = getArguments(body || []);
 
   // 解构api时只取第一个参数
-  if (isDestructuring && isType(bodyData, 'Object')) {
-    let temp = {}
-    Object.keys(bodyData).some(key => {
+  if (isDestructuring && isType(bodyData, "Object")) {
+    let temp = {};
+    Object.keys(bodyData).some((key) => {
       temp = bodyData[key];
       return true;
-    })
+    });
     bodyData = temp;
   }
+  await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials });
+};
 
+export const fetchApi = async (
+  url: string,
+  { method, headers={}, body, mode="cors", credentials, ...others }: { [keys: string]: any }
+) => {
   // 处理Url
   let urlData = url;
+  let bodyData = { ...body };
   if (method === "GET") {
-    urlData = stringifyUrl({ url, query: bodyData });
+    urlData = stringifyUrl({ url, query: body });
   }
 
-  if (headersData["Content-Type"] === "application/json") {
+  if (headers["Content-Type"] === "application/json") {
     bodyData = JSON.stringify(bodyData);
   }
 
   // fetch参数
   const args: AnyObjectType = {
     method,
-    headers: headersData,
+    headers: headers,
   };
 
   if (method !== "GET") {
@@ -80,7 +87,7 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
     args.credentials = credentials;
   }
 
-  const res = await fetch(urlData, args);
+  const res = await fetch(urlData, {...others, ...args });
   /**
    * 状态范围
    */
@@ -97,7 +104,7 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
  * api 请求
  * @param {Api} apiArguments api参数
  * @param {boolean} [isDestructuring] 是否解构结果，将数据打平
- * @return {*} 
+ * @return {*}
  */
 const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { successPublic, errorPublic } = apiArguments;
@@ -109,12 +116,12 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     // 处理请求结果
     // 成功发布
     if (successPublic?.length) {
-      const successPublicResult = getArguments(successPublic, {result});
+      const successPublicResult = getArguments(successPublic, { result });
       setRunningTimes(successPublicResult);
     }
     return result;
   } catch (error) {
-    message.error('请求失败');
+    message.error("请求失败");
     loading.hide();
     // 失败发布
     if (errorPublic?.length) {
