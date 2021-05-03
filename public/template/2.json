@@ -3,7 +3,7 @@
         "pageTitle": "模拟Json",
         "style": {
             "backgroundCommon": {
-                "backgroundColor": "rgba(63, 34, 206, 1)"
+                "backgroundColor": "rgba(248, 231, 28, 1)"
             }
         },
         "unit": "px",
@@ -22,16 +22,20 @@
             "moduleName": "未命名",
             "moduleId": "1358e1ef-a7c3-4dfd-ae03-2ebe5c0fae95",
             "layout": {
-                "w": 5,
-                "h": 3,
-                "x": 0,
-                "y": 0,
+                "w": 10,
+                "h": 2,
+                "x": 1,
+                "y": 10,
                 "i": "1358e1ef-a7c3-4dfd-ae03-2ebe5c0fae95",
                 "moved": false,
                 "static": false
             },
             "style": {
-                "basic": {},
+                "basic": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(245, 166, 35, 1)"
+                    }
+                },
                 "normal": {
                     "display": {
                         "padding": [
@@ -54,7 +58,7 @@
                         "radiusBottomRight": 6
                     },
                     "backgroundCommon": {
-                        "backgroundColor": "rgba(226, 226, 226, 1)"
+                        "backgroundColor": "rgba(144, 19, 254, 1)"
                     },
                     "boxShadow": [
                         {
@@ -62,7 +66,10 @@
                             "color": "rgba(0, 0, 0, 0.15 )",
                             "blur": 4
                         }
-                    ]
+                    ],
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)"
+                    }
                 },
                 "disabled": {
                     "font": {
@@ -121,22 +128,45 @@
             "moduleName": "未命名",
             "moduleId": "5918b511-3c7d-46f8-84aa-6e914cba658e",
             "layout": {
-                "w": 4,
-                "h": 4,
+                "w": 12,
+                "h": 9,
                 "x": 0,
-                "y": 3,
+                "y": 0,
                 "i": "5918b511-3c7d-46f8-84aa-6e914cba658e",
                 "moved": false,
                 "static": false
             },
             "style": {
-                "basic": {},
+                "basic": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(101, 129, 255, 1)"
+                    }
+                },
                 "image": {}
             },
             "content": {
                 "text": 1
             },
-            "type": "Image"
+            "type": "Image",
+            "events": {
+                "mount": [
+                    {
+                        "name": "5918b511-3c7d-46f8-84aa-6e914cba658e/setImg",
+                        "arguments": [
+                            {
+                                "type": "object",
+                                "name": "img",
+                                "describe": "图片url",
+                                "data": {
+                                    "url": "https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*5PRzTL4pwuYAAAAAAAAAAABkARQnAQ",
+                                    "alt": ""
+                                },
+                                "fieldName": "img"
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }

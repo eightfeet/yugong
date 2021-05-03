@@ -17,8 +17,8 @@ interface Props {
 }
 
 const Createproject: React.FC<Props> = ({ goBack }) => {
-  const [localAppData] = useLocalStorage("appData", null);
-  const [localPageData] = useLocalStorage("pageData", null);
+  const [localAppData, setLocalAppData] = useLocalStorage("appData", null);
+  const [localPageData, setLocalPageData] = useLocalStorage("pageData", null);
   const dispatch = useDispatch<Dispatch>();
 
   const initData = useCallback(() => {
@@ -57,9 +57,15 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
   }, [createBlank, localAppData?.length, localPageData]);
 
   const onSelectedTemplate = useCallback(async(id) => {
-    const data = await request.get(`/template/${id}.json`)
-    console.log(data);
-  }, []);
+    const {appData, pageData} = await request.get(`/template/${id}.json`);
+    /**初始化 */
+    initData();
+    setLocalAppData(appData)
+    setLocalPageData(pageData)
+    dispatch.appData.updateAppData(appData);
+    dispatch.pageData.updatePage(pageData);
+    goBack();
+  }, [dispatch.appData, dispatch.pageData, goBack, initData, setLocalAppData, setLocalPageData]);
 
   return (
     <div>
