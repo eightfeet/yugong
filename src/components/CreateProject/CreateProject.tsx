@@ -25,6 +25,7 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
     window.localStorage.removeItem("appData");
     dispatch.pageData.initPageData();
     dispatch.controller.initController();
+    dispatch.controller.setIsEditing(true);
     dispatch.activationItem.removeActivationItem();
     dispatch.appData.initAppData();
   }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData]);

@@ -180,7 +180,7 @@ const Responsive: React.FC<Props> = () => {
       sendMessage({ tag: "removeActivationItem", value: undefined }, win);
     }
   }, [removeActivationItem, sendMessage, win]);
-
+  
   return (
     <>
       {
