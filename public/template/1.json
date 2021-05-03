@@ -1,142 +1,362 @@
 {
     "pageData": {
-        "pageTitle": "模拟Json",
+        "pageTitle": "X报名",
         "style": {
             "backgroundCommon": {
-                "backgroundColor": "rgba(63, 34, 206, 1)"
+                "backgroundColor": "rgba(45, 15, 194, 1)",
+                "imageUrl": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0503120504316.jpg",
+                "repeat": "no-repeat",
+                "sizeX": 750
             }
         },
         "unit": "px",
-        "toUnit": "px",
+        "toUnit": "rem",
         "onLoadApi": [],
         "mountEnvents": [],
         "unmountEnvents": [],
         "cols": 12,
-        "rowHeight": 20,
+        "rowHeight": "{{unit.rem}}",
         "space": 0,
         "windowWidth": 375,
-        "windowHeight": 677
+        "windowHeight": 677,
+        "UIWidth": 750,
+        "baseFont": 31.25
     },
     "appData": [
         {
-            "moduleName": "未命名",
-            "moduleId": "1358e1ef-a7c3-4dfd-ae03-2ebe5c0fae95",
+            "moduleName": "top",
+            "moduleId": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874",
             "layout": {
-                "w": 5,
-                "h": 3,
-                "x": 0,
-                "y": 0,
-                "i": "1358e1ef-a7c3-4dfd-ae03-2ebe5c0fae95",
+                "w": 10,
+                "h": 39,
+                "x": 1,
+                "y": 39,
+                "i": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874",
                 "moved": false,
-                "static": false
+                "static": true
             },
             "style": {
                 "basic": {},
-                "normal": {
-                    "display": {
-                        "padding": [
-                            10,
-                            10,
-                            10,
-                            10
-                        ]
-                    },
-                    "border": {
-                        "borderColor": "rgba(205, 205, 205, 1)",
-                        "borderPosition": {
-                            "border": true
-                        },
-                        "borderWidth": 1,
-                        "borderStyle": "solid",
-                        "radiusTopLeft": 6,
-                        "radiusTopRight": 6,
-                        "radiusBottomLeft": 6,
-                        "radiusBottomRight": 6
-                    },
-                    "backgroundCommon": {
-                        "backgroundColor": "rgba(226, 226, 226, 1)"
-                    },
-                    "boxShadow": [
-                        {
-                            "shiftDown": 2,
-                            "color": "rgba(0, 0, 0, 0.15 )",
-                            "blur": 4
-                        }
-                    ]
-                },
-                "disabled": {
+                "wrap": {},
+                "header": {
                     "font": {
-                        "color": "rgba(144, 144, 144, 1)"
+                        "fontSize": 50,
+                        "color": "rgba(248, 231, 28, 1)",
+                        "align": "left"
+                    },
+                    "display": {
+                        "margin": [
+                            null,
+                            null,
+                            "",
+                            null
+                        ],
+                        "width": ""
                     }
                 },
-                "focus": {},
-                "active": {},
-                "hover": {},
-                "before": {},
-                "after": {}
+                "container": {},
+                "formitem": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(74, 100, 226, 1)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)"
+                    },
+                    "border": {
+                        "radiusTopLeft": 20,
+                        "radiusTopRight": 20,
+                        "radiusBottomLeft": 20,
+                        "radiusBottomRight": 20,
+                        "borderStyle": "none"
+                    },
+                    "display": {
+                        "margin": [
+                            null,
+                            null,
+                            "30",
+                            null
+                        ]
+                    }
+                },
+                "label": {
+                    "border": {
+                        "borderColor": "rgba(248, 231, 28, 1)"
+                    },
+                    "font": {
+                        "color": "rgba(248, 231, 28, 1)"
+                    }
+                },
+                "errorlabel": {
+                    "border": {
+                        "borderColor": "rgba(80, 227, 194, 1)",
+                        "borderPosition": {
+                            "borderTop": false,
+                            "borderRight": false,
+                            "borderBottom": true,
+                            "borderLeft": false,
+                            "border": false
+                        },
+                        "borderWidth": 2,
+                        "borderStyle": "none"
+                    },
+                    "font": {
+                        "color": "rgba(255, 106, 127, 1)"
+                    }
+                },
+                "icon": {
+                    "font": {
+                        "color": "rgba(248, 231, 28, 1)"
+                    },
+                    "border": {
+                        "radiusTopLeft": null,
+                        "radiusTopRight": null,
+                        "radiusBottomLeft": null,
+                        "radiusBottomRight": null
+                    }
+                },
+                "baseline": {
+                    "border": {
+                        "borderPosition": {
+                            "borderTop": false,
+                            "borderRight": false,
+                            "borderBottom": true,
+                            "borderLeft": false,
+                            "border": false
+                        },
+                        "borderStyle": "none",
+                        "borderWidth": 2
+                    }
+                },
+                "baselineact": {},
+                "errorbaseline": {
+                    "border": {
+                        "borderStyle": "outset",
+                        "borderColor": "rgba(255, 106, 127, 1)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 106, 127, 1)"
+                    }
+                },
+                "errorbaselineact": {
+                    "border": {
+                        "borderStyle": "outset",
+                        "borderColor": "rgba(255, 106, 127, 1)",
+                        "borderPosition": {
+                            "borderTop": false,
+                            "borderRight": false,
+                            "borderBottom": true,
+                            "borderLeft": false,
+                            "border": false
+                        }
+                    }
+                },
+                "footer": {},
+                "button": {},
+                "oknormal": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(248, 231, 28, 1)"
+                    },
+                    "display": {
+                        "margin": [
+                            "10",
+                            "10",
+                            "10",
+                            "10"
+                        ],
+                        "padding": [
+                            null,
+                            "40",
+                            null,
+                            "40"
+                        ]
+                    },
+                    "font": {
+                        "fontSize": 40,
+                        "color": "rgba(194, 82, 24, 1)"
+                    },
+                    "border": {
+                        "radiusTopLeft": 10,
+                        "radiusTopRight": 10,
+                        "radiusBottomLeft": 10,
+                        "radiusBottomRight": 10
+                    }
+                },
+                "okdisabled": {},
+                "resetnormal": {
+                    "border": {
+                        "radiusTopLeft": 10,
+                        "radiusTopRight": 10,
+                        "radiusBottomLeft": 10,
+                        "radiusBottomRight": 10
+                    },
+                    "font": {
+                        "fontSize": 40,
+                        "color": "rgba(155, 155, 155, 1)"
+                    },
+                    "display": {
+                        "padding": [
+                            null,
+                            "40",
+                            null,
+                            "40"
+                        ]
+                    }
+                }
             },
             "content": {
                 "text": 1
             },
-            "type": "Button",
+            "type": "Form",
             "events": {
                 "mount": [
                     {
-                        "name": "1358e1ef-a7c3-4dfd-ae03-2ebe5c0fae95/setButton",
+                        "name": "global/injectGlobal",
                         "arguments": [
                             {
                                 "type": "string",
-                                "name": "按钮文字",
-                                "fieldName": "buttonText",
-                                "html": true,
-                                "describe": "按钮显示文字",
-                                "data": "按*钮"
+                                "name": "变量名",
+                                "fieldName": "name",
+                                "describe": "唯一(英文)全局变量名",
+                                "data": "formlist"
                             },
                             {
-                                "type": "boolean",
-                                "name": "禁用按钮",
-                                "fieldName": "disabled",
-                                "describe": "禁用按钮，true禁用，false启用",
-                                "data": {
-                                    "comparableAverageA": "a",
-                                    "method": "==="
-                                }
+                                "type": "mixed",
+                                "name": "变量值",
+                                "fieldName": "value",
+                                "describe": "请输入变量数据",
+                                "data": [
+                                    {
+                                        "fieldName": "name",
+                                        "label": "姓名",
+                                        "type": "text",
+                                        "rules": {
+                                            "string": {
+                                                "required": [
+                                                    "请输入字符"
+                                                ],
+                                                "min": [
+                                                    2,
+                                                    "请输入长度大于2的字符"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "sex",
+                                        "label": "性别",
+                                        "type": "radiogroup",
+                                        "options": [
+                                            {
+                                                "label": "男",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "label": "女",
+                                                "value": "0"
+                                            }
+                                        ],
+                                        "rules": {
+                                            "mixed": {
+                                                "required": [
+                                                    "请选择性别"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "birthday",
+                                        "label": "生日",
+                                        "type": "date",
+                                        "rules": {
+                                            "date": {
+                                                "max": [
+                                                    "2020/06/15",
+                                                    "出生日期不能大于2020/06/15"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "hobby",
+                                        "label": "爱好",
+                                        "type": "checkboxgroup",
+                                        "options": [
+                                            {
+                                                "label": "足球",
+                                                "value": 0
+                                            },
+                                            {
+                                                "label": "篮球",
+                                                "value": 1
+                                            },
+                                            {
+                                                "label": "羽毛球",
+                                                "value": 2
+                                            }
+                                        ],
+                                        "rules": {
+                                            "array": {
+                                                "required": [
+                                                    "请选择兴趣爱好"
+                                                ],
+                                                "min": [
+                                                    1,
+                                                    "请至少选择一项"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874/setFormData",
+                        "arguments": [
+                            {
+                                "type": "runningTime",
+                                "name": "表单数据",
+                                "describe": "设置表单数据",
+                                "data": "formlist",
+                                "fieldName": "formdata"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874/setFormConfig",
+                        "arguments": [
+                            {
+                                "type": "string",
+                                "name": "输入框",
+                                "describe": "standard,outlined或filled默认standard",
+                                "data": "",
+                                "fieldName": "forminput"
                             },
                             {
-                                "type": "boolean",
-                                "name": "隐藏按钮",
-                                "fieldName": "hidden",
-                                "describe": "隐藏按钮，true隐藏，false不隐藏",
-                                "data": {
-                                    "comparableAverageA": "a",
-                                    "method": "==="
-                                }
+                                "type": "string",
+                                "name": "表单标题",
+                                "describe": "设置表单标题文字",
+                                "data": "预约报名",
+                                "fieldName": "formtitle"
+                            },
+                            {
+                                "type": "string",
+                                "name": "提交按钮",
+                                "describe": "设置提交按钮文字",
+                                "data": "我要报名",
+                                "fieldName": "formsubmittext"
+                            },
+                            {
+                                "type": "string",
+                                "name": "重置按钮",
+                                "describe": "设置重置按钮文字",
+                                "data": "重置",
+                                "fieldName": "formresettext"
                             }
                         ]
                     }
                 ]
             }
-        },
-        {
-            "moduleName": "未命名",
-            "moduleId": "5918b511-3c7d-46f8-84aa-6e914cba658e",
-            "layout": {
-                "w": 4,
-                "h": 4,
-                "x": 0,
-                "y": 3,
-                "i": "5918b511-3c7d-46f8-84aa-6e914cba658e",
-                "moved": false,
-                "static": false
-            },
-            "style": {
-                "basic": {},
-                "image": {}
-            },
-            "content": {
-                "text": 1
-            },
-            "type": "Image"
         }
     ]
 }

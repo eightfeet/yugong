@@ -1,13 +1,12 @@
 [
     {
         "id": "1",
-        "title": "排行榜",
-        "discript": "比赛排行榜",
-        "cove": "",
+        "title": "活动报名",
+        "discript": "活动报名",
+        "cove": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0503120504316.jpg",
         "terminal": "mobile",
         "tag": [
-            "抽奖",
-            "陈列大赛"
+            "报名"
         ]
     },
     {

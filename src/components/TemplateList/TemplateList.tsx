@@ -26,7 +26,7 @@ const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
               bodyStyle={{padding: '10px'}}
               cover={
                 <div className={s.projectcove}>
-                  <EmptyIcon />
+                  {item.cove ? <img src={item.cove} alt={item.title} /> : <EmptyIcon />}
                 </div>
               }
             >
