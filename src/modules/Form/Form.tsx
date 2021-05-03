@@ -124,17 +124,16 @@ const Form: Modules<FormProps> = (props) => {
               onSubmit={handleSubmit(onSubmit)}
               onReset={onReset}
             >
-              <h3 className={classNames(s.header, userClass.header)}>
+              <h3 className={classNames('formheader', s.header)}>
                 {config?.title || 'header'}
               </h3>
               <div
                 className={classNames(
-                  s.container,
-                  userClass.container,
-                  userClass.formitem
+                  'formcontainer',
+                  s.container
                 )}
               >
-                <Grid container spacing={2}>
+                <Grid container spacing={2} className={userClass.formitem}>
                   {formLists?.map(({ type, row, ...other }, index) => {
                     if (type === "checkboxgroup") {
                       return (
@@ -269,12 +268,14 @@ Form.exposeDefaultProps = {
     container: {},
     formitem: {},
     label: {},
-    errorlabel: {},
     icon: {},
+    activity: {},
+    validateError: {},
+
     baseline: {},
     baselineact: {},
     errorbaseline: {},
-    errorbaselineact: {},
+
     footer: {},
     button: {},
     oknormal: {},
@@ -283,20 +284,22 @@ Form.exposeDefaultProps = {
   },
   styleDescription: {
     wrap: "包裹器",
-    header: "头部",
-    container: "内容",
+    header: "标题部分",
+    container: "内容部分",
     formitem: "表单项",
-    label: "标签",
-    errorlabel: "错误标签",
-    icon: "图标",
+    label: "表单项标签",
+    icon: "表单图标（单选多选下拉等）",
+    activity: "激活状态",
+    validateError: "错误提示",
+    
     baseline: "输入框",
     baselineact: "输入框激活",
-    errorbaseline: "错误输入框",
-    errorbaselineact: "错误输入框激活",
+    errorbaseline: "输入框（验证失败）",
+    
     footer: "脚部",
     button: "按钮",
     oknormal: "提交按钮",
-    okdisabled: "提交按钮禁用",
+    okdisabled: "提交按钮（禁用）",
     resetnormal: "重置按钮",
   },
 };

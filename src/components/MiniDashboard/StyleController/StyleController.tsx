@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import s from "./StyleController.module.less";
 import { RootState } from "~/redux/store";
 import StyleSheetPanel from "../StyleSheetPanel";
+import Tooltip from "antd/lib/tooltip";
 const { Item } = Menu;
 
 interface Props {}
@@ -50,7 +51,11 @@ const StyleController: React.FC<Props> = () => {
           onSelect={onSelectStylePath}
         >
           {Object.keys(style).map((key: string) => (
-            <Item key={key}>{moduleType[key] || key}</Item>
+            <Item className={s.menuitem} key={key}>
+              <Tooltip title={moduleType[key] || key}>
+                {moduleType[key] || key}
+              </Tooltip>
+            </Item>
           ))}
         </Menu>
       </div>
