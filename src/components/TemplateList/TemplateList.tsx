@@ -6,10 +6,12 @@ import Searchbar from "./Searchbar";
 import templates from "./template.json";
 import s from "./TemplateList.module.less";
 
-interface Props {}
+interface Props {
+  onSelectedTemplate: (id: string) => void,
+}
 const { TabPane } = Tabs;
 
-const Templatelist: React.FC<Props> = ({}) => {
+const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
   return (
     <Tabs className={s.tab} defaultActiveKey="1" onChange={() => console.log()}>
       <TabPane tab="从模板创建" key="1">
@@ -18,6 +20,7 @@ const Templatelist: React.FC<Props> = ({}) => {
           {templates.map((item, index) => (
             <Card
               key={index}
+              onClick={()=> onSelectedTemplate(item.id)}
               hoverable
               className={s.card}
               bodyStyle={{padding: '10px'}}

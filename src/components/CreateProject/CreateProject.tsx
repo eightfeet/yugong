@@ -7,6 +7,7 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
+import request from "~/core/request";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -28,7 +29,12 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
     dispatch.controller.setIsEditing(true);
     dispatch.activationItem.removeActivationItem();
     dispatch.appData.initAppData();
-  }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData]);
+  }, [
+    dispatch.activationItem,
+    dispatch.appData,
+    dispatch.controller,
+    dispatch.pageData,
+  ]);
 
   const createBlank = useCallback(() => {
     /**初始化 */
@@ -49,6 +55,11 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
       onOk: createBlank,
     });
   }, [createBlank, localAppData?.length, localPageData]);
+
+  const onSelectedTemplate = useCallback(async(id) => {
+    const data = await request.get(`/template/${id}.json`)
+    console.log(data);
+  }, []);
 
   return (
     <div>
@@ -86,7 +97,7 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
           <Meta className={s.mate} title="创建空白模板" />
         </Card>
       </div>
-      <TemplateList />
+      <TemplateList onSelectedTemplate={onSelectedTemplate} />
     </div>
   );
 };
