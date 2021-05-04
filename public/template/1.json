@@ -28,16 +28,27 @@
             "moduleId": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
             "layout": {
                 "w": 12,
-                "h": 43,
+                "h": 60,
                 "x": 0,
-                "y": 38,
+                "y": 39,
                 "i": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
                 "moved": false,
                 "static": true
             },
             "style": {
-                "basic": {},
-                "wrap": {},
+                "basic": {
+                    "font": {
+                        "color": "inherit"
+                    },
+                    "display": {
+                        "overflow": ""
+                    }
+                },
+                "wrap": {
+                    "display": {
+                        "overflow": "scroll"
+                    }
+                },
                 "header": {
                     "font": {
                         "color": "rgba(255, 255, 255, 1)",
@@ -55,6 +66,9 @@
                 "container": {
                     "font": {
                         "color": "rgba(255, 255, 255, 1)"
+                    },
+                    "display": {
+                        "overflow": ""
                     }
                 },
                 "formitem": {
@@ -65,7 +79,17 @@
                         "radiusTopLeft": 15,
                         "radiusTopRight": 15,
                         "radiusBottomLeft": 15,
-                        "radiusBottomRight": 15
+                        "radiusBottomRight": 15,
+                        "borderPosition": {
+                            "borderTop": true,
+                            "borderRight": false,
+                            "borderBottom": false,
+                            "borderLeft": false,
+                            "border": false
+                        },
+                        "borderColor": "rgba(255, 193, 7, 1)",
+                        "borderStyle": "solid",
+                        "borderWidth": 17
                     },
                     "display": {
                         "margin": [
@@ -239,6 +263,22 @@
                                         }
                                     },
                                     {
+                                        "fieldName": "phone",
+                                        "label": "手机号码",
+                                        "type": "text",
+                                        "rules": {
+                                            "string": {
+                                                "required": [
+                                                    "请输入手机号码"
+                                                ],
+                                                "matches": [
+                                                    "^1\\\\d{10}$",
+                                                    "请输入以1开头的11位手机号码！"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
                                         "fieldName": "sex",
                                         "label": "性别",
                                         "type": "radiogroup",
@@ -250,6 +290,36 @@
                                             {
                                                 "label": "女",
                                                 "value": "0"
+                                            }
+                                        ],
+                                        "rules": {
+                                            "mixed": {
+                                                "required": [
+                                                    "请选择性别"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "classes",
+                                        "label": "班级",
+                                        "type": "select",
+                                        "options": [
+                                            {
+                                                "label": "一班",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "label": "二班",
+                                                "value": "2"
+                                            },
+                                            {
+                                                "label": "三班",
+                                                "value": "3"
+                                            },
+                                            {
+                                                "label": "四班",
+                                                "value": "4"
                                             }
                                         ],
                                         "rules": {

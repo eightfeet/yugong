@@ -198,11 +198,11 @@ const OutputLayout: React.FC<LayoutProps> = ({
         );
         return optAppdata.map((item) => {
             // 确保宽度不超过屏幕栅格
-            if (item.layout && item.layout.h > maxH) {
-                item.layout.h = maxH;
-            }
+            // if (item.layout && item.layout.h > maxH) {
+                // item.layout.h = maxH;
+            // }
             if (item.layout && item.layout.w > cols) {
-                item.layout.h = cols;
+                item.layout.w = cols;
             }
             // 事件处理器的bind方法将事件处理器绑定到各个组件
             const itemMerge = {
