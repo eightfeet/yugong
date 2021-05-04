@@ -19,7 +19,7 @@ import { backgroundGradient, backgroundCommon } from '~/compiler/compiler';
 import { cloneDeep } from 'lodash';
 // 当前是否被ifream引用
 const visualSense = window.self === window.top;
-const windowsHeight = window.innerHeight;
+// const windowsHeight = window.innerHeight;
 
 interface LayoutProps {
     /**
@@ -191,7 +191,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
     };
 
     const renderGridItem = () => {
-        const maxH = Math.floor(windowsHeight / rowHeight);
+        // const maxH = Math.floor(windowsHeight / rowHeight);
         const copyData = [...appData];
         const optAppdata = copyData.filter(
             (fItem) => fItem.layout?.w !== 0 && fItem.layout?.h !== 0
