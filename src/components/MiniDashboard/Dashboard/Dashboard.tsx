@@ -249,11 +249,11 @@ const Dashboard: React.FC<Props> = () => {
                         mode="horizontal"
                         className={s.contentmenu}
                     >
-                        <Menu.Item key="style" icon={<FormatPainterOutlined />}>
-                            样式
-                        </Menu.Item>
                         <Menu.Item key="config" icon={<ToolOutlined />}>
                             设置
+                        </Menu.Item>
+                        <Menu.Item key="style" icon={<FormatPainterOutlined />}>
+                            样式
                         </Menu.Item>
                         <Menu.Item key="code" icon={<CodeOutlined />}>
                             code
