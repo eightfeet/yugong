@@ -46,7 +46,7 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
           break;
         case "borderColor":
           const rgba = value.value.rgb;
-          border.borderColor = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
+          border.borderColor = value.value === 'inherit' ? 'inherit' : `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
           break;
         default:
           break;

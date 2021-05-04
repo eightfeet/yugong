@@ -130,7 +130,7 @@ const GradientSlider: React.FC<Props> = ({ onChange, defaultData }) => {
     (i) => (color: any) => {
       const colors: string[] = [...colorArray];
       const rgba = color.value.rgb;
-      colors[i] = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
+      colors[i] = color.value === 'inherit' ? 'rgba(0,0,0,1)' : `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
       const result = updateGradient(colors, valuse);
       onChangeData(result);
     },

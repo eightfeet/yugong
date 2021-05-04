@@ -67,7 +67,7 @@ const BackgroundCommon: React.FC<Props> = ({
       data[type] = result;
 
       if (type === 'backgroundColor') {
-        data[type] = `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`;
+        data[type] = result.value === 'inherit' ? 'inherit' : `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`;
       }
 
       if (type === 'imageUrl') {

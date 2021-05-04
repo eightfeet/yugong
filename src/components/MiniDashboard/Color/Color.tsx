@@ -53,20 +53,20 @@ const Color: React.FC<Props> = ({
         X = e.screenX,
         Y = e.screenY;
 
-        // 1、判断拾色器的宽度小于窗口宽度
-        if (width > sWidth) {
-          if (X + sWidth > width) {
-            style.position = 'fixed';
-            style.right = `10px`;
-          }
+      // 1、判断拾色器的宽度小于窗口宽度
+      if (width > sWidth) {
+        if (X + sWidth > width) {
+          style.position = "fixed";
+          style.right = `10px`;
         }
-        // 2、判断拾色器的高度大于窗口高度
-        if (height > sHeight) {
-          if (Y + sHeight > height) {
-            style.position = 'fixed';
-            style.bottom = `10px`;
-          }
+      }
+      // 2、判断拾色器的高度大于窗口高度
+      if (height > sHeight) {
+        if (Y + sHeight > height) {
+          style.position = "fixed";
+          style.bottom = `10px`;
         }
+      }
       setPickWrapStyle(style);
     },
     [displayColorPicker]
@@ -93,12 +93,41 @@ const Color: React.FC<Props> = ({
         {displayColorPicker ? (
           <div className={s.popover}>
             <div className={s.cover} onClick={handleClose} />
-            <div className={s.wrap} style={pickWrapStyle} ref={picker} onClick={e => e.stopPropagation()}>
+            <div
+              className={s.wrap}
+              style={pickWrapStyle}
+              ref={picker}
+              onClick={(e) => e.stopPropagation()}
+            >
               <SketchPicker
                 color={color || undefined}
                 width="250px"
                 onChange={handleChange}
+                className={s.picker}
+                presetColors={[
+                  "#f44336",
+                  "#e91e63",
+                  "#9c27b0",
+                  "#673ab7",
+                  "#3f51b5",
+                  "#2196f3",
+                  "#03a9f4",
+                  "#00bcd4",
+                  "#009688",
+                  "#4caf50",
+                  "#8bc34a",
+                  "#cddc39",
+                  "#ffeb3b",
+                  "#ffc107",
+                  "#ff9800",
+                  "#ff5722",
+                  "#aaaaaa",
+                  "#000000",
+                  "#fff",
+                  "transparent"
+                ]}
               />
+              <div onClick={() => handleChange('inherit')} className={s.inherit}>恢复预设值</div>
             </div>
           </div>
         ) : null}
