@@ -8,6 +8,8 @@ interface TextFidleProps extends FormItem {
     type: 'text' | 'date' | 'datetime' | 'time' | 'select';
     className?: string;
     variant?: string;
+    disabled?: boolean;
+    maxLength?: string;
 }
 
 const timeTypes = ['date', 'datetime', 'time'];
@@ -19,6 +21,8 @@ const TextField: React.FC<TextFidleProps> = ({
     options,
     className,
     variant,
+    disabled,
+    maxLength,
     ...other
 }) => {
     const {
@@ -57,12 +61,14 @@ const TextField: React.FC<TextFidleProps> = ({
                     <MUiTextField
                         fullWidth
                         variant={variant || 'standard'}
+                        disabled={disabled}
                         {...typeProps}
                         {...other}
                         error={!!errors[fieldName]}
                         helperText={errors[fieldName]?.message}
                         {...field}
                         value={field.value || ''}
+                        inputProps={{ maxLength }}
                     >
                         <>
                             <option value={undefined}>请选择</option>

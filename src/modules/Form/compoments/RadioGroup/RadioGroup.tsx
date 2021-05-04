@@ -16,6 +16,7 @@ import classNames from 'classnames';
 interface RadioGroupProps extends FormItem {
     row?: boolean;
     className?: string;
+    disabled?: boolean;
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
@@ -23,6 +24,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
     fieldName,
     form,
     options = [],
+    disabled,
     row,
     className,
 }) => {
@@ -35,6 +37,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
             <FormControl
                 className={s.fieldset}
                 component="fieldset"
+                disabled={disabled}
                 error={!!errors[fieldName]}
             >
                 {label ? (

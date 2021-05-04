@@ -24,10 +24,10 @@ export interface FormProps extends AppDataElementsTypes {
 }
 
 interface Config {
-  variant?: 'outlined' | 'filled' | 'standard',
-  title?: any,
-  submittext?: any,
-  resettext?: any
+  variant?: "outlined" | "filled" | "standard";
+  title?: any;
+  submittext?: any;
+  resettext?: any;
 }
 
 const Form: Modules<FormProps> = (props) => {
@@ -73,17 +73,13 @@ const Form: Modules<FormProps> = (props) => {
         variant: argforminput as any,
         title: argformtitle,
         submittext: argformsubmittext,
-        resettext: argformresettext
+        resettext: argformresettext,
       });
     },
     []
   );
 
-  // 向eventEmitter注册事件，向外公布
-  useMemo(() => {
-    eventEmitter.addEventListener("setFormData", setFormData);
-    eventEmitter.addEventListener("setFormConfig", setFormConfig);
-  }, [eventEmitter, setFormData, setFormConfig]);
+  
 
   /**========================================================== */
 
@@ -94,6 +90,25 @@ const Form: Modules<FormProps> = (props) => {
   });
 
   const { handleSubmit, reset, formState } = RHForm;
+
+  const setFormItem = useCallback(
+    (
+      fieldName: ArgumentsItem,
+      fieldValue: ArgumentsItem
+    ) => {
+      const argfieldName = getArgumentsItem(fieldName);
+      const argfieldValue = getArgumentsItem(fieldValue);
+      RHForm.setValue(argfieldName as any, argfieldValue);
+    },
+    [RHForm]
+  );
+
+  // 向eventEmitter注册事件，向外公布
+  useMemo(() => {
+    eventEmitter.addEventListener("setFormData", setFormData);
+    eventEmitter.addEventListener("setFormConfig", setFormConfig);
+    eventEmitter.addEventListener("setFormItem", setFormItem);
+  }, [eventEmitter, setFormData, setFormConfig, setFormItem]);
 
   const onSubmit = useCallback(
     async (data) => {
@@ -118,21 +133,16 @@ const Form: Modules<FormProps> = (props) => {
     <Wrapper {...props} maxHeight maxWidth>
       {!!formLists?.length ? (
         <div className={classNames(s.root, userClass.wrap)}>
-          <ScopedCssBaseline classes={{root: s.rootform}}>
+          <ScopedCssBaseline classes={{ root: s.rootform }}>
             <form
               className={s.form}
               onSubmit={handleSubmit(onSubmit)}
               onReset={onReset}
             >
-              <h3 className={classNames('formheader', s.header)}>
-                {config?.title || 'header'}
+              <h3 className={classNames("formheader", s.header)}>
+                {config?.title || "header"}
               </h3>
-              <div
-                className={classNames(
-                  'formcontainer',
-                  s.container
-                )}
-              >
+              <div className={classNames("formcontainer", s.container)}>
                 <Grid container spacing={2} className={userClass.formitem}>
                   {formLists?.map(({ type, row, ...other }, index) => {
                     if (type === "checkboxgroup") {
@@ -173,10 +183,16 @@ const Form: Modules<FormProps> = (props) => {
                 </Grid>
               </div>
               <div className={classNames(s.footer, userClass.footer)}>
-                  <button type="submit" className="form_ok" disabled={!formState.isValid}>
-                    {config?.submittext ||  '提交'}
-                  </button>
-                  <button type="reset" className="form_reset">{config?.resettext ||  '重置'}</button>
+                <button
+                  type="submit"
+                  className="form_ok"
+                  disabled={!formState.isValid}
+                >
+                  {config?.submittext || "提交"}
+                </button>
+                <button type="reset" className="form_reset">
+                  {config?.resettext || "重置"}
+                </button>
               </div>
             </form>
           </ScopedCssBaseline>
@@ -237,6 +253,26 @@ Form.exposeFunctions = [
       },
     ],
   },
+  {
+    name: "setFormItem",
+    description: "设置表单项",
+    arguments: [
+      {
+        type: "string",
+        name: "字段名",
+        describe: "设置字段名",
+        data: "",
+        fieldName: "fieldName",
+      },
+      {
+        type: "string",
+        name: "字段值",
+        describe: "设置字段值",
+        data: "",
+        fieldName: "fieldValue",
+      }
+    ],
+  },
 ];
 
 /**
@@ -291,11 +327,11 @@ Form.exposeDefaultProps = {
     icon: "表单图标（单选多选下拉等）",
     activity: "激活状态",
     validateError: "错误提示",
-    
+
     baseline: "输入框",
     baselineact: "输入框激活",
     errorbaseline: "输入框（验证失败）",
-    
+
     footer: "脚部",
     button: "按钮",
     oknormal: "提交按钮",

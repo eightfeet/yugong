@@ -17,6 +17,7 @@ import s from "./CheckboxGroup.module.less";
 interface CheckboxGroupProps extends FormItem {
   row?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
@@ -25,6 +26,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   form,
   options = [],
   row,
+  disabled,
   className
 }) => {
   const {
@@ -51,6 +53,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
     <Grid item xs={12} className={classNames(className)}>
       <FormControl
         className={s.fieldset}
+        disabled={disabled}
         component="fieldset"
         error={!!errors[fieldName]}
       >
