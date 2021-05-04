@@ -24,14 +24,14 @@
     },
     "appData": [
         {
-            "moduleName": "top",
-            "moduleId": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874",
+            "moduleName": "表单",
+            "moduleId": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
             "layout": {
-                "w": 10,
-                "h": 39,
-                "x": 1,
-                "y": 39,
-                "i": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874",
+                "w": 12,
+                "h": 43,
+                "x": 0,
+                "y": 38,
+                "i": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
                 "moved": false,
                 "static": true
             },
@@ -40,78 +40,57 @@
                 "wrap": {},
                 "header": {
                     "font": {
-                        "fontSize": 50,
-                        "color": "rgba(248, 231, 28, 1)",
+                        "color": "rgba(255, 255, 255, 1)",
                         "align": "left"
                     },
                     "display": {
-                        "margin": [
-                            null,
-                            null,
-                            "",
-                            null
-                        ],
-                        "width": ""
+                        "padding": [
+                            "10",
+                            "10",
+                            "10",
+                            "15"
+                        ]
                     }
                 },
-                "container": {},
-                "formitem": {
-                    "backgroundCommon": {
-                        "backgroundColor": "rgba(74, 100, 226, 1)"
-                    },
+                "container": {
                     "font": {
                         "color": "rgba(255, 255, 255, 1)"
+                    }
+                },
+                "formitem": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(0, 117, 252, 1)"
                     },
                     "border": {
-                        "radiusTopLeft": 20,
-                        "radiusTopRight": 20,
-                        "radiusBottomLeft": 20,
-                        "radiusBottomRight": 20,
-                        "borderStyle": "none"
+                        "radiusTopLeft": 15,
+                        "radiusTopRight": 15,
+                        "radiusBottomLeft": 15,
+                        "radiusBottomRight": 15
                     },
                     "display": {
                         "margin": [
-                            null,
-                            null,
+                            "10",
                             "30",
-                            null
+                            "10",
+                            "30"
                         ]
                     }
                 },
                 "label": {
-                    "border": {
-                        "borderColor": "rgba(248, 231, 28, 1)"
-                    },
                     "font": {
                         "color": "rgba(248, 231, 28, 1)"
-                    }
-                },
-                "errorlabel": {
-                    "border": {
-                        "borderColor": "rgba(80, 227, 194, 1)",
-                        "borderPosition": {
-                            "borderTop": false,
-                            "borderRight": false,
-                            "borderBottom": true,
-                            "borderLeft": false,
-                            "border": false
-                        },
-                        "borderWidth": 2,
-                        "borderStyle": "none"
-                    },
-                    "font": {
-                        "color": "rgba(255, 106, 127, 1)"
                     }
                 },
                 "icon": {
                     "font": {
-                        "color": "rgba(248, 231, 28, 1)"
-                    },
-                    "border": {
-                        "radiusTopLeft": null,
-                        "radiusTopRight": null,
-                        "radiusBottomLeft": null,
-                        "radiusBottomRight": null
+                        "color": "rgba(248, 231, 28, 1)",
+                        "fontSize": 40
+                    }
+                },
+                "activity": {},
+                "validateError": {
+                    "font": {
+                        "color": "rgba(255, 0, 4, 1)"
                     }
                 },
                 "baseline": {
@@ -119,87 +98,105 @@
                         "borderPosition": {
                             "borderTop": false,
                             "borderRight": false,
-                            "borderBottom": true,
+                            "borderBottom": false,
                             "borderLeft": false,
-                            "border": false
+                            "border": true
                         },
-                        "borderStyle": "none",
-                        "borderWidth": 2
+                        "borderStyle": "solid",
+                        "borderWidth": 2,
+                        "borderColor": "rgba(28, 184, 248, 0.3)",
+                        "radiusTopLeft": 10,
+                        "radiusTopRight": 10,
+                        "radiusBottomLeft": 10,
+                        "radiusBottomRight": 10
                     }
                 },
-                "baselineact": {},
-                "errorbaseline": {
+                "baselineact": {
+                    "backgroundCommon": {
+                        "backgroundColor": "rgba(34, 25, 77, 0.01)"
+                    }
+                },
+                "errorbaseline": {},
+                "footer": {},
+                "button": {
                     "border": {
-                        "borderStyle": "outset",
-                        "borderColor": "rgba(255, 106, 127, 1)"
+                        "radiusTopLeft": 10,
+                        "radiusTopRight": 10,
+                        "radiusBottomLeft": 10,
+                        "radiusBottomRight": 10
+                    },
+                    "display": {
+                        "width": "120",
+                        "margin": [
+                            "20",
+                            "20",
+                            "20",
+                            "20"
+                        ]
                     },
                     "font": {
-                        "color": "rgba(255, 106, 127, 1)"
+                        "fontSize": 35,
+                        "color": "rgba(185, 185, 189, 1)",
+                        "fontWeight": "bold"
                     }
                 },
-                "errorbaselineact": {
-                    "border": {
-                        "borderStyle": "outset",
-                        "borderColor": "rgba(255, 106, 127, 1)",
-                        "borderPosition": {
-                            "borderTop": false,
-                            "borderRight": false,
-                            "borderBottom": true,
-                            "borderLeft": false,
-                            "border": false
-                        }
-                    }
-                },
-                "footer": {},
-                "button": {},
                 "oknormal": {
                     "backgroundCommon": {
                         "backgroundColor": "rgba(248, 231, 28, 1)"
                     },
                     "display": {
                         "margin": [
-                            "10",
-                            "10",
-                            "10",
-                            "10"
-                        ],
-                        "padding": [
-                            null,
-                            "40",
-                            null,
-                            "40"
+                            "",
+                            "",
+                            "",
+                            ""
                         ]
                     },
                     "font": {
-                        "fontSize": 40,
-                        "color": "rgba(194, 82, 24, 1)"
+                        "color": "rgba(184, 99, 26, 1)",
+                        "fontWeight": "bold",
+                        "fontSize": 35
                     },
-                    "border": {
-                        "radiusTopLeft": 10,
-                        "radiusTopRight": 10,
-                        "radiusBottomLeft": 10,
-                        "radiusBottomRight": 10
-                    }
+                    "boxShadow": [
+                        {
+                            "hiddenItem": false,
+                            "shiftRight": 0,
+                            "shiftDown": 8,
+                            "spread": 0,
+                            "color": "rgba(201, 104, 20, 1 )"
+                        },
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(24, 4, 122, 0.57 )",
+                            "shiftRight": 0,
+                            "shiftDown": 6,
+                            "spread": 10,
+                            "blur": 20
+                        }
+                    ]
                 },
                 "okdisabled": {},
                 "resetnormal": {
-                    "border": {
-                        "radiusTopLeft": 10,
-                        "radiusTopRight": 10,
-                        "radiusBottomLeft": 10,
-                        "radiusBottomRight": 10
-                    },
+                    "boxShadow": [
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(155, 155, 155, 1 )",
+                            "shiftRight": 0,
+                            "shiftDown": 8,
+                            "blur": 0,
+                            "spread": 0
+                        },
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(24, 4, 122, 0.61 )",
+                            "shiftRight": 0,
+                            "shiftDown": 6,
+                            "blur": 20,
+                            "spread": 10
+                        }
+                    ],
                     "font": {
-                        "fontSize": 40,
-                        "color": "rgba(155, 155, 155, 1)"
-                    },
-                    "display": {
-                        "padding": [
-                            null,
-                            "40",
-                            null,
-                            "40"
-                        ]
+                        "color": "rgba(146, 140, 177, 1)"
                     }
                 }
             },
@@ -311,7 +308,7 @@
                         ]
                     },
                     {
-                        "name": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874/setFormData",
+                        "name": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae/setFormData",
                         "arguments": [
                             {
                                 "type": "runningTime",
@@ -323,13 +320,13 @@
                         ]
                     },
                     {
-                        "name": "d6ed8b8d-35bc-4183-aa0e-b36c7dfe3874/setFormConfig",
+                        "name": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae/setFormConfig",
                         "arguments": [
                             {
                                 "type": "string",
                                 "name": "输入框",
                                 "describe": "standard,outlined或filled默认standard",
-                                "data": "",
+                                "data": "outlined",
                                 "fieldName": "forminput"
                             },
                             {
@@ -343,7 +340,7 @@
                                 "type": "string",
                                 "name": "提交按钮",
                                 "describe": "设置提交按钮文字",
-                                "data": "我要报名",
+                                "data": "马上报名",
                                 "fieldName": "formsubmittext"
                             },
                             {
@@ -355,8 +352,23 @@
                             }
                         ]
                     }
+                ],
+                "submit": [
+                    {
+                        "name": "/",
+                        "arguments": []
+                    }
                 ]
-            }
+            },
+            "api": [
+                {
+                    "apiId": "afterClick",
+                    "name": "提交表单(由提交表单事件自动收集表单数据)",
+                    "hideBodyInput": true,
+                    "url": "http://www.baidu.com",
+                    "method": "POST"
+                }
+            ]
         }
     ]
 }
