@@ -56,16 +56,46 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
     });
   }, [createBlank, localAppData?.length, localPageData]);
 
-  const onSelectedTemplate = useCallback(async(id) => {
-    const {appData, pageData} = await request.get(`/template/${id}.json`);
-    /**初始化 */
-    initData();
-    setLocalAppData(appData)
-    setLocalPageData(pageData)
-    dispatch.appData.updateAppData(appData);
-    dispatch.pageData.updatePage(pageData);
-    goBack();
-  }, [dispatch.appData, dispatch.pageData, goBack, initData, setLocalAppData, setLocalPageData]);
+  const onSelectedTemplate = useCallback(
+    async (id) => {
+      const { appData, pageData } = await request.get(`/template/${id}.json`);
+
+      const fn = () => {
+        /**初始化 */
+        initData();
+        setLocalAppData(appData);
+        setLocalPageData(pageData);
+        dispatch.appData.updateAppData(appData);
+        dispatch.pageData.updatePage(pageData);
+        goBack();
+      };
+
+      if (!localAppData?.length && !localPageData) {
+        fn();
+        return;
+      }
+
+      confirm({
+        content: (
+          <div>当前有历史页面正在编辑，创建新模板将清除历史数据！</div>
+        ),
+        okText: "确定",
+        cancelText: "取消",
+        onCancel: () => {},
+        onOk: fn,
+      });
+    },
+    [
+      dispatch.appData,
+      dispatch.pageData,
+      goBack,
+      initData,
+      localAppData?.length,
+      localPageData,
+      setLocalAppData,
+      setLocalPageData,
+    ]
+  );
 
   return (
     <div>
