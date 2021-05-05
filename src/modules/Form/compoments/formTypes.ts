@@ -31,6 +31,8 @@ export interface FormBase {
   row?: boolean;
   /**属性 type=select | checkboxgroup | radiogroup 时有效*/
   options?: FormOptions[];
+  /**默认值 */
+  defaultValue?: any
 }
 
 export type YupValidateType =

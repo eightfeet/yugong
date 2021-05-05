@@ -63,7 +63,6 @@ const TextField: React.FC<TextFidleProps> = ({
                         variant={variant || 'standard'}
                         disabled={disabled}
                         {...typeProps}
-                        {...other}
                         error={!!errors[fieldName]}
                         helperText={errors[fieldName]?.message}
                         {...field}

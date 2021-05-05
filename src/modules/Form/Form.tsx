@@ -79,17 +79,25 @@ const Form: Modules<FormProps> = (props) => {
     []
   );
 
-  
-
   /**========================================================== */
 
   const RHForm = useForm({
     mode: "onChange",
-    defaultValues,
     resolver: yupResolver(schema),
   });
 
   const { handleSubmit, reset, formState } = RHForm;
+
+  useEffect(() => {
+    if (defaultValues) {
+      for (const key in defaultValues) {
+        if (Object.prototype.hasOwnProperty.call(defaultValues, key)) {
+          const element = defaultValues[key];
+          RHForm.setValue(key as `${string}`, element)
+        }
+      }
+    }
+  }, [RHForm, defaultValues])
 
   const setFormItem = useCallback(
     (
@@ -125,8 +133,6 @@ const Form: Modules<FormProps> = (props) => {
 
   const onReset = useCallback(() => {
     reset();
-    // 处理checkbox toDo 这样处理不作用
-    // setValue('check', []);
   }, [reset]);
 
   return (
