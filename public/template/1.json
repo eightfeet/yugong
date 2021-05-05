@@ -46,7 +46,7 @@
                 },
                 "wrap": {
                     "display": {
-                        "overflow": "scroll"
+                        "overflow": "auto"
                     }
                 },
                 "header": {
@@ -267,6 +267,7 @@
                                         "fieldName": "phone",
                                         "label": "手机号码",
                                         "defaultValue": "13623421232",
+                                        "maxLength": "11",
                                         "type": "text",
                                         "rules": {
                                             "string": {
@@ -274,7 +275,7 @@
                                                     "请输入手机号码"
                                                 ],
                                                 "matches": [
-                                                    "^1\\\\d{10}$",
+                                                    "^1\\d{10}$",
                                                     "请输入以1开头的11位手机号码！"
                                                 ]
                                             }

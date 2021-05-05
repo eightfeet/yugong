@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
@@ -87,9 +87,11 @@ const Form: Modules<FormProps> = (props) => {
   });
 
   const { handleSubmit, reset, formState } = RHForm;
-
+  // 确保表单只做一次默认数据填充
+  const isDefault = useRef(false);
   useEffect(() => {
-    if (defaultValues) {
+    if (Object.keys(defaultValues).length && !isDefault.current) {
+      isDefault.current = true;
       for (const key in defaultValues) {
         if (Object.prototype.hasOwnProperty.call(defaultValues, key)) {
           const element = defaultValues[key];
