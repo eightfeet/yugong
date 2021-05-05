@@ -19,6 +19,12 @@ const windowSize = {
     'WH/8': height/8,
     'WW/10': width/10,
     'WH/10': height/10,
+    'WW/20': width/20,
+    'WH/20': height/20,
+    'WW/30': width/30,
+    'WH/30': height/30,
+    'WW/40': width/40,
+    'WH/40': height/40,
 }
 
 interface RunningTimesItem {

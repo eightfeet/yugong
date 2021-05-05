@@ -55,7 +55,8 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
   const onMount = useCallback(async () => {
     // 1、api处理 检查是不是http-url
     const apiArguments = pageData.onLoadApi?.filter(
-      (item) => isUrl(item.url || "") && !!item.method
+      // isUrl(item.url || "") && 
+      (item) => !!item.method
     );
 
     // 2、事先准备数据。
@@ -131,7 +132,16 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     },
     [],
   )
-
+  
+  const sleepFor = useCallback(
+    (sleepTime) => {
+      const argSleepTime = getArgumentsItem(sleepTime) as number || 1000;
+      return new Promise<void>((resolve) => setTimeout(() => {
+        resolve()
+      }, argSleepTime))
+    },
+    [],
+  )
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   useMemo(() => {
@@ -141,7 +151,8 @@ const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
     eventEmitter.addEventListener("global/redirect", redirect);
     eventEmitter.addEventListener("global/trackPageViewBD", trackPageViewBD);
     eventEmitter.addEventListener("global/trackEventBD", trackEventBD);
-  }, [eventEmitter, onMount, onUnmount, injectGlobal, redirect, trackPageViewBD, trackEventBD]);
+    eventEmitter.addEventListener("global/sleepFor", sleepFor);
+  }, [eventEmitter, onMount, onUnmount, injectGlobal, redirect, trackPageViewBD, trackEventBD, sleepFor]);
 
   useEffect(() => {
     if (eventEmitter) {
@@ -219,6 +230,19 @@ Output.exposeFunctions = [
         describe: "请输入变量数据",
         data: undefined,
       },
+    ],
+  },
+  {
+    name: "sleepFor",
+    description: "等待",
+    arguments: [
+      {
+        type: "number",
+        name: "休眠时间",
+        fieldName: "sleepTime",
+        describe: "休眠时间(ms)",
+        data: '',
+      }
     ],
   },
   {

@@ -267,25 +267,29 @@ Button.exposeDefaultProps = {
         },
       ],
     },
+    before: {},
+    after: {},
+    active: {},
+    activebefore: {},
+    activeafter: {},
     disabled: {
       font: {
         color: "rgba(144, 144, 144, 1)",
       },
     },
     focus: {},
-    active: {},
-    hover: {},
-    before: {},
-    after: {}
+    hover: {}
   },
   styleDescription: {
     normal: "常态",
+    before: "常态前缀",
+    after: "常态后缀",
+    active: "激活",
+    activebefore: "激活前缀",
+    activeafter: "激活后缀",
     disabled: "禁用",
     focus: "获取焦点",
-    active: "激活",
-    hover: "经过",
-    before: "前缀",
-    after: "后缀"
+    hover: "经过"
   },
 };
 

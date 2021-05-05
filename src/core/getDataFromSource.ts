@@ -17,7 +17,7 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
     return data || '';
   }
   // 规则:{{}}
-  const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s*]+?)\}\}/gm;
+  const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
   // 规则:首位空格
   const regexspace = /(^\s*)|(\s*$)/g;
   // 规则:强制runningTime
@@ -26,7 +26,6 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   // 匹配运行时
   let result: any = data;
   const ruleList = data.match(regexwrap);
-
   ruleList?.forEach((item) => {
     // 移除{{}}
     const key = item.replace(regexwrap, "$1");

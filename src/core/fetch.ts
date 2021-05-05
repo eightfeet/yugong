@@ -9,7 +9,6 @@ import message from "~/components/Message";
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
   const { method, body, headers, mode, credentials } = apiArguments;
-
   if (!apiArguments.url) {
     console.warn(`api(${apiArguments.name})缺少url`);
     return {};
@@ -18,7 +17,7 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
     console.warn(`api(${apiArguments.name})缺少method`);
     return {};
   }
-
+  
   // 从runningTime翻译Api数据;
   // api 接收两种数据类型
   // 1、运行时链接类型：url、headers、mode、credentials
@@ -51,7 +50,8 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
     });
     bodyData = temp;
   }
-  await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials });
+  
+  return await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials });
 };
 
 export const fetchApi = async (

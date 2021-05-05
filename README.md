@@ -4,6 +4,87 @@
 - 配置活动
 - 模板层设计！！！
 
+## 代码片段
+```json
+{
+    ...
+    "Typescript YuGong Function": {
+        "prefix": "ygrm",
+        "body": [
+            "import { useEffect } from 'react';",
+            "import requester from '~/core/fetch';",
+            "import EventEmitter from '~/core/EventEmitter';",
+            "import { AppDataElementsTypes } from '~/types/appData';",
+            "import { Modules } from '~/types/modules';",
+            "import Wrapper from '../Wrapper';",
+            "",
+            "export interface ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}Props extends AppDataElementsTypes {",
+                "\tid: string;",
+                "\teventEmitter: EventEmitter;",
+            "}",
+            "",
+            "const ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}:Modules<${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}Props> = (props) => {",
+                "\tconst { eventEmitter, events = {}, api} = props;",
+                "\t// API请求 注意依赖关系",
+                "\tuseEffect(() => {",
+                    "\t\tconst apiArguments = api?.find(item => item.apiId === '');",
+                    "\t\trequester(apiArguments || {});",
+                "\t}, [api])",
+                "\t// 基本事件",
+                "\tuseEffect(() => {",
+                    "\t\t// 执行挂载事件",
+                    "\t\teventEmitter.emit(events.mount);",
+                    "\t\treturn () => {",
+                        "\t\t\t// 执行卸载事件",
+                        "\t\t\teventEmitter.emit(events.unmount);",
+                    "\t\t}",
+                "\t// eslint-disable-next-line react-hooks/exhaustive-deps",
+                "\t}, [])",
+                "\treturn (",
+                    "\t\t<Wrapper {...props}>",
+                       "\t\t\t ",
+                    "\t\t</Wrapper>",
+                "\t)",
+            "}",
+            "",
+            "/**",
+            "* 注册方法的静态描述与默认参数定义",
+            "*/",
+            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeFunctions = [];",
+            "",
+            "/**",
+            "* 发布事件的静态描述",
+            "*/",
+            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeEvents = [",
+                "\t{",
+                    "\t\tname: 'mount',",
+                    "\t\tdescription: "初始化",",
+                "\t},",
+                "\t{",
+                    "\t\tname: 'unmount',",
+                    "\t\tdescription: '卸载',",
+                "\t}",
+            "];",
+            "",
+            "/**",
+            "* 发布默认porps",
+            "*/",
+            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeDefaultProps = {};",
+            "",
+            "/**",
+            "* 发布默认Api",
+            "*/",
+            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeApi = [];",
+            "",
+            "export default ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}};",
+        ],
+        "description": "创建愚公项目模块代码片段"
+    }
+    ...
+}
+
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

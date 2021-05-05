@@ -123,7 +123,7 @@ const Table: Modules<TableProps> = (props) => {
   );
 
   /**
-   * 从数据源覆写表格，做到表格项灵覆写，满足列表样式的各种变换
+   * 从数据源覆写表格，做到表格项灵活覆写，满足列表样式的各种变换
    *
    * */
   const overrideTbodyItem = useCallback(
@@ -134,11 +134,14 @@ const Table: Modules<TableProps> = (props) => {
     ) => {
       const row = (getArgumentsItem(rowItem) as number) - 1;
       const col = (getArgumentsItem(colItem) as number) - 1;
+
       if (tbodyDataStatu[row] && tbodyDataStatu[row][col] && copyDataSource) {
-        tbodyDataStatu[row][col] = getArgumentsItem(
+        const optTbodyDataStatu = [...tbodyDataStatu]
+        optTbodyDataStatu[row][col] = getArgumentsItem(
           override,
           copyDataSource[row]
         );
+        setTbodyDataStatu(optTbodyDataStatu);
       }
     },
     [tbodyDataStatu, copyDataSource]

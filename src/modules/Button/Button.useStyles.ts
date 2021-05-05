@@ -7,7 +7,11 @@ const useStyles = createUseStyles<string, any>({
       ...(styleCompiler(style.normal).style || {}),
       "&:disabled": styleCompiler(style.disabled).style || {},
       "&:focus": styleCompiler(style.focus).style || {},
-      "&:active": styleCompiler(style.active).style || {},
+      "&:active": {
+        ...styleCompiler(style.active).style || {},
+        "&:before": styleCompiler(style.activebefore).style || {},
+        "&:after": styleCompiler(style.activeafter).style || {},
+      },
       "&:hover": styleCompiler(style.hover).style || {},
       "&:before": styleCompiler(style.before).style || {},
       "&:after": styleCompiler(style.after).style || {},
@@ -15,7 +19,11 @@ const useStyles = createUseStyles<string, any>({
   },
   disabled: (style) => styleCompiler(style.disabled).style || {},
   focus: (style) => styleCompiler(style.focus).style || {},
-  active: (style) => styleCompiler(style.active).style || {},
+  active: (style) => ({
+    ...styleCompiler(style.active).style || {},
+    "&:before": styleCompiler(style.activebefore).style || {},
+    "&:after": styleCompiler(style.activeafter).style || {},
+  }),
   hover: (style) => styleCompiler(style.hover).style || {},
 });
 
