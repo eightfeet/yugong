@@ -33,7 +33,7 @@
                 "y": 39,
                 "i": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
                 "moved": false,
-                "static": true
+                "static": false
             },
             "style": {
                 "basic": {
@@ -250,6 +250,7 @@
                                         "fieldName": "name",
                                         "label": "姓名",
                                         "type": "text",
+                                        "defaultValue": "张三",
                                         "rules": {
                                             "string": {
                                                 "required": [
@@ -265,6 +266,7 @@
                                     {
                                         "fieldName": "phone",
                                         "label": "手机号码",
+                                        "defaultValue": "13623421232",
                                         "type": "text",
                                         "rules": {
                                             "string": {
@@ -282,6 +284,7 @@
                                         "fieldName": "sex",
                                         "label": "性别",
                                         "type": "radiogroup",
+                                        "defaultValue": "1",
                                         "options": [
                                             {
                                                 "label": "男",
@@ -304,6 +307,7 @@
                                         "fieldName": "classes",
                                         "label": "班级",
                                         "type": "select",
+                                        "defaultValue": "1",
                                         "options": [
                                             {
                                                 "label": "一班",
@@ -333,6 +337,7 @@
                                     {
                                         "fieldName": "birthday",
                                         "label": "生日",
+                                        "defaultValue": "1990-06-15",
                                         "type": "date",
                                         "rules": {
                                             "date": {
@@ -346,6 +351,10 @@
                                     {
                                         "fieldName": "hobby",
                                         "label": "爱好",
+                                        "defaultValue": [
+                                            0,
+                                            1
+                                        ],
                                         "type": "checkboxgroup",
                                         "options": [
                                             {
