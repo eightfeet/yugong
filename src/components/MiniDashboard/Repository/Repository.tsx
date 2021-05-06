@@ -1,4 +1,4 @@
-import { Button, Card, Col, Input, Modal, Row, Tooltip } from "antd";
+import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from "antd";
 import Draggable from "react-draggable";
 import React, { useCallback, useState } from "react";
 import { MODULES } from "~/core/constants";
@@ -9,6 +9,8 @@ import { Dispatch, RootState } from "~/redux/store";
 import s from "./Repository.module.less";
 import useKeyDown from "~/hooks/useKeyDown";
 import useLocalStorage from "~/hooks/useLocalStorage";
+
+const { Panel } = Collapse;
 
 interface ModalType {
   moduleName: AppDataModuleTypes;
@@ -28,7 +30,7 @@ const Repository: React.FC = () => {
   const appData = useSelector((state: RootState) => state.appData);
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   // 缓存
-  const [, setAppdataLocalStorage] = useLocalStorage('appData', null);
+  const [, setAppdataLocalStorage] = useLocalStorage("appData", null);
 
   const onStopDrag = useCallback(
     (module: ModalType) => (e: any) => {
@@ -61,7 +63,9 @@ const Repository: React.FC = () => {
     (moduleType: AppDataModuleTypes, name?: string) => {
       let y = 0;
       if (appData.length) {
-        const optAppData = [...appData].sort((a, b) => b.layout!.y - a.layout!.y);
+        const optAppData = [...appData].sort(
+          (a, b) => b.layout!.y - a.layout!.y
+        );
         if (optAppData[0]) {
           y = optAppData[0].layout!.y + optAppData[0].layout!.h;
         }
@@ -99,46 +103,55 @@ const Repository: React.FC = () => {
     [appData, onAddItem]
   );
 
-  const onCreate = useCallback((event) => {
-    if (addedModal?.moduleName) {
-      event.preventDefault();
-      createModal(addedModal?.moduleName, newModalName || "未命名");
-    }
-  }, [addedModal?.moduleName, createModal, newModalName]);
+  const onCreate = useCallback(
+    (event) => {
+      if (addedModal?.moduleName) {
+        event.preventDefault();
+        createModal(addedModal?.moduleName, newModalName || "未命名");
+      }
+    },
+    [addedModal?.moduleName, createModal, newModalName]
+  );
 
-  useKeyDown(onCreate, 'Enter');
+  useKeyDown(onCreate, "Enter");
 
   return (
     <>
-      <Row gutter={[16, 16]}>
-        {MODULES.map((item) => (
-          <Col span={6} key={item.moduleName}>
-            <Draggable
-              position={pisition}
-              onStop={onStopDrag(item as ModalTypeIcon)}
-            >
-              <Card
-                onDoubleClick={onDoubleClick(item as ModalTypeIcon)}
-                hoverable
-                cover={null}
-              >
-                <Card.Meta
-                  style={{ textAlign: "center" }}
-                  title={
-                    <>
-                      <div className={s.iconwrap}>{item.icon}</div>
-                      <div>
-                        <Tooltip title={item.title}>{item.title}</Tooltip>
-                      </div>
-                    </>
-                  }
-                  description={item.discribe}
-                />
-              </Card>
-            </Draggable>
-          </Col>
+      <Collapse bordered={false} defaultActiveKey={'base'}>
+        {MODULES.map((moduleGroup, mdindex) => (
+          <Panel header={moduleGroup.describe} key={moduleGroup.name}>
+            <Row key={mdindex} gutter={[16, 16]}>
+              {moduleGroup.modules.map((item) => (
+                <Col span={6} key={item.moduleName}>
+                  <Draggable
+                    position={pisition}
+                    onStop={onStopDrag(item as ModalTypeIcon)}
+                  >
+                    <Card
+                      onDoubleClick={onDoubleClick(item as ModalTypeIcon)}
+                      hoverable
+                      cover={null}
+                    >
+                      <Card.Meta
+                        style={{ textAlign: "center" }}
+                        title={
+                          <>
+                            <div className={s.iconwrap}>{item.icon}</div>
+                            <div>
+                              <Tooltip title={item.title}>{item.title}</Tooltip>
+                            </div>
+                          </>
+                        }
+                        description={item.discribe}
+                      />
+                    </Card>
+                  </Draggable>
+                </Col>
+              ))}
+            </Row>
+          </Panel>
         ))}
-      </Row>
+      </Collapse>
       <Modal
         title={`创建${addedModal?.title || ""}(${
           addedModal?.moduleName || ""
@@ -146,9 +159,11 @@ const Repository: React.FC = () => {
         visible={!!addedModal}
         footer={null}
         onCancel={() => setAddedModal(undefined)}
-        bodyStyle={{padding: '20px 10px 30px 10px',}}
+        bodyStyle={{ padding: "20px 10px 30px 10px" }}
       >
-        {addedModal?.tips ? <p className={s.infomation}>{addedModal?.tips}</p> : null}
+        {addedModal?.tips ? (
+          <p className={s.infomation}>{addedModal?.tips}</p>
+        ) : null}
         <Row gutter={[16, 16]}>
           <Col span={3}></Col>
           <Col span={15}>
@@ -167,7 +182,6 @@ const Repository: React.FC = () => {
             </Button>
           </Col>
         </Row>
-        
       </Modal>
     </>
   );

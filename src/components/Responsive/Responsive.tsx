@@ -261,7 +261,7 @@ const Responsive: React.FC<Props> = () => {
             width={550}
             onClose={() => setShowDrawer(false)}
             visible={showDrawer}
-            bodyStyle={{ padding: "10px 10px 80px 10px" }}
+            bodyStyle={{ padding: "0px" }}
             maskStyle={{ backgroundColor: "transparent" }}
             footer={null}
           >
