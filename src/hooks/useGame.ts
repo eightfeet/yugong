@@ -9,13 +9,15 @@ const useGame = (params: Params) => {
     const targetNode = useRef<HTMLElement>();
     const game = useRef<any>()
     useEffect(() => {
-        game.current = new routter.Game(params)
+        if (targetNode.current) {
+            game.current = new routter.Game(params);
+        }
         return () => {
             if (game.current) {
                 game.current?.distory()
             }
         }
-    }, [params])
+    }, [params, targetNode])
 
     return [game.current, targetNode]
 }

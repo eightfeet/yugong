@@ -5,6 +5,7 @@ import { AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import useGame from '~/hooks/useGame';
+import s from './Roulette.module.less';
 
 export interface RouletteProps extends AppDataElementsTypes {
     id: string;
@@ -13,68 +14,33 @@ export interface RouletteProps extends AppDataElementsTypes {
 
 const Roulette:Modules<RouletteProps> = (props) => {
     const [game, nodes] = useGame({
-        targetId: `game${props.id}`,
-        parentId: "parentId",
+        // targetId: `game${props.id}`,
+        parentId: `game${props.id}`,
         playerPhone: "13635219421",
         cardIdRequest: 3, 
         style: {
             "GameTheme": {
                 "wrap": {
-                    "top": "-1.76em",
-                    "left": "-1em",
-                    "width": "19.6em",
-                    "height": "19.6em",
-                    "zIndex": 10,
-                    "position": "absolute"
                 },
                 "wheel": {
                     "backgroundSize": "100% 100%",
-                    "backgroundColor": "rgba(255,14,14,0)",
-                    "backgroundImage": "url(https://upload-yyj.by-health.com/upload/images/0927125229016.png)",
-                    "backgroundRepeat": "no-repeat"
+                    "backgroundColor": "rgba(255,14,14,0.5)",
+                    "borderRadius": "10000px",
                 },
                 "divide": {
-                    "display": "none",
-                    "fontSize": "normal",
-                    "backgroundImage": "url(https://upload-yyj.by-health.com/upload/images/0927122302470.png)"
                 },
-                "modify": [
-                    {
-                        "top": "-7em",
-                        "left": "-3.2em",
-                        "width": "24em",
-                        "height": "47.904em",
-                        "backgroundSize": "100% 100%",
-                        "backgroundImage": "url(https://upload-yyj.by-health.com/upload/images/0928162954328.png)",
-                        "backgroundRepeat": "no-repeat",
-                        "backgroundPosition": "center center"
-                    },
-                    {
-                        "top": "-3.9em",
-                        "left": "-3.2em",
-                        "width": "24em",
-                        "height": "24em",
-                        "backgroundSize": "100% 100%",
-                        "backgroundImage": "url(https://upload-yyj.by-health.com/upload/images/0927163439807.gif)",
-                        "backgroundRepeat": "no-repeat",
-                        "backgroundPosition": "center center"
-                    }
-                ],
+                "modify": [],
                 "needle": {
-                    "left": "10.2em",
-                    "width": "8em",
-                    "height": "8em",
+                    "left": "50%",
+                    "width": "50px",
+                    "height": "50px",
                     "position": "absolute",
-                    "marginTop": "-4.352em",
-                    "marginLeft": "-4.352em",
-                    "backgroundSize": "100% 100%",
-                    "backgroundImage": "url(https://upload-yyj.by-health.com/upload/images/0927121738971.png)",
-                    "backgroundRepeat": "no-repeat"
+                    "marginTop": "-25px",
+                    "marginLeft": "-25px",
+                    "backgroundColor": "red"
                 },
                 "gameImg": {
-                    "height": "40%",
-                    "fontSize": "normal",
-                    "marginTop": "0.3em"
+                    "backgroundColor": "yellow"
                 },
                 "prizeAlias": {
                     "fontSize": "0.704em"
@@ -664,7 +630,7 @@ const Roulette:Modules<RouletteProps> = (props) => {
                   resolve();
               }, 3000);
           }), // 检查手机验证码
-        emBase: 10,
+        emBase: window.innerWidth/24,
         onCancel: () => console.log('关闭中奖结果'),
         onEnsure: function(prize: any){ console.log('确定中奖结果1！', prize); },
         loading: {
@@ -690,9 +656,8 @@ const Roulette:Modules<RouletteProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
-        <Wrapper {...props} >
-            <div id={`game${props.id}`} ref={nodes}>
-            </div>
+        <Wrapper {...props} maxWidth maxHeight>
+            <div className={s.root} id={`game${props.id}`} ref={nodes}></div>
         </Wrapper>
     )
 }
