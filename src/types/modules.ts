@@ -88,7 +88,7 @@ export interface ExposeDefaultProps {
     api?: Api[];
     styleDescription?: {
       [keys: string]: string
-    }
+    } | any[]
 }
 
 interface Necessary<N, D> {

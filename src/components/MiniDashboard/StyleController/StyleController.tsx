@@ -5,6 +5,8 @@ import s from "./StyleController.module.less";
 import { RootState } from "~/redux/store";
 import StyleSheetPanel from "../StyleSheetPanel";
 import Tooltip from "antd/lib/tooltip";
+import TreeSelect from "antd/lib/tree-select";
+import { Col, Row } from "antd";
 const { Item } = Menu;
 
 interface Props {}
@@ -29,12 +31,13 @@ const StyleController: React.FC<Props> = () => {
     }
     return {};
   }, [activationItem.moduleId, activationItem.type]);
+
   // 当前编辑路径
   const [stylePath, setStylePath] = useState("");
 
   // 设置当前编辑路径
-  const onSelectStylePath = useCallback((e) => {
-    setStylePath(e.key);
+  const onSelectStylePath = useCallback((value) => {
+    setStylePath(value);
   }, []);
 
   // 更换模板时初始化选择
@@ -44,24 +47,27 @@ const StyleController: React.FC<Props> = () => {
 
   return (
     <div className={s.dashboardstylewrap}>
-      <div className={s.menu}>
-        <Menu
-          selectedKeys={[stylePath]}
-          mode="inline"
-          onSelect={onSelectStylePath}
-        >
-          {Object.keys(style).map((key: string) => (
-            <Item className={s.menuitem} key={key}>
-              <Tooltip title={moduleType[key] || key}>
-                {moduleType[key] || key}
-              </Tooltip>
-            </Item>
-          ))}
-        </Menu>
+      <div className={s.wrap}>
+        <div className={s.top}>
+          <Row className={s.row}>
+            <Col span={4}>
+              当前编辑元素
+            </Col>
+            <Col span={20}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                value={stylePath}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={moduleType as any}
+                placeholder="Please select"
+                treeDefaultExpandAll
+                onChange={onSelectStylePath}
+              />
+            </Col>
+          </Row>
+        </div>
       </div>
-      <div className={s.dashboard}>
-        <StyleSheetPanel path={stylePath} />
-      </div>
+      <StyleSheetPanel path={stylePath} />
     </div>
   );
 };
