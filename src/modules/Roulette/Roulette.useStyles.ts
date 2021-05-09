@@ -11,25 +11,39 @@ import styleCompiler from "~/compiler";
 // modify3: "修饰器3"
 
 const useStyles = (id: string) => createUseStyles<string, any>({
-    root: (style) => {
+    wrap: (style) => {
         return {
-          ...(styleCompiler(style.normal).style || {}),
-          [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
-          [`& .${id}_content`]: (styleCompiler(style.container).style || {}),
-          [`& .${id}_modules`]: (styleCompiler(style.content).style || {}),
-          [`& .${id}_header`]: (styleCompiler(style.header).style || {}),
-          [`& .${id}_article`]: (styleCompiler(style.article).style || {}),
-          [`& .${id}_close`]: (styleCompiler(style.close).style || {}),
-          [`& .${id}_modify:first-child`]: (styleCompiler(style.modify1).style || {}),
-          [`& .${id}_modify:nth-child(1)`]: (styleCompiler(style.modify2).style || {}),
-          [`& .${id}_modify:nth-child(2)`]: (styleCompiler(style.modify3).style || {}),
-          [`& .${id}_modify:nth-child(3)`]: (styleCompiler(style.modify4).style || {}),
-          [`& .${id}_ok`]: (styleCompiler(style.ok).style || {}),
-          [`& .${id}_ok:disabled`]: (styleCompiler(style.okdisabled).style || {}),
-          [`& .${id}_cancel`]: (styleCompiler(style.cancel).style || {}),
-          [`& .${id}_cancel:disabled`]: (styleCompiler(style.canceldisabled).style || {})
+          ...(styleCompiler(style.wrap).style || {}),
+          [`& .${id}_light`]: (styleCompiler(style.light).style || {}),
+          [`& .${id}_wheel`]: (styleCompiler(style.wheel).style || {}),
+          [`& .${id}_divide`]: (styleCompiler(style.divide).style || {}),
+          [`& .${id}_prizealias`]: (styleCompiler(style.prizealias).style || {}),
+          [`& .${id}_lotterybutton`]: (styleCompiler(style.lotterybutton).style || {}),
+          [`& .${id}_needle`]: (styleCompiler(style.needle).style || {}),
+          [`& .${id}_gameImg`]: (styleCompiler(style.gameImg).style || {}),
         };
       },
+
+      successModal: (style) => {
+        return {
+          /**中奖弹窗 */
+          // successmodal_content_wrap
+          [`& .${id}_successmodal_overlay`]: (styleCompiler(style.successoverlay).style || {}),
+          [`& .${id}_successmodal_content`]: (styleCompiler(style.successcontainer).style || {}),
+          [`& .${id}_successmodal_modules`]: (styleCompiler(style.successcontent).style || {}),
+          [`& .${id}_successmodal_header`]: (styleCompiler(style.successheader).style || {}),
+          [`& .${id}_successmodal_article`]: (styleCompiler(style.successarticle).style || {}),
+          [`& .${id}_successmodal_close`]: (styleCompiler(style.successclose).style || {}),
+          [`& .${id}_successmodal_modify:first-child`]: (styleCompiler(style.successmodify1).style || {}),
+          [`& .${id}_successmodal_modify:nth-child(1)`]: (styleCompiler(style.successmodify2).style || {}),
+          [`& .${id}_successmodal_modify:nth-child(2)`]: (styleCompiler(style.successmodify3).style || {}),
+          [`& .${id}_successmodal_modify:nth-child(3)`]: (styleCompiler(style.successmodify4).style || {}),
+          [`& .${id}_successmodal_ok`]: (styleCompiler(style.successok).style || {}),
+          [`& .${id}_successmodal_ok:disabled`]: (styleCompiler(style.successokdisabled).style || {}),
+          [`& .${id}_successmodal_cancel`]: (styleCompiler(style.successcancel).style || {}),
+          [`& .${id}_successmodal_cancel:disabled`]: (styleCompiler(style.successcanceldisabled).style || {})
+        }
+      }
 });
 
 export default useStyles;

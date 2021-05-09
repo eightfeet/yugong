@@ -53,10 +53,10 @@ export interface RouletteProps extends AppDataElementsTypes {
 
 const Roulette:Modules<RouletteProps> = (props) => {
     const { moduleId, style } = props;
-    const MId = moduleId;
+    const MId = `gametarget${moduleId}`;
     const userClass = useStyles(MId)(style);
     const [game, nodes] = useGame({
-        targetId: "target1",
+        targetId: `gametarget${props.id}`,
         parentId: `game${props.id}`,
         playerPhone: '13635219421',
         successModalTitle: '恭喜您，获得',
@@ -75,6 +75,12 @@ const Roulette:Modules<RouletteProps> = (props) => {
         onCancel: () => console.log('放弃1'),
         onEnsure: function (prize: any) {
             console.log('确定中奖结果1！', prize);
+        },
+        onShowSuccess: () => {
+            const rootDom = document.getElementById(`${MId}_successmodal`);
+            if (rootDom) {
+                rootDom.className = userClass.successModal;
+            }
         },
         loading: {
             size: 20,
@@ -99,10 +105,11 @@ const Roulette:Modules<RouletteProps> = (props) => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     return (
-        <Wrapper {...props}>
-            <div className={classNames(s.root, s.bag)} id={`game${props.id}`} ref={nodes}>
-                <div className={classNames(s.root, s.bgwrap)}><Backgrounp /></div>
+        <Wrapper {...props} >
+            <div className={classNames(s.root, s.bag, userClass.wrap)} id={`game${props.id}`} ref={nodes}>
+                <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}><Backgrounp /></div>
             </div>
         </Wrapper>
     )
@@ -130,7 +137,65 @@ Roulette.exposeEvents = [
 /**
 * 发布默认porps
 */
-Roulette.exposeDefaultProps = {};
+Roulette.exposeDefaultProps = {
+    style: {
+        basic: {},
+        wrap: {},
+        light: {},
+        wheel: {},
+        divide: {},
+        prizealias: {},
+        lotterybutton: {},
+        needle: {},
+        gameImg: {},
+        
+
+        successoverlay: {},
+        successcontainer: {},
+        successcontent: {},
+        successheader: {},
+        successarticle: {},
+        successclose: {
+            display: {
+                width: 10,
+                height: 10,
+            }
+        },
+        successok: {},
+        successokdisabled: {},
+        successcancel: {},
+        successcanceldisabled: {},
+        successmodify1: {},
+        successmodify2: {},
+        successmodify3: {},
+        successmodify4: {},
+    },
+    styleDescription: {
+        wrap: "包裹器",
+        light: "衬底",
+        wheel: "转盘",
+        divide: "分割线",
+        prizealias: "奖品名/别名",
+        lotterybutton: "抽奖按钮",
+        needle: "抽奖按钮指针",
+        gameImg: "奖品/游戏图片",
+
+        successoverlay: "中奖弹窗覆盖层",
+        successcontainer: "中奖弹窗包裹器",
+        successcontent: "中奖弹窗",
+        successheader: "中奖弹窗头部",
+        successarticle: "中奖弹窗内容",
+        successclose: "中奖弹窗关闭按钮",
+        successok: "中奖弹窗确定按钮",
+        successokdisabled: "中奖弹窗确定按钮禁用",
+        successcancel: "中奖弹窗取消按钮",
+        successcanceldisabled: "中奖弹窗取消按钮禁用",
+        successmodify1: "中奖弹窗修饰层1",
+        successmodify2: "中奖弹窗修饰层2",
+        successmodify3: "中奖弹窗修饰层3",
+        successmodify4: "中奖弹窗修饰层4",
+    }
+};
 
 /**
 * 发布默认Api
