@@ -98,9 +98,18 @@ Image.exposeDefaultProps = {
         basic:{},
         image:{}
     },
-    styleDescription: {
-        image: '图片'
-    }
+    styleDescription: [
+      {
+        title: "基础",
+        value: "basic",
+        children: [
+          {
+            title: "图片",
+            value: "image"
+          }
+        ]
+      }
+    ]
 };
 
 /**

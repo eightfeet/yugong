@@ -88,7 +88,13 @@ export interface ExposeDefaultProps {
     api?: Api[];
     styleDescription?: {
       [keys: string]: string
-    } | any[]
+    } | StyleDescItem[]
+}
+
+interface StyleDescItem {
+  title: string,
+  value: string,
+  children?: StyleDescItem[] 
 }
 
 interface Necessary<N, D> {

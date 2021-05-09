@@ -114,13 +114,31 @@ Text.exposeDefaultProps = {
     paragraph: {},
     prefix: {},
   },
-  styleDescription: {
-    wrap: "容器",
-    paragraph: "段落/项",
-    prefix: "段落前缀",
-  },
+  styleDescription: [
+    {
+      title: "基础",
+      value: "basic",
+      children: [
+        {
+          title: "包裹器",
+          value: "wrap",
+          children: [
+            {
+              title: "段落/项",
+              value: "paragraph",
+              children: [
+                {
+                  title: "段落前缀",
+                  value: "prefix",
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
 };
-
 /**
  * 发布默认Api
  */

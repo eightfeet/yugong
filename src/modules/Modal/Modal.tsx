@@ -414,22 +414,74 @@ Modal.exposeDefaultProps = {
         modify3: {},
         modify4: {},
     },
-    styleDescription: {
-        overlay: '覆盖层',
-        container: '容器',
-        content: '内容区',
-        header: '头部',
-        article: '文本区',
-        close: '关闭图标',
-        ok: '确认按钮',
-        okdisabled: '确认禁用',
-        cancel: '取消按钮',
-        canceldisabled: '取消禁用',
-        modify1: '修饰层',
-        modify2: '修饰层',
-        modify3: '修饰层',
-        modify4: '修饰层',
-    },
+    styleDescription: [
+        {
+            title: "基础",
+            value: "basic",
+            children: [
+                {
+                    "title": "弹窗容器",
+                    "value": "container",
+                    "children":[
+                        {
+                            "title": "遮罩层",
+                            "value": "overlay"
+                        },
+                        {
+                            "title": "弹窗",
+                            "value": "content",
+                            "children":[
+                                {
+                                    "title": "头部",
+                                    "value": "header"
+                                },
+                                {
+                                    "title": "内容",
+                                    "value": "article"
+                                },
+                                {
+                                    "title": "关闭按钮",
+                                    "value": "close"
+                                },
+                                {
+                                    "title": "确定按钮",
+                                    "value": "ok"
+                                },
+                                {
+                                    "title": "确定按钮禁用",
+                                    "value": "okdisabled"
+                                },
+                                {
+                                    "title": "取消按钮",
+                                    "value": "cancel"
+                                },
+                                {
+                                    "title": "取消按钮禁用",
+                                    "value": "canceldisabled"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "修饰层1",
+                            "value": "modify1"
+                        },
+                        {
+                            "title": "修饰层2",
+                            "value": "modify2"
+                        },
+                        {
+                            "title": "修饰层3",
+                            "value": "modify3"
+                        },
+                        {
+                            "title": "修饰层4",
+                            "value": "modify4"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 };
 
 /**

@@ -92,8 +92,11 @@ const Dashboard: React.FC<Props> = () => {
         const optAppData = reject([...appData], { moduleId });
         const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
             .contentWindow;
+        console.log(1)
         updateAppData(optAppData);
+        console.log(2)
         removeActivationItem();
+        console.log(3)
         sendMessage(
             {
                 tag: 'updateAppData',
@@ -101,6 +104,7 @@ const Dashboard: React.FC<Props> = () => {
             },
             win
         );
+        console.log(4)
         sendMessage(
             {
                 tag: 'removeActivationItem',

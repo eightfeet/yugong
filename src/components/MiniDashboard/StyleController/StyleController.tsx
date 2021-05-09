@@ -1,21 +1,14 @@
-import Menu from "antd/lib/menu";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import s from "./StyleController.module.less";
 import { RootState } from "~/redux/store";
 import StyleSheetPanel from "../StyleSheetPanel";
-import Tooltip from "antd/lib/tooltip";
 import TreeSelect from "antd/lib/tree-select";
 import { Col, Row } from "antd";
-const { Item } = Menu;
 
 interface Props {}
 
 const StyleController: React.FC<Props> = () => {
-  // 菜单数据源
-  const style =
-    useSelector((state: RootState) => state.activationItem.style) || {};
-
   // 模板ID
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
@@ -26,10 +19,10 @@ const StyleController: React.FC<Props> = () => {
     if (activationItem.moduleId) {
       return (
         require(`~/modules/${activationItem.type}`)?.default?.exposeDefaultProps
-          ?.styleDescription || {}
+          ?.styleDescription || []
       );
     }
-    return {};
+    return [];
   }, [activationItem.moduleId, activationItem.type]);
 
   // 当前编辑路径
@@ -45,21 +38,22 @@ const StyleController: React.FC<Props> = () => {
     setStylePath("basic");
   }, [moduleId]);
 
+  const height = useMemo(() => window.innerHeight - 200, []);
+  console.log("moduleType", moduleType);
   return (
     <div className={s.dashboardstylewrap}>
       <div className={s.wrap}>
         <div className={s.top}>
           <Row className={s.row}>
-            <Col span={4}>
-              当前编辑元素
-            </Col>
+            <Col span={4}>当前编辑元素</Col>
             <Col span={20}>
               <TreeSelect
                 style={{ width: "100%" }}
                 value={stylePath}
-                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                treeData={moduleType as any}
-                placeholder="Please select"
+                dropdownStyle={{ maxHeight: `${height}px`, overflow: "auto" }}
+                listHeight={height}
+                treeData={(moduleType || []) as any}
+                placeholder="请选择"
                 treeDefaultExpandAll
                 onChange={onSelectStylePath}
               />

@@ -378,22 +378,77 @@ Table.exposeDefaultProps = {
     colodd: {},
     coleven: {},
   },
-  styleDescription: {
-    table: "表格",
-    thead: "表头",
-    tbody: "内容",
-    th: "表头项",
-    td: "内容项",
-    tr: "行",
-    rowoddfirst: "首行",
-    rowoddlast: "末行",
-    rowodd: "奇数行",
-    roweven: "偶数行",
-    coloddfirst: "首列",
-    colevenlast: "未列",
-    colodd: "奇数列",
-    coleven: "偶数列",
-  },
+  styleDescription: [
+    {
+      title: "基础",
+      value: "basic",
+      children: [
+        {
+          title: "表格",
+          value: "table",
+          children: [{
+            title: "表头",
+            value: "thead",
+            children: [
+              {
+                title: "表头项",
+                value: "th",
+              }
+            ]
+          },{
+            title: "内容",
+            value: "tbody",
+            children: [
+              {
+                title: "内容项",
+                value: "td",
+                children: [
+                  {
+                    title: "行",
+                    value: "tr",
+                    children: [
+                      {
+                        title: "首行",
+                        value: "rowoddfirst"
+                      },
+                      {
+                        title: "末行",
+                        value: "rowoddlast"
+                      },
+                      {
+                        title: "奇数行",
+                        value: "rowodd"
+                      },
+                      {
+                        title: "偶数行",
+                        value: "roweven"
+                      }
+                    ]
+                  },
+                  {
+                    title: "首列",
+                    value: "coloddfirst"
+                  },
+                  {
+                    title: "未列",
+                    value: "colevenlast"
+                  },
+                  {
+                    title: "奇数列",
+                    value: "colodd"
+                  },
+                  {
+                    title: "偶数列",
+                    value: "coleven"
+                  }
+                ]
+              }
+            ]
+          }]
+        }
+      ]
+    }
+  ]
 };
 
 /**

@@ -26,9 +26,9 @@ const staticConstants: StaticConstants = {
           name: "隐藏翻页箭头",
           describe: "是否隐藏左右翻页箭头",
           data: {
-            comparableAverageA: '',
-            comparableAverageB: '',
-            method: '<'
+            comparableAverageA: "",
+            comparableAverageB: "",
+            method: "<",
           },
           fieldName: "navigation",
         },
@@ -37,9 +37,9 @@ const staticConstants: StaticConstants = {
           name: "隐藏底部导航",
           describe: "是否隐藏隐藏底部导航圆点",
           data: {
-            comparableAverageA: '',
-            comparableAverageB: '',
-            method: '<'
+            comparableAverageA: "",
+            comparableAverageB: "",
+            method: "<",
           },
           fieldName: "pagination",
         },
@@ -55,9 +55,9 @@ const staticConstants: StaticConstants = {
           name: "disableOnInteraction",
           describe: "交互时打断自动播放",
           data: {
-            comparableAverageA: '',
-            comparableAverageB: '',
-            method: '<'
+            comparableAverageA: "",
+            comparableAverageB: "",
+            method: "<",
           },
           fieldName: "disableOnInteraction",
         },
@@ -125,15 +125,44 @@ const staticConstants: StaticConstants = {
       // 下一页
       next: {},
     },
-    styleDescription: {
-      sliderWrap: "包裹器",
-      slideItem: "滑动页",
-      pagination: "导航条",
-      paginationBullet: "标记",
-      paginationBulletActive: "标记激活",
-      prev: "上一页",
-      next: "下一页",
-    },
+    styleDescription: [
+      {
+        title: "基础",
+        value: "basic",
+        children: [
+          {
+            title: "包裹器",
+            value: "sliderWrap",
+            children: [
+              {
+                title: "滑动页",
+                value: "slideItem",
+              },
+              {
+                title: "导航条",
+                value: "pagination",
+              },
+              {
+                title: "标记",
+                value: "paginationBullet",
+              },
+              {
+                title: "标记激活",
+                value: "paginationBulletActive",
+              },
+              {
+                title: "上一页",
+                value: "prev"
+              },
+              {
+                title: "下一页",
+                value: "next"
+              }
+            ],
+          },
+        ],
+      },
+    ]
   },
 
   /**

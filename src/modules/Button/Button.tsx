@@ -280,17 +280,54 @@ Button.exposeDefaultProps = {
     focus: {},
     hover: {}
   },
-  styleDescription: {
-    normal: "常态",
-    before: "常态前缀",
-    after: "常态后缀",
-    active: "激活",
-    activebefore: "激活前缀",
-    activeafter: "激活后缀",
-    disabled: "禁用",
-    focus: "获取焦点",
-    hover: "经过"
-  },
+  styleDescription: [
+    {
+        title: "基础",
+        value: "basic",
+        children: [
+          {
+            title: "常态",
+            value: "normal",
+            children: [
+              {
+                title: "常态前缀",
+                value: "before",
+              },
+              {
+                title: "常态后缀",
+                value: "after",
+              }
+            ]
+          },
+          {
+            title: "激活",
+            value: "active",
+            children: [
+              {
+                title: "激活前缀",
+                value: "activebefore",
+              },
+              {
+                title: "激活后缀",
+                value: "activeafter",
+              }
+            ]
+          },
+          {
+            title: "禁用",
+            value: "disabled"
+          },
+          {
+            title: "获取焦点",
+            value: "focus"
+          },
+          {
+            title: "经过",
+            value: "hover"
+          }
+        ]
+    }
+  ]
 };
 
 export default Button;

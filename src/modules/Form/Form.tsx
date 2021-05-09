@@ -326,26 +326,86 @@ Form.exposeDefaultProps = {
     okdisabled: {},
     resetnormal: {},
   },
-  styleDescription: {
-    wrap: "包裹器",
-    header: "标题部分",
-    container: "内容部分",
-    formitem: "表单项",
-    label: "表单项标签",
-    icon: "表单图标（单选多选下拉等）",
-    activity: "激活状态",
-    validateError: "错误提示",
-
-    baseline: "输入框",
-    baselineact: "输入框激活",
-    errorbaseline: "输入框（验证失败）",
-
-    footer: "脚部",
-    button: "按钮",
-    oknormal: "提交按钮",
-    okdisabled: "提交按钮（禁用）",
-    resetnormal: "重置按钮",
-  },
+  styleDescription: [
+    {
+      title: "基础",
+      value: "basic",
+      children: [
+        {
+          title: "包裹器",
+          value: "wrap",
+          children: [
+            {
+              title: "标题部分",
+              value: "header"
+            },
+            {
+              title: "内容部分",
+              value: "container",
+              children: [
+                {
+                  title: "表单项",
+                  value: "formitem",
+                  children:[
+                    {
+                      title: "表单项标签",
+                      value: "label",
+                    },
+                    {
+                      title: "表单图标（单选多选下拉等）",
+                      value: "icon",
+                    },
+                    {
+                      title: "激活状态",
+                      value: "activity",
+                    },
+                    {
+                      title: "错误提示",
+                      value: "validateError",
+                    },
+                    {
+                      title: "输入框",
+                      value: "baseline",
+                    },
+                    {
+                      title: "输入框激活",
+                      value: "baselineact",
+                    },
+                    {
+                      title: "输入框（验证失败）",
+                      value: "errorbaseline",
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              title: "脚部",
+              value: "footer",
+              children: [{
+                title: "按钮",
+                value: "button",
+                children: [
+                  {
+                    title: "提交按钮",
+                    value: "oknormal"
+                  },
+                  {
+                    title: "提交按钮（禁用）",
+                    value: "okdisabled"
+                  },
+                  {
+                    title: "重置按钮",
+                    value: "resetnormal"
+                  }
+                ]
+              }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 };
 
 /**
