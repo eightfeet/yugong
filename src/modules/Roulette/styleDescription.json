@@ -1,20 +1,20 @@
 [
     {
-      "title": "基础",
-      "value": "basic",
-      "children": [
-        {
-          "title": "包裹器",
-          "value": "wrap",
-          "children": [
-              {
-                "title": "衬底",
-                "value": "light",
+        "title": "基础",
+        "value": "basic",
+        "children": [
+            {
+                "title": "包裹器",
+                "value": "wrap",
                 "children": [
                     {
                         "title": "转盘",
                         "value": "wheel",
                         "children": [
+                            {
+                                "title": "衬底",
+                                "value": "light"
+                            },
                             {
                                 "title": "分割线",
                                 "value": "divide"
@@ -36,10 +36,11 @@
                                 "value": "gameImg"
                             }
                         ]
-                    },{
+                    },
+                    {
                         "title": "中奖弹窗",
                         "value": "successcontainer",
-                        "children":[
+                        "children": [
                             {
                                 "title": "遮罩层",
                                 "value": "successoverlay"
@@ -47,7 +48,7 @@
                             {
                                 "title": "弹窗",
                                 "value": "successcontent",
-                                "children":[
+                                "children": [
                                     {
                                         "title": "头部",
                                         "value": "successheader"
@@ -97,9 +98,7 @@
                         ]
                     }
                 ]
-              }
-          ]
-        }
-      ]
+            }
+        ]
     }
 ]

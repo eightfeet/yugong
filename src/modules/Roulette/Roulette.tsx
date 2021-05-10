@@ -10,7 +10,7 @@ import s from './Roulette.module.less';
 import prizes1 from './mockData.json';
 import classNames from 'classnames';
 import Backgrounp from './Backgroup';
-import styleDescription from './styleDescription.json'
+import styleDescription from './styleDescription.json';
 
 var start1 = function () {
     return new Promise(function (resolve) {
@@ -19,7 +19,6 @@ var start1 = function () {
         }, 1000);
     });
 };
-
 
 var saveAddress = function (data: any) {
     return new Promise<void>(function (resolve) {
@@ -52,7 +51,7 @@ export interface RouletteProps extends AppDataElementsTypes {
     eventEmitter: EventEmitter;
 }
 
-const Roulette:Modules<RouletteProps> = (props) => {
+const Roulette: Modules<RouletteProps> = (props) => {
     const { moduleId, style } = props;
     const MId = `gametarget${moduleId}`;
     const userClass = useStyles(MId)(style);
@@ -65,9 +64,7 @@ const Roulette:Modules<RouletteProps> = (props) => {
             form: 'flipInY',
         },
         cardIdRequest: 3, // 填写收货地址时是否验证身份证: this.cardIdRequest = 1 隐藏身份证，2 验证身份证，3 身份证为空时不验证有填写时验证，4 不验证身份证
-        style: {
-            
-        },
+        style: {},
         start: start1,
         saveAddress: saveAddress,
         receiverInfo: receiverInfo,
@@ -89,13 +86,13 @@ const Roulette:Modules<RouletteProps> = (props) => {
             // verticesColor: ['red', 'green', 'blue', 'yellow', 'orange'],
             cycleTime: 1,
         },
-    })
-    const { eventEmitter, events = {}, api} = props;
+    });
+    const { eventEmitter, events = {}, api } = props;
     // API请求 注意依赖关系
     useEffect(() => {
-        const apiArguments = api?.find(item => item.apiId === '');
+        const apiArguments = api?.find((item) => item.apiId === '');
         requester(apiArguments || {});
-    }, [api])
+    }, [api]);
     // 基本事件
     useEffect(() => {
         // 执行挂载事件
@@ -103,27 +100,33 @@ const Roulette:Modules<RouletteProps> = (props) => {
         return () => {
             // 执行卸载事件
             eventEmitter.emit(events.unmount);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
-        <Wrapper {...props} >
-            <div className={classNames(s.root, s.bag, userClass.wrap)} id={`game${props.id}`} ref={nodes}>
-                <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}><Backgrounp /></div>
+        <Wrapper {...props}>
+            <div
+                className={classNames(s.root, s.bag, userClass.wrap)}
+                id={`game${props.id}`}
+                ref={nodes}
+            >
+                <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}>
+                    <Backgrounp />
+                </div>
             </div>
         </Wrapper>
-    )
-}
+    );
+};
 
 /**
-* 注册方法的静态描述与默认参数定义
-*/
+ * 注册方法的静态描述与默认参数定义
+ */
 Roulette.exposeFunctions = [];
 
 /**
-* 发布事件的静态描述
-*/
+ * 发布事件的静态描述
+ */
 Roulette.exposeEvents = [
     {
         name: 'mount',
@@ -132,12 +135,12 @@ Roulette.exposeEvents = [
     {
         name: 'unmount',
         description: '卸载',
-    }
+    },
 ];
 
 /**
-* 发布默认porps
-*/
+ * 发布默认porps
+ */
 Roulette.exposeDefaultProps = {
     style: {
         basic: {},
@@ -146,22 +149,34 @@ Roulette.exposeDefaultProps = {
         wheel: {},
         divide: {},
         prizealias: {},
-        lotterybutton: {},
-        needle: {},
+        lotterybutton: {
+            backgroundCommon: {
+                backgroundColor: 'rgba(162, 162, 162, 0.61)',
+            },
+            border: {
+                radiusTopLeft: 100,
+                radiusTopRight: 100,
+                radiusBottomLeft: 100,
+                radiusBottomRight: 100,
+            },
+        },
+        needle: {
+            backgroundCommon: { backgroundColor: 'rgba(0, 0, 0, 0.22)' },
+            border: {
+                radiusTopLeft: 100,
+                radiusTopRight: 100,
+                radiusBottomLeft: 100,
+                radiusBottomRight: 100,
+            },
+        },
         gameImg: {},
-        
 
+        successclose: { display: { width: 10, height: 10 } },
         successoverlay: {},
         successcontainer: {},
         successcontent: {},
         successheader: {},
         successarticle: {},
-        successclose: {
-            display: {
-                width: 10,
-                height: 10,
-            }
-        },
         successok: {},
         successokdisabled: {},
         successcancel: {},
@@ -171,12 +186,12 @@ Roulette.exposeDefaultProps = {
         successmodify3: {},
         successmodify4: {},
     },
-    styleDescription
+    styleDescription,
 };
 
 /**
-* 发布默认Api
-*/
+ * 发布默认Api
+ */
 Roulette.exposeApi = [];
 
 export default Roulette;
