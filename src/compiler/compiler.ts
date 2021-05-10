@@ -123,9 +123,12 @@ export const display = function (styleObj: objType): resultType {
             if (key === 'width' || key === 'height') {
                 const checkNumStep1 = Number(element);
                 if (checkNumStep1) {
-                    result[newKey] = `${checkNumStep1}${unit}`;
+                    // 确定数据值
+                    result[newKey] = changeToUnit(checkNumStep1).value;
                 } else {
+                    // 非数据值从运行时获取
                     let data = compilePlaceholderFromDataSource(element, runningTimes);
+                    // 获取数据
                     const checkNumStep2 = Number(data);
                     if (checkNumStep2) {
                         result[newKey] = `${data}${unit}`;

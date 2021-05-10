@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
-    "@byhealth/lottery": "^1.2.9",
+    "@byhealth/lottery": "^1.2.11",
     "@eightfeet/loading": "^2.0.4",
     "@eightfeet/modal": "^2.2.18",
     "@hookform/resolvers": "^2.4.0",
