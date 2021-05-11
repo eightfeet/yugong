@@ -8,7 +8,10 @@ const Home = () => {
     const [value, setValue] = useState<[string | number, string]>([100, ''])
    return <div>
     <div style={{width: '250px', backgroundColor: '#fff'}}>
-        <UnitInput onChange={(val) => console.log(val)} defaultValue={value} label="页面标签" />
+        <UnitInput onChange={(val) => {
+            setValue(val);
+            console.log(val);
+        }} defaultValue={[100, '']} label="页面标签" />
         <br />
         {value}
     </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Input, Col, Row, Select, InputNumber } from "antd";
 
 import s from "./UnitInput.module.less";
@@ -37,7 +37,7 @@ const Unitinput: React.FC<Props> = ({
   defaultValue,
   onChange,
 }) => {
-  //拆解默当前认值
+  //拆解当前默认值
   const [defaultInpValue, defaultUnitValue] = defaultValue || [];
   // 组件内部单位
   const [unit, setUnit] = useState<string>(defaultUnitValue || "");
@@ -55,11 +55,6 @@ const Unitinput: React.FC<Props> = ({
 
   // onforce
   const [forceItem, setForceItem] = useState<"input" | "select">();
-
-//   useEffect(() => {
-//     if (defaultValue) setValue(defaultValue[0]);
-//     if (defaultValue) setUnit(defaultValue[1]);
-//   }, [defaultValue]);
 
   /**
    * 高频编辑防抖处理
@@ -97,7 +92,7 @@ const Unitinput: React.FC<Props> = ({
    */
   const onChangeUnitType = useCallback(
     (unit) => {
-      if (unit === "-") {
+      if (unit === "-" || unit === 'runningTime') {
         setValueType("text");
         if (value) {
           setValue(`${value}`);
@@ -116,7 +111,12 @@ const Unitinput: React.FC<Props> = ({
     [onChangeDebounce, value]
   );
 
+  useEffect(() => {
+      console.log('rending ?');
+  }, [defaultValue])
   return (
+      <>
+      内部：{value}
     <Row className={classNames(s.row, s.className)} gutter={8}>
       <Col className={s.label} span={span?.label || 7}>
         {label}
@@ -145,12 +145,12 @@ const Unitinput: React.FC<Props> = ({
           ) : null}
           <Select
             className={s.select}
+            dropdownClassName={s.dropdown}
             onChange={onChangeUnitType}
             defaultValue={unit}
             style={forceItem === 'select' ? style : undefined}
             onFocus={() => setForceItem('select')}
           >
-            {" "}
             {memoUnit.map((item) => (
               <Option key={item.text} value={item.value}>
                 {item.text}
@@ -160,7 +160,10 @@ const Unitinput: React.FC<Props> = ({
         </Input.Group>
       </Col>
     </Row>
+    </>
   );
 };
 
-export default Unitinput;
+const MemoUnitInput:React.FC<Props> = ({defaultValue, ...other}) => useMemo(() => <Unitinput {...other}/>, [])
+export default MemoUnitInput;
+// export default Unitinput;
