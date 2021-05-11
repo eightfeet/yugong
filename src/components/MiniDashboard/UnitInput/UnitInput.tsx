@@ -1,63 +1,166 @@
-import React, { useCallback, useState } from 'react';
-import { Input, Col, Row, Select, InputNumber } from 'antd';
-import s from './UnitInput.module.less';
-import classNames from 'classnames';
+import React, { useCallback, useMemo, useState } from "react";
+import { Input, Col, Row, Select, InputNumber } from "antd";
+
+import s from "./UnitInput.module.less";
+import classNames from "classnames";
+import getUnits from "./unit";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
+import { throttle } from "lodash";
 
 const { Option } = Select;
+const style: React.CSSProperties = { position: "relative", zIndex: 2 };
 
 interface Props {
-    /**标签 */
-    label: string;
-    /**间隔 */
-    span?: {
-        label: number;
-        wrapper: number;
-    };
-    /**最小值，作用于数据类型 */
-    min?: number;
-    /**最大值，作用于数据类型 */
-    max?: number;
-    className?: string;
-    onChange?: (value: [(string | number), string]) => void;
-    /**默认值 */
-    defaultValue?: [(string | number), string];
+  /**标签 */
+  label: string;
+  /**间隔 */
+  span?: {
+    label: number;
+    wrapper: number;
+  };
+  /**最小值，作用于数据类型 */
+  min?: number;
+  /**最大值，作用于数据类型 */
+  max?: number;
+  className?: string;
+  onChange?: (value: [string | number, string]) => void;
+  /**默认值 */
+  defaultValue?: [string | number, string];
 }
 
-const Unitinput: React.FC<Props> = ({ label, span, min, max, defaultValue }) => {
-    const [unitType, setUnitType] = useState<'number' | 'text'>('number');
-    const [ defaultInpValue, defaultUnitValue ] = defaultValue || [];
+const Unitinput: React.FC<Props> = ({
+  label,
+  span,
+  min,
+  max,
+  defaultValue,
+  onChange,
+}) => {
+  //拆解默当前认值
+  const [defaultInpValue, defaultUnitValue] = defaultValue || [];
+  // 组件内部单位
+  const [unit, setUnit] = useState<string>(defaultUnitValue || "");
+  // 组件内value值
+  const [value, setValue] = useState(defaultInpValue || "");
+  // 组件内value类型，仅自定义“-”时为字符，其他单位类型都是数字
+  const [valueType, setValueType] = useState<"number" | "text">(
+    defaultUnitValue === "-" ? "text" : "number"
+  );
+  // 获取option Value值
+  const globalUnit = useSelector(
+    (state: RootState) => state.pageData.unit || "px"
+  );
+  const memoUnit = useMemo(() => getUnits(globalUnit), [globalUnit]);
 
-    const [unit, setUnit] = useState<string>(defaultUnitValue || '');
-    const [value, setValue] = useState(defaultInpValue || '');
+  // onforce
+  const [forceItem, setForceItem] = useState<"input" | "select">();
 
-    const onChangeUnitType = useCallback(
-        (unit) => {
-            console.log(unit)
-            setUnit(unit)
-        },
-        [],
-    )
+//   useEffect(() => {
+//     if (defaultValue) setValue(defaultValue[0]);
+//     if (defaultValue) setUnit(defaultValue[1]);
+//   }, [defaultValue]);
 
-    return (
-        <Row className={classNames(s.row, s.className)} gutter={8}>
-            <Col className={s.label} span={span?.label|| 7}>{label}</Col>
-            <Col span={span?.wrapper|| 17}>
-                <Input.Group compact className={s.group}>
-                    {unitType === 'number' ? <InputNumber min={min} max={max} className={s.input} value={value} defaultValue={100} /> : null}
-                    {unitType === 'text' ? <Input className={s.input} defaultValue="100" value={value} /> : null}
-                    <Select className={s.select} onChange={onChangeUnitType} defaultValue={unit}>
-                        <Option value="">全局(rem)</Option>
-                        <Option value="%">%</Option>
-                        <Option value="px">px</Option>
-                        <Option value="rem">rem</Option>
-                        <Option value="vw">vw</Option>
-                        <Option value="vh">vh</Option>
-                        <Option value="-">自定义</Option>
-                    </Select>
-                </Input.Group>
-            </Col>
-        </Row>
-    );
+  /**
+   * 高频编辑防抖处理
+   */
+  const onChangeDebounce = useMemo(
+    () =>
+      throttle(({ val, un }: { val: string | number; un: string }) => {
+        const values: [string | number, string] = [val, un];
+        if (onChange instanceof Function) {
+          onChange(values);
+        }
+      }, 500),
+    [onChange]
+  );
+
+  /**
+   * onChange 值
+   */
+  const onChangeValue = useCallback(
+    (e) => {
+      if (valueType === "text") {
+        setValue(e.target.value);
+        onChangeDebounce({ val: e.target.value, un: unit });
+      }
+      if (valueType === "number") {
+        setValue(e);
+        onChangeDebounce({ val: e, un: unit });
+      }
+    },
+    [onChangeDebounce, unit, valueType]
+  );
+
+  /**
+   * change 单位
+   */
+  const onChangeUnitType = useCallback(
+    (unit) => {
+      if (unit === "-") {
+        setValueType("text");
+        if (value) {
+          setValue(`${value}`);
+          onChangeDebounce({ val: `${value}`, un: unit });
+        }
+      } else {
+        setValueType("number");
+        const val = Number(value);
+        if (val) {
+          setValue(val);
+          onChangeDebounce({ val, un: unit });
+        }
+      }
+      setUnit(unit);
+    },
+    [onChangeDebounce, value]
+  );
+
+  return (
+    <Row className={classNames(s.row, s.className)} gutter={8}>
+      <Col className={s.label} span={span?.label || 7}>
+        {label}
+      </Col>
+      <Col span={span?.wrapper || 17}>
+        <Input.Group compact className={s.group}>
+          {valueType === "number" ? (
+            <InputNumber
+              min={min}
+              max={max}
+              className={s.input}
+              onChange={onChangeValue}
+              value={Number(value) || undefined}
+              style={forceItem === "input" ? style : undefined}
+              onFocus={() => setForceItem('input')}
+            />
+          ) : null}
+          {valueType === "text" ? (
+            <Input
+              className={s.input}
+              onChange={onChangeValue}
+              value={value}
+              style={forceItem === "input" ? style : undefined}
+              onFocus={() => setForceItem('input')}
+            />
+          ) : null}
+          <Select
+            className={s.select}
+            onChange={onChangeUnitType}
+            defaultValue={unit}
+            style={forceItem === 'select' ? style : undefined}
+            onFocus={() => setForceItem('select')}
+          >
+            {" "}
+            {memoUnit.map((item) => (
+              <Option key={item.text} value={item.value}>
+                {item.text}
+              </Option>
+            ))}
+          </Select>
+        </Input.Group>
+      </Col>
+    </Row>
+  );
 };
 
 export default Unitinput;

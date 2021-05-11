@@ -5,6 +5,7 @@
  */
 import 'whatwg-fetch';
 import ReactDOM from "react-dom";
+// import 'default-passive-events';
 import "antd/dist/antd.css";
 import reportWebVitals from "~/reportWebVitals";
 import DashboardApp from "~/components/DashboardApp";
