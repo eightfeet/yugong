@@ -97,6 +97,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
 
   const onChangeOption = useCallback(
     (option: string ) => (value: [string|number, string]) => {
+      const data: DisplayTypesOfStyleItems = { ...displayData };
       console.log(option, value)
     },
     [],
