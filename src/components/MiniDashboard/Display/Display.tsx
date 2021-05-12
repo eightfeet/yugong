@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Spacing from "../Spacing";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import UnitInput from "../UnitInput";
 
 interface Props {
   onChange: (result: DisplayTypesOfStyleItems) => void;
@@ -94,6 +95,13 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     [displayData, onChange]
   );
 
+  const onChangeOption = useCallback(
+    (option: string ) => (value: [string|number, string]) => {
+      console.log(option, value)
+    },
+    [],
+  )
+
   return (
     <>
       <Row className={s.row}>
@@ -106,7 +114,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             value={width}
             onChange={onChangeDisplay("width")}
           /> */}
-          <Row gutter={4} style={{ alignItems: "center" }}>
+          {/* <Row gutter={4} style={{ alignItems: "center" }}>
             <Col style={{ textAlign: "right" }} span={10}>
               宽度
             </Col>
@@ -127,7 +135,8 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
                 )}
               </Tooltip>
             </Col>
-          </Row>
+          </Row> */}
+          <UnitInput onChange={onChangeOption('width')} label="标签" />
         </Col>
         <Col span={12}>
           {/* <NumberInput
