@@ -151,8 +151,8 @@ Roulette.exposeDefaultProps = {
     wrap: {
       display: {
         overflow: "visible",
-        width: 250,
-        height: 250,
+        width: [250, ''],
+        height: [250, ''],
       },
     },
     light: {
@@ -231,7 +231,7 @@ Roulette.exposeDefaultProps = {
         backgroundColor: "rgba(255, 255, 255, 0.18)",
       },
       display: {
-        width: 1
+        width: [1, '']
       },
       boxShadow: [],
     },
@@ -240,7 +240,7 @@ Roulette.exposeDefaultProps = {
         color: "rgba(255, 255, 255, 1)",
       },
       display: {
-        margin: ["-5", null, null, null],
+        margin: [[-5, ''], null, null, null],
       },
     },
     lotterybutton: {
@@ -261,10 +261,10 @@ Roulette.exposeDefaultProps = {
         radiusBottomRight: 100,
       },
       display: {
-        width: 80,
-        height: 80,
+        width: [80, ''],
+        height: [80, ''],
         position: "absolute",
-        left: 124,
+        left: [124, ''],
       },
       boxShadow: [
         {
@@ -291,18 +291,18 @@ Roulette.exposeDefaultProps = {
       },
       border: {},
       display: {
-        width: 120,
-        height: 230,
+        width: [120, ''],
+        height: [230, ''],
         position: "absolute",
-        padding: ["", null, null, null],
-        left: 65,
-        margin: ["0", "0", "0", "0"],
-        top: 0,
+        padding: [null, null, null, null],
+        left: [65, ''],
+        margin: [[0, ''], [0, ''], [0, ''], [0, '']],
+        top: [0, ''],
       },
     },
     gameImg: {
       display: {
-        margin: ["-10", null, null, null],
+        margin: [[-10, ''], null, null, null],
       },
       border: {
         radiusTopLeft: 300,
@@ -317,8 +317,8 @@ Roulette.exposeDefaultProps = {
     },
     successclose: {
       display: {
-        width: 10,
-        height: 10,
+        width: [10, ''],
+        height: [10, ''],
       },
     },
     successoverlay: {},

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Input, Tooltip } from "antd";
+import { Row, Col } from "antd";
 import Select from "./../Select";
 import s from "./Display.module.scss";
 import NumberInput from "../NumberInput";
@@ -7,7 +7,6 @@ import { DisplayTypesOfStyleItems } from "types/appData";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Spacing from "../Spacing";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import UnitInput from "../UnitInput";
 
 interface Props {
@@ -69,20 +68,6 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     [displayData, onChange]
   );
 
-  const onChangeWidthHeight = useCallback(
-    (type: ChangeType) => (e: any) => {
-      const oprateData = { ...displayData };
-      const data = e.target.value;
-      oprateData[type] = data;
-      console.log(type, oprateData);
-      setDisplayData(oprateData);
-      if (onChange instanceof Function) {
-        onChange(oprateData);
-      }
-    },
-    [displayData, onChange]
-  );
-
   const onChangeSpace = useCallback(
     (type, value) => {
       const data: DisplayTypesOfStyleItems = { ...displayData };
@@ -96,7 +81,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
   );
 
   const onChangeOption = useCallback(
-    (option: string ) => (value: [string|number, string]) => {
+    (option: string) => (value: [string | number, string]) => {
       const oprateData: DisplayTypesOfStyleItems = { ...displayData };
       oprateData[option] = value;
       setDisplayData(oprateData);
@@ -104,17 +89,25 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         onChange(oprateData);
       }
     },
-    [displayData, onChange],
-  )
+    [displayData, onChange]
+  );
 
   return (
     <>
       <Row className={s.row}>
         <Col span={12}>
-          <UnitInput onChange={onChangeOption('width')} label="宽度" />
+          <UnitInput
+            defaultValue={width}
+            onChange={onChangeOption("width")}
+            label="宽度"
+          />
         </Col>
         <Col span={12}>
-          <UnitInput onChange={onChangeOption('height')} label="高度" />
+          <UnitInput
+            defaultValue={height}
+            onChange={onChangeOption("height")}
+            label="高度"
+          />
         </Col>
       </Row>
       <Row className={s.row}>
@@ -169,48 +162,44 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       {position === "absolute" || position === "fixed" ? (
         <Row className={s.row}>
           <Col span={12}>
-            <NumberInput
-              label="左定位"
-              unit={unit}
+            <UnitInput
+              defaultValue={left}
               min={-100000}
               max={100000}
-              value={left}
-              onChange={onChangeDisplay("left")}
+              onChange={onChangeOption("left")}
+              label="左定位"
             />
           </Col>
           <Col span={12}>
-            <NumberInput
-              label="右定位"
-              unit={unit}
-              min={-100000}
-              max={100000}
-              value={right}
-              onChange={onChangeDisplay("right")}
-            />
+            <UnitInput
+                defaultValue={right}
+                min={-100000}
+                max={100000}
+                onChange={onChangeOption("right")}
+                label="右定位"
+              />
           </Col>
         </Row>
       ) : null}
       {position === "absolute" || position === "fixed" ? (
         <Row className={s.row}>
           <Col span={12}>
-            <NumberInput
-              label="上定位"
-              unit={unit}
-              min={-100000}
-              max={100000}
-              value={top}
-              onChange={onChangeDisplay("top")}
-            />
+            <UnitInput
+                defaultValue={top}
+                min={-100000}
+                max={100000}
+                onChange={onChangeOption("top")}
+                label="上定位"
+              />
           </Col>
           <Col span={12}>
-            <NumberInput
-              label="下定位"
-              unit={unit}
-              min={-100000}
-              max={100000}
-              value={bottom}
-              onChange={onChangeDisplay("bottom")}
-            />
+          <UnitInput
+                defaultValue={bottom}
+                min={-100000}
+                max={100000}
+                onChange={onChangeOption("bottom")}
+                label="下定位"
+              />
           </Col>
         </Row>
       ) : null}

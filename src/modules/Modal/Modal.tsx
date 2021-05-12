@@ -401,8 +401,8 @@ Modal.exposeDefaultProps = {
         article: {},
         close: {
             display: {
-                width: 10,
-                height: 10,
+                width: [10, ''],
+                height: [10, ''],
             }
         },
         ok: {},

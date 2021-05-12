@@ -44,6 +44,11 @@ interface ArgumentBase<T> {
 }
 
 /**
+ * 单位数值
+ */
+export type UnitType = [string | number, string];
+
+/**
  * 对象参数
  */
 export interface ArgumentsObject extends ArgumentBase<"object"> {
@@ -215,16 +220,16 @@ export interface BorderTypesOfStyleItems {
 }
 
 export interface DisplayTypesOfStyleItems {
-  width?: number;
-  height?: number;
+  width?: UnitType;
+  height?: UnitType;
   zIndex?: number;
   position?: string;
-  left?: number;
-  right?: number;
-  top?: number;
-  bottom?: number;
-  margin?: any[];
-  padding?: any[];
+  left?: UnitType;
+  right?: UnitType;
+  top?: UnitType;
+  bottom?: UnitType;
+  margin?: (UnitType|null)[];
+  padding?: (UnitType|null)[];
   display?: string;
   overflow?: string;
 }

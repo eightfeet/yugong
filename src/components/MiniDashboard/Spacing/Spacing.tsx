@@ -1,5 +1,5 @@
 import { LinkOutlined } from "@ant-design/icons";
-import { Row, Col, Input, Divider } from "antd";
+import { Row, Col, Divider } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import Unitinput from "../UnitInput/UnitInput";
 import s from "./Spacing.module.less";
@@ -32,21 +32,21 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
   }, [margin]);
 
   const onChangeValue = useCallback(
-    (index) => (e: any) => {
+    (index: number) => (value: [number | string, string]) => {
       if (spaceType === "padding") {
         const values: any[] = [...inValues];
-        values[index] = e.target.value;
+        values[index] = value;
         if (locked === true) {
-          values[1] = values[2] = values[3] = values[0] = e.target.value;
+          values[1] = values[2] = values[3] = values[0] = value;
         }
         setInValues(values);
         onChange(spaceType, values);
       }
       if (spaceType === "margin") {
         const values = [...outValues];
-        values[index] = e.target.value;
+        values[index] = value;
         if (locked === true) {
-          values[1] = values[2] = values[3] = values[0]= e.target.value;
+          values[1] = values[2] = values[3] = values[0] = value;
         }
         setOutValues(values);
         onChange(spaceType, values);
@@ -74,11 +74,11 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
       e.stopPropagation();
       setSpaceType(type);
       const values = getValue(type);
-      const unEqu = values.filter(item => values[0] !== item);
+      const unEqu = values.filter((item) => values[0] !== item);
       if (!!unEqu.length) {
-        setLocked(false)
+        setLocked(false);
       } else {
-        setLocked(true)
+        setLocked(true);
       }
     },
     [getValue, setLocked]
@@ -88,22 +88,24 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
     setLocked(!locked);
   }, [locked]);
 
-  const setLabel = useCallback(
-    (index: number) => {
-      switch (index) {
-        case 0: return '上';
-        case 1: return '右';
-        case 2: return '下';
-        case 3: return '左';
-        default: return '';
-      }
-    },
-    [],
-  )
+  const setLabel = useCallback((index: number) => {
+    switch (index) {
+      case 0:
+        return "上";
+      case 1:
+        return "右";
+      case 2:
+        return "下";
+      case 3:
+        return "左";
+      default:
+        return "";
+    }
+  }, []);
 
   return (
-      <>
-      <Divider orientation="left">边距</Divider>
+    <>
+      <Divider orientation="left"><span className={s.divide}>边距</span></Divider>
       <Row gutter={4}>
         <Col span={9}>
           <div
@@ -133,28 +135,19 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
           />
         </Col>
         <Col span={13}>
-          {getValue().map((item, index) => (
-            <Unitinput span={{label: 3, wrapper: 21}} className={`33333 ${s.unititem}`} label={setLabel(index)} onChange={onChangeValue(index)} />
-            // <Row gutter={4} className={s.row} key={`${spaceType}${index}`}>
-            //   <Col span={4} className={s.label}>
-            //     {index === 0 ? "上" : null}
-            //     {index === 1 ? "右" : null}
-            //     {index === 2 ? "下" : null}
-            //     {index === 3 ? "左" : null}
-            //   </Col>
-            //   <Col span={14}>
-            //     <Input
-            //       type="text"
-            //       disabled={!spaceType}
-            //       value={item}
-            //       onChange={onChangeValue(index)}
-            //     />
-            //   </Col>
-            // </Row>
-          ))}
+          {getValue().map((item, index) => {
+            return <Unitinput
+              span={{ label: 3, wrapper: 21 }}
+              key={`${spaceType}${index}`}
+              className={s.unititem}
+              label={setLabel(index)}
+              defaultValue={item}
+              onChange={onChangeValue(index)}
+            />;
+          })}
         </Col>
       </Row>
-      </>
+    </>
   );
 };
 

@@ -242,7 +242,7 @@ Button.exposeDefaultProps = {
     basic: {},
     normal: {
       display: {
-        padding: [10, 10, 10, 10],
+        padding: [[10, ''], [10, ''], [10, ''], [10, '']],
       },
       border: {
         borderColor: "rgba(205, 205, 205, 1)",

@@ -13,13 +13,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
 import { throttle } from 'lodash';
 import useSafeCallback from '~/hooks/useSafeCallback';
+import { UnitType } from '~/types/appData';
 
 const { Option } = Select;
 const style: React.CSSProperties = { position: 'relative', zIndex: 2 };
 
 interface Props {
     /**标签 */
-    label: string;
+    label?: string;
     /**间隔 */
     span?: {
         label: number;
@@ -30,9 +31,9 @@ interface Props {
     /**最大值，作用于数据类型 */
     max?: number;
     className?: string;
-    onChange?: (value: [string | number, string]) => void;
+    onChange?: (value: UnitType) => void;
     /**默认值 */
-    defaultValue?: [string | number, string];
+    defaultValue?: UnitType;
 }
 
 const Unitinput: React.FC<Props> = ({
@@ -71,11 +72,41 @@ const Unitinput: React.FC<Props> = ({
     const onChangeDebounce = useMemo(
         () =>
             throttle(({ val, un }: { val: string | number; un: string }) => {
-                const values: [string | number, string] = [val, un];
+                const values: UnitType = [val, un];
                 refChange.current?.(values);
             }, 500),
         [refChange]
     );
+
+    /**
+     * 关于防抖设计。
+     * 输入控件未操作时不应防止defaultValue回填，这里需要一个开关来做控制，
+     * 通过onFocus事件来开启，onBlur事件来关闭页面的防抖机制
+     */
+    const [onDebounce, setOnDebounce] = useState(false);
+    const onFocus = useCallback(
+      () => {
+        // 处理样式
+        setForceItem('input');
+        // 开启防抖禁止defaultValue回填
+        setOnDebounce(true);
+      },
+      [],
+    )
+    const onBlur = useCallback(
+      () => {
+        // 关闭防抖允许defaultValue回填
+        setOnDebounce(false);
+      },
+      [],
+    )
+
+    useEffect(() => {
+      if (!onDebounce && defaultValue) {
+        setUnit(defaultValue[1]);
+        setValue(defaultValue[0]);
+      } 
+    }, [defaultValue, onDebounce])
 
     /**
      * onChange 值
@@ -124,7 +155,7 @@ const Unitinput: React.FC<Props> = ({
     return (
         <Row className={classNames(s.row, className)} gutter={4}>
             <Col className={s.label} span={span?.label || 7}>
-                {label}
+                {label || ''}
             </Col>
             <Col span={span?.wrapper || 17}>
                 <Input.Group compact className={s.group}>
@@ -136,7 +167,8 @@ const Unitinput: React.FC<Props> = ({
                             onChange={onChangeValue}
                             value={Number(value) || undefined}
                             style={forceItem === 'input' ? style : undefined}
-                            onFocus={() => setForceItem('input')}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
                         />
                     ) : null}
                     {valueType === 'text' ? (
@@ -145,14 +177,15 @@ const Unitinput: React.FC<Props> = ({
                             onChange={onChangeValue}
                             value={value}
                             style={forceItem === 'input' ? style : undefined}
-                            onFocus={() => setForceItem('input')}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
                         />
                     ) : null}
                     <Select
                         className={s.select}
                         dropdownClassName={s.dropdown}
                         onChange={onChangeUnitType}
-                        defaultValue={unit}
+                        value={unit}
                         style={forceItem === 'select' ? style : undefined}
                         onFocus={() => setForceItem('select')}
                     >
