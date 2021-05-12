@@ -1,6 +1,7 @@
 import { LinkOutlined } from "@ant-design/icons";
-import { Row, Col, Input } from "antd";
+import { Row, Col, Input, Divider } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
+import Unitinput from "../UnitInput/UnitInput";
 import s from "./Spacing.module.less";
 
 type SpaceType = "padding" | "margin";
@@ -87,13 +88,24 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
     setLocked(!locked);
   }, [locked]);
 
+  const setLabel = useCallback(
+    (index: number) => {
+      switch (index) {
+        case 0: return '上';
+        case 1: return '右';
+        case 2: return '下';
+        case 3: return '左';
+        default: return '';
+      }
+    },
+    [],
+  )
+
   return (
-    <div className={s.wrap}>
+      <>
+      <Divider orientation="left">边距</Divider>
       <Row gutter={4}>
-        <Col span={3} className={s.right}>
-          边距
-        </Col>
-        <Col span={10}>
+        <Col span={9}>
           <div
             className={s.boxA}
             onClick={onChangeType("margin")}
@@ -120,31 +132,29 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
             className={locked ? s.locked : undefined}
           />
         </Col>
-        <Col span={9}>
+        <Col span={13}>
           {getValue().map((item, index) => (
-            <Row gutter={4} className={s.row} key={`${spaceType}${index}`}>
-              <Col span={6} className={s.label}>
-                {index === 0 ? "上" : null}
-                {index === 1 ? "右" : null}
-                {index === 2 ? "下" : null}
-                {index === 3 ? "左" : null}
-              </Col>
-              <Col span={14}>
-                <Input
-                  type="text"
-                  disabled={!spaceType}
-                  value={item}
-                  onChange={onChangeValue(index)}
-                />
-              </Col>
-              <Col span={4} className={s.unit}>
-                {isNaN(parseInt(item, 10)) ? "" : unit}
-              </Col>
-            </Row>
+            <Unitinput span={{label: 3, wrapper: 21}} className={`33333 ${s.unititem}`} label={setLabel(index)} onChange={onChangeValue(index)} />
+            // <Row gutter={4} className={s.row} key={`${spaceType}${index}`}>
+            //   <Col span={4} className={s.label}>
+            //     {index === 0 ? "上" : null}
+            //     {index === 1 ? "右" : null}
+            //     {index === 2 ? "下" : null}
+            //     {index === 3 ? "左" : null}
+            //   </Col>
+            //   <Col span={14}>
+            //     <Input
+            //       type="text"
+            //       disabled={!spaceType}
+            //       value={item}
+            //       onChange={onChangeValue(index)}
+            //     />
+            //   </Col>
+            // </Row>
           ))}
         </Col>
       </Row>
-    </div>
+      </>
   );
 };
 

@@ -97,79 +97,24 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
 
   const onChangeOption = useCallback(
     (option: string ) => (value: [string|number, string]) => {
-      const data: DisplayTypesOfStyleItems = { ...displayData };
-      console.log(option, value)
+      const oprateData: DisplayTypesOfStyleItems = { ...displayData };
+      oprateData[option] = value;
+      setDisplayData(oprateData);
+      if (onChange instanceof Function) {
+        onChange(oprateData);
+      }
     },
-    [],
+    [displayData, onChange],
   )
 
   return (
     <>
       <Row className={s.row}>
         <Col span={12}>
-          {/* <NumberInput
-            label="宽度"
-            unit={unit}
-            min={0}
-            max={100000}
-            value={width}
-            onChange={onChangeDisplay("width")}
-          /> */}
-          {/* <Row gutter={4} style={{ alignItems: "center" }}>
-            <Col style={{ textAlign: "right" }} span={10}>
-              宽度
-            </Col>
-            <Col span={12}>
-              <Input
-                type="text"
-                value={width}
-                placeholder={`${unit}`}
-                onChange={onChangeWidthHeight("width")}
-              />
-            </Col>
-            <Col span={2} className={s.unit}>
-              <Tooltip placement="topRight" title={<div>宽度：允许输入数字(&gt;=0)或全局变量</div>}>
-                {isNaN(parseInt(`${width}`, 10)) ? (
-                  <InfoCircleOutlined />
-                ) : (
-                  unit
-                )}
-              </Tooltip>
-            </Col>
-          </Row> */}
-          <UnitInput onChange={onChangeOption('width')} label="标签" />
+          <UnitInput onChange={onChangeOption('width')} label="宽度" />
         </Col>
         <Col span={12}>
-          {/* <NumberInput
-            label="高度"
-            unit={unit}
-            min={0}
-            max={100000}
-            value={height}
-            onChange={onChangeDisplay("height")}
-          /> */}
-          <Row gutter={4} style={{ alignItems: "center" }}>
-            <Col style={{ textAlign: "right" }} span={10}>
-              高度
-            </Col>
-            <Col span={12}>
-              <Input
-                type="text"
-                placeholder={`${unit}`}
-                value={height}
-                onChange={onChangeWidthHeight("height")}
-              />
-            </Col>
-            <Col span={2} className={s.unit}>
-              <Tooltip placement="topRight" title={<div>高度：允许输入数字(&gt;=0)或全局变量</div>}>
-                {isNaN(parseInt(`${height}`, 10)) ? (
-                  <InfoCircleOutlined />
-                ) : (
-                  unit
-                )}
-              </Tooltip>
-            </Col>
-          </Row>
+          <UnitInput onChange={onChangeOption('height')} label="高度" />
         </Col>
       </Row>
       <Row className={s.row}>

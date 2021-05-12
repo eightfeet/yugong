@@ -42,6 +42,7 @@ const Unitinput: React.FC<Props> = ({
     max,
     defaultValue,
     onChange,
+    className
 }) => {
     //拆解当前默认值
     const [defaultInpValue, defaultUnitValue] = defaultValue || [];
@@ -121,7 +122,7 @@ const Unitinput: React.FC<Props> = ({
         console.log('rending ?');
     }, [defaultValue]);
     return (
-        <Row className={classNames(s.row, s.className)} gutter={8}>
+        <Row className={classNames(s.row, className)} gutter={4}>
             <Col className={s.label} span={span?.label || 7}>
                 {label}
             </Col>

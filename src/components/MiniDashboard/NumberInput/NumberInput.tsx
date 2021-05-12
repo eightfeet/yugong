@@ -20,11 +20,11 @@ const QuadrangularSelect: React.FC<Props> = ({unit, label, ...other}) => {
   }, [moduleId])
   return (
     <Row className={s.row} gutter={4}>
-      <Col className={s.label} span={10}>{label || ''}</Col>
-      <Col span={10}>
+      <Col className={s.label} span={7}>{label || ''}</Col>
+      <Col span={17}>
         <InputNumber {...other} ref={ref} />
       </Col>
-      <Col span={4}>{unit || ''}</Col>
+      {/* <Col span={4}>{unit || ''}</Col> */}
     </Row>
   );
 };
