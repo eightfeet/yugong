@@ -9,6 +9,7 @@ import BorderRadius from "./BorderRadius";
 import { BorderTypesOfStyleItems } from "types/appData";
 import { RootState } from "~/redux/store";
 import { useSelector } from "react-redux";
+import UnitInput from "../UnitInput";
 
 interface Props {
   onChange: (result: BorderTypesOfStyleItems) => void;
@@ -100,12 +101,11 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
         </Col>
 
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="描边宽度"
-            unit={unit}
             min={0}
             max={100000}
-            value={border.borderWidth}
+            defaultValue={border.borderWidth as any}
             onChange={onChangeBorder("borderWidth")}
           />
         </Col>

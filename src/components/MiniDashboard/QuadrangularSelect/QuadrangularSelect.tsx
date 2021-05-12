@@ -5,12 +5,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import { PictureOutlined } from "@ant-design/icons";
 import classNames from "classnames";
+import { UnitType } from "~/types/appData";
 
 interface Props {
   label: string;
   unit?: string;
-  defaultData: (number | undefined)[];
-  onChange: (data:(number | undefined)[]) => void;
+  defaultData: UnitType[];
+  onChange: (data:UnitType[]) => void;
 }
 
 const simpPosition = [
@@ -53,7 +54,7 @@ const simpPosition = [
 ];
 
 const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) => {
-  const [, setselected] = useState<(number|undefined)[]>([]);
+  const [, setselected] = useState<UnitType[]>([]);
   const [index, setIndex] = useState<number>()
 
   const moduleId = useSelector(
@@ -76,10 +77,10 @@ const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) =
   )
 
   const onClickPict = useCallback((index: number) => {
-    setselected(simpPosition[index].value);
+    // setselected(simpPosition[index].value);
     checkSelect(simpPosition[index].value);
     if (onChange instanceof Function) {
-      onChange(simpPosition[index].value)
+      // onChange(simpPosition[index].value)
     }
   }, [checkSelect, onChange]);
 
@@ -91,7 +92,7 @@ const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) =
 
   return (
     <Row className={s.row} gutter={4}>
-      <Col className={s.label} span={10}>
+      <Col className={s.label} span={7}>
         {label || ""}
       </Col>
       <Col span={14}>

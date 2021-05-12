@@ -175,11 +175,11 @@ export interface TransformTypesOfStyleItems {
 }
 
 export interface FontTypesOfStyleItems {
-  fontSize?: number;
-  lineHeight?: number;
+  fontSize?: UnitType;
+  lineHeight?: UnitType;
   color?: string;
-  letterSP?: number;
-  wordSp?: number;
+  letterSP?: UnitType;
+  wordSp?: UnitType;
   fontWeight?: string;
   decoration?: string;
   fontStyle?: string;
@@ -247,12 +247,11 @@ export interface BackgroundGradientTypesOfStyleItems {
 export interface BackgroundCommonTypesOfStyleItems {
   imageUrl?: string;
   backgroundColor?: string;
-  fontSize?: number;
   position?: string;
-  positionX?: number;
-  positionY?: number;
-  sizeX?: number;
-  sizeY?: number;
+  positionX?: UnitType;
+  positionY?: UnitType;
+  sizeX?: UnitType;
+  sizeY?: UnitType;
   repeat?: string;
 }
 

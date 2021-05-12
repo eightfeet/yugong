@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Color from "../Color";
 import NumberInput from "../NumberInput";
+import UnitInput from "../UnitInput";
 import s from "./Shadow.module.scss";
 
 interface TextShadow {
@@ -47,7 +48,6 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
     (state: RootState) => state.activationItem.moduleId
   );
 
-
   // init DefaultData
   useEffect(() => {
     let textShadowList = [...(defaultValue?.textShadowList || [])];
@@ -69,9 +69,8 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
 
   useEffect(() => {
     setShadowType("box");
-  }, [moduleId])
+  }, [moduleId]);
 
-  
   const onChangeShadowTab = useCallback((e) => {
     setShadowType(e.target.value);
   }, []);
@@ -125,16 +124,18 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
   const onChangeColor = useCallback(
     (type, i) => (res: any) => {
       if (type === "box") {
-        boxShadowList[
-          i
-        ].color = res.value === 'inherit' ? 'rgba(0,0,0,1)' : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
+        boxShadowList[i].color =
+          res.value === "inherit"
+            ? "rgba(0,0,0,1)"
+            : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
         setBoxShadowList(boxShadowList);
         onChangeShadow(type, boxShadowList);
       }
       if (type === "text") {
-        textShadowList[
-          i
-        ].color = res.value === 'inherit' ? 'rgba(0,0,0,1)' : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
+        textShadowList[i].color =
+          res.value === "inherit"
+            ? "rgba(0,0,0,1)"
+            : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
         setBoxShadowList(textShadowList);
         onChangeShadow(type, textShadowList);
       }
@@ -265,7 +266,7 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
                   {type !== "text" ? (
                     <Row>
                       <Col span={12}></Col>
-                      <Col span={12}>
+                      <Col span={12} style={{textAlign: 'right'}}>
                         <Switch
                           checkedChildren="内阴影"
                           unCheckedChildren="内阴影"
@@ -279,45 +280,41 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
               </Row>
               <Row className={s.row}>
                 <Col span={12}>
-                  <NumberInput
+                  <UnitInput
                     label="横向偏移"
-                    unit={unit}
                     min={-1000}
                     max={1000}
-                    value={item.shiftRight}
+                    defaultValue={item.shiftRight as any}
                     onChange={onChangeshiftRight(type, i)}
                   />
                 </Col>
                 <Col span={12}>
-                  <NumberInput
+                  <UnitInput
                     label="纵向偏移"
-                    unit={unit}
                     min={-1000}
                     max={1000}
-                    value={item.shiftDown}
-                    onChange={onChangeshiftDown(type, i)}
+                    defaultValue={item.shiftDown as any}
+                    onChange={onChangeshiftRight(type, i)}
                   />
                 </Col>
               </Row>
               <Row className={s.row}>
                 <Col span={12}>
-                  <NumberInput
+                  <UnitInput
                     label="模糊"
-                    unit={unit}
                     min={-1000}
                     max={1000}
-                    value={item.blur}
+                    defaultValue={item.blur as any}
                     onChange={onChangeBlur(type, i)}
                   />
                 </Col>
                 <Col span={12}>
                   {type !== "text" ? (
-                    <NumberInput
+                    <UnitInput
                       label="扩展"
-                      unit={unit}
                       min={-1000}
                       max={1000}
-                      value={item.spread}
+                      defaultValue={item.spread as any}
                       onChange={onChangeSpread(type, i)}
                     />
                   ) : null}

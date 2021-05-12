@@ -13,10 +13,10 @@ import {
 } from "@ant-design/icons";
 import s from "./Font.module.scss";
 import Color from "../Color";
-import NumberInput from "../NumberInput";
 import { FontTypesOfStyleItems } from "types/appData";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import UnitInput from "../UnitInput";
 
 interface Props {
   onChange: (result: FontTypesOfStyleItems) => void;
@@ -141,34 +141,31 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="字体大小"
-            unit={unit}
             min={0}
             max={100000}
-            value={fontSize}
+            defaultValue={fontSize}
             onChange={onChangeFont("fontSize")}
           />
         </Col>
       </Row>
       <Row className={s.row}>
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="行间距"
-            unit={unit}
             min={0}
             max={100000}
-            value={lineHeight}
+            defaultValue={lineHeight}
             onChange={onChangeFont("lineHeight")}
           />
         </Col>
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="字间距"
-            unit={unit}
             min={0}
             max={100000}
-            value={letterSP}
+            defaultValue={letterSP}
             onChange={onChangeFont("letterSP")}
           />
         </Col>

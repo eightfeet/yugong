@@ -119,7 +119,7 @@ const Upload: React.FC<UploadProps> = ({
   return (
     <>
       <Row className={s.row} gutter={4}>
-        <Col className={s.label} span={10}>
+        <Col className={s.label} span={7}>
           {label || ""}
         </Col>
         <Col span={14}>

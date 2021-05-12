@@ -146,7 +146,7 @@ const Color: React.FC<Props> = ({
         </>
       ) : (
         <Row className={s.row} gutter={4}>
-          <Col className={s.label} span={10}>
+          <Col className={s.label} span={7}>
             {label || ""}
           </Col>
           <Col span={10}>
@@ -168,7 +168,7 @@ const Color: React.FC<Props> = ({
               {renderColor()}
             </div>
           </Col>
-          <Col span={4}></Col>
+          <Col span={7}></Col>
         </Row>
       )}
     </>

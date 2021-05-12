@@ -13,6 +13,7 @@ import {
 import Select from "../Select";
 import QuadrangularSelect from "../QuadrangularSelect";
 import GradientSlider from "../GradientSlider";
+import UnitInput from "../UnitInput";
 
 interface Props {
   onChange: (result: ResultType) => void;
@@ -33,7 +34,7 @@ type ChangeType =
   | "repeat";
 
 interface ResultType {
-  type: 'backgroundCommon' | 'backgroundGradient';
+  type: "backgroundCommon" | "backgroundGradient";
   values: AnyObjectType;
 }
 
@@ -44,9 +45,9 @@ const BackgroundCommon: React.FC<Props> = ({
   updateKey,
   unit,
 }) => {
-  
   // commonBackground
-  const [commonData, setCommonData] = useState<BackgroundCommonTypesOfStyleItems>({});
+  const [commonData, setCommonData] =
+    useState<BackgroundCommonTypesOfStyleItems>({});
   const {
     imageUrl,
     backgroundColor,
@@ -63,14 +64,17 @@ const BackgroundCommon: React.FC<Props> = ({
 
   const onChangeBackgroundCommon = useCallback(
     (type: ChangeType) => (result: any) => {
-      const data:BackgroundCommonTypesOfStyleItems = {...commonData}
+      const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
       data[type] = result;
 
-      if (type === 'backgroundColor') {
-        data[type] = result.value === 'inherit' ? 'inherit' : `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`;
+      if (type === "backgroundColor") {
+        data[type] =
+          result.value === "inherit"
+            ? "inherit"
+            : `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`;
       }
 
-      if (type === 'imageUrl') {
+      if (type === "imageUrl") {
         if (!result) {
           delete data.positionX;
           delete data.positionY;
@@ -80,11 +84,11 @@ const BackgroundCommon: React.FC<Props> = ({
         }
       }
 
-      setCommonData(data)
+      setCommonData(data);
       if (onChange instanceof Function) {
         onChange({
-          type: 'backgroundCommon',
-          values: data
+          type: "backgroundCommon",
+          values: data,
         });
       }
     },
@@ -93,26 +97,24 @@ const BackgroundCommon: React.FC<Props> = ({
 
   const onChangeBg = useCallback(
     (result) => {
-      const data:BackgroundCommonTypesOfStyleItems = {...commonData};
+      const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
       data.positionX = result[0];
-      data.positionY= result[1];
+      data.positionY = result[1];
       setCommonData(data);
     },
     [commonData]
   );
 
   // gradientBackground
-  const [gradientData, setGradientData] = useState<BackgroundGradientTypesOfStyleItems>({});
+  const [gradientData, setGradientData] =
+    useState<BackgroundGradientTypesOfStyleItems>({});
   useEffect(() => {
     const data = { ...(defaultBGGradient || {}) };
     setGradientData(data);
   }, [defaultBGGradient, updateKey]);
   const { gradient, gradientDirections } = gradientData || {};
 
-  
   const [tabState, setTabState] = useState("common");
-  
-
 
   const onChangeTab = useCallback((e) => {
     setTabState(e.target.value);
@@ -139,40 +141,40 @@ const BackgroundCommon: React.FC<Props> = ({
           />
         </Col>
         <Col span={12}>
-          <Select
-            label="平铺方式"
-            value={repeat}
-            optionsData={{
-              "no-repeat": "不平铺",
-              repeat: "平铺",
-              "repeat-x": "横向平铺",
-              "repeat-y": "纵向平铺",
-            }}
-            onChange={onChangeBackgroundCommon("repeat")}
-          />
+          {imageUrl ? (
+            <UnitInput
+              label="背景宽度"
+              min={0}
+              max={100000}
+              onChange={onChangeBackgroundCommon("sizeX")}
+              defaultValue={sizeX as any}
+            />
+          ) : null}
         </Col>
       </Row>
       {imageUrl ? (
         <>
           <Row className={s.row}>
             <Col span={12}>
-              <NumberInput
-                label="背景宽度"
-                unit={unit}
-                min={0}
-                max={100000}
-                value={sizeX}
-                onChange={onChangeBackgroundCommon("sizeX")}
+              <Select
+                label="平铺方式"
+                value={repeat}
+                optionsData={{
+                  "no-repeat": "不平铺",
+                  repeat: "平铺",
+                  "repeat-x": "横向平铺",
+                  "repeat-y": "纵向平铺",
+                }}
+                onChange={onChangeBackgroundCommon("repeat")}
               />
             </Col>
             <Col span={12}>
-              <NumberInput
+              <UnitInput
                 label="背景高度"
-                unit={unit}
                 min={0}
                 max={100000}
-                value={sizeY}
                 onChange={onChangeBackgroundCommon("sizeY")}
+                defaultValue={sizeY as any}
               />
             </Col>
           </Row>
@@ -181,32 +183,30 @@ const BackgroundCommon: React.FC<Props> = ({
               <QuadrangularSelect
                 label="背景位置"
                 unit={unit}
-                defaultData={[positionX, positionY]}
+                defaultData={[positionX as any, positionY as any]}
                 onChange={onChangeBg}
               />
             </Col>
             <Col span={12}>
               <Row className={s.row}>
                 <Col span={24}>
-                  <NumberInput
+                  <UnitInput
                     label="横向位置"
-                    unit={"%"}
                     min={0}
-                    max={100}
-                    value={positionX}
+                    max={100000}
                     onChange={onChangeBackgroundCommon("positionX")}
+                    defaultValue={positionX as any}
                   />
                 </Col>
               </Row>
               <Row className={s.row}>
                 <Col span={24}>
-                  <NumberInput
+                  <UnitInput
                     label="纵向位置"
-                    unit={"%"}
                     min={0}
-                    max={100}
-                    value={positionY}
+                    max={100000}
                     onChange={onChangeBackgroundCommon("positionY")}
+                    defaultValue={positionY as any}
                   />
                 </Col>
               </Row>

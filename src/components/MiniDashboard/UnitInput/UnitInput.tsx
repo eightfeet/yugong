@@ -23,8 +23,8 @@ interface Props {
     label?: string;
     /**间隔 */
     span?: {
-        label: number;
-        wrapper: number;
+        label?: number;
+        wrapper?: number;
     };
     /**最小值，作用于数据类型 */
     min?: number;
@@ -154,9 +154,9 @@ const Unitinput: React.FC<Props> = ({
     }, [defaultValue]);
     return (
         <Row className={classNames(s.row, className)} gutter={4}>
-            <Col className={s.label} span={span?.label || 7}>
+            {label ? <Col className={s.label} span={span?.label || 7}>
                 {label || ''}
-            </Col>
+            </Col> : null}
             <Col span={span?.wrapper || 17}>
                 <Input.Group compact className={s.group}>
                     {valueType === 'number' ? (

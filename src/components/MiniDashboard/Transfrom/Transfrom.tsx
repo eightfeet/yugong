@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import NumberInput from "../NumberInput";
+import UnitInput from "../UnitInput";
 import s from "./Transfrom.module.scss";
 
 interface DefautData {
@@ -46,6 +47,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
         <Col span={12}>
           <NumberInput
             label="缩放"
+            placeholder="倍"
             unit="倍"
             min={0}
             max={100}
@@ -56,6 +58,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
         <Col span={12}>
           <NumberInput
             label="旋转"
+            placeholder="度"
             unit="deg"
             min={-360}
             max={360}
@@ -66,22 +69,20 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
       </Row>
       <Row className={s.row}>
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="平移X"
-            unit={unit}
             min={-1000}
             max={1000}
-            value={defaultDate?.translateX}
+            // defaultValue={(defaultDate?.translateX || undefined)as any}
             onChange={onChangeTransFrom('translateX')}
           />
         </Col>
         <Col span={12}>
-          <NumberInput
+          <UnitInput 
             label="平移Y"
-            unit={unit}
             min={-1000}
             max={1000}
-            value={defaultDate?.translateY}
+            // defaultValue={(defaultDate?.translateY || undefined) as any}
             onChange={onChangeTransFrom('translateY')}
           />
         </Col>
@@ -90,6 +91,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
         <Col span={12}>
           <NumberInput
             label="倾斜X"
+            placeholder="度"
             unit="deg"
             min={-360}
             max={360}
@@ -100,6 +102,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
         <Col span={12}>
           <NumberInput
             label="倾斜Y"
+            placeholder="度"
             unit="deg"
             min={-360}
             max={360}

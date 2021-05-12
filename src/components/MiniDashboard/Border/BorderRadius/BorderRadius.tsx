@@ -9,6 +9,7 @@ import {
   RadiusUprightOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
+import UnitInput from "../../UnitInput";
 
 interface Props {
   defaultData?: (number | undefined)[];
@@ -66,63 +67,63 @@ const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }
 
   return (
     <Row className={s.row}>
-      <Col span={10}>
+      <Col span={11}>
         <Row>
-          <Col span={8} className={classNames(s.icon, s.alignright)}>
+          <Col span={4} className={classNames(s.icon, s.alignright)}>
             <RadiusUpleftOutlined />
             &nbsp;
           </Col>
-          <Col span={16}>
-            <InputNumber
-              placeholder={unit}
-              value={borderRadius[0]}
+          <Col span={20}>
+            <UnitInput 
+              span={{wrapper:24}}
+              defaultValue={borderRadius[0] as any}
               onChange={onChangeData(0)}
             />
           </Col>
         </Row>
         <Row>
-          <Col span={8} className={classNames(s.icon, s.alignright)}>
+          <Col span={4} className={classNames(s.icon, s.alignright)}>
             <RadiusBottomleftOutlined />
             &nbsp;
           </Col>
-          <Col span={16}>
-            <InputNumber
-              placeholder={unit}
-              value={borderRadius[3]}
+          <Col span={20}>
+            <UnitInput 
+              span={{wrapper:24}}
+              defaultValue={borderRadius[3] as any}
               onChange={onChangeData(3)}
             />
           </Col>
         </Row>
       </Col>
-      <Col span={4} className={s.middle}>
+      <Col span={2} className={s.middle}>
         <LinkOutlined
           onClick={toggleLocked}
           className={locked ? s.locked : undefined}
         />
       </Col>
-      <Col span={10}>
+      <Col span={11}>
         <Row className={s.row}>
-          <Col span={16}>
-            <InputNumber
-              placeholder={unit}
-              value={borderRadius[1]}
+          <Col span={20}>
+            <UnitInput 
+              span={{wrapper:24}}
+              defaultValue={borderRadius[1] as any}
               onChange={onChangeData(1)}
             />
           </Col>
-          <Col span={8} className={s.icon}>
+          <Col span={4} className={s.icon}>
             &nbsp;
             <RadiusUprightOutlined />
           </Col>
         </Row>
         <Row className={s.row}>
-          <Col span={16}>
-            <InputNumber
-              placeholder={unit}
-              value={borderRadius[2]}
+          <Col span={20}>
+            <UnitInput 
+              span={{wrapper:24}}
+              defaultValue={borderRadius[2] as any}
               onChange={onChangeData(2)}
             />
           </Col>
-          <Col span={8} className={s.icon}>
+          <Col span={4} className={s.icon}>
             &nbsp;
             <RadiusBottomrightOutlined />
           </Col>

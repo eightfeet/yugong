@@ -14,11 +14,11 @@ interface Props {
 const Select: React.FC<Props> = ({ unit, label, optionsData, ...other }) => {
   return (
     <Row className={s.row} gutter={4}>
-      <Col className={s.label} span={10}>
+      <Col className={s.label} span={7}>
         {label || ""}
         {other.defaultValue}
       </Col>
-      <Col span={14}>
+      <Col span={17}>
         <SelectItem {...other} >
           {Object.keys(optionsData).map((key) => (
             <SelectItem.Option key={key} value={key}>
