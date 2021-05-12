@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Radio } from "antd";
+import { Color as ColorType, ColorResult } from "react-color";
+
 import Upload from "../Upload";
 
 import s from "./Background.module.less";
 import Color from "../Color";
-import NumberInput from "../NumberInput";
 import {
   AnyObjectType,
   BackgroundCommonTypesOfStyleItems,
   BackgroundGradientTypesOfStyleItems,
+  UnitType,
 } from "types/appData";
 import Select from "../Select";
 import QuadrangularSelect from "../QuadrangularSelect";
@@ -35,7 +37,9 @@ type ChangeType =
 
 interface ResultType {
   type: "backgroundCommon" | "backgroundGradient";
-  values: AnyObjectType;
+  values:
+    | BackgroundCommonTypesOfStyleItems
+    | BackgroundGradientTypesOfStyleItems;
 }
 
 const BackgroundCommon: React.FC<Props> = ({
@@ -63,35 +67,48 @@ const BackgroundCommon: React.FC<Props> = ({
   }, [defaultBGCommonData, updateKey]);
 
   const onChangeBackgroundCommon = useCallback(
-    (type: ChangeType) => (result: any) => {
-      const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
-      data[type] = result;
+    (type: ChangeType) =>
+      (
+        result:
+          | string
+          | UnitType
+          | {
+              name: "color";
+              value: ColorResult | "inherit";
+            }
+      ) => {
+        const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
+        data[type] = result as string & UnitType;
 
-      if (type === "backgroundColor") {
-        data[type] =
-          result.value === "inherit"
-            ? "inherit"
-            : `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`;
-      }
-
-      if (type === "imageUrl") {
-        if (!result) {
-          delete data.positionX;
-          delete data.positionY;
-          delete data.repeat;
-          delete data.sizeX;
-          delete data.sizeY;
+        if (type === "backgroundColor") {
+          const setResult = result as {
+            name: "color";
+            value: ColorResult | "inherit";
+          };
+          data[type] =
+            setResult.value === "inherit"
+              ? "inherit"
+              : `rgba(${setResult.value.rgb.r}, ${setResult.value.rgb.g}, ${setResult.value.rgb.b}, ${setResult.value.rgb.a})`;
         }
-      }
 
-      setCommonData(data);
-      if (onChange instanceof Function) {
-        onChange({
-          type: "backgroundCommon",
-          values: data,
-        });
-      }
-    },
+        if (type === "imageUrl") {
+          if (!result) {
+            delete data.positionX;
+            delete data.positionY;
+            delete data.repeat;
+            delete data.sizeX;
+            delete data.sizeY;
+          }
+        }
+
+        setCommonData(data);
+        if (onChange instanceof Function) {
+          onChange({
+            type: "backgroundCommon",
+            values: data,
+          });
+        }
+      },
     [commonData, onChange]
   );
 

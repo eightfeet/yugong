@@ -10,60 +10,87 @@ import {
 } from "@ant-design/icons";
 import classNames from "classnames";
 import UnitInput from "../../UnitInput";
+import { UnitType } from "~/types/appData";
 
 interface Props {
-  defaultData?: (number | undefined)[];
-  onChange?: (data: (number | undefined)[]) => void;
+  defaultData?: (UnitType | undefined)[];
+  onChange?: (data: (UnitType | undefined)[]) => void;
   unit?: string;
 }
 
-const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }) => {
+const BorderRadius: React.FC<Props> = ({
+  unit,
+  onChange,
+  defaultData,
+  ...other
+}) => {
   const [locked, setLocked] = useState(false);
-  const [borderRadius, setBorderRadius] = useState<(number | undefined)[]>([
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]);
+
+  const [topLeft, setTopLeft] = useState<UnitType>();
+  const [topRight, setTopRight] = useState<UnitType>();
+  const [bottomRight, setBottomRight] = useState<UnitType>();
+  const [bottomLeft, setBottomLeft] = useState<UnitType>();
 
   useEffect(() => {
     if (Array.isArray(defaultData)) {
-      setBorderRadius([...defaultData]);
+      setTopLeft(defaultData[0]);
+      setTopRight(defaultData[1]);
+      setBottomRight(defaultData[2]);
+      setBottomLeft(defaultData[3]);
     }
   }, [defaultData]);
 
   const toggleLocked = useCallback(() => {
-    let data = [...borderRadius];
     if (!locked) {
-      data = [
-        data[0],
-        data[0],
-        data[0],
-        data[0],
-      ]
-      setBorderRadius(data);
+      setTopLeft(topLeft);
+      setTopRight(topLeft);
+      setBottomRight(topLeft);
+      setBottomLeft(topLeft);
     }
     setLocked(!locked);
     if (onChange instanceof Function) {
-      onChange(data)
+      onChange([topLeft, topLeft, topLeft, topLeft]);
     }
-  }, [borderRadius, locked, onChange]);
+  }, [locked, onChange, topLeft]);
+
+  const onChangeAll = useCallback((value: UnitType) => {
+    setTopLeft(value);
+    setTopRight(value);
+    setBottomRight(value);
+    setBottomLeft(value);
+  }, []);
 
   const onChangeData = useCallback(
-    (index: number) => (e: any) => {
+    (index: number) => (value: UnitType) => {
       if (locked) {
-        borderRadius[0] = borderRadius[1] = borderRadius[2] = borderRadius[3] = e;
-      } else {
-        borderRadius[index] = e;
+        onChangeAll(value);
+        return;
       }
-      const data = [...borderRadius];
-      setBorderRadius(data);
-      if (onChange instanceof Function) {
-        onChange(data)
+      switch (index) {
+        case 0:
+          setTopLeft(value);
+          break;
+        case 1:
+          setTopRight(value);
+          break;
+        case 2:
+          setBottomRight(value);
+          break;
+        case 3:
+          setBottomLeft(value);
+          break;
+        default:
+          break;
       }
     },
-    [borderRadius, locked, onChange]
+    [locked, onChangeAll]
   );
+
+  useEffect(() => {
+    if (onChange instanceof Function) {
+      // onChange([topLeft, topRight, bottomRight, bottomLeft])
+    }
+  }, [topLeft, topRight, bottomRight, bottomLeft, onChange])
 
   return (
     <Row className={s.row}>
@@ -74,9 +101,9 @@ const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }
             &nbsp;
           </Col>
           <Col span={20}>
-            <UnitInput 
-              span={{wrapper:24}}
-              defaultValue={borderRadius[0] as any}
+            <UnitInput
+              span={{ wrapper: 24 }}
+              defaultValue={topLeft}
               onChange={onChangeData(0)}
             />
           </Col>
@@ -87,9 +114,9 @@ const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }
             &nbsp;
           </Col>
           <Col span={20}>
-            <UnitInput 
-              span={{wrapper:24}}
-              defaultValue={borderRadius[3] as any}
+            <UnitInput
+              span={{ wrapper: 24 }}
+              defaultValue={bottomLeft}
               onChange={onChangeData(3)}
             />
           </Col>
@@ -104,9 +131,9 @@ const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }
       <Col span={11}>
         <Row className={s.row}>
           <Col span={20}>
-            <UnitInput 
-              span={{wrapper:24}}
-              defaultValue={borderRadius[1] as any}
+            <UnitInput
+              span={{ wrapper: 24 }}
+              defaultValue={topRight}
               onChange={onChangeData(1)}
             />
           </Col>
@@ -117,9 +144,9 @@ const BorderRadius: React.FC<Props> = ({ unit, onChange, defaultData, ...other }
         </Row>
         <Row className={s.row}>
           <Col span={20}>
-            <UnitInput 
-              span={{wrapper:24}}
-              defaultValue={borderRadius[2] as any}
+            <UnitInput
+              span={{ wrapper: 24 }}
+              defaultValue={bottomRight}
               onChange={onChangeData(2)}
             />
           </Col>

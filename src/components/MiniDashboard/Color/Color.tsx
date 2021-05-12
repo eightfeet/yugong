@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Color as ColorType, SketchPicker } from "react-color";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
 import { Row, Col } from "antd";
 import { BgColorsOutlined } from "@ant-design/icons";
 import s from "./Color.module.less";
@@ -8,7 +8,7 @@ const parse = require("color-parse");
 interface Props {
   defaultColor?: string;
   label?: string;
-  onChange: (result: { name: "color"; value: ColorType }) => void;
+  onChange: (result: { name: "color"; value: ColorResult | 'inherit' }) => void;
 }
 
 const Color: React.FC<Props> = ({
@@ -19,7 +19,7 @@ const Color: React.FC<Props> = ({
   ...other
 }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [color, setColor] = useState();
+  const [color, setColor] = useState<RGBColor | 'inherit'>();
   const [pickWrapStyle, setPickWrapStyle] = useState({});
   const picker = useRef(null);
 
@@ -77,8 +77,12 @@ const Color: React.FC<Props> = ({
   }, []);
 
   const handleChange = useCallback(
-    (color) => {
-      setColor(color.rgb);
+    (color: ColorResult | 'inherit') => {
+      if (color === 'inherit') {
+        setColor(color);
+      } else {
+        setColor(color.rgb);
+      }
       onChange({
         name: "color",
         value: color,

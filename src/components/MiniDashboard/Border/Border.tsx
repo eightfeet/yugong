@@ -1,7 +1,6 @@
 import { Col, Row } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import Color from "../Color";
-import NumberInput from "../NumberInput";
 import Select from "./Select";
 import s from "./Border.module.less";
 import BorderCheckbox from "./BorderCheckbox";

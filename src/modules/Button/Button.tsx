@@ -249,12 +249,12 @@ Button.exposeDefaultProps = {
         borderPosition: {
           border: true,
         },
-        borderWidth: 1,
+        borderWidth: [1, ''],
         borderStyle: "solid",
-        radiusTopLeft: 6,
-        radiusTopRight: 6,
-        radiusBottomLeft: 6,
-        radiusBottomRight: 6,
+        radiusTopLeft: [6, ''],
+        radiusTopRight: [6, ''],
+        radiusBottomLeft: [6, ''],
+        radiusBottomRight: [6, ''],
       },
       backgroundCommon: {
         backgroundColor: "rgba(226, 226, 226, 1)",

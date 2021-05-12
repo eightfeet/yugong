@@ -203,10 +203,10 @@ export interface BoxShadowTypesOfStyleItems {
 }
 
 export interface BorderTypesOfStyleItems {
-  radiusTopLeft?: number;
-  radiusTopRight?: number;
-  radiusBottomLeft?: number;
-  radiusBottomRight?: number;
+  radiusTopLeft?: UnitType;
+  radiusTopRight?: UnitType;
+  radiusBottomLeft?: UnitType;
+  radiusBottomRight?: UnitType;
   borderColor?: string;
   borderPosition?: {
     borderTop?: boolean;
@@ -216,7 +216,7 @@ export interface BorderTypesOfStyleItems {
     border?: boolean;
   };
   borderStyle?: string;
-  borderWidth?: number;
+  borderWidth?: UnitType;
 }
 
 export interface DisplayTypesOfStyleItems {
