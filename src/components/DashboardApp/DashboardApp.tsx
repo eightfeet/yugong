@@ -11,7 +11,7 @@ const Home = () => {
         <UnitInput onChange={(val) => {
             setValue(val);
             console.log(val);
-        }} defaultValue={[100, '']} label="页面标签" />
+        }} defaultValue={value} label="页面标签" />
         <br />
         {value}
     </div>

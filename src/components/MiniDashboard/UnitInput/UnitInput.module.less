@@ -8,7 +8,9 @@
 
 .group {
     display: flex !important;
-    width: 100%;
+    >div:first-child {
+        flex: auto;
+    }
 }
 
 .input {
