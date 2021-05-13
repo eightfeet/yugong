@@ -228,6 +228,118 @@ export const font = function (styleObj: objType): resultType {
 
 /**
  * -------------
+ * 常规背景处理
+ * -------------
+ */
+export const backgroundCommon = function (
+    styleObj: BackgroundCommonTypesOfStyleItems
+): resultType {
+    // 数据傀儡
+    const puppet: { background: any[]; backgroundSize: any[] } = {
+        background: [
+            null /*backgroundColor*/,
+            null /*imageUrl*/,
+            null /*repeat*/,
+            null /*positionX*/,
+            null /*positionY*/,
+        ],
+        backgroundSize: [null /*sizeX*/, null /*sizeY*/],
+    };
+
+    const BGposition: objType = {
+        backgroundColor: 0,
+        imageUrl: 1,
+        repeat: 2,
+        positionX: 3,
+        positionY: 4,
+    };
+    const BGSbackgroundSize: objType = {
+        sizeX: 0,
+        sizeY: 1,
+    };
+
+    let positionUnit, sizeXUnit;
+    const result: objType = {};
+
+    const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
+
+    for (const key in styleObj) {
+        if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
+            const element = styleObj[key];
+            const data = conversionValue(element, key, 'backgroundCommon');
+            if (key === 'positionX' || key === 'positionY') {
+                positionUnit = data.unit || '';
+            }
+            if (key === 'sizeX' || key === 'sizeY') {
+                sizeXUnit = data.unit || '';
+            }
+            if (BGposition[key] !== undefined) {
+                if (key === 'imageUrl') {
+                    puppet.background[BGposition[key]] = `url("${data.value}")`;
+                } else {
+                    puppet.background[BGposition[key]] = data.value;
+                }
+            }
+            if (BGSbackgroundSize[key] !== undefined) {
+                puppet.backgroundSize[BGSbackgroundSize[key]] = data.value;
+            }
+        }
+    }
+
+    if (puppet.background[1]) {
+        // imageUrl
+        if (
+            (!puppet.background[3] || puppet.background[3] === positionUnit) &&
+            puppet.background[4]
+        ) {
+            // positionX positionY
+            puppet.background[3] = '0%';
+        }
+        if (
+            (!puppet.background[4] || puppet.background[4] === positionUnit) &&
+            puppet.background[3]
+        ) {
+            puppet.background[4] = '0%';
+        }
+
+        if (
+            (!puppet.backgroundSize[0] ||
+                puppet.backgroundSize[0] === sizeXUnit) &&
+            puppet.backgroundSize[1]
+        ) {
+            puppet.backgroundSize[0] = 'auto';
+        }
+        if (
+            (!puppet.backgroundSize[1] ||
+                puppet.backgroundSize[1] === sizeXUnit) &&
+            puppet.backgroundSize[0]
+        ) {
+            puppet.backgroundSize[1] = 'auto';
+        }
+    } else {
+        puppet.background[2] = puppet.background[3] = puppet.background[4] = null;
+    }
+
+    result.background = puppet.background.filter((item) => !!item).join(' ');
+    if (
+        puppet.background[1] &&
+        puppet.backgroundSize[0] &&
+        puppet.backgroundSize[1]
+    ) {
+        result.backgroundSize = puppet.backgroundSize
+            .filter((item) => !!item)
+            .join(' ');
+    }
+
+    return {
+        result,
+        string: createInlineStyles(result) || '',
+    };
+};
+
+
+/**
+ * -------------
  * 渐变背景处理
  * -------------
  */
@@ -327,110 +439,6 @@ export const backgroundGradient = function (
     return {
         result,
         string: prefixResult.join(' '),
-    };
-};
-
-export const backgroundCommon = function (
-    styleObj: BackgroundCommonTypesOfStyleItems
-): resultType {
-    // 数据傀儡
-    const puppet: { background: any[]; backgroundSize: any[] } = {
-        background: [
-            null /*backgroundColor*/,
-            null /*imageUrl*/,
-            null /*repeat*/,
-            null /*positionX*/,
-            null /*positionY*/,
-        ],
-        backgroundSize: [null /*sizeX*/, null /*sizeY*/],
-    };
-
-    const BGposition: objType = {
-        backgroundColor: 0,
-        imageUrl: 1,
-        repeat: 2,
-        positionX: 3,
-        positionY: 4,
-    };
-    const BGSbackgroundSize: objType = {
-        sizeX: 0,
-        sizeY: 1,
-    };
-
-    let positionUnit, sizeXUnit;
-
-    for (const key in styleObj) {
-        if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
-            const element = styleObj[key];
-            const data = conversionValue(element, key, 'backgroundCommon');
-            if (key === 'positionX' || key === 'positionY') {
-                positionUnit = data.unit || '';
-            }
-            if (key === 'sizeX' || key === 'sizeY') {
-                sizeXUnit = data.unit || '';
-            }
-            if (BGposition[key] !== undefined) {
-                if (key === 'imageUrl') {
-                    puppet.background[BGposition[key]] = `url("${data.value}")`;
-                } else {
-                    puppet.background[BGposition[key]] = data.value;
-                }
-            }
-            if (BGSbackgroundSize[key] !== undefined) {
-                puppet.backgroundSize[BGSbackgroundSize[key]] = data.value;
-            }
-        }
-    }
-
-    const result: objType = {};
-    if (puppet.background[1]) {
-        // imageUrl
-        if (
-            (!puppet.background[3] || puppet.background[3] === positionUnit) &&
-            puppet.background[4]
-        ) {
-            // positionX positionY
-            puppet.background[3] = '0%';
-        }
-        if (
-            (!puppet.background[4] || puppet.background[4] === positionUnit) &&
-            puppet.background[3]
-        ) {
-            puppet.background[4] = '0%';
-        }
-
-        if (
-            (!puppet.backgroundSize[0] ||
-                puppet.backgroundSize[0] === sizeXUnit) &&
-            puppet.backgroundSize[1]
-        ) {
-            puppet.backgroundSize[0] = 'auto';
-        }
-        if (
-            (!puppet.backgroundSize[1] ||
-                puppet.backgroundSize[1] === sizeXUnit) &&
-            puppet.backgroundSize[0]
-        ) {
-            puppet.backgroundSize[1] = 'auto';
-        }
-    } else {
-        puppet.background[2] = puppet.background[3] = puppet.background[4] = null;
-    }
-
-    result.background = puppet.background.filter((item) => !!item).join(' ');
-    if (
-        puppet.background[1] &&
-        puppet.backgroundSize[0] &&
-        puppet.backgroundSize[1]
-    ) {
-        result.backgroundSize = puppet.backgroundSize
-            .filter((item) => !!item)
-            .join(' ');
-    }
-
-    return {
-        result,
-        string: createInlineStyles(result) || '',
     };
 };
 
