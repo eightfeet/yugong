@@ -135,6 +135,11 @@ const compileValue = (data: UnitType) => {
     }
 }
 
+/**
+ * -------------
+ * 布局处理
+ * -------------
+ */
 export const display = (styleObj: DisplayTypesOfStyleItems): resultType => {
     const result: objType = {};
     // typeA
@@ -170,12 +175,56 @@ export const display = (styleObj: DisplayTypesOfStyleItems): resultType => {
             }
         }
     }
-    console.log(result, createInlineStyles(result) || '')
+
     return {
         result,
         string: createInlineStyles(result) || '',
     };
 };
+
+/**
+ * -------------
+ * 文字处理
+ * -------------
+ */
+export const font = function (styleObj: objType): resultType {
+    const rules: objType = {
+        fontStyle: 'fontStyle',
+        fontWeight: 'fontWeight',
+        fontSize: 'fontSize',
+        lineHeight: 'lineHeight',
+        color: 'color',
+        letterSP: 'letterSpacing',
+        decoration: 'textDecoration',
+        align: 'textAlign',
+    };
+    const unitType = ['fontSize', 'lineHeight', 'letterSP'];
+    const result: objType = {};
+    for (const key in styleObj) {
+        if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
+            const element = styleObj[key];
+            if (unitType.includes(key)) {
+                // 编译处理结果
+                const val = compileValue(element);
+                if (val) {
+                    result[rules[key]] = val;
+                }
+            } else {
+                if (element) {
+                    result[rules[key]] = element;
+                }
+            }
+        }
+    }
+
+    const str = createInlineStyles(result) || '';
+    console.log(result, str)
+    return {
+        result,
+        string: str,
+    };
+};
+
 
 /**
  * -------------
@@ -571,37 +620,6 @@ export const textShadow = function (styleObj: objType): resultType {
     return {
         result,
         string: prefixResult.join(''),
-    };
-};
-
-export const font = function (styleObj: objType): resultType {
-    const rules: objType = {
-        fontStyle: 'fontStyle',
-        fontWeight: 'fontWeight',
-        fontSize: 'fontSize',
-        lineHeight: 'lineHeight',
-        color: 'color',
-        letterSP: 'letterSpacing',
-        wordSp: 'wordSpacing',
-        decoration: 'textDecoration',
-        align: 'textAlign',
-    };
-    const result: objType = {};
-    for (const key in styleObj) {
-        if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
-            const element = styleObj[key];
-            const value = conversionValue(element, key, 'font').value;
-            if (value) {
-                result[rules[key]] = value;
-            }
-        }
-    }
-
-    const str = createInlineStyles(result) || '';
-
-    return {
-        result,
-        string: str,
     };
 };
 
