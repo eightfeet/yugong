@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Radio } from "antd";
-import { Color as ColorType, ColorResult } from "react-color";
+import { ColorResult } from "react-color";
 
 import Upload from "../Upload";
 
 import s from "./Background.module.less";
 import Color from "../Color";
 import {
-  AnyObjectType,
   BackgroundCommonTypesOfStyleItems,
   BackgroundGradientTypesOfStyleItems,
   UnitType,
@@ -91,16 +90,6 @@ const BackgroundCommon: React.FC<Props> = ({
               : `rgba(${setResult.value.rgb.r}, ${setResult.value.rgb.g}, ${setResult.value.rgb.b}, ${setResult.value.rgb.a})`;
         }
 
-        if (type === "imageUrl") {
-          if (!result) {
-            delete data.positionX;
-            delete data.positionY;
-            delete data.repeat;
-            delete data.sizeX;
-            delete data.sizeY;
-          }
-        }
-
         setCommonData(data);
         if (onChange instanceof Function) {
           onChange({
@@ -118,8 +107,14 @@ const BackgroundCommon: React.FC<Props> = ({
       data.positionX = result[0];
       data.positionY = result[1];
       setCommonData(data);
+      if (onChange instanceof Function) {
+        onChange({
+          type: "backgroundCommon",
+          values: data,
+        });
+      }
     },
-    [commonData]
+    [commonData, onChange]
   );
 
   // gradientBackground
@@ -147,6 +142,22 @@ const BackgroundCommon: React.FC<Props> = ({
     [onChange]
   );
 
+  const onChangeUnit = useCallback(
+    (type: "sizeX" | "sizeY" | "positionX" | "positionY") =>
+      (value: UnitType) => {
+        const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
+        data[type] = value;
+        setCommonData(data);
+        if (onChange instanceof Function) {
+          onChange({
+            type: "backgroundCommon",
+            values: data,
+          });
+        }
+      },
+    [commonData, onChange]
+  );
+
   const renderCommon = () => (
     <>
       <Row className={s.row}>
@@ -158,80 +169,73 @@ const BackgroundCommon: React.FC<Props> = ({
           />
         </Col>
         <Col span={12}>
-          {imageUrl ? (
-            <UnitInput
+          <UnitInput
               label="背景宽度"
               min={0}
               max={100000}
-              onChange={onChangeBackgroundCommon("sizeX")}
-              defaultValue={sizeX as any}
+              onChange={onChangeUnit("sizeX")}
+              defaultValue={sizeX}
             />
-          ) : null}
         </Col>
       </Row>
-      {imageUrl ? (
-        <>
+      <Row className={s.row}>
+        <Col span={12}>
+          <Select
+            label="平铺方式"
+            value={repeat}
+            optionsData={{
+              "no-repeat": "不平铺",
+              repeat: "平铺",
+              "repeat-x": "横向平铺",
+              "repeat-y": "纵向平铺",
+            }}
+            onChange={onChangeBackgroundCommon("repeat")}
+          />
+        </Col>
+        <Col span={12}>
+          <UnitInput
+            label="背景高度"
+            min={0}
+            max={100000}
+            onChange={onChangeUnit("sizeY")}
+            defaultValue={sizeY}
+          />
+        </Col>
+      </Row>
+      <Row className={s.row}>
+        <Col span={12}>
+          <QuadrangularSelect
+            label="背景位置"
+            unit={unit}
+            defaultData={[positionX, positionY]}
+            onChange={onChangeBg}
+          />
+        </Col>
+        <Col span={12}>
           <Row className={s.row}>
-            <Col span={12}>
-              <Select
-                label="平铺方式"
-                value={repeat}
-                optionsData={{
-                  "no-repeat": "不平铺",
-                  repeat: "平铺",
-                  "repeat-x": "横向平铺",
-                  "repeat-y": "纵向平铺",
-                }}
-                onChange={onChangeBackgroundCommon("repeat")}
-              />
+            <Col span={24}>
+            <UnitInput
+                  label="横向位置"
+                  min={0}
+                  max={100000}
+                  onChange={onChangeUnit("positionX")}
+                  defaultValue={positionX}
+                />
             </Col>
-            <Col span={12}>
+          </Row>
+          <Row className={s.row} key={2}>
+            <Col span={24}>
               <UnitInput
-                label="背景高度"
+                label="纵向位置"
                 min={0}
                 max={100000}
-                onChange={onChangeBackgroundCommon("sizeY")}
-                defaultValue={sizeY as any}
+                onChange={onChangeUnit("positionY")}
+                defaultValue={positionY}
               />
             </Col>
           </Row>
-          <Row className={s.row}>
-            <Col span={12}>
-              <QuadrangularSelect
-                label="背景位置"
-                unit={unit}
-                defaultData={[positionX as any, positionY as any]}
-                onChange={onChangeBg}
-              />
-            </Col>
-            <Col span={12}>
-              <Row className={s.row}>
-                <Col span={24}>
-                  <UnitInput
-                    label="横向位置"
-                    min={0}
-                    max={100000}
-                    onChange={onChangeBackgroundCommon("positionX")}
-                    defaultValue={positionX as any}
-                  />
-                </Col>
-              </Row>
-              <Row className={s.row}>
-                <Col span={24}>
-                  <UnitInput
-                    label="纵向位置"
-                    min={0}
-                    max={100000}
-                    onChange={onChangeBackgroundCommon("positionY")}
-                    defaultValue={positionY as any}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row></Row>
-        </>
-      ) : null}
+        </Col>
+      </Row>
     </>
   );
 

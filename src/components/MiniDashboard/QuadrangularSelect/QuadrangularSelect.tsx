@@ -10,51 +10,51 @@ import { UnitType } from "~/types/appData";
 interface Props {
   label: string;
   unit?: string;
-  defaultData: UnitType[];
+  defaultData: (UnitType | undefined)[];
   onChange: (data:UnitType[]) => void;
 }
 
-const simpPosition = [
+const simpPosition: {name: string; value: UnitType[]}[] = [
   {
     name: "左上",
-    value: [0, 0],
+    value: [[0, '%'], [0, '%']],
   },
   {
     name: "中上",
-    value: [50, 0],
+    value: [[50, '%'], [0, '%']],
   },
   {
     name: "右上",
-    value: [100, 0],
+    value: [[100, '%'], [0, '%']],
   },
   {
     name: "左中",
-    value: [0, 50],
+    value: [[0, '%'], [50, '%']],
   },
   {
     name: "中间",
-    value: [50, 50],
+    value: [[50, '%'], [50, '%']],
   },
   {
     name: "右中",
-    value: [100, 50],
+    value: [[100, '%'], [50, '%']],
   },
   {
     name: "左下",
-    value: [0, 100],
+    value: [[0, '%'], [100, '%']],
   },
   {
     name: "中下",
-    value: [50, 100],
+    value: [[50, '%'], [100, '%']],
   },
   {
     name: "右下",
-    value: [100, 100],
+    value: [[100, '%'], [100, '%']],
   },
 ];
 
 const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) => {
-  const [, setselected] = useState<UnitType[]>([]);
+  const [, setselected] = useState<(UnitType | undefined)[]>([]);
   const [index, setIndex] = useState<number>()
 
   const moduleId = useSelector(
@@ -80,7 +80,7 @@ const QuadrangularSelect: React.FC<Props> = ({ label, defaultData, onChange }) =
     // setselected(simpPosition[index].value);
     checkSelect(simpPosition[index].value);
     if (onChange instanceof Function) {
-      // onChange(simpPosition[index].value)
+      onChange(simpPosition[index].value)
     }
   }, [checkSelect, onChange]);
 
