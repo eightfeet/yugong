@@ -5,8 +5,6 @@ import React from "react";
 
 
 function handler(styleGroup: StyleItemsTypes):{style: React.CSSProperties, strStyle: string} {
-  console.log('styleGroup', styleGroup);
-  
 
   if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
     return {style: {}, strStyle: '' };

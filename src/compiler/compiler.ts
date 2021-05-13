@@ -219,7 +219,6 @@ export const font = function (styleObj: objType): resultType {
   }
 
   const str = createInlineStyles(result) || "";
-  console.log(result, str);
   return {
     result,
     string: str,
@@ -386,22 +385,30 @@ export const backgroundGradient = function (
   };
 };
 
+interface BorderCompil extends BorderTypesOfStyleItems {
+    position?: string[]
+}
+
 export const border = function (styleObj: BorderTypesOfStyleItems): resultType {
   // border-radius: {radiusTopLeft} {radiusTopRight} {radiusBottomLeft} {radiusBottomRight};
   // border{borderPosition}: {borderWidth} {borderStyle} {borderColor};
 
   const unitType = ['radiusTopLeft', 'radiusTopRight', 'radiusBottomLeft', 'radiusBottomRight', 'borderWidth'];
-
-  const result: BorderTypesOfStyleItems = {};
+ 
+  const result:BorderCompil  = {};
   for (const key in styleObj) {
     if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
       const element = styleObj[key];
       if (unitType.includes(key)) {
         // 编译处理结果
         const val = compileValue(element);
-        if (val === 'borderPosition') {
+        if (val) {
           result[key] = val;
         }
+      } else if (key === 'borderPosition') {
+          const arr: any = Object.keys(element).filter(item => element[item] !== false);
+          result.position = arr;
+        // element
       } else {
         if (element) {
             result[key] = element;
@@ -411,13 +418,17 @@ export const border = function (styleObj: BorderTypesOfStyleItems): resultType {
   }
 
   const values: any = {};
-  const borderRadiusArrays = [result.radiusTopLeft || '0', result.radiusTopRight || 0, result.radiusBottomRight || 0, result.radiusBottomLeft || 0];
+  const borderRadiusArrays = [result.radiusTopLeft || 0, result.radiusTopRight || 0, result.radiusBottomRight || 0, result.radiusBottomLeft || 0];
   if (borderRadiusArrays.filter(item => item !== 0)) {
     values.borderRadius = borderRadiusArrays.join(' ')
   }
   
-  console.log('to do !')
-
+  if (result.position?.length !== 0) {
+    result.position?.forEach(item => {
+        values[item] = [result.borderWidth||'', result.borderStyle||'', result.borderColor].join(' ');
+    })
+  }
+  
   return {
     result: values,
     string: createInlineStyles(values) || "",

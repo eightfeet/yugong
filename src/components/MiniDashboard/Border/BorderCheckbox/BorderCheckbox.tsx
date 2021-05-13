@@ -8,6 +8,8 @@ import {
   BorderRightOutlined,
   BorderTopOutlined,
 } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "~/redux/store";
 
 interface Data {
   borderTop?: boolean;
@@ -37,6 +39,8 @@ const BorderCheckbox: React.FC<Props> = ({
     border: false,
   });
 
+  const forceUpdate = useDispatch<Dispatch>().controller.forceUpdateByStateTag;
+
   useEffect(() => {
     if (defaultData.border === true) {
       setBorderPosition({
@@ -47,9 +51,9 @@ const BorderCheckbox: React.FC<Props> = ({
         border: true,
       });
     } else {
-      setBorderPosition({ ...borderPosition, ...defaultData });
+      setBorderPosition({ ...defaultData });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [defaultData]);
 
   const handleBorderPosition = useCallback(
@@ -86,10 +90,11 @@ const BorderCheckbox: React.FC<Props> = ({
       const result = { ...borderPosition };
       if (onChange instanceof Function) {
         onChange(result);
+        forceUpdate();
       }
       setBorderPosition(result);
     },
-    [borderPosition, onChange]
+    [borderPosition, forceUpdate, onChange]
   );
 
   return (

@@ -39,7 +39,6 @@ const StyleController: React.FC<Props> = () => {
   }, [moduleId]);
 
   const height = useMemo(() => window.innerHeight - 200, []);
-  console.log("moduleType", moduleType);
   return (
     <div className={s.dashboardstylewrap}>
       <div className={s.wrap}>
