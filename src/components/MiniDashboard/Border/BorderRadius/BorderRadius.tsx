@@ -60,37 +60,42 @@ const BorderRadius: React.FC<Props> = ({
     setBottomLeft(value);
   }, []);
 
+  const updateChange = useCallback((value: (UnitType | undefined)[]) => {
+    if (onChange instanceof Function) {
+      onChange(value)
+    }
+  }, [onChange])
+
   const onChangeData = useCallback(
     (index: number) => (value: UnitType) => {
       if (locked) {
         onChangeAll(value);
+        updateChange([value, value, value, value]);
         return;
       }
       switch (index) {
         case 0:
           setTopLeft(value);
+          updateChange([value, topRight, bottomRight, bottomLeft]);
           break;
         case 1:
           setTopRight(value);
+          updateChange([topLeft, value, bottomRight, bottomLeft]);
           break;
         case 2:
           setBottomRight(value);
+          updateChange([topLeft, topRight, value, bottomLeft]);
           break;
         case 3:
           setBottomLeft(value);
+          updateChange([topLeft, topRight, bottomRight, value]);
           break;
         default:
           break;
       }
     },
-    [locked, onChangeAll]
+    [bottomLeft, bottomRight, locked, onChangeAll, topLeft, topRight, updateChange]
   );
-
-  useEffect(() => {
-    if (onChange instanceof Function) {
-      // onChange([topLeft, topRight, bottomRight, bottomLeft])
-    }
-  }, [topLeft, topRight, bottomRight, bottomLeft, onChange])
 
   return (
     <Row className={s.row}>

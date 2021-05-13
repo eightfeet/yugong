@@ -31,8 +31,8 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
           const [
             radiusTopLeft,
             radiusTopRight,
-            radiusBottomLeft,
             radiusBottomRight,
+            radiusBottomLeft,
           ] = value;
           border.radiusTopLeft = radiusTopLeft;
           border.radiusTopRight = radiusTopRight;
@@ -118,7 +118,7 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
               border.radiusTopLeft,
               border.radiusTopRight,
               border.radiusBottomRight,
-              border.radiusBottomRight,
+              border.radiusBottomLeft,
             ]}
             unit={unit}
           />

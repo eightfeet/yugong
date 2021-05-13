@@ -10,7 +10,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Color from "../Color";
-import NumberInput from "../NumberInput";
 import UnitInput from "../UnitInput";
 import s from "./Shadow.module.scss";
 
@@ -294,7 +293,7 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
                     min={-1000}
                     max={1000}
                     defaultValue={item.shiftDown as any}
-                    onChange={onChangeshiftRight(type, i)}
+                    onChange={onChangeshiftDown(type, i)}
                   />
                 </Col>
               </Row>
