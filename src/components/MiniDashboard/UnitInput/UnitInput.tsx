@@ -36,6 +36,8 @@ interface Props {
     defaultValue?: UnitType;
 }
 
+const stringTypes: any[] = ['-', '', 'runningTime'];
+
 const Unitinput: React.FC<Props> = ({
     label,
     span,
@@ -50,10 +52,10 @@ const Unitinput: React.FC<Props> = ({
     // 组件内部单位
     const [unit, setUnit] = useState<string>(defaultUnitValue || '');
     // 组件内value值
-    const [value, setValue] = useState(defaultInpValue || '');
+    const [value, setValue] = useState<string | number | null>(defaultInpValue || '');
     // 组件内value类型，仅自定义“-”时为字符，其他单位类型都是数字
     const [valueType, setValueType] = useState<'number' | 'text'>(
-        defaultUnitValue === '-' ? 'text' : 'number'
+        stringTypes.includes(defaultUnitValue)  ? 'text' : 'number'
     );
     // 获取option Value值
     const globalUnit = useSelector(
@@ -175,7 +177,7 @@ const Unitinput: React.FC<Props> = ({
                         <Input
                             className={s.input}
                             onChange={onChangeValue}
-                            value={value}
+                            value={value || undefined}
                             style={forceItem === 'input' ? style : undefined}
                             onFocus={onFocus}
                             onBlur={onBlur}

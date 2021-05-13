@@ -46,7 +46,7 @@ interface ArgumentBase<T> {
 /**
  * 单位数值
  */
-export type UnitType = [string | number, string];
+export type UnitType = [string | number | null, string];
 
 /**
  * 对象参数

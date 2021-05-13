@@ -5,7 +5,7 @@ import Responsive from '~/components/Responsive';
 import UnitInput from '../MiniDashboard/UnitInput';
 
 const Home = () => {
-    const [value, setValue] = useState<[string | number, string]>([100, ''])
+    const [value, setValue] = useState<[string | number | null, string]>([100, ''])
    return <div>
     <div style={{width: '250px', backgroundColor: '#fff'}}>
         <UnitInput onChange={(val) => {

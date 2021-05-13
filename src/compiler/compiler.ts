@@ -5,15 +5,18 @@ import unitToPx from '~/core/unitToPx';
 import {
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
+    DisplayTypesOfStyleItems,
+    UnitType,
 } from '~/types/appData';
 import { compilePlaceholderFromDataSource } from '~/core/getDataFromSource';
+import React from 'react';
 
 interface objType {
     [key: string]: any;
 }
 
 interface resultType {
-    result: objType;
+    result: React.CSSProperties;
     string: string;
 }
 
@@ -112,44 +115,62 @@ const conversionValue: (
     }
 };
 
-export const display = function (styleObj: objType): resultType {
-    const result: objType = {};
-    const unit = store.getState().pageData.unit;
+// 获取全局单位
+const compileValue = (data: UnitType) => {
+    const [value, unit] = data || [];
+    if (!value) {
+        return undefined;
+    }
+    // 获取运行时
     const runningTimes = store.getState().runningTimes;
+    // 处理空值
+    if (unit === '') {
+        return changeToUnit(value).value;
+    } else if (unit === '-') {
+        return value;
+    } else if (unit === 'runningTime') {
+        return compilePlaceholderFromDataSource(value.toString(), runningTimes);
+    } else {
+        return `${value}${unit}`
+    }
+}
+
+export const display = (styleObj: DisplayTypesOfStyleItems): resultType => {
+    const result: objType = {};
+    // typeA
+    const unitType = ['width', 'height', 'left', 'top', 'right', 'bottom'];
+    // typeB
+    const unitTypeDeep = ['margin', 'padding'];
+
     for (const key in styleObj) {
         if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
             const element = styleObj[key];
-            let newKey = key;
-            if (key === 'width' || key === 'height') {
-                const checkNumStep1 = Number(element);
-                if (checkNumStep1) {
-                    // 确定数据值
-                    result[newKey] = changeToUnit(checkNumStep1).value;
-                } else {
-                    // 非数据值从运行时获取
-                    let data = compilePlaceholderFromDataSource(element, runningTimes);
-                    // 获取数据
-                    const checkNumStep2 = Number(data);
-                    if (checkNumStep2) {
-                        result[newKey] = `${data}${unit}`;
-                    }
+            if (unitType.includes(key)) {
+                // 编译处理结果
+                const val = compileValue(element);
+                if (val) {
+                    result[key] = val;
                 }
-                
-            } else if (key === 'margin' || key === 'padding') {
-                const data = element.map((el: any) => {
-                    const val = parseInt(el, 10);
-                    if (isNaN(val)) {
-                        return el || 0;
-                    } else {
-                        return changeToUnit(el).value;
-                    }
-                });
-                result[newKey] = data.join(' ');
+            } else if (unitTypeDeep.includes(key)) {
+                // 二次规则
+                const oprateData = element as UnitType[];
+                const hasValue = oprateData.some(item => !!item[0]);
+                // 有值再做处理
+                if (hasValue) {
+                    const tempResult: any [] = [];
+                    oprateData.forEach((item, index) => {                    
+                        tempResult[index] = compileValue(item) || 0;
+                    });
+                    result[key] = tempResult.join(',');
+                }
             } else {
-                result[newKey] = conversionValue(element, key, 'display').value;
+                if (element) {
+                    result[key] = element;
+                }
             }
         }
     }
+    console.log(result, createInlineStyles(result) || '')
     return {
         result,
         string: createInlineStyles(result) || '',

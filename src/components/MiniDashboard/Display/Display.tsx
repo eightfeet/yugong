@@ -81,7 +81,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
   );
 
   const onChangeOption = useCallback(
-    (option: string) => (value: [string | number, string]) => {
+    (option: string) => (value: [string | number | null, string]) => {
       const oprateData: DisplayTypesOfStyleItems = { ...displayData };
       oprateData[option] = value;
       setDisplayData(oprateData);

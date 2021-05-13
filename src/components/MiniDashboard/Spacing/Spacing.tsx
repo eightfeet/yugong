@@ -1,6 +1,7 @@
 import { LinkOutlined } from "@ant-design/icons";
 import { Row, Col, Divider } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
+import { UnitType } from "~/types/appData";
 import Unitinput from "../UnitInput/UnitInput";
 import s from "./Spacing.module.less";
 
@@ -32,7 +33,7 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
   }, [margin]);
 
   const onChangeValue = useCallback(
-    (index: number) => (value: [number | string, string]) => {
+    (index: number) => (value: UnitType) => {
       if (spaceType === "padding") {
         const values: any[] = [...inValues];
         values[index] = value;

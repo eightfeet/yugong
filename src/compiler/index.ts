@@ -1,11 +1,13 @@
 import description from "./description";
 import * as compiler from "./compiler";
+import { StyleItemsTypes } from "~/types/appData";
+import React from "react";
 
-interface Params {
-  [keys: string]: any;
-}
 
-function handler(styleGroup: Params):{style: React.CSSProperties, strStyle: string} {
+function handler(styleGroup: StyleItemsTypes):{style: React.CSSProperties, strStyle: string} {
+  console.log('styleGroup', styleGroup);
+  
+
   if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
     return {style: {}, strStyle: '' };
   const descriptionKeys = Object.keys(description());
@@ -28,7 +30,7 @@ function handler(styleGroup: Params):{style: React.CSSProperties, strStyle: stri
     }
 
     let generateStyle: {
-      result: Params,
+      result: React.CSSProperties,
       string: string
     } = {
       result: {},
