@@ -154,7 +154,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             label="层级"
             min={1}
             max={100000}
-            value={zIndex}
+            defaultValue={zIndex}
             onChange={onChangeDisplay("zIndex")}
           />
         </Col>

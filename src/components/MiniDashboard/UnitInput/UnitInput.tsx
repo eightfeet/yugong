@@ -104,9 +104,10 @@ const Unitinput: React.FC<Props> = ({
     )
 
     useEffect(() => {
-      if (!onDebounce && defaultValue) {
-        setUnit(defaultValue[1]);
-        setValue(defaultValue[0]);
+      if (!onDebounce) {
+          const value: any = defaultValue || [];
+        setUnit(value[1]);
+        setValue(value[0]);
       } 
     }, [defaultValue, onDebounce])
 
@@ -184,7 +185,7 @@ const Unitinput: React.FC<Props> = ({
                         className={s.select}
                         dropdownClassName={s.dropdown}
                         onChange={onChangeUnitType}
-                        value={unit}
+                        value={unit || ''}
                         style={forceItem === 'select' ? style : undefined}
                         onFocus={() => setForceItem('select')}
                     >

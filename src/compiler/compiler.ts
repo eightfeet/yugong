@@ -161,7 +161,7 @@ export const display = (styleObj: DisplayTypesOfStyleItems): resultType => {
             } else if (unitTypeDeep.includes(key)) {
                 // 二次规则
                 const oprateData = element as UnitType[];
-                const hasValue = oprateData.some((item) => !!item[0]);
+                const hasValue = (oprateData || []).some((item) => item && !!item[0]);
                 // 有值再做处理
                 if (hasValue) {
                     const tempResult: any[] = [];

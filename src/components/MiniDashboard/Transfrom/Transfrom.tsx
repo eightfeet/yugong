@@ -33,6 +33,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
     (
       type: "scale" | "rotate" | "translateX" | "translateY" | "skewX" | "skewY"
     ) => (value: any) => {
+      console.log(type, value)
       transfrom[type] = value;
       setTransfrom({...transfrom});
       if (onChange instanceof Function) {
@@ -51,7 +52,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="倍"
             min={0}
             max={100}
-            value={defaultDate?.scale}
+            defaultValue={defaultDate?.scale}
             onChange={onChangeTransFrom('scale')}
           />
         </Col>
@@ -62,7 +63,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            value={defaultDate?.rotate}
+            defaultValue={defaultDate?.rotate}
             onChange={onChangeTransFrom('rotate')}
           />
         </Col>
