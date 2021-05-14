@@ -34,7 +34,6 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
 
     const onChangeDisplay = useCallback(
         (result: any) => {
-            console.log('result', result);
             update(result, `${rootStyle}.display`);
         },
         [rootStyle, update]
@@ -73,7 +72,6 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
 
     const onChangeTransfrom = useCallback(
         (result: any) => {
-            console.log(result);
             update(result, `${rootStyle}.transform`);
         },
         [rootStyle, update]

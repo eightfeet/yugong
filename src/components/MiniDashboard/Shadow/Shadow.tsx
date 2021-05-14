@@ -9,21 +9,22 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import { UnitType } from "~/types/appData";
 import Color from "../Color";
 import UnitInput from "../UnitInput";
 import s from "./Shadow.module.scss";
 
 interface TextShadow {
   hiddenItem?: boolean;
-  shiftRight?: number;
-  shiftDown?: number;
-  blur?: number;
+  shiftRight?: UnitType;
+  shiftDown?: UnitType;
+  blur?: UnitType;
   color?: string;
 }
 
 interface BoxShadow extends TextShadow {
   hiddenItem?: any;
-  spread?: number;
+  spread?: UnitType;
   inset?: boolean;
 }
 

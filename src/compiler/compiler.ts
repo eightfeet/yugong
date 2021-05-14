@@ -496,7 +496,6 @@ export const boxShadow = function (
         }
 
         rule[0] = !!rule[0] ? 'inset' : null;
-        console.log('rule[5]', rule[5]);
 
         if (!rule[1]) rule[1] = '0';
         if (!rule[2]) rule[2] = '0';

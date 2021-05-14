@@ -261,9 +261,9 @@ Button.exposeDefaultProps = {
       },
       boxShadow: [
         {
-          shiftDown: 2,
+          shiftDown: [2, ''],
           color: "rgba(0, 0, 0, 0.15 )",
-          blur: 4,
+          blur: [4, ''],
         },
       ],
     },

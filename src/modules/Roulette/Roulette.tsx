@@ -186,15 +186,15 @@ Roulette.exposeDefaultProps = {
       boxShadow: [
         {
           inset: true,
-          spread: 2,
-          blur: 15,
+          spread: [2, ''],
+          blur: [15, ''],
           color: "rgba(255, 87, 34, 1 )",
         },
         {
           color: "rgba(255, 152, 0, 1 )",
           inset: true,
-          blur: 20,
-          spread: 20,
+          blur: [20, ''],
+          spread: [20, ''],
         },
       ],
       backgroundGradient: {
@@ -269,13 +269,13 @@ Roulette.exposeDefaultProps = {
       boxShadow: [
         {
           color: "rgba(196, 55, 10, 0.53 )",
-          spread: 2,
-          blur: 1,
+          spread: [2,''],
+          blur: [1, ''],
         },
         {
           color: "rgba(170, 41, 0, 0.65 )",
-          spread: 2,
-          blur: 8,
+          spread: [2,''],
+          blur: [8, ''],
         },
       ],
     },

@@ -187,17 +187,17 @@ export interface FontTypesOfStyleItems {
 }
 
 export interface TextShadowTypesOfStyleItems {
-  shiftRight?: number;
-  shiftDown?: number;
-  blur?: number;
+  shiftRight?: UnitType;
+  shiftDown?: UnitType;
+  blur?: UnitType;
   color?: string;
 }
 
 export interface BoxShadowTypesOfStyleItems {
-  shiftRight?: number;
-  shiftDown?: number;
-  spread?: number;
-  blur?: number;
+  shiftRight?: UnitType;
+  shiftDown?: UnitType;
+  spread?: UnitType;
+  blur?: UnitType;
   inset?: boolean;
   color?: string;
 }

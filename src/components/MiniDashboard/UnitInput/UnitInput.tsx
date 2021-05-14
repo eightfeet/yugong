@@ -151,9 +151,6 @@ const Unitinput: React.FC<Props> = ({
         [onChangeDebounce, value]
     );
 
-    useEffect(() => {
-        console.log('rending ?');
-    }, [defaultValue]);
     return (
         <Row className={classNames(s.row, className)} gutter={4}>
             {label ? <Col className={s.label} span={span?.label || 7}>
