@@ -588,7 +588,7 @@ export const transform = function (styleObj: objType): resultType {
     };
     const singleProp: objType = {
         scale: (value: string) => `scale(${value})`,
-        rotate: (value: string) => `rotate(${value})`,
+        rotate: (value: string) => `rotate(${value}deg)`,
     };
     const unitType: string[] = ['translateX', 'translateY'];
     const rules: any[] = [];
@@ -648,6 +648,7 @@ export const transform = function (styleObj: objType): resultType {
     prefixResult.push(`-moz-${str}`);
     prefixResult.push(`-webkit-${str}`);
     prefixResult.push(str);
+    console.log('result', result);
     
     return {
         result,

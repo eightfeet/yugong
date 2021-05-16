@@ -168,8 +168,8 @@ export interface StyleItemsTypes {
 export interface TransformTypesOfStyleItems {
   scale?: number;
   rotate?: number;
-  translateX?: number;
-  translateY?: number;
+  translateX?: UnitType;
+  translateY?: UnitType;
   skewX?: number;
   skewY?: number;
 }

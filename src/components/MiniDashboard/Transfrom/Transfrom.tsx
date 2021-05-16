@@ -2,6 +2,7 @@ import { Row, Col } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import { UnitType } from "~/types/appData";
 import NumberInput from "../NumberInput";
 import UnitInput from "../UnitInput";
 import s from "./Transfrom.module.scss";
@@ -9,8 +10,8 @@ import s from "./Transfrom.module.scss";
 interface DefautData {
   scale?: number;
   rotate?: number;
-  translateX?: number;
-  translateY?: number;
+  translateX?: UnitType;
+  translateY?: UnitType;
   skewX?: number;
   skewY?: number;
 }
@@ -74,7 +75,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             label="平移X"
             min={-1000}
             max={1000}
-            // defaultValue={(defaultDate?.translateX || undefined)as any}
+            defaultValue={(defaultDate?.translateX)}
             onChange={onChangeTransFrom('translateX')}
           />
         </Col>
@@ -83,7 +84,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             label="平移Y"
             min={-1000}
             max={1000}
-            // defaultValue={(defaultDate?.translateY || undefined) as any}
+            defaultValue={defaultDate?.translateY}
             onChange={onChangeTransFrom('translateY')}
           />
         </Col>
@@ -96,7 +97,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            value={defaultDate?.skewX}
+            defaultValue={defaultDate?.skewX}
             onChange={onChangeTransFrom('skewX')}
           />
         </Col>
@@ -107,7 +108,7 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            value={defaultDate?.skewY}
+            defaultValue={defaultDate?.skewY}
             onChange={onChangeTransFrom('skewY')}
           />
         </Col>
