@@ -107,6 +107,7 @@ const BorderRadius: React.FC<Props> = ({
           </Col>
           <Col span={20}>
             <UnitInput
+              min={0}
               span={{ wrapper: 24 }}
               defaultValue={topLeft}
               onChange={onChangeData(0)}
@@ -120,6 +121,7 @@ const BorderRadius: React.FC<Props> = ({
           </Col>
           <Col span={20}>
             <UnitInput
+              min={0}
               span={{ wrapper: 24 }}
               defaultValue={bottomLeft}
               onChange={onChangeData(3)}
@@ -137,6 +139,7 @@ const BorderRadius: React.FC<Props> = ({
         <Row className={s.row}>
           <Col span={20}>
             <UnitInput
+              min={0}
               span={{ wrapper: 24 }}
               defaultValue={topRight}
               onChange={onChangeData(1)}
@@ -150,6 +153,7 @@ const BorderRadius: React.FC<Props> = ({
         <Row className={s.row}>
           <Col span={20}>
             <UnitInput
+              min={0}
               span={{ wrapper: 24 }}
               defaultValue={bottomRight}
               onChange={onChangeData(2)}
