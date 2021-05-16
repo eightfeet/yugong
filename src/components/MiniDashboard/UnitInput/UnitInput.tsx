@@ -135,17 +135,16 @@ const Unitinput: React.FC<Props> = ({
         (unit) => {
             if (unit === '-' || unit === 'runningTime') {
                 setValueType('text');
-                if (value) {
-                    setValue(`${value}`);
-                    onChangeDebounce({ val: `${value}`, un: unit });
-                }
+                // 单位设为text类型时需要将数据转换为文本值
+                const val = (value || value === 0) ? `${value}` : null;
+                setValue(val);
+                onChangeDebounce({ val: `${value}`, un: unit });
             } else {
                 setValueType('number');
-                const val = Number(value);
-                if (val) {
-                    setValue(val);
-                    onChangeDebounce({ val, un: unit });
-                }
+                const numberValue = Number(value);
+                const val = (numberValue || numberValue === 0) ? numberValue : null;
+                setValue(val);
+                onChangeDebounce({ val: val as number, un: unit });
             }
             setUnit(unit);
         },
@@ -165,7 +164,9 @@ const Unitinput: React.FC<Props> = ({
                             max={max}
                             className={s.input}
                             onChange={onChangeValue}
-                            value={Number(value) || undefined}
+                            value={
+                             value as number   
+                            }
                             style={forceItem === 'input' ? style : undefined}
                             onFocus={onFocus}
                             onBlur={onBlur}

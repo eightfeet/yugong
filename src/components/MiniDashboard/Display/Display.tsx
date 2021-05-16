@@ -98,6 +98,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         <Col span={12}>
           <UnitInput
             defaultValue={width}
+            min={0}
             onChange={onChangeOption("width")}
             label="宽度"
           />
@@ -105,6 +106,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         <Col span={12}>
           <UnitInput
             defaultValue={height}
+            min={0}
             onChange={onChangeOption("height")}
             label="高度"
           />

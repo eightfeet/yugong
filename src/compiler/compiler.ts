@@ -120,13 +120,13 @@ const conversionValue: (
 // 获取全局单位
 const compileValue = (data: UnitType) => {
     const [value, unit] = data || [];
-    if (!value) {
+    if (!value && value !== 0) {
         return undefined;
     }
     // 获取运行时
     const runningTimes = store.getState().runningTimes;
     // 处理空值
-    if (unit === '') {
+    if (unit === '' || unit === null || unit === undefined) {
         return changeToUnit(value).value;
     } else if (unit === '-') {
         return value;
@@ -177,7 +177,6 @@ export const display = (styleObj: DisplayTypesOfStyleItems): resultType => {
             }
         }
     }
-
     return {
         result,
         string: createInlineStyles(result) || '',
