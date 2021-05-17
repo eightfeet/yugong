@@ -1,6 +1,5 @@
-import { DownOutlined, MinusOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
-import { type } from 'node:os';
 import React, { useCallback, useState } from 'react';
 import { BackgroundGroup } from '~/types/appData';
 import BackgroundItem from './BackgroundItem';
@@ -26,6 +25,16 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
             const data = backgroundList.filter((_, i) => index !== i);
             setBackgroundList(data);
             onChange(data);
+        },
+        [backgroundList, onChange],
+    )
+
+    const onChangeItem = useCallback(
+        (index: number) => (item: BackgroundGroup) => {
+            const oprateBackgroundList = [...backgroundList];
+            oprateBackgroundList[index] = item;
+            setBackgroundList(oprateBackgroundList);
+            onChange(oprateBackgroundList);
         },
         [backgroundList, onChange],
     )
@@ -55,7 +64,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
                             />
                         </div>
                     </div>
-                    <BackgroundItem {...data} />
+                    <BackgroundItem defaultData={data} onChange={onChangeItem(index)} />
                 </div>
             ))}
         </>
