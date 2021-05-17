@@ -25,10 +25,6 @@ const QuadrangularSelect: React.FC<Props> = ({
     );
 
     useEffect(() => {
-      console.log(moduleId);
-    }, [moduleId])
-
-    useEffect(() => {
         if (ref.current) {
             (ref.current as any).blur();
         }

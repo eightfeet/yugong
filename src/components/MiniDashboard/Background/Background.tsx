@@ -73,7 +73,7 @@ const BackgroundCommon: React.FC<Props> = ({
           | UnitType
           | {
               name: "color";
-              value: ColorResult | "inherit";
+              value: ColorResult | undefined;
             }
       ) => {
         const data: BackgroundCommonTypesOfStyleItems = { ...commonData };
@@ -82,12 +82,10 @@ const BackgroundCommon: React.FC<Props> = ({
         if (type === "backgroundColor") {
           const setResult = result as {
             name: "color";
-            value: ColorResult | "inherit";
+            value: ColorResult | undefined;
           };
           data[type] =
-            setResult.value === "inherit"
-              ? "inherit"
-              : `rgba(${setResult.value.rgb.r}, ${setResult.value.rgb.g}, ${setResult.value.rgb.b}, ${setResult.value.rgb.a})`;
+            setResult.value && `rgba(${setResult.value.rgb.r}, ${setResult.value.rgb.g}, ${setResult.value.rgb.b}, ${setResult.value.rgb.a})`;
         }
 
         setCommonData(data);

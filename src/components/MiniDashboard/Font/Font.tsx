@@ -77,7 +77,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         }
       }
       if (type === "color") {
-        value = (value.value === 'inherit' ? 'inherit' : `rgba(${data.value.rgb.r}, ${data.value.rgb.g}, ${data.value.rgb.b}, ${data.value.rgb.a})`);
+        value = (value.value && `rgba(${data.value.rgb.r}, ${data.value.rgb.g}, ${data.value.rgb.b}, ${data.value.rgb.a})`);
       }
       fontData[type] = value;
       setFontData({ ...fontData });

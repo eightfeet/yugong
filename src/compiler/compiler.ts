@@ -218,7 +218,7 @@ export const font = function (styleObj: objType): resultType {
             }
         }
     }
-
+    
     const str = createInlineStyles(result) || '';
     return {
         result,
