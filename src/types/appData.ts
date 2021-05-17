@@ -154,9 +154,34 @@ export interface AppDataLayoutItemTypes extends AppDataElementsTypes {
   layout?: Layout;
 }
 
+export interface BackgroundGroup {
+  /**背景颜色 */
+  backgroundColor?: string;
+  /**背景url - 渐变位置和过度色值 */
+  gradient?: {
+    color: string;
+    transition: number;
+  }[];
+  /**背景url - 渐变方向 */
+  gradientDirections?: string;
+  /**背景url - 图片 */
+  imageUrl?: string;
+  /**背景x */
+  positionX?: UnitType;
+  /**背景y */
+  positionY?: UnitType;
+  /**横向尺寸 */
+  sizeX?: UnitType;
+  /**纵向尺寸 */
+  sizeY?: UnitType;
+  /**是否重复 */
+  repeat?: string;
+}
+
 export interface StyleItemsTypes {
   backgroundCommon?: BackgroundCommonTypesOfStyleItems;
   backgroundGradient?: BackgroundGradientTypesOfStyleItems;
+  backgroundGroup?: BackgroundGroup[];
   border?: BorderTypesOfStyleItems;
   boxShadow?: BoxShadowTypesOfStyleItems[];
   textShadow?: TextShadowTypesOfStyleItems[];

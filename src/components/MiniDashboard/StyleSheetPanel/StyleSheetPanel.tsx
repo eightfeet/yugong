@@ -12,6 +12,7 @@ import s from './StyleSheetPanel.module.scss';
 import Shadow from '../Shadow';
 import Border from '../Border';
 import Transform from '../Transfrom';
+import BackgroundGroup from '../BackgroundGroup';
 
 const { Panel } = Collapse;
 
@@ -97,8 +98,18 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
                     </Panel>
                     <Panel
                         header="背景"
+                        key="backgroundGroup"
+                    >   
+                        <BackgroundGroup
+                            updateKey={selected.moduleId}
+                            onChange={() => {}}
+                            defaultData={selected?.style?.[path]?.backgroundGroup || [{}]}
+                        />
+                    </Panel>
+                    <Panel
+                        header="背景"
                         key="backgroundCommon_backgroundGradient"
-                    >
+                    >   
                         <Background
                             unit={unit}
                             updateKey={selected.moduleId}

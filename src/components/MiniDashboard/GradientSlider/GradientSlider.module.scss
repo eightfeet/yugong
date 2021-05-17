@@ -1,11 +1,11 @@
 .row {
     align-items: center;
+    margin-bottom: 15px;
 }
 
 .GradientSlider {
     user-select: none;
     position: relative;
-    margin-left: 5px;
     .line {
         height: 32px;
         background-color: #eee;
@@ -82,4 +82,8 @@
 
 .label {
     text-align: right;
+}
+
+.subrow {
+    align-items: center;
 }
