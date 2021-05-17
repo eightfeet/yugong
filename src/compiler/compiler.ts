@@ -5,6 +5,7 @@ import unitToPx from '~/core/unitToPx';
 import {
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
+    BackgroundGroupTypesOfStyleItems,
     BorderTypesOfStyleItems,
     BoxShadowTypesOfStyleItems,
     DisplayTypesOfStyleItems,
@@ -225,6 +226,34 @@ export const font = function (styleObj: objType): resultType {
         string: str,
     };
 };
+
+/**
+ * ---------------
+ * 背景组处理
+ * ---------------
+ */
+export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItems[]): resultType => {
+    console.log(333, backgroundArray);
+    const result: BackgroundCommonTypesOfStyleItems = {};
+    const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
+    const values = {};
+
+    backgroundArray.forEach(background => {
+        for (const key in background) {
+            if (Object.prototype.hasOwnProperty.call(background, key)) {
+                const element = background[key];
+                console.log(element);
+            }
+        }
+    })
+
+    return {
+        result: values,
+        string: createInlineStyles(values) || '',
+    };
+}
+
+
 
 /**
  * -------------

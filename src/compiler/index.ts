@@ -1,17 +1,29 @@
-import description from "./description";
 import * as compiler from "./compiler";
 import { StyleItemsTypes } from "~/types/appData";
 import React from "react";
 
-
-function handler(styleGroup: StyleItemsTypes):{style: React.CSSProperties, strStyle: string} {
+function handler(styleGroup: StyleItemsTypes): {
+  style: React.CSSProperties;
+  strStyle: string;
+} {
+  console.log("styleGroup", styleGroup);
 
   if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
-    return {style: {}, strStyle: '' };
-  const descriptionKeys = Object.keys(description());
+    return { style: {}, strStyle: "" };
+  const descriptionKeys = [
+    "display",
+    "backgroundGroup",
+    "backgroundCommon",
+    "backgroundGradient",
+    "border",
+    "boxShadow",
+    "textShadow",
+    "font",
+    "transform",
+  ];
   const compiledResult = {
     style: {},
-    strStyle: ''
+    strStyle: "",
   };
 
   const stringResult: any[] = [];
@@ -21,22 +33,25 @@ function handler(styleGroup: StyleItemsTypes):{style: React.CSSProperties, strSt
     const styleObj = styleGroup[descriptionKey];
     if (
       (Object.prototype.toString.call(styleObj) !== "[object Object]" ||
-      Object.keys(styleObj).length < 1 ) &&
+        Object.keys(styleObj).length < 1) &&
       Object.prototype.toString.call(styleObj) !== "[object Array]"
     ) {
       continue;
     }
 
     let generateStyle: {
-      result: React.CSSProperties,
-      string: string
+      result: React.CSSProperties;
+      string: string;
     } = {
       result: {},
-      string: ''
+      string: "",
     };
     switch (descriptionKey) {
       case "display":
         generateStyle = compiler.display(styleObj);
+        break;
+      case "backgroundGroup":
+        generateStyle = compiler.backgroundGroup(styleObj);
         break;
       case "backgroundGradient":
         generateStyle = compiler.backgroundGradient(styleObj);
@@ -62,10 +77,10 @@ function handler(styleGroup: StyleItemsTypes):{style: React.CSSProperties, strSt
       default:
         break;
     }
-    compiledResult.style = {...compiledResult.style, ...generateStyle.result};
+    compiledResult.style = { ...compiledResult.style, ...generateStyle.result };
     stringResult.push(generateStyle.string);
   }
-  compiledResult.strStyle= stringResult.join(' ');
+  compiledResult.strStyle = stringResult.join(" ");
   return compiledResult;
 }
 

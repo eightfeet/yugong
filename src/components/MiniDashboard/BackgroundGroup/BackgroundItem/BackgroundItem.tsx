@@ -2,7 +2,7 @@ import { Row, Col, Radio, RadioChangeEvent } from "antd";
 import React, { useCallback, useState } from "react";
 import {
   BackgroundGradientTypesOfStyleItems,
-  BackgroundGroup,
+  BackgroundGroupTypesOfStyleItems,
   UnitType,
 } from "~/types/appData";
 import Color from "../../Color";
@@ -15,12 +15,12 @@ import QuadrangularSelect from "../../QuadrangularSelect";
 import { ColorResult } from "react-color";
 
 interface Props {
-  onChange: (value: BackgroundGroup) => void;
-  defaultData: BackgroundGroup;
+  onChange: (value: BackgroundGroupTypesOfStyleItems) => void;
+  defaultData: BackgroundGroupTypesOfStyleItems;
 }
 
 const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
-  const [data, setData] = useState<BackgroundGroup>({ ...defaultData });
+  const [data, setData] = useState<BackgroundGroupTypesOfStyleItems>({ ...defaultData });
   const {
     backgroundColor,
     gradient,

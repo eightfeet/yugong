@@ -1,14 +1,14 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import React, { useCallback, useState } from 'react';
-import { BackgroundGroup } from '~/types/appData';
+import { BackgroundGroupTypesOfStyleItems } from '~/types/appData';
 import BackgroundItem from './BackgroundItem';
 import s from './BackgroundGroup.module.less'
 
 interface Props {
     updateKey: string;
-    onChange: (data: BackgroundGroup[]) => void;
-    defaultData: BackgroundGroup[];
+    onChange: (data: BackgroundGroupTypesOfStyleItems[]) => void;
+    defaultData: BackgroundGroupTypesOfStyleItems[];
 }
 
 const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
@@ -30,7 +30,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
     )
 
     const onChangeItem = useCallback(
-        (index: number) => (item: BackgroundGroup) => {
+        (index: number) => (item: BackgroundGroupTypesOfStyleItems) => {
             const oprateBackgroundList = [...backgroundList];
             oprateBackgroundList[index] = item;
             setBackgroundList(oprateBackgroundList);

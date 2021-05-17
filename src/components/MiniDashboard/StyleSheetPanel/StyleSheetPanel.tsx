@@ -40,6 +40,13 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
         [rootStyle, update]
     );
 
+    const onChangeBackgroundGroup = useCallback(
+        (result: any) => {
+            update(result, `${rootStyle}.backgroundGroup`);
+        },
+        [rootStyle, update],
+    )
+
     const onChangeBackgroundCommon = useCallback(
         (result: any) => {
             if (result.type === 'backgroundCommon') {
@@ -102,8 +109,8 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
                     >   
                         <BackgroundGroup
                             updateKey={selected.moduleId}
-                            onChange={() => {}}
-                            defaultData={selected?.style?.[path]?.backgroundGroup || [{}]}
+                            onChange={onChangeBackgroundGroup}
+                            defaultData={selected?.style?.[path]?.backgroundGroup || []}
                         />
                     </Panel>
                     <Panel
