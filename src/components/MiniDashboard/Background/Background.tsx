@@ -187,7 +187,7 @@ const BackgroundCommon: React.FC<Props> = ({
               "repeat-x": "横向平铺",
               "repeat-y": "纵向平铺",
             }}
-            onChange={onChangeBackgroundCommon("repeat")}
+            onChange={onChangeBackgroundCommon("repeat") as any}
           />
         </Col>
         <Col span={12}>

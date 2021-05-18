@@ -64,8 +64,8 @@ const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
 
   const onChangeGradient = useCallback(
     (data: BackgroundGradientTypesOfStyleItems) => {
-      const { gradient, gradientDirections } = data || {};
       const operateData = { ...data };
+      const { gradient, gradientDirections } = data || {};
       operateData.gradient = gradient;
       operateData.gradientDirections = gradientDirections;
       setData(operateData);

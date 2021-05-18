@@ -13,6 +13,7 @@ import {
 } from '~/types/appData';
 import { compilePlaceholderFromDataSource } from '~/core/getDataFromSource';
 import React from 'react';
+import prefix from '~/core/helper/getPrefix';
 
 interface objType {
     [key: string]: any;
@@ -232,24 +233,155 @@ export const font = function (styleObj: objType): resultType {
  * 背景组处理
  * ---------------
  */
-export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItems[]): resultType => {
-    console.log(333, backgroundArray);
-    const result: BackgroundCommonTypesOfStyleItems = {};
-    const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
-    const values = {};
 
+export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItems[]): resultType => {
+    const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
+
+    const backgroundResultArray: (string | string[])[] = [];
+
+    // 遍历集合
     backgroundArray.forEach(background => {
-        for (const key in background) {
-            if (Object.prototype.hasOwnProperty.call(background, key)) {
-                const element = background[key];
-                console.log(element);
+        // 暂存单项样式
+        const backgroundItemStyle: string[] = [];
+        // 暂存位置
+        const backgroundSizePosition = ['0', '0', '/', 'auto', 'auto'];
+
+        const {gradient, gradientDirections, ...otherItem} = background;
+        // 首先处理渐变==================================================================
+        // 渐变处理需考虑浏览器情况，做优先处理
+        // 获取渐变属性
+        // 暂存渐变结果，由于浏览器兼容差异放最后处理；
+        const gradientLise: string[] = [];
+        if (gradient || gradientDirections) {
+            //渐变类型,线性或径向
+            let type: 'linear-gradient' | 'radial-gradient' = 'linear-gradient';
+            // 临时傀儡数据
+            const puppet: { [keys: string]: any[] } = {
+                moz: [],
+                webkit: [],
+                normal: [],
+            };
+
+            /**
+             * 生成css渐变方法首参，（确定渐变方向/方式）
+             * 径向方向时需要修改css方法名为 radial-gradient
+             */
+            const getCssGradientFun = (directions: any): string => {
+                switch (directions) {
+                    case 'left':
+                        return 'to right';
+                    case 'top':
+                        return 'to bottom';
+                    case '-45deg':
+                        return '135deg';
+                    case 'center':
+                        type = 'radial-gradient';
+                        return 'ellipse at center';
+                    default:
+                        return directions;
+                }
+            };
+
+            // step1组装方向到puppet
+            if (gradientDirections) {
+                puppet.moz[0] = puppet.webkit[0] = gradientDirections;
+                puppet.normal[0] = getCssGradientFun(gradientDirections);
+            }
+
+            // step2组装位置到puppet
+            if (gradient) {
+                gradient.forEach(({ color, transition }) => {
+                    if (color !== undefined && transition !== undefined) {
+                        const group = `${color} ${transition}%`;
+                        puppet.moz.push(group);
+                        puppet.webkit.push(group);
+                        puppet.normal.push(group);
+                    }
+                });
+            }
+
+            // 存储渐变结果
+            for (const key in puppet) {
+                if (Object.prototype.hasOwnProperty.call(puppet, key)) {
+                    const resultItem = puppet[key].join(', ');
+                    if (key === 'normal') {
+                        gradientLise[2] = (`${type}(${resultItem})`);
+                    } else if (key === 'moz') {
+                        gradientLise[0] = (`-${key}-${type}(${resultItem})`);
+                    } else {
+                        gradientLise[1] = (`-${key}-${type}(${resultItem})`);
+                    }
+                }
+            }
+        }
+        // 渐变处理结束==================================================================
+        
+
+        for (const key in otherItem) {
+            if (Object.prototype.hasOwnProperty.call(otherItem, key)) {
+                const element = otherItem[key];
+                // 处理背景位置与尺寸
+                if (unitType.includes(key)) {
+                    // 编译处理结果
+                    const val = compileValue(element);
+                    if (val) {
+                        switch (key) {
+                            case 'positionX':
+                                backgroundSizePosition[0] = val;
+                                break;
+                            case 'positionY':
+                                backgroundSizePosition[1] = val;
+                                break;
+                            case 'sizeX':
+                                backgroundSizePosition[3] = val;
+                                break;
+                            case 'sizeY':
+                                backgroundSizePosition[4] = val;
+                                break;
+                            default:
+                                break;
+                        };
+                    }
+                }
+
+                if (!!element) {
+                    switch (key) {
+                        case 'repeat':
+                        case 'backgroundColor':
+                            backgroundItemStyle.push(element)
+                            break;
+                        case 'imageUrl':
+                            backgroundItemStyle.push(`url("${element}")`)
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        backgroundItemStyle.push(backgroundSizePosition.join(' '));
+
+        // 背景图片时
+        if (background.imageUrl) {
+            backgroundResultArray.push(backgroundItemStyle.join(' '))
+        } else if (background.gradient || background.gradientDirections) {
+            // 获取当前浏览器类型
+            if (prefix === 'webkit') {
+                backgroundResultArray.push( `${gradientLise[1]} ${backgroundItemStyle.join(' ')}`);
+            }  else if (prefix === 'moz') {
+                backgroundResultArray.push( `${gradientLise[0]} ${backgroundItemStyle.join(' ')}`);
+            } else {
+                backgroundResultArray.push( `${gradientLise[2]} ${backgroundItemStyle.join(' ')}`);
             }
         }
     })
-
+    const result = {
+        background: backgroundResultArray.join(', ')
+    }
+    
     return {
-        result: values,
-        string: createInlineStyles(values) || '',
+        result: result,
+        string: createInlineStyles(result) || '',
     };
 }
 
@@ -260,6 +392,7 @@ export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItem
  * 常规背景处理
  * -------------
  */
+
 export const backgroundCommon = (
     styleObj: BackgroundCommonTypesOfStyleItems
 ): resultType => {

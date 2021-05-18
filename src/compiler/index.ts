@@ -6,8 +6,6 @@ function handler(styleGroup: StyleItemsTypes): {
   style: React.CSSProperties;
   strStyle: string;
 } {
-  console.log("styleGroup", styleGroup);
-
   if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
     return { style: {}, strStyle: "" };
   const descriptionKeys = [
@@ -53,12 +51,12 @@ function handler(styleGroup: StyleItemsTypes): {
       case "backgroundGroup":
         generateStyle = compiler.backgroundGroup(styleObj);
         break;
-      case "backgroundGradient":
-        generateStyle = compiler.backgroundGradient(styleObj);
-        break;
-      case "backgroundCommon":
-        generateStyle = compiler.backgroundCommon(styleObj);
-        break;
+      // case "backgroundGradient":
+      //   generateStyle = compiler.backgroundGradient(styleObj);
+      //   break;
+      // case "backgroundCommon":
+      //   generateStyle = compiler.backgroundCommon(styleObj);
+      //   break;
       case "border":
         generateStyle = compiler.border(styleObj);
         break;
@@ -77,6 +75,7 @@ function handler(styleGroup: StyleItemsTypes): {
       default:
         break;
     }
+    console.log('compiledResult', compiledResult);
     compiledResult.style = { ...compiledResult.style, ...generateStyle.result };
     stringResult.push(generateStyle.string);
   }
