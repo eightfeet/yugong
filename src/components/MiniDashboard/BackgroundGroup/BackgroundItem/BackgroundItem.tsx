@@ -2,6 +2,7 @@ import { Row, Col, Radio, RadioChangeEvent } from "antd";
 import React, { useCallback, useState } from "react";
 import {
   BackgroundGradientTypesOfStyleItems,
+  BackgroundGroupListTypesOfStyleItems,
   BackgroundGroupTypesOfStyleItems,
   UnitType,
 } from "~/types/appData";
@@ -15,14 +16,13 @@ import QuadrangularSelect from "../../QuadrangularSelect";
 import { ColorResult } from "react-color";
 
 interface Props {
-  onChange: (value: BackgroundGroupTypesOfStyleItems) => void;
-  defaultData: BackgroundGroupTypesOfStyleItems;
+  onChange: (value: BackgroundGroupListTypesOfStyleItems) => void;
+  defaultData: BackgroundGroupListTypesOfStyleItems;
 }
 
 const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
-  const [data, setData] = useState<BackgroundGroupTypesOfStyleItems>({ ...defaultData });
+  const [data, setData] = useState<BackgroundGroupListTypesOfStyleItems>({ ...defaultData });
   const {
-    backgroundColor,
     gradient,
     gradientDirections,
     imageUrl,
@@ -106,22 +106,6 @@ const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
     [data, onChange]
   );
 
-  const onChangeBackgroundColor = useCallback(
-    (result) => {
-      const operateData = { ...data };
-      const setResult = result as {
-        name: "color";
-        value: ColorResult | undefined;
-      };
-      operateData.backgroundColor =
-        setResult.value &&
-        `rgba(${setResult.value.rgb.r}, ${setResult.value.rgb.g}, ${setResult.value.rgb.b}, ${setResult.value.rgb.a})`;
-      setData(operateData);
-      onChange(operateData);
-    },
-    [data, onChange]
-  );
-
   /**
    * 渐变渲染
    * @returns
@@ -151,15 +135,6 @@ const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
 
   return (
     <>
-      <Row className={s.row}>
-        <Col span={12}>
-          <Color
-            label="背景颜色"
-            onChange={onChangeBackgroundColor}
-            defaultColor={backgroundColor}
-          />
-        </Col>
-      </Row>
       <Row className={s.row}>
         <Col span={24}>
           <Radio.Group

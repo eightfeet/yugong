@@ -154,9 +154,7 @@ export interface AppDataLayoutItemTypes extends AppDataElementsTypes {
   layout?: Layout;
 }
 
-export interface BackgroundGroupTypesOfStyleItems {
-  /**背景颜色 */
-  backgroundColor?: string;
+export interface BackgroundGroupListTypesOfStyleItems {
   /**背景url - 渐变位置和过度色值 */
   gradient?: {
     color: string;
@@ -178,10 +176,17 @@ export interface BackgroundGroupTypesOfStyleItems {
   repeat?: string;
 }
 
+export interface BackgroundGroupTypesOfStyleItems {
+  /**背景列表 */
+  backgroundList?: BackgroundGroupListTypesOfStyleItems[],
+  /**背景颜色 */
+  backgroundColor?: string;
+}
+
 export interface StyleItemsTypes {
   backgroundCommon?: BackgroundCommonTypesOfStyleItems;
   backgroundGradient?: BackgroundGradientTypesOfStyleItems;
-  backgroundGroup?: BackgroundGroupTypesOfStyleItems[];
+  backgroundGroup?: BackgroundGroupTypesOfStyleItems;
   border?: BorderTypesOfStyleItems;
   boxShadow?: BoxShadowTypesOfStyleItems[];
   textShadow?: TextShadowTypesOfStyleItems[];

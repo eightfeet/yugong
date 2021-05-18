@@ -5,6 +5,7 @@ import unitToPx from '~/core/unitToPx';
 import {
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
+    BackgroundGroupListTypesOfStyleItems,
     BackgroundGroupTypesOfStyleItems,
     BorderTypesOfStyleItems,
     BoxShadowTypesOfStyleItems,
@@ -233,14 +234,13 @@ export const font = function (styleObj: objType): resultType {
  * 背景组处理
  * ---------------
  */
-
-export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItems[]): resultType => {
+export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleItems): resultType => {
     const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
-
+    const { backgroundList, backgroundColor} = backgroundGroupObj;
     const backgroundResultArray: (string | string[])[] = [];
 
     // 遍历集合
-    backgroundArray.forEach(background => {
+    backgroundList?.forEach((background, index) => {
         // 暂存单项样式
         const backgroundItemStyle: string[] = [];
         // 暂存位置
@@ -360,10 +360,13 @@ export const backgroundGroup = (backgroundArray: BackgroundGroupTypesOfStyleItem
             }
         }
         backgroundItemStyle.push(backgroundSizePosition.join(' '));
-
+        // 多重背景叠加时，背景色应添加到最后，https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds
+        if (backgroundColor && index + 1 === backgroundList.length) {
+            backgroundItemStyle.push(backgroundColor);
+        }
         // 背景图片时
         if (background.imageUrl) {
-            backgroundResultArray.push(backgroundItemStyle.join(' '))
+            backgroundResultArray.push(backgroundItemStyle.join(' '));
         } else if (background.gradient || background.gradientDirections) {
             // 获取当前浏览器类型
             if (prefix === 'webkit') {

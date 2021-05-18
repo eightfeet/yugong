@@ -110,7 +110,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
                         <BackgroundGroup
                             updateKey={selected.moduleId}
                             onChange={onChangeBackgroundGroup}
-                            defaultData={selected?.style?.[path]?.backgroundGroup || []}
+                            defaultData={selected?.style?.[path]?.backgroundGroup || {}}
                         />
                     </Panel>
                     <Panel
