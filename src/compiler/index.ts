@@ -75,7 +75,6 @@ function handler(styleGroup: StyleItemsTypes): {
       default:
         break;
     }
-    console.log('compiledResult', compiledResult);
     compiledResult.style = { ...compiledResult.style, ...generateStyle.result };
     stringResult.push(generateStyle.string);
   }

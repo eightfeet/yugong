@@ -33,7 +33,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
   }, [backgroundColor, backgroundList, onChange]);
 
   const onMinus = useCallback(
-    (index: number) => {
+    (index: number) =>  {
       const data = backgroundList?.filter((_, i) => index !== i);
       setBackgroundList(data);
       onChange({
@@ -90,7 +90,8 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
             <div className={s.menu}>
               <Button
                 size="small"
-                icon={<MinusOutlined onClick={() => onMinus(index)} />}
+                onClick={() => onMinus(index)}
+                icon={<MinusOutlined  />}
               >
                 删除
               </Button>

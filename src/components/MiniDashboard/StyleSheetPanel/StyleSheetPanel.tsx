@@ -113,23 +113,6 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
                             defaultData={selected?.style?.[path]?.backgroundGroup || {}}
                         />
                     </Panel>
-                    <Panel
-                        header="背景"
-                        key="backgroundCommon_backgroundGradient"
-                    >   
-                        <Background
-                            unit={unit}
-                            updateKey={selected.moduleId}
-                            onChange={onChangeBackgroundCommon}
-                            defaultBGCommonData={
-                                selected?.style?.[path]?.backgroundCommon || {}
-                            }
-                            defaultBGGradient={
-                                selected?.style?.[path]?.backgroundGradient ||
-                                {}
-                            }
-                        />
-                    </Panel>
                     <Panel header="圆角与描边" key="border">
                         <Border
                             unit={unit}

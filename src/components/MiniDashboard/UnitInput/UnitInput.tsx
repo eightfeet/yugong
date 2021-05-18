@@ -68,6 +68,13 @@ const Unitinput: React.FC<Props> = ({
 
     const refChange = useSafeCallback(onChange);
 
+    useEffect(() => {
+        if (defaultUnitValue === '-' || defaultUnitValue === 'runningTime') {
+            setValueType('text');
+        } else {
+            setValueType('number');
+        }
+    }, [defaultUnitValue])
     /**
      * 高频编辑防抖处理
      */

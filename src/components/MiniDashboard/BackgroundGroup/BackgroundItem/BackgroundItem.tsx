@@ -63,15 +63,15 @@ const Backgrounditem: React.FC<Props> = ({ onChange, defaultData }) => {
   );
 
   const onChangeGradient = useCallback(
-    (data: BackgroundGradientTypesOfStyleItems) => {
+    (result: BackgroundGradientTypesOfStyleItems) => {
       const operateData = { ...data };
-      const { gradient, gradientDirections } = data || {};
+      const { gradient, gradientDirections } = result || {};
       operateData.gradient = gradient;
       operateData.gradientDirections = gradientDirections;
       setData(operateData);
       onChange(operateData);
     },
-    [onChange]
+    [data, onChange]
   );
 
   const onChangeRepeat = useCallback(

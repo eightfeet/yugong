@@ -5,7 +5,6 @@ import unitToPx from '~/core/unitToPx';
 import {
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
-    BackgroundGroupListTypesOfStyleItems,
     BackgroundGroupTypesOfStyleItems,
     BorderTypesOfStyleItems,
     BoxShadowTypesOfStyleItems,
@@ -238,7 +237,16 @@ export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleI
     const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
     const { backgroundList, backgroundColor} = backgroundGroupObj;
     const backgroundResultArray: (string | string[])[] = [];
-
+    if (!backgroundList?.length && backgroundColor) {
+        const result = {
+            backgroundColor
+        }
+        
+        return {
+            result: result,
+            string: createInlineStyles(result) || '',
+        };
+    }
     // 遍历集合
     backgroundList?.forEach((background, index) => {
         // 暂存单项样式
@@ -247,6 +255,7 @@ export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleI
         const backgroundSizePosition = ['0', '0', '/', 'auto', 'auto'];
 
         const {gradient, gradientDirections, ...otherItem} = background;
+
         // 首先处理渐变==================================================================
         // 渐变处理需考虑浏览器情况，做优先处理
         // 获取渐变属性
@@ -359,11 +368,9 @@ export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleI
                 }
             }
         }
+        
         backgroundItemStyle.push(backgroundSizePosition.join(' '));
-        // 多重背景叠加时，背景色应添加到最后，https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds
-        if (backgroundColor && index + 1 === backgroundList.length) {
-            backgroundItemStyle.push(backgroundColor);
-        }
+        
         // 背景图片时
         if (background.imageUrl) {
             backgroundResultArray.push(backgroundItemStyle.join(' '));
@@ -378,8 +385,9 @@ export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleI
             }
         }
     })
+    // 多重背景叠加时，背景色应添加到最后，https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds
     const result = {
-        background: backgroundResultArray.join(', ')
+        background: `${backgroundResultArray.join(', ')} ${backgroundColor ? backgroundColor : ''}`
     }
     
     return {
