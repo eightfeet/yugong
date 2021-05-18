@@ -108,7 +108,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
                         key="backgroundGroup"
                     >   
                         <BackgroundGroup
-                            updateKey={selected.moduleId}
+                            updateKey={`${selected.moduleId}${path}`}
                             onChange={onChangeBackgroundGroup}
                             defaultData={selected?.style?.[path]?.backgroundGroup || {}}
                         />

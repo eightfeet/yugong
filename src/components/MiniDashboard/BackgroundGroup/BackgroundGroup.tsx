@@ -1,6 +1,6 @@
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   BackgroundGroupListTypesOfStyleItems,
   BackgroundGroupTypesOfStyleItems,
@@ -22,6 +22,11 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>(
     defaultData.backgroundColor
   );
+
+  useEffect(() => {
+    setBackgroundList(defaultData.backgroundList);
+    setBackgroundColor(defaultData.backgroundColor);
+  }, [defaultData])
 
   const onPlus = useCallback(() => {
     const data = [...(backgroundList || []), {}];
