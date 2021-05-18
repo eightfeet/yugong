@@ -821,8 +821,6 @@ export const transform = function (styleObj: objType): resultType {
     prefixResult.push(`-moz-${str}`);
     prefixResult.push(`-webkit-${str}`);
     prefixResult.push(str);
-    console.log('result', result);
-    
     return {
         result,
         string: prefixResult.join(' '),

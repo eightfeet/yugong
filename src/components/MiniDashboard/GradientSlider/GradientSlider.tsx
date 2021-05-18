@@ -118,6 +118,7 @@ const GradientSlider: React.FC<Props> = ({ onChange, defaultData }) => {
         (index) => () => {
             let newValuse = valuse.filter((item: number, i) => index !== i);
             let newColor = colorArray.filter((item: string, i) => index !== i);
+            // 剩余一个节点时，清空数据
             if (newValuse.length === 1) newValuse = [];
             if (newColor.length === 1) newColor = [];
             const result = updateGradient(newColor, newValuse);
@@ -128,10 +129,20 @@ const GradientSlider: React.FC<Props> = ({ onChange, defaultData }) => {
 
     const onColorChange = useCallback(
         (i) => (color: any) => {
-            const colors: string[] = [...colorArray];
-            const rgba = color.value.rgb;
-            colors[i] = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
-            const result = updateGradient(colors, valuse);
+            let colors: string[] = [...colorArray];
+            let val = [...valuse];
+            if (color.value) {
+                const rgba = color.value.rgb;
+                colors[i] = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
+            } else {
+                colors = colors.filter((_, index) => index !== i)
+                val = val.filter((_, index) => index !== i)
+                // 剩余一个节点时，清空数据
+                if (colors.length === 1) colors = [];
+                if (val.length === 1) val = [];
+            }
+            
+            const result = updateGradient(colors, val);
             onChangeData(result);
         },
         [colorArray, onChangeData, updateGradient, valuse]

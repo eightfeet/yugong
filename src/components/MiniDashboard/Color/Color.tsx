@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ColorResult, RGBColor, SketchPicker } from 'react-color';
 import { Row, Col } from 'antd';
 import { BgColorsOutlined } from '@ant-design/icons';
 import s from './Color.module.less';
 import ClassNames from 'classnames';
+import { throttle } from 'lodash';
+import useSafeCallback from '~/hooks/useSafeCallback';
 const parse = require('color-parse');
 interface Props {
     defaultColor?: string;
@@ -79,6 +81,19 @@ const Color: React.FC<Props> = ({
         setDisplayColorPicker(false);
     }, []);
 
+    /**
+     * 高频编辑防抖处理
+     */
+     const refChange = useSafeCallback(onChange);
+     const onChangeDebounce = useMemo(
+        () =>
+            throttle((value) => {
+                refChange.current?.(value);
+            }, 500),
+        [refChange]
+    );
+
+
     const handleChange = useCallback(
         (color: ColorResult | 'inherit') => {
           let colorResult: any = color;
@@ -89,14 +104,15 @@ const Color: React.FC<Props> = ({
                 setColor(color.rgb);
             }
 
-            onChange({
+            onChangeDebounce({
                 name: 'color',
                 value: colorResult,
             });
         },
-        [onChange]
+        [onChangeDebounce]
     );
 
+    
     const renderColor = () => {
         return (
             <>
