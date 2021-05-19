@@ -45,8 +45,8 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
           border[type] = value;
           break;
         case "borderColor":
-          const rgba = value.value.rgb;
-          border.borderColor = value.value === 'inherit' ? 'inherit' : `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
+          const rgba = value.value?.rgb;
+          border.borderColor = rgba && `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
           break;
         default:
           break;
@@ -63,14 +63,18 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
   return (
     <>
       <Row className={s.row}>
-        <Col span={12}>
+        <Col span={6}>
           <Color
             defaultColor={border.borderColor}
             label="描边颜色"
             onChange={onChangeBorder("borderColor")}
+            span={{
+              label: 14,
+              value: 10
+            }}
           />
         </Col>
-
+        <Col span={6} />
         <Col span={12}>
           <BorderCheckbox
             onChange={onChangeBorder("borderPosition")}

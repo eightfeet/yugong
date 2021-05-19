@@ -125,17 +125,13 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
     (type, i) => (res: any) => {
       if (type === "box") {
         boxShadowList[i].color =
-          res.value === "inherit"
-            ? "rgba(0,0,0,1)"
-            : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
+        res.value && `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
         setBoxShadowList(boxShadowList);
         onChangeShadow(type, boxShadowList);
       }
       if (type === "text") {
         textShadowList[i].color =
-          res.value === "inherit"
-            ? "rgba(0,0,0,1)"
-            : `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
+          res.value && `rgba(${res.value.rgb.r}, ${res.value.rgb.g}, ${res.value.rgb.b}, ${res.value.rgb.a} )`;
         setBoxShadowList(textShadowList);
         onChangeShadow(type, textShadowList);
       }

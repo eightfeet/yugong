@@ -25,6 +25,7 @@ type ChangeType =
   | "top"
   | "bottom"
   | "display"
+  | "boxSizing"
   | "overflow";
 
 const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
@@ -45,6 +46,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     padding,
     display,
     overflow,
+    boxSizing
   } = displayData;
 
   useEffect(() => {
@@ -59,6 +61,10 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         delete displayData.right;
         delete displayData.top;
         delete displayData.bottom;
+      }
+      
+      if (!displayData.width && !displayData.height  ) {
+        delete displayData.boxSizing
       }
       setDisplayData({ ...displayData });
       if (onChange instanceof Function) {
@@ -145,10 +151,11 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       <Row className={s.row}>
         <Col span={12}>
           <Select
-            label="定位"
-            value={position}
-            optionsData={{ absolute: "绝对", relative: "相对", "": "无" }}
-            onChange={onChangeDisplay("position")}
+            placehold="请先设置宽高"
+            label="尺寸限制"
+            value={boxSizing}
+            optionsData={{ 'content-box': "自动扩展", 'border-box': "固定宽高", "": "无" }}
+            onChange={onChangeDisplay("boxSizing")}
           />
         </Col>
         <Col span={12}>
@@ -159,6 +166,19 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             defaultValue={zIndex}
             onChange={onChangeDisplay("zIndex")}
           />
+        </Col>
+      </Row>
+      <Row className={s.row}>
+        <Col span={12}>
+          <Select
+            label="定位"
+            value={position}
+            optionsData={{ absolute: "绝对", relative: "相对", "": "无" }}
+            onChange={onChangeDisplay("position")}
+          />
+        </Col>
+        <Col span={12}>
+          &nbsp;
         </Col>
       </Row>
       {position === "absolute" || position === "fixed" ? (

@@ -14,6 +14,10 @@ interface Props {
         name: 'color';
         value: ColorResult | undefined;
     }) => void;
+    span?: {
+        label: number,
+        value: number,
+    }
 }
 
 const Color: React.FC<Props> = ({
@@ -21,6 +25,7 @@ const Color: React.FC<Props> = ({
     label,
     onChange,
     children,
+    span,
     ...other
 }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false);
@@ -181,10 +186,10 @@ const Color: React.FC<Props> = ({
                 </>
             ) : (
                 <Row className={s.row} gutter={4}>
-                    <Col className={s.label} span={7}>
+                    <Col className={s.label} span={span?.label || 7}>
                         {label || ''}
                     </Col>
-                    <Col span={10}>
+                    <Col span={ span?.value || 17}>
                         <div className={s.swatch} onClick={handleClick}>
                             {color ? (
                                 <div
@@ -201,7 +206,6 @@ const Color: React.FC<Props> = ({
                             {renderColor()}
                         </div>
                     </Col>
-                    <Col span={7}></Col>
                 </Row>
             )}
         </>

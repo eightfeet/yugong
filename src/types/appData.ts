@@ -262,6 +262,7 @@ export interface DisplayTypesOfStyleItems {
   padding?: (UnitType|null)[];
   display?: string;
   overflow?: string;
+  boxSizing?: string;
 }
 
 export interface BackgroundGradientTypesOfStyleItems {
