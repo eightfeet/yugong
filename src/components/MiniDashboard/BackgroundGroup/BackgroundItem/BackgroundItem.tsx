@@ -3,17 +3,14 @@ import React, { useCallback, useState } from "react";
 import {
   BackgroundGradientTypesOfStyleItems,
   BackgroundGroupListTypesOfStyleItems,
-  BackgroundGroupTypesOfStyleItems,
   UnitType,
 } from "~/types/appData";
-import Color from "../../Color";
 import GradientSlider from "../../GradientSlider";
 import UnitInput from "../../UnitInput";
 import Upload from "../../Upload";
 import Select from "~/components/MiniDashboard/Select";
 import s from "./BackgroundItem.module.less";
 import QuadrangularSelect from "../../QuadrangularSelect";
-import { ColorResult } from "react-color";
 
 interface Props {
   onChange: (value: BackgroundGroupListTypesOfStyleItems) => void;

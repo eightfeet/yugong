@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Select as SelectItem } from "antd";
 import s from './Select.module.scss';
-import { SelectValue } from "antd/lib/select";
 
 interface Props {
     label: string;

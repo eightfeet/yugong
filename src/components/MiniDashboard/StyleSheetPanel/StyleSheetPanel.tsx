@@ -5,7 +5,6 @@ import { RootState } from '~/redux/store';
 import { Collapse } from 'antd';
 import Display from '../Display';
 import Font from '../Font';
-import Background from '../Background';
 
 import useMergeAppData from '~/hooks/useMergeAppData';
 import s from './StyleSheetPanel.module.scss';
@@ -46,18 +45,6 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
         },
         [rootStyle, update],
     )
-
-    const onChangeBackgroundCommon = useCallback(
-        (result: any) => {
-            if (result.type === 'backgroundCommon') {
-                update(result.values, `${rootStyle}.backgroundCommon`);
-            }
-            if (result.type === 'backgroundGradient') {
-                update(result.values, `${rootStyle}.backgroundGradient`);
-            }
-        },
-        [rootStyle, update]
-    );
 
     const onChangeShadow = useCallback(
         (result: any) => {

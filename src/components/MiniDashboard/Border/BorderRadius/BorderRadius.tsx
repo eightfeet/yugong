@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, InputNumber } from "antd";
+import { Row, Col } from "antd";
 import s from "./BorderRadius.module.less";
 import {
   LinkOutlined,
