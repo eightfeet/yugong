@@ -236,6 +236,7 @@ export const backgroundGroup = (backgroundGroupObj: BackgroundGroupTypesOfStyleI
     const unitType = ['sizeX', 'sizeY', 'positionX', 'positionY'];
     const { backgroundList, backgroundColor} = backgroundGroupObj;
     const backgroundResultArray: (string | string[])[] = [];
+    
     if (!backgroundList?.length && backgroundColor) {
         const result = {
             backgroundColor

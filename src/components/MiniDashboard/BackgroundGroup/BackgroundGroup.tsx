@@ -39,7 +39,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
 
   const onMinus = useCallback(
     (index: number) =>  {
-      const data = backgroundList?.filter((_, i) => index !== i);
+      const data = backgroundList?.filter((_, i) => index !== i) || [];
       setBackgroundList(data);
       onChange({
         backgroundList: data,
