@@ -191,7 +191,6 @@ const Unitinput: React.FC<Props> = ({
                     ) : null}
                     <Select
                         className={s.select}
-                        dropdownClassName={s.dropdown}
                         onChange={onChangeUnitType}
                         value={unit || ''}
                         style={forceItem === 'select' ? style : undefined}

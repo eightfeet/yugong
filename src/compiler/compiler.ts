@@ -130,9 +130,8 @@ const compileValue = (data: UnitType) => {
     // 处理空值
     if (unit === '' || unit === null || unit === undefined) {
         return changeToUnit(value).value;
+    // 自定义时允许使用runningtime
     } else if (unit === '-') {
-        return value;
-    } else if (unit === 'runningTime') {
         return compilePlaceholderFromDataSource(value.toString(), runningTimes);
     } else {
         return `${value}${unit}`;

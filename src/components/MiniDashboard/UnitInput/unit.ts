@@ -53,10 +53,6 @@ const getUnits = (globalUnit: string):any[] => {
             value: '%'
         },
         {
-            text: '运行时',
-            value: 'runningTime'
-        },
-        {
             text: '自定义',
             value: '-'
         }
