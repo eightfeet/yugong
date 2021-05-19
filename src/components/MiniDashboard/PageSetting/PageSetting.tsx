@@ -93,10 +93,11 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeBg = useCallback(
     (data: any) => {
       const optPageData = cloneDeep(pageData);
-      const style = {
-        ...(optPageData.style || {}),
+
+      optPageData.style = {
+        backgroundGroup: data
       };
-      optPageData.style = style;
+      console.log(2, optPageData);
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]

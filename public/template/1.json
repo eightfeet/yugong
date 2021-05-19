@@ -6,7 +6,7 @@
                 "backgroundColor": "rgba(45, 15, 194, 1)",
                 "imageUrl": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0503120504316.jpg",
                 "repeat": "no-repeat",
-                "sizeX": 750
+                "sizeX": [750, ""]
             }
         },
         "unit": "px",

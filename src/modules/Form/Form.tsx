@@ -263,7 +263,7 @@ Form.exposeFunctions = [
   },
   {
     name: "setFormItem",
-    description: "设置表单项",
+    description: "表单项对应的值",
     arguments: [
       {
         type: "string",

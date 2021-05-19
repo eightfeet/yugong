@@ -92,13 +92,13 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
   const setLabel = useCallback((index: number) => {
     switch (index) {
       case 0:
-        return "上";
+        return "顶部";
       case 1:
-        return "右";
+        return "右边";
       case 2:
-        return "下";
+        return "底部";
       case 3:
-        return "左";
+        return "左边";
       default:
         return "";
     }
@@ -129,13 +129,13 @@ const Spacing: React.FC<Props> = ({ unit, onChange, margin, padding }) => {
             />
           </div>
         </Col>
-        <Col span={2} className={s.middle}>
+        <Col span={3} className={s.middle}>
           <LinkOutlined
             onClick={onToggleLocker}
             className={locked ? s.locked : undefined}
           />
         </Col>
-        <Col span={13}>
+        <Col span={12}>
           {getValue().map((item, index) => {
             return <Unitinput
               span={{ label: 3, wrapper: 21 }}

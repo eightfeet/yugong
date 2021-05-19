@@ -1,21 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import Layout from '~/components/DashboardApp/Layout';
 import Responsive from '~/components/Responsive';
-import UnitInput from '../MiniDashboard/UnitInput';
 
 const Home = () => {
-    const [value, setValue] = useState<[string | number | null, string]>([100, ''])
-   return <div>
-    <div style={{width: '250px', backgroundColor: '#fff'}}>
-        <UnitInput onChange={(val) => {
-            setValue(val);
-            console.log(val);
-        }} defaultValue={value} label="页面标签" />
-        <br />
-        {value}
-    </div>
-</div>
+   return <div>home</div>
 };
 
 interface Props {}
