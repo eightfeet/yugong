@@ -10,3 +10,38 @@
 .row {
   align-items: center;
 }
+.bar {
+  .path {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    padding: 0 25px 0 5px;
+    span {
+      color: #ccc;
+      &::after {
+        content: '>';
+        margin: 0 5px;
+      }
+      &:last-child {
+        color: rgba(0, 0, 0, 0.65);
+        &::after {
+          content: '';
+        }
+      }
+    }
+  }
+}
+.select {
+  :global {
+    .ant-select-selection-item {
+      opacity: 0;
+    }
+  }
+}

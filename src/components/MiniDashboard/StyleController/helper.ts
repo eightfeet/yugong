@@ -1,5 +1,7 @@
-function findPath(value: string, data: any[]) {
-    const sel: any[] = [];
+import { AnyObjectType } from "~/types/appData";
+
+export function findPath(value: string, data: AnyObjectType[]):AnyObjectType[] {
+    const sel: AnyObjectType[] = [];
     function loop(selected: string, children: any[]) {
       for (let i = 0; i < children.length; i += 1) {
         const item = children[i];
@@ -19,5 +21,3 @@ function findPath(value: string, data: any[]) {
     loop(value, data);
     return sel;
   }
-
-  export default findPath;
