@@ -4,6 +4,7 @@ import {
     Api,
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
+    BackgroundGroupTypesOfStyleItems,
 } from '~/types/appData';
 import { EventsType, EventsTypeItem } from '~/types/modules';
 import { RootModel } from './models';
@@ -23,6 +24,7 @@ export interface PageData {
     style?: {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
+        backgroundGroup?: BackgroundGroupTypesOfStyleItems
     };
     /* api */ 
     onLoadApi?: Api[];

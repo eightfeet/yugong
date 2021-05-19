@@ -7,6 +7,7 @@ import 'whatwg-fetch';
 import ReactDOM from "react-dom";
 // import 'default-passive-events';
 import "antd/dist/antd.css";
+import './dashboard.less';
 import reportWebVitals from "~/reportWebVitals";
 import DashboardApp from "~/components/DashboardApp";
 import { Provider } from "react-redux";

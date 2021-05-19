@@ -15,7 +15,7 @@ import { RootState, Dispatch } from '~/redux/store';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
 import EventEmitter from '~/core/EventEmitter';
-import { backgroundGradient, backgroundCommon } from '~/compiler/compiler';
+import { backgroundGroup } from '~/compiler/compiler';
 import { cloneDeep } from 'lodash';
 // 当前是否被ifream引用
 const visualSense = window.self === window.top;
@@ -140,20 +140,11 @@ const OutputLayout: React.FC<LayoutProps> = ({
     );
 
     const generateStyle = useCallback(() => {
-        const gradient = backgroundGradient(
-            pageData.style?.backgroundGradient || {}
-        ).result;
-
         const style = {
-            ...backgroundCommon(pageData.style?.backgroundCommon || {}).result,
+            ...backgroundGroup(pageData.style?.backgroundGroup || {}).result,
         };
-
-        if (gradient.background) {
-            style.background = gradient.background;
-        }
-
         return style;
-    }, [pageData.style?.backgroundCommon, pageData.style?.backgroundGradient]);
+    }, [pageData.style?.backgroundGroup]);
 
     // 同步runningTimeData
     useEffect(() => {

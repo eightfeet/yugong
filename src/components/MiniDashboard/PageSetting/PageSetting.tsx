@@ -17,7 +17,6 @@ import React, { useCallback, useState } from "react";
 import Output from '~/components/Output';
 import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
-import Background from "../Background";
 import EventGroup from "../EventsSetting/EventGroup";
 import reject from "lodash/reject";
 import { v4 as uuidv4 } from "uuid";
@@ -28,6 +27,7 @@ import { Dispatch, RootState } from "~/redux/store";
 import usePostMessage from "~/hooks/usePostMessage";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import RunningTimesModal from "../RunningTimesModal";
+import BackgroundGroup from "../BackgroundGroup";
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -96,12 +96,6 @@ const Pagesetting: React.FC<Props> = () => {
       const style = {
         ...(optPageData.style || {}),
       };
-      if (data.type === "backgroundCommon") {
-        style.backgroundCommon = data.values;
-      }
-      if (data.type === "backgroundGradient") {
-        style.backgroundGradient = data.values;
-      }
       optPageData.style = style;
       handleUpdatePage(optPageData);
     },
@@ -313,23 +307,6 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
           <Row gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
-              背景设置：
-            </Col>
-            <Col span={19}>
-              <div className={s.bg}>
-                <Background
-                  updateKey={"api"}
-                  defaultBGCommonData={pageData.style?.backgroundCommon || {}}
-                  defaultBGGradient={pageData.style?.backgroundGradient || {}}
-                  onChange={onChangeBg}
-                  unit={pageData.unit}
-                />
-              </div>
-            </Col>
-            <Col span={1} />
-          </Row>
-          <Row gutter={4} className={s.row}>
-            <Col className={s.label} span={4}>
               页面单位：
             </Col>
             <Col span={7}>
@@ -411,6 +388,18 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
             </Row>
           ) : null}
+          <Row gutter={4} className={s.row}>
+            <Col span={24}>
+              <div className={s.bg}>
+                <BackgroundGroup
+                    updateKey={"api"}
+                    onChange={onChangeBg}
+                    defaultData={pageData.style?.backgroundGroup || {}}
+                />
+              </div>
+            </Col>
+            <Col span={1} />
+          </Row>
         </Panel>
         <Panel header="初始化Api" key="pagemount">
           <div className={s.events}>
