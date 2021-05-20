@@ -138,7 +138,7 @@ const Form: Modules<FormProps> = (props) => {
   }, [reset]);
 
   return (
-    <Wrapper {...props} maxHeight maxWidth>
+    <Wrapper {...props} maxHeight maxWidth itemAlign="top">
       {!!formLists?.length ? (
         <div className={classNames(s.root, userClass.wrap)}>
           <ScopedCssBaseline classes={{ root: s.rootform }}>
@@ -190,15 +190,16 @@ const Form: Modules<FormProps> = (props) => {
                   })}
                 </Grid>
               </div>
-              <div className={classNames(s.footer, userClass.footer)}>
+              <div className={userClass.footer}>
                 <button
                   type="submit"
-                  className="form_ok"
+                  className={classNames(s.button, "form_ok")}
                   disabled={!formState.isValid}
                 >
                   {config?.submittext || "提交"}
                 </button>
-                <button type="reset" className="form_reset">
+                <button type="reset" 
+                  className={classNames(s.button, "form_reset")}>
                   {config?.resettext || "重置"}
                 </button>
               </div>

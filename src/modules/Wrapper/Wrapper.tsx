@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
 import { AnyObjectType, AppDataElementsTypes } from "~/types/appData";
 import styleCompiler from "~/compiler";
 import s from "./Wrapper.module.less";
-import getLayoutSize from "~/core/helper/getLayoutOut";
 import usePostMessage from "~/hooks/usePostMessage";
 import classNames from "classnames";
 
@@ -29,10 +28,9 @@ const Wrapper: React.FC<Props> = ({
    */
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
   const actId = useSelector((state: RootState) => state.controller.editingId);
-  const pageData = useSelector((state: RootState) => state.pageData);
-
+  const [wrapSize, setWrapSize] = useState<{width: string; height: string}>();
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
-
+  const refWrap = useRef<HTMLDivElement>(null);
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
@@ -48,6 +46,15 @@ const Wrapper: React.FC<Props> = ({
       )!.style.zIndex = `${basic.display.zIndex}`;
     }
   }, [id, style]);
+
+  useEffect(() => {
+    if (refWrap.current) {
+      setWrapSize({
+        width: `${refWrap.current.offsetWidth}px`,
+        height: `${refWrap.current.offsetHeight}px`,
+      });
+    }
+  }, [refWrap])
 
   /**
    * 图层被触发
@@ -67,12 +74,11 @@ const Wrapper: React.FC<Props> = ({
   }
   /*设置最大尺寸*/
   const defaultSize: AnyObjectType = {};
-  const sizes = getLayoutSize(layout, pageData);
-  if (maxWidth && sizes.width !== undefined && sizes.width !== null) {
-    defaultSize.width = `${Math.floor(sizes.width)}px`;
+  if (maxWidth && wrapSize?.width) {
+    defaultSize.width = wrapSize?.width;
   }
-  if (maxHeight && sizes.height !== undefined && sizes.height !== null) {
-    defaultSize.height = `${Math.floor(sizes.height)}px`;
+  if (maxHeight && wrapSize?.height) {
+    defaultSize.height = `${wrapSize?.height}px`;
   }
   /*是否为隐藏模块*/
   const isHide = (layout?.w === 0 || layout?.h === 0);
@@ -88,6 +94,7 @@ const Wrapper: React.FC<Props> = ({
       })}
       onTouchStart={onLayoutClick}
       onMouseDown={onLayoutClick}
+      ref={refWrap}
     >
       {actId === id ? (
         <div

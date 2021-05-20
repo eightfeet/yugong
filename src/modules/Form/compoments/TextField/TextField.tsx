@@ -23,6 +23,7 @@ const TextField: React.FC<TextFidleProps> = ({
     variant,
     disabled,
     maxLength,
+    label,
     ...other
 }) => {
     const {
@@ -57,14 +58,13 @@ const TextField: React.FC<TextFidleProps> = ({
             <Controller
                 control={control}
                 name={fieldName}
-                
                 render={({ field }) => {
                     return (
                     <MUiTextField
                         fullWidth
                         variant={variant || 'standard'}
                         disabled={disabled}
-                        {...other}
+                        label={label}
                         {...typeProps}
                         error={!!errors[fieldName]}
                         helperText={errors[fieldName]?.message}

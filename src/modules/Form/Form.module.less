@@ -18,35 +18,33 @@
         padding: 0;
         box-sizing: content-box;
     }
+}
 
-    .footer {
-        button {
-            -webkit-appearance: none;
-            display: inline-block;
-            text-align: center;
-            vertical-align: middle;
-            cursor: pointer;
-            border: none;
-            position: relative;
-            min-height: 50px;
-            &:hover {
-              outline: 0;
-            }
-          
-            &:focus {
-              outline: 0;
-            }
-          
-            &:active {
-              outline: 0;
-            }
-          
-            &:disabled {
-              pointer-events: none;
-            }
-          }
-    }
+.button {
+  -webkit-appearance: none;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  min-height: 50px;
+  user-select: none;
+  &:hover {
+    outline: 0;
+  }
 
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
 }
 
 
