@@ -1,15 +1,8 @@
 .text {
   list-style-type: none;
-  counter-reset: sectioncounter;
   margin: 0;
   padding: 0;
   height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
-}
-.text li:before {
-  display: inline-block;
-  vertical-align: middle;
-  content: counter(sectioncounter);
-  counter-increment: sectioncounter;
 }

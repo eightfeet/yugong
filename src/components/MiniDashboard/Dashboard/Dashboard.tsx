@@ -52,7 +52,7 @@ const Dashboard: React.FC<Props> = () => {
         .removeActivationItem;
 
     // 样式与设置菜单面板
-    const [mainTag, setMainTag] = useState('config');
+    const [mainTag, setMainTag] = useState('style');
     const onSelectMainTag = useCallback((e) => {
         setMainTag(e.key);
     }, []);
@@ -250,11 +250,11 @@ const Dashboard: React.FC<Props> = () => {
                         mode="horizontal"
                         className={s.contentmenu}
                     >
-                        <Menu.Item key="config" icon={<ToolOutlined />}>
-                            设置
-                        </Menu.Item>
                         <Menu.Item key="style" icon={<FormatPainterOutlined />}>
                             样式
+                        </Menu.Item>
+                        <Menu.Item key="config" icon={<ToolOutlined />}>
+                            设置
                         </Menu.Item>
                         <Menu.Item key="code" icon={<CodeOutlined />}>
                             code

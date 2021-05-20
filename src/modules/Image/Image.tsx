@@ -45,10 +45,10 @@ const Image: Modules<ImageProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth maxHeight>
       <img
-        src={imgurl?.url || defaultImg}
+        src={imgurl?.url}
         className={userClass.image}
         style={{ maxWidth: "100%", maxHeight: "100%" }}
-        alt={imgurl?.alt || ""}
+        alt={imgurl?.alt || "设置图片url"}
       />
     </Wrapper>
   );

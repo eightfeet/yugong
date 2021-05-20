@@ -7,7 +7,11 @@ const useStyles = createUseStyles<string, any>({
     paragraph: (style) => {
         return ({
             ...(styleCompiler(style.paragraph).style || {}),
-            '&:before': (styleCompiler(style.prefix).style || {}),
+            '& >span': (styleCompiler(style.prefix).style || {}),
+            "&:nth-child(even)": styleCompiler(style.even).style,
+            "&:nth-child(odd)": styleCompiler(style.odd).style,
+            "&:first-child": styleCompiler(style.first).style,
+            "&:last-child": styleCompiler(style.last).style,
         })
     },
     

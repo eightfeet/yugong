@@ -1,12 +1,14 @@
 {
     "pageData": {
-        "pageTitle": "X报名",
+        "pageTitle": "校园红人季",
         "style": {
-            "backgroundCommon": {
-                "backgroundColor": "rgba(45, 15, 194, 1)",
-                "imageUrl": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0503120504316.jpg",
-                "repeat": "no-repeat",
-                "sizeX": [750, ""]
+            "backgroundGroup": {
+                "backgroundList": [
+                    {
+                        "imageUrl": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0520104946948.png"
+                    }
+                ],
+                "backgroundColor": "rgba(218, 79, 66, 1)"
             }
         },
         "unit": "px",
@@ -14,213 +16,1312 @@
         "onLoadApi": [],
         "mountEnvents": [],
         "unmountEnvents": [],
-        "cols": 12,
+        "cols": "24",
         "rowHeight": "{{unit.rem}}",
         "space": 0,
         "windowWidth": 375,
         "windowHeight": 677,
-        "UIWidth": 750,
-        "baseFont": 31.25
+        "UIWidth": 650,
+        "baseFont": 27.083
     },
     "appData": [
         {
-            "moduleName": "表单",
-            "moduleId": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
+            "moduleName": "头图",
+            "moduleId": "6f9c1ef9-d647-4335-9de2-9325e2ae5484",
             "layout": {
-                "w": 12,
-                "h": 60,
+                "w": 24,
+                "h": 17,
                 "x": 0,
-                "y": 39,
-                "i": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae",
+                "y": 0,
+                "i": "6f9c1ef9-d647-4335-9de2-9325e2ae5484",
                 "moved": false,
-                "static": false
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "backgroundGroup": {
+                        "backgroundList": []
+                    }
+                },
+                "image": {}
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Image",
+            "events": {
+                "mount": [
+                    {
+                        "name": "6f9c1ef9-d647-4335-9de2-9325e2ae5484/setImg",
+                        "arguments": [
+                            {
+                                "type": "object",
+                                "name": "img",
+                                "describe": "图片url",
+                                "data": {
+                                    "url": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0520105344382.jpg",
+                                    "alt": "头图"
+                                },
+                                "fieldName": "img"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "线上报名时间",
+            "moduleId": "79caec92-5bac-4a58-b351-8182e15ae78f",
+            "layout": {
+                "w": 22,
+                "h": 4,
+                "x": 1,
+                "y": 29,
+                "i": "79caec92-5bac-4a58-b351-8182e15ae78f",
+                "moved": false,
+                "static": true
             },
             "style": {
                 "basic": {
                     "font": {
-                        "color": "inherit"
+                        "align": "left"
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "wrap": {
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(180, 0, 3, 0.6)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "fontSize": [
+                            26,
+                            null
+                        ]
                     },
                     "display": {
-                        "overflow": ""
+                        "overflow": "visible",
+                        "padding": [
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ]
+                        ]
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "paragraph": {},
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {
+                    "font": {
+                        "fontSize": [
+                            30,
+                            null
+                        ],
+                        "fontWeight": "bold"
+                    },
+                    "textShadow": [
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(0, 0, 0, 1 )",
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "shiftRight": [
+                                2,
+                                null
+                            ],
+                            "shiftDown": [
+                                2,
+                                null
+                            ]
+                        },
+                        {
+                            "hiddenItem": false,
+                            "shiftRight": [
+                                -2,
+                                null
+                            ],
+                            "shiftDown": [
+                                -2,
+                                null
+                            ],
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "color": "rgba(0, 0, 0, 1 )"
+                        }
+                    ]
+                },
+                "last": {
+                    "font": {
+                        "fontSize": [
+                            25,
+                            null
+                        ],
+                        "lineHeight": [
+                            42,
+                            null
+                        ]
+                    }
+                }
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "79caec92-5bac-4a58-b351-8182e15ae78f/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "线上报名时间",
+                                    "即日起到10月10日 00:00"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "b",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "线上报名",
+            "moduleId": "a4751c27-179a-40bb-a13a-c6fa2252b719",
+            "layout": {
+                "w": 22,
+                "h": 7,
+                "x": 1,
+                "y": 18,
+                "i": "a4751c27-179a-40bb-a13a-c6fa2252b719",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "font": {
+                        "align": "left",
+                        "fontSize": [
+                            null,
+                            null
+                        ]
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    },
+                    "display": {
+                        "width": [
+                            null,
+                            ""
+                        ],
+                        "boxSizing": "",
+                        "height": [
+                            null,
+                            ""
+                        ]
+                    }
+                },
+                "wrap": {
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(180, 0, 3, 0.6)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "fontSize": [
+                            26,
+                            null
+                        ]
+                    },
+                    "display": {
+                        "overflow": "visible",
+                        "padding": [
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ]
+                        ]
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "paragraph": {
+                    "font": {
+                        "fontSize": [
+                            25,
+                            null
+                        ]
+                    },
+                    "display": {
+                        "margin": [
+                            [
+                                null,
+                                null
+                            ],
+                            [
+                                null,
+                                null
+                            ],
+                            [
+                                20,
+                                null
+                            ],
+                            [
+                                null,
+                                null
+                            ]
+                        ]
+                    }
+                },
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {},
+                "last": {}
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "a4751c27-179a-40bb-a13a-c6fa2252b719/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "本次活动共设有两个奖项，最佳新锐主播，最佳红人主播",
+                                    "奖项设置：最佳新人奖金2000元人民币，最佳红人奖金2000元人民币"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "a",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "线上比赛时间",
+            "moduleId": "30a5791f-bfdb-4216-8907-43383d88be6c",
+            "layout": {
+                "w": 22,
+                "h": 4,
+                "x": 1,
+                "y": 34,
+                "i": "30a5791f-bfdb-4216-8907-43383d88be6c",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "font": {
+                        "align": "left"
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "wrap": {
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(180, 0, 3, 0.6)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "fontSize": [
+                            26,
+                            null
+                        ]
+                    },
+                    "display": {
+                        "overflow": "visible",
+                        "padding": [
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ]
+                        ]
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "paragraph": {},
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {
+                    "font": {
+                        "fontSize": [
+                            30,
+                            null
+                        ],
+                        "fontWeight": "bold"
+                    },
+                    "textShadow": [
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(0, 0, 0, 1 )",
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "shiftRight": [
+                                2,
+                                null
+                            ],
+                            "shiftDown": [
+                                2,
+                                null
+                            ]
+                        },
+                        {
+                            "hiddenItem": false,
+                            "shiftRight": [
+                                -2,
+                                null
+                            ],
+                            "shiftDown": [
+                                -2,
+                                null
+                            ],
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "color": "rgba(0, 0, 0, 1 )"
+                        }
+                    ]
+                },
+                "last": {
+                    "font": {
+                        "fontSize": [
+                            25,
+                            null
+                        ],
+                        "lineHeight": [
+                            42,
+                            null
+                        ]
+                    }
+                }
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "30a5791f-bfdb-4216-8907-43383d88be6c/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "线上比赛时间",
+                                    "10月10日 10:00 到 10月15日 0:00"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "b",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "参与方式",
+            "moduleId": "2d8fa157-71cb-4e09-bcba-255acc3140e7",
+            "layout": {
+                "w": 22,
+                "h": 4,
+                "x": 1,
+                "y": 39,
+                "i": "2d8fa157-71cb-4e09-bcba-255acc3140e7",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "font": {
+                        "align": "left"
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "wrap": {
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(180, 0, 3, 0.6)"
+                    },
+                    "font": {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "fontSize": [
+                            26,
+                            null
+                        ]
+                    },
+                    "display": {
+                        "overflow": "visible",
+                        "padding": [
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ],
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                15,
+                                null
+                            ]
+                        ]
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    }
+                },
+                "paragraph": {},
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {
+                    "font": {
+                        "fontSize": [
+                            30,
+                            null
+                        ],
+                        "fontWeight": "bold"
+                    },
+                    "textShadow": [
+                        {
+                            "hiddenItem": false,
+                            "color": "rgba(0, 0, 0, 1 )",
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "shiftRight": [
+                                2,
+                                null
+                            ],
+                            "shiftDown": [
+                                2,
+                                null
+                            ]
+                        },
+                        {
+                            "hiddenItem": false,
+                            "shiftRight": [
+                                -2,
+                                null
+                            ],
+                            "shiftDown": [
+                                -2,
+                                null
+                            ],
+                            "blur": [
+                                null,
+                                null
+                            ],
+                            "color": "rgba(0, 0, 0, 1 )"
+                        }
+                    ]
+                },
+                "last": {
+                    "font": {
+                        "fontSize": [
+                            25,
+                            null
+                        ],
+                        "lineHeight": [
+                            42,
+                            null
+                        ]
+                    }
+                }
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "2d8fa157-71cb-4e09-bcba-255acc3140e7/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "参与方式",
+                                    "一至开播带<span style=\"color:#ffe4bb\"> #校园红人季 </span>话题并同步到微博"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "b",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "校园新锐主播",
+            "moduleId": "dae5561a-a300-43a3-b93f-23116f5dda49",
+            "layout": {
+                "w": 22,
+                "h": 1,
+                "x": 1,
+                "y": 27,
+                "i": "dae5561a-a300-43a3-b93f-23116f5dda49",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "font": {
+                        "align": "left"
+                    },
+                    "display": {
+                        "height": [
+                            null,
+                            null
+                        ]
                     }
                 },
                 "wrap": {
                     "display": {
-                        "overflow": "auto"
+                        "position": "absolute",
+                        "overflow": "visible",
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "height": [
+                            2,
+                            null
+                        ],
+                        "left": [
+                            0,
+                            null
+                        ],
+                        "top": [
+                            null,
+                            null
+                        ]
+                    },
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(0, 0, 0, 1)"
                     }
                 },
-                "header": {
+                "paragraph": {
+                    "display": {
+                        "width": [
+                            200,
+                            null
+                        ],
+                        "height": [
+                            50,
+                            null
+                        ],
+                        "position": "absolute",
+                        "overflow": "visible",
+                        "left": [
+                            50,
+                            "%"
+                        ],
+                        "margin": [
+                            [
+                                -30,
+                                null
+                            ],
+                            null,
+                            null,
+                            [
+                                -100,
+                                null
+                            ]
+                        ]
+                    },
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(254, 223, 177, 1)"
+                    },
                     "font": {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "lineHeight": [
+                            50,
+                            null
+                        ],
+                        "align": "center",
+                        "fontWeight": "bold"
+                    },
+                    "border": {
+                        "borderPosition": {
+                            "border": true,
+                            "borderTop": false,
+                            "borderRight": false,
+                            "borderLeft": false,
+                            "borderBottom": false
+                        },
+                        "borderStyle": "solid",
+                        "borderColor": "rgba(0, 0, 0, 1)",
+                        "radiusTopLeft": [
+                            40,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            40,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            40,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            40,
+                            null
+                        ],
+                        "borderWidth": [
+                            4,
+                            null
+                        ]
+                    }
+                },
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {},
+                "last": {}
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "dae5561a-a300-43a3-b93f-23116f5dda49/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "校园新锐主播"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "b",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "马上报名",
+            "moduleId": "804966c7-0da8-4f0b-b20a-9c404482bef2",
+            "layout": {
+                "w": 22,
+                "h": 1,
+                "x": 1,
+                "y": 45,
+                "i": "804966c7-0da8-4f0b-b20a-9c404482bef2",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "font": {
                         "align": "left"
                     },
                     "display": {
-                        "padding": [
-                            "10",
-                            "10",
-                            "10",
-                            "15"
+                        "height": [
+                            null,
+                            null
                         ]
                     }
                 },
-                "container": {
+                "wrap": {
+                    "display": {
+                        "position": "absolute",
+                        "overflow": "visible",
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "height": [
+                            2,
+                            null
+                        ],
+                        "left": [
+                            0,
+                            null
+                        ],
+                        "top": [
+                            null,
+                            null
+                        ]
+                    },
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(0, 0, 0, 1)"
+                    }
+                },
+                "paragraph": {
+                    "display": {
+                        "width": [
+                            200,
+                            null
+                        ],
+                        "height": [
+                            50,
+                            null
+                        ],
+                        "position": "absolute",
+                        "overflow": "visible",
+                        "left": [
+                            50,
+                            "%"
+                        ],
+                        "margin": [
+                            [
+                                -30,
+                                null
+                            ],
+                            null,
+                            null,
+                            [
+                                -100,
+                                null
+                            ]
+                        ]
+                    },
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(254, 223, 177, 1)"
+                    },
+                    "font": {
+                        "lineHeight": [
+                            50,
+                            null
+                        ],
+                        "align": "center",
+                        "fontWeight": "bold"
+                    },
+                    "border": {
+                        "borderPosition": {
+                            "border": true,
+                            "borderTop": false,
+                            "borderRight": false,
+                            "borderLeft": false,
+                            "borderBottom": false
+                        },
+                        "borderStyle": "solid",
+                        "borderColor": "rgba(0, 0, 0, 1)",
+                        "radiusTopLeft": [
+                            40,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            40,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            40,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            40,
+                            null
+                        ],
+                        "borderWidth": [
+                            4,
+                            null
+                        ]
+                    }
+                },
+                "prefix": {},
+                "even": {},
+                "odd": {},
+                "first": {},
+                "last": {}
+            },
+            "content": {
+                "text": 1
+            },
+            "type": "Text",
+            "events": {
+                "mount": [
+                    {
+                        "name": "804966c7-0da8-4f0b-b20a-9c404482bef2/setText",
+                        "arguments": [
+                            {
+                                "type": "array",
+                                "name": "文本内容",
+                                "describe": "可设置多行文本内容",
+                                "html": true,
+                                "data": [
+                                    "马上报名"
+                                ],
+                                "fieldName": "textArray"
+                            },
+                            {
+                                "type": "boolean",
+                                "name": "自动序号",
+                                "describe": "自动生成1开始的序号",
+                                "data": {
+                                    "comparableAverageA": "a",
+                                    "comparableAverageB": "",
+                                    "method": "==="
+                                },
+                                "fieldName": "autoNumber"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "moduleName": "报名表单",
+            "moduleId": "c851420e-4201-43a7-9246-fc1bed225521",
+            "layout": {
+                "w": 22,
+                "h": 46,
+                "x": 1,
+                "y": 47,
+                "i": "c851420e-4201-43a7-9246-fc1bed225521",
+                "moved": false,
+                "static": true
+            },
+            "style": {
+                "basic": {
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(180, 0, 3, 0.6)"
+                    },
                     "font": {
                         "color": "rgba(255, 255, 255, 1)"
                     },
+                    "border": {
+                        "radiusTopLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            10,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            10,
+                            null
+                        ]
+                    },
                     "display": {
-                        "overflow": ""
+                        "padding": [
+                            [
+                                null,
+                                null
+                            ],
+                            [
+                                null,
+                                null
+                            ],
+                            [
+                                null,
+                                null
+                            ],
+                            [
+                                null,
+                                null
+                            ]
+                        ],
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "boxSizing": "border-box",
+                        "overflow": "hidden"
+                    }
+                },
+                "wrap": {
+                    "display": {
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "boxSizing": "border-box"
+                    }
+                },
+                "header": {
+                    "display": {
+                        "display": "none"
+                    }
+                },
+                "container": {
+                    "display": {
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "boxSizing": "border-box"
                     }
                 },
                 "formitem": {
-                    "backgroundCommon": {
-                        "backgroundColor": "rgba(0, 117, 252, 1)"
-                    },
-                    "border": {
-                        "radiusTopLeft": 15,
-                        "radiusTopRight": 15,
-                        "radiusBottomLeft": 15,
-                        "radiusBottomRight": 15,
-                        "borderPosition": {
-                            "borderTop": true,
-                            "borderRight": false,
-                            "borderBottom": false,
-                            "borderLeft": false,
-                            "border": false
-                        },
-                        "borderColor": "rgba(255, 193, 7, 1)",
-                        "borderStyle": "solid",
-                        "borderWidth": 17
-                    },
+                    "backgroundGroup": {},
                     "display": {
-                        "margin": [
-                            "10",
-                            "30",
-                            "10",
-                            "30"
-                        ]
+                        "width": [
+                            100,
+                            "%"
+                        ],
+                        "boxSizing": "border-box"
                     }
                 },
                 "label": {
                     "font": {
-                        "color": "rgba(248, 231, 28, 1)"
+                        "color": "rgba(255, 223, 178, 1)"
                     }
                 },
                 "icon": {
                     "font": {
-                        "color": "rgba(248, 231, 28, 1)",
-                        "fontSize": 40
+                        "color": "rgba(255, 223, 178, 1)",
+                        "fontSize": [
+                            40,
+                            null
+                        ]
                     }
                 },
                 "activity": {},
                 "validateError": {
                     "font": {
-                        "color": "rgba(255, 0, 4, 1)"
+                        "color": "rgba(255, 235, 59, 1)"
                     }
                 },
                 "baseline": {
+                    "backgroundGroup": {},
                     "border": {
                         "borderPosition": {
                             "borderTop": false,
                             "borderRight": false,
-                            "borderBottom": false,
+                            "borderBottom": true,
                             "borderLeft": false,
-                            "border": true
+                            "border": false
                         },
                         "borderStyle": "solid",
-                        "borderWidth": 2,
-                        "borderColor": "rgba(28, 184, 248, 0.3)",
-                        "radiusTopLeft": 10,
-                        "radiusTopRight": 10,
-                        "radiusBottomLeft": 10,
-                        "radiusBottomRight": 10
+                        "borderColor": "rgba(252, 224, 189, 1)",
+                        "borderWidth": [
+                            2,
+                            null
+                        ]
                     }
                 },
-                "baselineact": {
-                    "backgroundCommon": {
-                        "backgroundColor": "rgba(34, 25, 77, 0.01)"
-                    }
-                },
+                "baselineact": {},
                 "errorbaseline": {},
                 "footer": {},
-                "button": {
-                    "border": {
-                        "radiusTopLeft": 10,
-                        "radiusTopRight": 10,
-                        "radiusBottomLeft": 10,
-                        "radiusBottomRight": 10
-                    },
-                    "display": {
-                        "width": "120",
-                        "margin": [
-                            "20",
-                            "20",
-                            "20",
-                            "20"
-                        ]
-                    },
-                    "font": {
-                        "fontSize": 35,
-                        "color": "rgba(185, 185, 189, 1)",
-                        "fontWeight": "bold"
-                    }
-                },
+                "button": {},
                 "oknormal": {
-                    "backgroundCommon": {
-                        "backgroundColor": "rgba(248, 231, 28, 1)"
-                    },
                     "display": {
+                        "display": "block",
+                        "width": [
+                            80,
+                            "%"
+                        ],
+                        "height": [
+                            null,
+                            null
+                        ],
                         "margin": [
-                            "",
-                            "",
-                            "",
-                            ""
+                            [
+                                10,
+                                null
+                            ],
+                            [
+                                "auto",
+                                "-"
+                            ],
+                            [
+                                20,
+                                null
+                            ],
+                            [
+                                "auto",
+                                "-"
+                            ]
+                        ]
+                    },
+                    "backgroundGroup": {
+                        "backgroundColor": "rgba(255, 220, 175, 1)"
+                    },
+                    "border": {
+                        "radiusTopLeft": [
+                            60,
+                            null
+                        ],
+                        "radiusTopRight": [
+                            60,
+                            null
+                        ],
+                        "radiusBottomLeft": [
+                            60,
+                            null
+                        ],
+                        "radiusBottomRight": [
+                            60,
+                            null
                         ]
                     },
                     "font": {
-                        "color": "rgba(184, 99, 26, 1)",
+                        "fontSize": [
+                            30,
+                            null
+                        ],
                         "fontWeight": "bold",
-                        "fontSize": 35
-                    },
-                    "boxShadow": [
-                        {
-                            "hiddenItem": false,
-                            "shiftRight": 0,
-                            "shiftDown": 8,
-                            "spread": 0,
-                            "color": "rgba(201, 104, 20, 1 )"
-                        },
-                        {
-                            "hiddenItem": false,
-                            "color": "rgba(24, 4, 122, 0.57 )",
-                            "shiftRight": 0,
-                            "shiftDown": 6,
-                            "spread": 10,
-                            "blur": 20
-                        }
-                    ]
+                        "color": "rgba(145, 123, 85, 1)"
+                    }
                 },
                 "okdisabled": {},
                 "resetnormal": {
-                    "boxShadow": [
-                        {
-                            "hiddenItem": false,
-                            "color": "rgba(155, 155, 155, 1 )",
-                            "shiftRight": 0,
-                            "shiftDown": 8,
-                            "blur": 0,
-                            "spread": 0
-                        },
-                        {
-                            "hiddenItem": false,
-                            "color": "rgba(24, 4, 122, 0.61 )",
-                            "shiftRight": 0,
-                            "shiftDown": 6,
-                            "blur": 20,
-                            "spread": 10
-                        }
-                    ],
-                    "font": {
-                        "color": "rgba(146, 140, 177, 1)"
+                    "display": {
+                        "width": [
+                            80,
+                            "%"
+                        ],
+                        "display": "none"
                     }
                 }
             },
@@ -275,7 +1376,7 @@
                                                     "请输入手机号码"
                                                 ],
                                                 "matches": [
-                                                    "^1\\d{10}$",
+                                                    "^1\\\\d{10}$",
                                                     "请输入以1开头的11位手机号码！"
                                                 ]
                                             }
@@ -388,7 +1489,7 @@
                         ]
                     },
                     {
-                        "name": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae/setFormData",
+                        "name": "c851420e-4201-43a7-9246-fc1bed225521/setFormData",
                         "arguments": [
                             {
                                 "type": "runningTime",
@@ -398,57 +1499,9 @@
                                 "fieldName": "formdata"
                             }
                         ]
-                    },
-                    {
-                        "name": "4ac36db7-e44f-4fce-8c72-844eaf02c0ae/setFormConfig",
-                        "arguments": [
-                            {
-                                "type": "string",
-                                "name": "输入框",
-                                "describe": "standard,outlined或filled默认standard",
-                                "data": "outlined",
-                                "fieldName": "forminput"
-                            },
-                            {
-                                "type": "string",
-                                "name": "表单标题",
-                                "describe": "设置表单标题文字",
-                                "data": "预约报名",
-                                "fieldName": "formtitle"
-                            },
-                            {
-                                "type": "string",
-                                "name": "提交按钮",
-                                "describe": "设置提交按钮文字",
-                                "data": "马上报名",
-                                "fieldName": "formsubmittext"
-                            },
-                            {
-                                "type": "string",
-                                "name": "重置按钮",
-                                "describe": "设置重置按钮文字",
-                                "data": "重置",
-                                "fieldName": "formresettext"
-                            }
-                        ]
-                    }
-                ],
-                "submit": [
-                    {
-                        "name": "/",
-                        "arguments": []
                     }
                 ]
-            },
-            "api": [
-                {
-                    "apiId": "afterClick",
-                    "name": "提交表单(由提交表单事件自动收集表单数据)",
-                    "hideBodyInput": true,
-                    "url": "http://www.baidu.com",
-                    "method": "POST"
-                }
-            ]
+            }
         }
     ]
 }
