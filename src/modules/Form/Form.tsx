@@ -86,7 +86,7 @@ const Form: Modules<FormProps> = (props) => {
     resolver: yupResolver(schema),
   });
 
-  const { handleSubmit, reset, formState } = RHForm;
+  const { handleSubmit, reset } = RHForm;
   // 确保表单只做一次默认数据填充
   const isDefault = useRef(false);
   useEffect(() => {
@@ -194,7 +194,6 @@ const Form: Modules<FormProps> = (props) => {
                 <button
                   type="submit"
                   className={classNames(s.button, "form_ok")}
-                  disabled={!formState.isValid}
                 >
                   {config?.submittext || "提交"}
                 </button>
