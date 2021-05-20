@@ -59,7 +59,7 @@ const QuadrangularSelect: React.FC<Props> = ({
         () =>
             throttle((e: number) => {
                 console.log(e);
-                refChange.current?.(e);
+                refChange(e);
             }, 500),
         [refChange]
     );

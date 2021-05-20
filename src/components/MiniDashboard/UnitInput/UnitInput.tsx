@@ -82,7 +82,7 @@ const Unitinput: React.FC<Props> = ({
         () =>
             throttle(({ val, un }: { val: string | number; un: string }) => {
                 const values: UnitType = [val, un];
-                refChange.current?.(values);
+                refChange(values);
             }, 500),
         [refChange]
     );

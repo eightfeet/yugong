@@ -93,7 +93,7 @@ const Color: React.FC<Props> = ({
      const onChangeDebounce = useMemo(
         () =>
             throttle((value) => {
-                refChange.current?.(value);
+                refChange(value);
             }, 500),
         [refChange]
     );
