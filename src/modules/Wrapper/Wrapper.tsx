@@ -30,10 +30,13 @@ const Wrapper: React.FC<Props> = ({
   const actId = useSelector((state: RootState) => state.controller.editingId);
   const [wrapSize, setWrapSize] = useState<{width: string; height: string}>();
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
+  const currentLayout = useSelector((state: RootState) => state.appData).filter(item => item.moduleId === actId)?.[0]?.layout;
+  
   const refWrap = useRef<HTMLDivElement>(null);
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing
   );
+  
 
   const sendMessage = usePostMessage(() => {});
 
@@ -53,8 +56,9 @@ const Wrapper: React.FC<Props> = ({
         width: `${refWrap.current.offsetWidth}px`,
         height: `${refWrap.current.offsetHeight}px`,
       });
+      
     }
-  }, [refWrap])
+  }, [refWrap, currentLayout?.w, currentLayout?.h])
 
   /**
    * 图层被触发

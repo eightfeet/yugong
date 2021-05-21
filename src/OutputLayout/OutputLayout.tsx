@@ -227,9 +227,8 @@ const OutputLayout: React.FC<LayoutProps> = ({
             compactType={null}
             cols={cols}
             rowHeight={rowHeight}
-            width={document.body.scrollWidth}
+            width={document.body.offsetWidth}
             margin={[space, space]}
-            autoSize
             isDraggable={isEditing}
         >
             {renderGridItem()}
