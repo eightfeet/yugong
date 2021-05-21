@@ -111,11 +111,9 @@ const Wrapper: React.FC<Props> = ({
       <div
         id={id}
         className={s.secondwrap}
-        style={{ ...basicStyle.style, ...pointerEvents }}
+        style={{...defaultSize, ...basicStyle.style, ...pointerEvents }}
       >
-          <div style={defaultSize}>
-            {children}
-          </div>
+          {children}
       </div>
     </div>
   );
