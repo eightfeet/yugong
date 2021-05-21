@@ -260,6 +260,7 @@ const EventGroup: React.FC<Props> = ({
               key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
             >
               <EventItem
+                index={index}
                 moduleUuid={event.moduleUuid}
                 dispatchedFunctions={event.dispatchedFunctions}
                 argumentList={event.arguments || []}

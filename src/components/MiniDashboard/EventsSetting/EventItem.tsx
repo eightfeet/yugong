@@ -6,6 +6,7 @@ import { RootState } from "~/redux/store";
 import Output from "~/components/Output";
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
+import { SortableElement } from "react-sortable-hoc";
 
 /**
  * 事件描述
@@ -199,4 +200,4 @@ const EventItem: React.FC<Props> = ({
   );
 };
 
-export default EventItem;
+export default SortableElement(EventItem);

@@ -43,6 +43,7 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
+    "react-sortable-hoc": "^2.0.0",
     "react-use": "^17.2.1",
     "rmc-pull-updown-to-refresh": "^1.0.20",
     "swiper": "^6.5.1",
