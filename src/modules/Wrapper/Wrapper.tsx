@@ -82,7 +82,7 @@ const Wrapper: React.FC<Props> = ({
     defaultSize.width = wrapSize?.width;
   }
   if (maxHeight && wrapSize?.height) {
-    defaultSize.height = `${wrapSize?.height}px`;
+    defaultSize.height = wrapSize?.height;
   }
   /*是否为隐藏模块*/
   const isHide = (layout?.w === 0 || layout?.h === 0);
