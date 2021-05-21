@@ -1,12 +1,20 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Col, Select } from "antd";
+import { Button, Col, Row, Select } from "antd";
 import s from "./EventItem.module.less";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Output from "~/components/Output";
 import { ArgumentsItem } from "~/types/appData";
 import { ExposeFunctions } from "~/types/modules";
-import { SortableElement } from "react-sortable-hoc";
+import { SortableElement, SortableHandle } from "react-sortable-hoc";
+import MoveIcon from "./MoveIcon";
+import { MinusOutlined, SettingOutlined } from "@ant-design/icons";
+
+const DragHandle = SortableHandle(() => (
+  <span className={s.icon}>
+    <MoveIcon />
+  </span>
+));
 
 /**
  * 事件描述
@@ -59,16 +67,18 @@ const EventItem: React.FC<Props> = ({
    */
   useEffect(() => {
     // 处理全局方法
-    const data: ModuleListItem[] = [{
-      name: '全局',
-      uuid: 'global',
-      type: 'global'
-    }];
+    const data: ModuleListItem[] = [
+      {
+        name: "全局",
+        uuid: "global",
+        type: "global",
+      },
+    ];
     for (let index = 0; index < appData.length; index++) {
       const item = appData[index];
       // 检查可选模块是否有方法导出
-      const exposeFunctions: EventEmitterExpose[] = require(`~/modules/${item.type}`)
-        .default.exposeFunctions;
+      const exposeFunctions: EventEmitterExpose[] =
+        require(`~/modules/${item.type}`).default.exposeFunctions;
       if (exposeFunctions && exposeFunctions.length > 0) {
         data.push({
           name: item.moduleName || `'未标题'-${item.moduleId}`,
@@ -151,7 +161,10 @@ const EventItem: React.FC<Props> = ({
   );
 
   return (
-    <>
+    <Row className={s.row} gutter={4}>
+      <Col span={1}>
+        <DragHandle />
+      </Col>
       <Col span={9}>
         <Select
           value={selectItem[0] || null}
@@ -182,7 +195,7 @@ const EventItem: React.FC<Props> = ({
           ))}
         </Select>
       </Col>
-      <Col span={9}>
+      <Col span={8}>
         <Select
           value={selectItem[1] || null}
           className={s.selecter}
@@ -196,7 +209,23 @@ const EventItem: React.FC<Props> = ({
           ))}
         </Select>
       </Col>
-    </>
+      <Col span={4} className={s.minuswrap}>
+        {/** 未选择方法时不可以编辑参数 */}
+        <Button
+          icon={<SettingOutlined />}
+          onClick={() => console.log("设置参数")}
+          disabled={true}
+        >
+          参数
+        </Button>
+      </Col>
+      <Col span={2} className={s.minuswrap}>
+        <Button
+          size="small"
+          icon={<MinusOutlined onClick={(data) => console.log("移除当前项")} />}
+        />
+      </Col>
+    </Row>
   );
 };
 

@@ -13,7 +13,9 @@ import ArgumentsSetting from "../ArgumentsSetting";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import App from "~/components/Output";
+import EventListHoc from './EventListHoc';
 import Play from "./play";
+import arrayMove from "array-move";
 
 interface Props {
   curentEventInfomation: ExposeEvents;
@@ -213,6 +215,20 @@ const EventGroup: React.FC<Props> = ({
     onPlay(curentEventInfomation, value);
   }, [curentEventInfomation, onPlay, value]);
 
+  // 拖拽重新排序重置更新事件组数据
+  const onSortEnd = useCallback(
+    ({oldIndex, newIndex}) => {
+      const items = [...currentModuleEvents]
+       const result = arrayMove(items, oldIndex, newIndex);
+       // 更新事件状态清单
+      setCurrentModuleEvents(result);
+      // onchange AppData数据
+      stateToAppdata(result);
+    },
+    [currentModuleEvents, stateToAppdata],
+  )
+
+
   return (
     <>
       <div className={s.divide}>
@@ -231,65 +247,66 @@ const EventGroup: React.FC<Props> = ({
           <Button size="small" onClick={onPlus} icon={<PlusOutlined />} />
         </div>
       </div>
+      <EventListHoc onSortEnd={onSortEnd} moduleEvents={currentModuleEvents} useDragHandle />
       {
-        // 当前模块发布的事件状态清单
-        currentModuleEvents.map((event, index) => {
-          // 获取模块静态导出的方法参数
-          const moduleExportFunctionArguments =
-            getFunArguments(event.moduleUuid) || [];
-          // 当前id模块导出的方法参数
-          const currentExportFunctionArguments =
-            moduleExportFunctionArguments.filter(
-              (item) => item.name === event.dispatchedFunctions
-            )[0]?.arguments || [];
+        // // 当前模块发布的事件状态清单
+        // currentModuleEvents.map((event, index) => {
+        //   // 获取模块静态导出的方法参数
+        //   const moduleExportFunctionArguments =
+        //     getFunArguments(event.moduleUuid) || [];
+        //   // 当前id模块导出的方法参数
+        //   const currentExportFunctionArguments =
+        //     moduleExportFunctionArguments.filter(
+        //       (item) => item.name === event.dispatchedFunctions
+        //     )[0]?.arguments || [];
 
-          let canNotSetArguments = false;
-          // 没有选择方法时不可以编辑
-          if (!event.dispatchedFunctions) {
-            canNotSetArguments = true;
-          }
-          // 无需配置参数是不可编辑
-          if (currentExportFunctionArguments.length <= 0) {
-            canNotSetArguments = true;
-          }
+        //   let canNotSetArguments = false;
+        //   // 没有选择方法时不可以编辑
+        //   if (!event.dispatchedFunctions) {
+        //     canNotSetArguments = true;
+        //   }
+        //   // 无需配置参数是不可编辑
+        //   if (currentExportFunctionArguments.length <= 0) {
+        //     canNotSetArguments = true;
+        //   }
 
-          return (
-            <Row
-              className={s.row}
-              gutter={4}
-              key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
-            >
-              <EventItem
-                index={index}
-                moduleUuid={event.moduleUuid}
-                dispatchedFunctions={event.dispatchedFunctions}
-                argumentList={event.arguments || []}
-                onChange={onChangeItem(index)}
-              />
-              <Col span={4} className={s.minuswrap}>
-                {/** 未选择方法时不可以编辑参数 */}
-                <Button
-                  icon={<SettingOutlined />}
-                  onClick={onSetArg({
-                    argumentList: event.arguments || [],
-                    index,
-                    functionName: event.dispatchedFunctions,
-                    functionArgumentList: currentExportFunctionArguments,
-                  })}
-                  disabled={canNotSetArguments}
-                >
-                  参数
-                </Button>
-              </Col>
-              <Col span={2} className={s.minuswrap}>
-                <Button
-                  size="small"
-                  icon={<MinusOutlined onClick={onMinus(index)} />}
-                />
-              </Col>
-            </Row>
-          );
-        })
+        //   return (
+        //     <Row
+        //       className={s.row}
+        //       gutter={4}
+        //       key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
+        //     >
+        //       <EventItem
+        //         index={index}
+        //         moduleUuid={event.moduleUuid}
+        //         dispatchedFunctions={event.dispatchedFunctions}
+        //         argumentList={event.arguments || []}
+        //         onChange={onChangeItem(index)}
+        //       />
+        //       <Col span={4} className={s.minuswrap}>
+        //         {/** 未选择方法时不可以编辑参数 */}
+        //         <Button
+        //           icon={<SettingOutlined />}
+        //           onClick={onSetArg({
+        //             argumentList: event.arguments || [],
+        //             index,
+        //             functionName: event.dispatchedFunctions,
+        //             functionArgumentList: currentExportFunctionArguments,
+        //           })}
+        //           disabled={canNotSetArguments}
+        //         >
+        //           参数
+        //         </Button>
+        //       </Col>
+        //       <Col span={2} className={s.minuswrap}>
+        //         <Button
+        //           size="small"
+        //           icon={<MinusOutlined onClick={onMinus(index)} />}
+        //         />
+        //       </Col>
+        //     </Row>
+        //   );
+        // })
       }
       <ArgumentsSetting
         title="参数设置"

@@ -1,6 +1,7 @@
 .row {
     align-items: center;
     margin-bottom: 10px;
+    z-index: 100;
     :global {
         .ant-radio-button-wrapper {
             padding: 0 10px;
@@ -34,4 +35,22 @@
 
 .minuswrap{
     text-align: right;
+    width: 100%;
+}
+
+.drag {
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.icon {
+    cursor: pointer;
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: #AAA;
+    svg {
+        display: block;
+        fill: currentColor;
+    }
 }

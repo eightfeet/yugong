@@ -27,10 +27,10 @@ interface EventDataList {
 }
 
 interface Props {
-    currentModuleEvents: EventDataList[];
+    moduleEvents: EventDataList[];
 }
 
-const Eventlisthoc = SortableContainer(({ currentModuleEvents }: Props) => {
+const EventListHoc = SortableContainer(({ moduleEvents }: Props) => {
     const appData = useSelector((state: RootState) => state.appData);
 
     /**
@@ -53,11 +53,12 @@ const Eventlisthoc = SortableContainer(({ currentModuleEvents }: Props) => {
         [appData]
     );
 
+
     return (
-        <>
+        <div>
             {
                 // 当前模块发布的事件状态清单
-                currentModuleEvents.map((event, index) => {
+                moduleEvents?.map((event, index) => {
                     // 获取模块静态导出的方法参数
                     const moduleExportFunctionArguments =
                         getFunArguments(event.moduleUuid) || [];
@@ -78,50 +79,19 @@ const Eventlisthoc = SortableContainer(({ currentModuleEvents }: Props) => {
                     }
 
                     return (
-                        <Row
-                            className={s.row}
-                            gutter={4}
+                        <EventItem
+                            index={index}
                             key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
-                        >
-                            <EventItem
-                                index={index}
-                                moduleUuid={event.moduleUuid}
-                                dispatchedFunctions={event.dispatchedFunctions}
-                                argumentList={event.arguments || []}
-                                onChange={onChangeItem(index)}
-                            />
-                            <Col span={4} className={s.minuswrap}>
-                                {/** 未选择方法时不可以编辑参数 */}
-                                <Button
-                                    icon={<SettingOutlined />}
-                                    onClick={onSetArg({
-                                        argumentList: event.arguments || [],
-                                        index,
-                                        functionName: event.dispatchedFunctions,
-                                        functionArgumentList:
-                                            currentExportFunctionArguments,
-                                    })}
-                                    disabled={canNotSetArguments}
-                                >
-                                    参数
-                                </Button>
-                            </Col>
-                            <Col span={2} className={s.minuswrap}>
-                                <Button
-                                    size="small"
-                                    icon={
-                                        <MinusOutlined
-                                            onClick={onMinus(index)}
-                                        />
-                                    }
-                                />
-                            </Col>
-                        </Row>
+                            moduleUuid={event.moduleUuid}
+                            dispatchedFunctions={event.dispatchedFunctions}
+                            argumentList={event.arguments || []}
+                            onChange={data => console.log(data)}
+                        />
                     );
                 })
             }
-        </>
+        </div>
     );
 });
 
-export default Eventlisthoc;
+export default EventListHoc;
