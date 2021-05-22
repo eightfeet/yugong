@@ -93,11 +93,9 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeBg = useCallback(
     (data: any) => {
       const optPageData = cloneDeep(pageData);
-
       optPageData.style = {
         backgroundGroup: data
       };
-      console.log(2, optPageData);
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -427,7 +425,7 @@ const Pagesetting: React.FC<Props> = () => {
                       : pageData.unmountEnvents || []
                   }
                   curentEventInfomation={item}
-                  onPlay={() => console.log(2222)}
+                  onPlay={() => {}}
                   onChange={onChangeEnv}
                 />
               ))}

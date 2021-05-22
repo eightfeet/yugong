@@ -1,13 +1,14 @@
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   BackgroundGroupListTypesOfStyleItems,
   BackgroundGroupTypesOfStyleItems,
 } from "~/types/appData";
-import BackgroundItem from "./BackgroundItem";
 import s from "./BackgroundGroup.module.less";
 import Color from "../Color";
+import BackgroundListHoc from "./BackgroundListHoc";
+import arrayMove from "array-move";
 
 interface Props {
   updateKey: string;
@@ -50,7 +51,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
   );
 
   const onChangeItem = useCallback(
-    (index: number) => (item: BackgroundGroupListTypesOfStyleItems) => {
+    (index: number, item: BackgroundGroupListTypesOfStyleItems) => {
       const oprateBackgroundList = [...(backgroundList || [])];
       oprateBackgroundList[index] = item;
       setBackgroundList(oprateBackgroundList);
@@ -72,6 +73,20 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
       });
   }, [backgroundList, onChange]);
 
+  // 拖拽重新排序重置更新事件组数据
+  const onSortEnd = useCallback(
+    ({oldIndex, newIndex}) => {
+      const items = [...(backgroundList || [])]
+       const result = arrayMove(items, oldIndex, newIndex);
+       console.log('result',result);
+       
+       onChange({
+        backgroundList: result,
+        backgroundColor: backgroundColor,
+      });
+    },
+    [backgroundColor, backgroundList, onChange],
+  )
   return (
     <>
       <Row className={s.row}>
@@ -88,25 +103,7 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
           </Button>
         </Col>
       </Row>
-      {backgroundList?.map((data, index) => (
-        <div key={index} className={s.backgroundwrap}>
-          <div className={s.divide}>
-            <div className={s.title}>背景{index + 1}</div>
-            <div className={s.menu}>
-              <Button
-                size="small"
-                onClick={() => onMinus(index)}
-                icon={<MinusOutlined  />}
-              >
-                删除
-              </Button>
-            </div>
-          </div>
-          <div className={s.backgrounditem}>
-            <BackgroundItem defaultData={data} onChange={onChangeItem(index)} />
-          </div>
-        </div>
-      ))}
+      <BackgroundListHoc backgroundList={backgroundList} onChange={onChangeItem} onMinus={onMinus} onSortEnd={onSortEnd} useDragHandle  />
     </>
   );
 };

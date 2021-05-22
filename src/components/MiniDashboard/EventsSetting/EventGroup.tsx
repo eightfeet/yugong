@@ -92,8 +92,6 @@ const EventGroup: React.FC<Props> = ({
    */
   const handleOnChange = useCallback(
     (currentModuleEvents: EventDataList[]) => {
-      console.log('currentModuleEvents', currentModuleEvents);
-      
         // 更新事件状态清单
       setCurrentModuleEvents(currentModuleEvents);
       // onchange AppData数据

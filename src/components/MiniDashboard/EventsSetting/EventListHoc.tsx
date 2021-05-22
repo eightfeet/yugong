@@ -11,7 +11,6 @@ import App from "~/components/Output";
 import { EventDataList } from "./EventGroup";
 import ArgumentsSetting from "../ArgumentsSetting";
 import { ArgumentsItem } from "~/types/appData";
-import s from "./EventListHoc.module.less";
 
 interface Props {
   moduleEvents: EventDataList[];
@@ -22,8 +21,6 @@ interface Props {
 const EventListHoc = SortableContainer(
   ({ moduleEvents, onChange, onMinus }: Props) => {
     const appData = useSelector((state: RootState) => state.appData);
-    // 变更参数的索引值
-    const [argsIndex, setArgsIndex] = useState<number>();
     const [currentModuleId, setCurrentModuleId] = useState<string>();
     const [argumentsVisible, setArgumentsVisible] = useState(false);
     const [currentFunctionStaticArguments, setCurrentFunctionStaticArguments] =
@@ -52,7 +49,6 @@ const EventListHoc = SortableContainer(
 
     const onSetArg = useCallback(
       (
-        index,
         currentFunctionStaticArguments: ArgumentsItem[],
         currentFunctionArguments: ArgumentsItem[],
         moduleId: string
@@ -61,8 +57,6 @@ const EventListHoc = SortableContainer(
         setCurrentFunctionStaticArguments(currentFunctionStaticArguments);
         // 保存当前编辑面板运行时参数
         setCurrentFunctionArguments(currentFunctionArguments);
-        // 保存编辑参数索引值
-        setArgsIndex(index);
         // 保存当前模块id
         setCurrentModuleId(moduleId);
         // 开启参数编辑面板
@@ -72,9 +66,7 @@ const EventListHoc = SortableContainer(
     );
 
     const handleEventItem = (
-      event: EventDataList,
-      index: number
-    ): {
+      event: EventDataList    ): {
       disableSetArguments: boolean;
       currentStaticArguments: ArgumentsItem[];
     } => {
@@ -140,7 +132,7 @@ const EventListHoc = SortableContainer(
           // 当前模块发布的事件状态清单
           moduleEvents?.map((event, index) => {
             const { disableSetArguments, currentStaticArguments } =
-              handleEventItem(event, index);
+              handleEventItem(event);
 
             return (
               <EventItem
@@ -154,7 +146,6 @@ const EventListHoc = SortableContainer(
                 canNotSetArguments={disableSetArguments}
                 onSetArg={() =>
                   onSetArg(
-                    index,
                     currentStaticArguments,
                     event.arguments || [],
                     event.moduleUuid

@@ -179,7 +179,6 @@ const EventItem: React.FC<Props> = ({
           onChange={onChangemoduleUuid}
           placeholder="请选择要操作的模块"
           showSearch
-          optionFilterProp="children"
           filterOption={
             (input, option) => {
               const str = option?.children.join("").toLowerCase();
@@ -194,7 +193,6 @@ const EventItem: React.FC<Props> = ({
             <Select.Option
               key={item.uuid}
               value={item.uuid}
-              optionFilterProp="children"
             >
               {item.name}-{item.type}
             </Select.Option>
