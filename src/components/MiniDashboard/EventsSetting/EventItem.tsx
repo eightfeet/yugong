@@ -9,6 +9,7 @@ import { ExposeFunctions } from "~/types/modules";
 import { SortableElement, SortableHandle } from "react-sortable-hoc";
 import MoveIcon from "./MoveIcon";
 import { MinusOutlined, SettingOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 const DragHandle = SortableHandle(() => (
   <span className={s.icon}>
@@ -37,7 +38,10 @@ interface Props {
   moduleUuid: string;
   dispatchedFunctions: string;
   onChange: (data: string[]) => void;
+  onMinus: () => void;
   argumentList: ArgumentsItem[];
+  canNotSetArguments: boolean;
+  onSetArg: () => void;
 }
 
 const EventItem: React.FC<Props> = ({
@@ -45,6 +49,9 @@ const EventItem: React.FC<Props> = ({
   dispatchedFunctions,
   argumentList,
   onChange,
+  onMinus,
+  onSetArg,
+  canNotSetArguments
 }) => {
   const [selectItem, setSelectItem] = useState<any[]>([]);
   /**
@@ -161,7 +168,7 @@ const EventItem: React.FC<Props> = ({
   );
 
   return (
-    <Row className={s.row} gutter={4}>
+    <Row className={classNames(s.row, 'eventitem')} gutter={4}>
       <Col span={1}>
         <DragHandle />
       </Col>
@@ -181,7 +188,6 @@ const EventItem: React.FC<Props> = ({
               }
               return false;
             }
-            // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
           {moduleList.map((item) => (
@@ -213,8 +219,8 @@ const EventItem: React.FC<Props> = ({
         {/** 未选择方法时不可以编辑参数 */}
         <Button
           icon={<SettingOutlined />}
-          onClick={() => console.log("设置参数")}
-          disabled={true}
+          onClick={onSetArg}
+          disabled={canNotSetArguments}
         >
           参数
         </Button>
@@ -222,7 +228,7 @@ const EventItem: React.FC<Props> = ({
       <Col span={2} className={s.minuswrap}>
         <Button
           size="small"
-          icon={<MinusOutlined onClick={(data) => console.log("移除当前项")} />}
+          icon={<MinusOutlined onClick={onMinus} />}
         />
       </Col>
     </Row>

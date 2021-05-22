@@ -1,97 +1,180 @@
-import { MinusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
-import React from 'react';
-import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { SortableContainer } from 'react-sortable-hoc';
-import { RootState } from '~/redux/store';
-import { ArgumentsItem } from '~/types/appData';
-import { ExposeFunctions } from '~/types/modules';
-import EventItem from './EventItem';
-import App from '~/components/Output';
-import s from './EventListHoc.module.less';
-
-interface EventDataList {
-    /**
-     * 模块名
-     */
-    moduleUuid: string;
-    /**
-     * 模块发布的方法
-     */
-    dispatchedFunctions: string;
-    /**
-     * 模块发布的方法对应的参数
-     */
-    arguments?: ArgumentsItem[];
-}
+/**
+ * 高阶组件，支持拖拽方式变更事件排序，同时处理参数面板：模块->事件->参数，
+ */
+import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
+import { SortableContainer } from "react-sortable-hoc";
+import { RootState } from "~/redux/store";
+import { ExposeFunctions } from "~/types/modules";
+import EventItem from "./EventItem";
+import App from "~/components/Output";
+import { EventDataList } from "./EventGroup";
+import ArgumentsSetting from "../ArgumentsSetting";
+import { ArgumentsItem } from "~/types/appData";
+import s from "./EventListHoc.module.less";
 
 interface Props {
-    moduleEvents: EventDataList[];
+  moduleEvents: EventDataList[];
+  onChange: (data: EventDataList[]) => void;
+  onMinus: (index: number) => void;
 }
 
-const EventListHoc = SortableContainer(({ moduleEvents }: Props) => {
+const EventListHoc = SortableContainer(
+  ({ moduleEvents, onChange, onMinus }: Props) => {
     const appData = useSelector((state: RootState) => state.appData);
+    // 变更参数的索引值
+    const [argsIndex, setArgsIndex] = useState<number>();
+    const [currentModuleId, setCurrentModuleId] = useState<string>();
+    const [argumentsVisible, setArgumentsVisible] = useState(false);
+    const [currentFunctionStaticArguments, setCurrentFunctionStaticArguments] =
+      useState<ArgumentsItem[]>();
+    const [currentFunctionArguments, setCurrentFunctionArguments] =
+      useState<ArgumentsItem[]>();
 
     /**
-     * 获取方法参数
+     * 获取方法对应的参数
      */
     const getFunArguments = useCallback(
-        (moduleId: string): ExposeFunctions[] => {
-            if (moduleId === 'global') {
-                return App.exposeFunctions || [];
-            }
-            for (let index = 0; index < appData.length; index++) {
-                const element = appData[index];
-                if (moduleId === element.moduleId) {
-                    return require(`~/modules/${element.type}`).default
-                        .exposeFunctions;
-                }
-            }
-            return [];
-        },
-        [appData]
+      (moduleId: string): ExposeFunctions[] => {
+        if (moduleId === "global") {
+          return App.exposeFunctions || [];
+        }
+        for (let index = 0; index < appData.length; index++) {
+          const element = appData[index];
+          if (moduleId === element.moduleId) {
+            return require(`~/modules/${element.type}`).default.exposeFunctions;
+          }
+        }
+        return [];
+      },
+      [appData]
     );
 
+    const onSetArg = useCallback(
+      (
+        index,
+        currentFunctionStaticArguments: ArgumentsItem[],
+        currentFunctionArguments: ArgumentsItem[],
+        moduleId: string
+      ) => {
+        // 保存当前编辑面板静态参数
+        setCurrentFunctionStaticArguments(currentFunctionStaticArguments);
+        // 保存当前编辑面板运行时参数
+        setCurrentFunctionArguments(currentFunctionArguments);
+        // 保存编辑参数索引值
+        setArgsIndex(index);
+        // 保存当前模块id
+        setCurrentModuleId(moduleId);
+        // 开启参数编辑面板
+        setArgumentsVisible(true);
+      },
+      []
+    );
+
+    const handleEventItem = (
+      event: EventDataList,
+      index: number
+    ): {
+      disableSetArguments: boolean;
+      currentStaticArguments: ArgumentsItem[];
+    } => {
+      const { moduleUuid, dispatchedFunctions } = event;
+      // 参数不可编辑
+      let disableSetArguments = false;
+      // 获取当前模块静态导出的方法
+      const currentModuleExportFunction = getFunArguments(moduleUuid) || [];
+      // 从当前模块静态导出的方法中提取静态参数
+      const currentStaticArguments =
+        currentModuleExportFunction.filter(
+          (item) => item.name === dispatchedFunctions
+        )[0]?.arguments || [];
+      // 无方法名（还没有选择运行时模块或模块对应的方法） 或者没有静态参数时标示当前参数不可编辑
+      if (!dispatchedFunctions || !currentStaticArguments.length) {
+        disableSetArguments = true;
+      }
+
+      return {
+        disableSetArguments,
+        currentStaticArguments,
+      };
+    };
+
+    /**保存参数 */
+    const onSaveArgs = useCallback(
+      (data) => {
+        const operateEvents = [...moduleEvents];
+        operateEvents.forEach((item) => {
+          if (item.moduleUuid === currentModuleId) {
+            item.arguments = [...data];
+          }
+        });
+
+        if (onChange instanceof Function) {
+          onChange(operateEvents);
+        }
+        setArgumentsVisible(false);
+      },
+      [currentModuleId, moduleEvents, onChange]
+    );
+
+    // 单项数据的更新
+    const onChangeItem = useCallback(
+      (index: number) => (data: string[]) => {
+        const operateEvents = [...moduleEvents];
+        //   moduleUuid
+        operateEvents[index] = {
+          arguments: [],
+          dispatchedFunctions: data[1],
+          moduleUuid: data[0],
+        };
+        if (onChange instanceof Function) {
+          onChange(operateEvents);
+        }
+      },
+      [moduleEvents, onChange]
+    );
 
     return (
-        <div>
-            {
-                // 当前模块发布的事件状态清单
-                moduleEvents?.map((event, index) => {
-                    // 获取模块静态导出的方法参数
-                    const moduleExportFunctionArguments =
-                        getFunArguments(event.moduleUuid) || [];
-                    // 当前id模块导出的方法参数
-                    const currentExportFunctionArguments =
-                        moduleExportFunctionArguments.filter(
-                            (item) => item.name === event.dispatchedFunctions
-                        )[0]?.arguments || [];
+      <div>
+        {
+          // 当前模块发布的事件状态清单
+          moduleEvents?.map((event, index) => {
+            const { disableSetArguments, currentStaticArguments } =
+              handleEventItem(event, index);
 
-                    let canNotSetArguments = false;
-                    // 没有选择方法时不可以编辑
-                    if (!event.dispatchedFunctions) {
-                        canNotSetArguments = true;
-                    }
-                    // 无需配置参数是不可编辑
-                    if (currentExportFunctionArguments.length <= 0) {
-                        canNotSetArguments = true;
-                    }
-
-                    return (
-                        <EventItem
-                            index={index}
-                            key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
-                            moduleUuid={event.moduleUuid}
-                            dispatchedFunctions={event.dispatchedFunctions}
-                            argumentList={event.arguments || []}
-                            onChange={data => console.log(data)}
-                        />
-                    );
-                })
-            }
-        </div>
+            return (
+              <EventItem
+                index={index}
+                key={`${index}${event.moduleUuid}${event.dispatchedFunctions}`}
+                moduleUuid={event.moduleUuid}
+                dispatchedFunctions={event.dispatchedFunctions}
+                argumentList={event.arguments || []}
+                onChange={onChangeItem(index)}
+                onMinus={() => onMinus(index)}
+                canNotSetArguments={disableSetArguments}
+                onSetArg={() =>
+                  onSetArg(
+                    index,
+                    currentStaticArguments,
+                    event.arguments || [],
+                    event.moduleUuid
+                  )
+                }
+              />
+            );
+          })
+        }
+        <ArgumentsSetting
+          title="参数设置"
+          visible={argumentsVisible}
+          onOk={onSaveArgs}
+          argumentsData={currentFunctionArguments}
+          initArgumentData={currentFunctionStaticArguments}
+          onCancel={() => setArgumentsVisible(false)}
+        />
+      </div>
     );
-});
+  }
+);
 
 export default EventListHoc;

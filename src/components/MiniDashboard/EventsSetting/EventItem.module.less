@@ -1,7 +1,6 @@
 .row {
     align-items: center;
     margin-bottom: 10px;
-    z-index: 100;
     :global {
         .ant-radio-button-wrapper {
             padding: 0 10px;
@@ -9,6 +8,12 @@
         .ant-input-number{
             width: 100%;
         }
+    }
+}
+
+:global {
+    body > .ant-row.eventitem{
+        z-index: 2000;
     }
 }
 
@@ -39,12 +44,11 @@
 }
 
 .drag {
-    cursor: pointer;
     font-size: 30px;
 }
 
 .icon {
-    cursor: pointer;
+    cursor: move;
     display: block;
     width: 20px;
     height: 20px;

@@ -29,7 +29,7 @@ interface Props {
    */
   argumentsData?: ArgumentsItem[];
   /**
-   * 初始化参数数据
+   * 组件导出事件的初始化参数数据
    */
   initArgumentData?: ArgumentsItem[];
   /**
