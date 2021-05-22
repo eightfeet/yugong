@@ -253,7 +253,7 @@ const Responsive: React.FC<Props> = () => {
             maskStyle={{ backgroundColor: "transparent" }}
             footer={null}
           >
-            <PageSetting />
+           { showPageDrawer ? <PageSetting /> : null}
           </Drawer>
           <Drawer
             className={s.drawer}
