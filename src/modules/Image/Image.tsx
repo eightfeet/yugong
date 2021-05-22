@@ -4,7 +4,7 @@ import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { AppDataElementsTypes, ArgumentsObject } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
-import defaultImg from "./image.svg";
+// import defaultImg from "./image.svg";
 import useStyles from "./Image.useStyle";
 
 export interface ImageProps extends AppDataElementsTypes {
