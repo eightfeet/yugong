@@ -144,182 +144,24 @@ Roulette.exposeEvents = [
 Roulette.exposeDefaultProps = {
   style: {
     basic: {
-      display: {
-        overflow: "visible",
-      },
     },
     wrap: {
-      display: {
-        overflow: "visible",
-        width: [250, ''],
-        height: [250, ''],
-      },
     },
     light: {
-      backgroundCommon: {
-        backgroundColor: "inherit",
-      },
-      font: {
-        color: "rgba(243, 64, 8, 1)",
-      },
-      textShadow: [],
-      boxShadow: [],
     },
     wheel: {
-      backgroundCommon: {
-        backgroundColor: "rgba(255, 178, 0, 1)",
-      },
-      border: {
-        radiusTopLeft: [1000, ''],
-        radiusTopRight: [1000, ''],
-        radiusBottomLeft: [1000, ''],
-        radiusBottomRight: [1000, ''],
-        borderPosition: {
-          borderTop: false,
-          borderRight: false,
-          borderBottom: false,
-          borderLeft: false,
-          border: true,
-        },
-        borderStyle: "none",
-      },
-      boxShadow: [
-        {
-          inset: true,
-          spread: [2, ''],
-          blur: [15, ''],
-          color: "rgba(255, 87, 34, 1 )",
-        },
-        {
-          color: "rgba(255, 152, 0, 1 )",
-          inset: true,
-          blur: [20, ''],
-          spread: [20, ''],
-        },
-      ],
-      backgroundGradient: {
-        gradient: [
-          {
-            color: "rgba(255, 87, 34, 1)",
-            transition: 45,
-          },
-          {
-            color: "rgba(255, 235, 59, 1)",
-            transition: 100,
-          },
-        ],
-        gradientDirections: "center",
-      },
-      display: {
-        overflow: "visible",
-        display: "block",
-      },
     },
     divide: {
-      border: {
-        borderColor: "rgba(44, 9, 218, 1)",
-        borderStyle: "hidden",
-        borderPosition: {
-          borderTop: false,
-          borderRight: false,
-          borderBottom: false,
-          borderLeft: false,
-          border: false,
-        },
-      },
-      backgroundCommon: {
-        backgroundColor: "rgba(255, 255, 255, 0.18)",
-      },
-      display: {
-        width: [1, '']
-      },
-      boxShadow: [],
     },
     prizealias: {
-      font: {
-        color: "rgba(255, 255, 255, 1)",
-      },
-      display: {
-        margin: [[-5, ''], null, null, null],
-      },
     },
     lotterybutton: {
-      backgroundCommon: {
-        backgroundColor: "rgba(162, 162, 162, 0.61)",
-        imageUrl:
-          "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0510222608604.png",
-        sizeX: [80, ''],
-        sizeY: [80, ''],
-        repeat: "no-repeat",
-        positionX: [50, ''],
-        positionY: [50, ''],
-      },
-      border: {
-        radiusTopLeft: [100, ''],
-        radiusTopRight: [100, ''],
-        radiusBottomLeft: [100, ''],
-        radiusBottomRight: [100, ''],
-      },
-      display: {
-        width: [80, ''],
-        height: [80, ''],
-        position: "absolute",
-        left: [124, ''],
-      },
-      boxShadow: [
-        {
-          color: "rgba(196, 55, 10, 0.53 )",
-          spread: [2,''],
-          blur: [1, ''],
-        },
-        {
-          color: "rgba(170, 41, 0, 0.65 )",
-          spread: [2,''],
-          blur: [8, ''],
-        },
-      ],
     },
     needle: {
-      backgroundCommon: {
-        backgroundColor: "rgba(61, 23, 244, 0)",
-        imageUrl:
-          "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0510225817739.png",
-        sizeX: [120, ''],
-        repeat: "no-repeat",
-        positionX: [50, ''],
-        positionY: [50, ''],
-      },
-      border: {},
-      display: {
-        width: [120, ''],
-        height: [230, ''],
-        position: "absolute",
-        padding: [null, null, null, null],
-        left: [65, ''],
-        margin: [[0, ''], [0, ''], [0, ''], [0, '']],
-        top: [0, ''],
-      },
     },
     gameImg: {
-      display: {
-        margin: [[-10, ''], null, null, null],
-      },
-      border: {
-        radiusTopLeft: [300,''],
-        radiusTopRight: [300,''],
-        radiusBottomLeft: [300,''],
-        radiusBottomRight: [300,''],
-        borderColor: "rgba(178, 70, 36, 1)",
-      },
-      backgroundCommon: {
-        backgroundColor: "inherit",
-      },
     },
     successclose: {
-      display: {
-        width: [10, ''],
-        height: [10, ''],
-      },
     },
     successoverlay: {},
     successcontainer: {},

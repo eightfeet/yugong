@@ -14,14 +14,19 @@ const { confirm } = Modal;
 
 interface Props {
   goBack: () => void;
+  /**创建项目时 */
+  onCreating?: () => void;
 }
 
-const Createproject: React.FC<Props> = ({ goBack }) => {
+const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   const [localAppData, setLocalAppData] = useLocalStorage("appData", null);
   const [localPageData, setLocalPageData] = useLocalStorage("pageData", null);
   const dispatch = useDispatch<Dispatch>();
 
   const initData = useCallback(() => {
+    if (onCreating instanceof Function) {
+      onCreating()
+    }
     window.localStorage.removeItem("pageData");
     window.localStorage.removeItem("appData");
     dispatch.pageData.initPageData();
@@ -29,12 +34,7 @@ const Createproject: React.FC<Props> = ({ goBack }) => {
     dispatch.controller.setIsEditing(true);
     dispatch.activationItem.removeActivationItem();
     dispatch.appData.initAppData();
-  }, [
-    dispatch.activationItem,
-    dispatch.appData,
-    dispatch.controller,
-    dispatch.pageData,
-  ]);
+  }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData, onCreating]);
 
   const createBlank = useCallback(() => {
     /**初始化 */
