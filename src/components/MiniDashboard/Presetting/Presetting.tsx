@@ -131,7 +131,8 @@ const Presetting: React.FC<Props> = () => {
       data = data.filter((item, index) => !deepEqual(item.arguments, exposeFunctions[index].arguments))  || [];
       
       // 得到需要更新的data数据，将他合并到运行时mount数据；
-      let operateData = cloneDeep(setFunctions).reverse();
+      let operateData = cloneDeep(setFunctions || []).reverse();
+      // 运行时mount数据存在时做更新，不存在时做添加
       if (operateData.length) {
         operateData.forEach(({name}, operateIndex) => {
           const [id, fn] = name.split('/');
@@ -154,12 +155,16 @@ const Presetting: React.FC<Props> = () => {
           });
         });
       }
-      operateData = operateData.reverse();
-
-      const operateActData = cloneDeep(activationItem);
-      operateActData.events!.mount = operateData;
-      updateActDataToAll(operateActData);
       
+      operateData = operateData.reverse();
+      const operateActData = cloneDeep(activationItem);
+      // 被激活组件是否有事件数据？
+      if (!operateActData.events) {
+        operateActData.events = {};
+      }
+      operateActData.events!.mount = operateData;
+      // 更新且播放所有内部事件
+      updateActDataToAll(operateActData);
       onPlay(operateData);
     },
     [activationItem, exposeFunctions, moduleId, onPlay, runningData, setFunctions, updateActDataToAll]
