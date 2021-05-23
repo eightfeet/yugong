@@ -18,8 +18,28 @@ const staticConstants: StaticConstants = {
    */
   exposeFunctions: [
     {
+      name: "setData",
+      description: "数据源",
+      arguments: [
+        {
+          type: "array",
+          name: "图片地址",
+          describe: "填写图片地址",
+          data: [],
+          fieldName: "imageUrls",
+        },
+        {
+          type: "array",
+          name: "图片路径",
+          describe: "与图片地址保持索引一致，为空时图片不可点击",
+          data: [],
+          fieldName: "imageLinks",
+        },
+      ],
+    },
+    {
       name: "setSlider",
-      description: "Slider 设置",
+      description: "设置",
       arguments: [
         {
           type: "boolean",
@@ -45,14 +65,14 @@ const staticConstants: StaticConstants = {
         },
         {
           type: "number",
-          name: "delay",
+          name: "延时",
           describe: "切换之间的延迟(毫秒),未指定此参数时将禁用自动播放!",
           data: "5000",
           fieldName: "delay",
         },
         {
           type: "boolean",
-          name: "disableOnInteraction",
+          name: "交互阻止播放",
           describe: "交互时打断自动播放",
           data: {
             comparableAverageA: "",
@@ -60,26 +80,6 @@ const staticConstants: StaticConstants = {
             method: "<",
           },
           fieldName: "disableOnInteraction",
-        },
-      ],
-    },
-    {
-      name: "setData",
-      description: "Slider 数据源",
-      arguments: [
-        {
-          type: "array",
-          name: "imageUrls",
-          describe: "图片地址",
-          data: [],
-          fieldName: "imageUrls",
-        },
-        {
-          type: "array",
-          name: "imageLinks",
-          describe: "与图片地址保持索引一致空值图片不可点击",
-          data: [],
-          fieldName: "imageLinks",
         },
       ],
     },

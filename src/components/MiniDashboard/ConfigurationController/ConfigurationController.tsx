@@ -6,6 +6,7 @@ import { cloneDeep } from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import { ExposeApi } from "~/types/modules";
+import Presetting from "../Presetting";
 const { Panel } = Collapse;
 
 const ConfigurationController = () => {
@@ -28,7 +29,10 @@ const getExposeApiData = useCallback((): ExposeApi[] => {
 }, [type]);
 
   return (
-    <Collapse bordered={false} defaultActiveKey={["1"]}>
+    <Collapse accordion bordered={false} defaultActiveKey={["0"]}>
+      <Panel header="预设" key="0">
+        <Presetting />
+      </Panel>
       <Panel header="事件" key="1">
         <EventsSetting />
       </Panel>

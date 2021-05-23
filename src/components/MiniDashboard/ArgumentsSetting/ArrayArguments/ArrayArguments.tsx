@@ -70,9 +70,6 @@ const ArrayArguments: React.FC<Props> = ({
       {true ? (
         <Row className={s.toolbar} gutter={4}>
           <Col span={4}>
-            <div className={s.label}>新增索引</div>
-          </Col>
-          <Col span={4}>
             <Button onClick={onAddKey} icon={<PlusOutlined  />}>增加</Button>
           </Col>
         </Row>
