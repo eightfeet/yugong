@@ -7,7 +7,7 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 import { Dispatch, RootState } from "~/redux/store";
 import { AppDataLayoutItemTypes } from "~/types/appData";
-import { EventsTypeItem, ExposeEvents, ExposeFunctions, Modules } from "~/types/modules";
+import { EventsTypeItem, ExposeFunctions, Modules } from "~/types/modules";
 import ArrayArguments from "../ArgumentsSetting/ArrayArguments";
 import BooleanArguments from "../ArgumentsSetting/BooleanArguments";
 import HtmlSuffix from "../ArgumentsSetting/HtmlSuffix";
