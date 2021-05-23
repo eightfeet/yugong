@@ -64,7 +64,7 @@ Image.exposeFunctions = [
         arguments: [
           {
             type: "object",
-            name: "img",
+            name: "图片路径与属性",
             describe: "图片url",
             data: {
               url: '',
