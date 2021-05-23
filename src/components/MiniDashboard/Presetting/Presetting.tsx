@@ -1,11 +1,12 @@
-import { Col, Divider, Input, PageHeader, Row, Tooltip } from "antd";
-import React, { Fragment } from "react";
+import { Col, Input, PageHeader, Row, Tooltip } from "antd";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import { ExposeFunctions } from "~/types/modules";
+import { ExposeFunctions, Modules } from "~/types/modules";
 import ArrayArguments from "../ArgumentsSetting/ArrayArguments";
 import BooleanArguments from "../ArgumentsSetting/BooleanArguments";
 import HtmlSuffix from "../ArgumentsSetting/HtmlSuffix";
+import MixedArguments from "../ArgumentsSetting/MixedArguments";
 import ObjectArguments from "../ArgumentsSetting/ObjectArguments";
 import s from "./Presetting.module.less";
 
@@ -22,6 +23,9 @@ const Presetting: React.FC<Props> = ({}) => {
     (state: RootState) => state.activationItem
   );
 
+
+  const module:Modules<any> = useMemo(() => !!type ? require(`~/modules/${type}`).default : {}, [type])
+
   if (!moduleId) {
       return null;
   }
@@ -30,9 +34,10 @@ const Presetting: React.FC<Props> = ({}) => {
   const setFunctions = events?.mount || [];
 
   // 获取当前模块类导出的内置方法，
-  const exposeFunctions: ExposeFunctions[] = require(`~/modules/${type}`)
-    .default.exposeFunctions;
+  const exposeFunctions: ExposeFunctions[] = module.exposeFunctions || [];
 
+
+  
   return (
     <div>
       {exposeFunctions.map((item, index) => !!item.arguments?.length ? (
@@ -64,6 +69,7 @@ const Presetting: React.FC<Props> = ({}) => {
                   <ArrayArguments
                     typeArguments={argItem}
                     flexible
+                    htmlInput={!!argItem.html}
                     onChange={() => console.log()}
                   />
                 ) : null}
@@ -79,6 +85,13 @@ const Presetting: React.FC<Props> = ({}) => {
                     describe={argItem.describe}
                     htmlInput={!!argItem.html}
                     onChange={() =>console.log()}
+                    typeArguments={argItem}
+                    flexible={false}
+                  />
+                ) : null}
+                {argItem.type === "mixed" ? (
+                  <MixedArguments 
+                    onChange={() => console.log()}
                     typeArguments={argItem}
                     flexible={false}
                   />
