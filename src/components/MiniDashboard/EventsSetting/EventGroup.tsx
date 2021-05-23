@@ -125,6 +125,8 @@ const EventGroup: React.FC<Props> = ({
   );
 
   const onPlayEnv = useCallback(() => {
+    console.log(5555, curentEventInfomation, value);
+    
     onPlay(curentEventInfomation, value);
   }, [curentEventInfomation, onPlay, value]);
 
