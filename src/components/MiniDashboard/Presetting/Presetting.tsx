@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
 import { Dispatch, RootState } from '~/redux/store';
-import { AppDataLayoutItemTypes, ArgumentsItem } from '~/types/appData';
+import { AppDataLayoutItemTypes } from '~/types/appData';
 import { EventsTypeItem, ExposeFunctions, Modules } from '~/types/modules';
 import ArrayArguments from '../ArgumentsSetting/ArrayArguments';
 import BooleanArguments from '../ArgumentsSetting/BooleanArguments';
@@ -167,70 +167,38 @@ const Presetting: React.FC<Props> = () => {
               // 给运行时追加准备数据
               copyModuleData.events.mount = readyToSetting;
             } else { // 有初始化事件
+               // 倒序是为了匹配最末一条
+              const mount = [...copyModuleData.events.mount].reverse();
+              // 遍历ready数据
+              readyToSetting.forEach(readyItem => {
+                // 是否数据覆盖
+                let isCove: boolean = false; 
+                mount.some(mountItem => {
+                  if (mountItem.name === readyItem.name) {
+                    mountItem.arguments = readyItem.arguments;
+                    // 覆盖旧值
+                    isCove = true;
+                    return true;
+                  }
+                  return false;
+                });
+                // 如果没有覆盖旧值则追加到mount数据上
+                if (!isCove) {
+                  mount.unshift(readyItem);
+                }
+              });
 
+              copyModuleData.events.mount = mount.reverse();
             }
 
             console.log('readyToSetting', readyToSetting);
             console.log('copyModuleData', copyModuleData);
 
-
-
-            
-            // 深拷一份运行时数据
-            let copySetFunctions = cloneDeep(setFunctions || []);
-            // step2-1 运行时没有配置mount事件，则为组件运行时添加mount事件，并将数据更新到
-            // if (!copySetFunctions.length) {
-            //   if (!copyModuleData.events) {
-            //     copyModuleData.events = {};
-            //   }
-            //   copyModuleData.events.mount = [];
-            // }
-
-            // 运行时mount数据存在时做更新，不存在时做添加
-            if (copySetFunctions.length) {
-                copySetFunctions.forEach(({ name }, operateIndex) => {
-                    const [id, fn] = name.split('/');
-                    let gotIt = false;
-                    if (id === moduleId) {
-                        copyRunningData.forEach((dataItem) => {
-                            if (fn === dataItem.name) {
-                                copySetFunctions[operateIndex].arguments =
-                                    dataItem.arguments || [];
-                                gotIt = true;
-                            }
-                        });
-                    }
-                    if (gotIt) return true;
-                });
-            } else if (copyRunningData.length) {
-                copyRunningData.forEach((item) => {
-                    copySetFunctions.push({
-                        name: `${moduleId}/${item.name}`,
-                        arguments: item.arguments || [],
-                    });
-                });
-            }
-
-            copySetFunctions = copySetFunctions.reverse();
-            const operateActData = cloneDeep(activationItem);
-            // 被激活组件是否有事件数据？
-            if (!operateActData.events) {
-                operateActData.events = {};
-            }
-            operateActData.events!.mount = copySetFunctions;
             // 更新且播放所有内部事件
-            updateActDataToAll(operateActData);
-            onPlay(copySetFunctions);
+            updateActDataToAll(copyModuleData);
+            onPlay(copyModuleData.events.mount);
         },
-        [
-            activationItem,
-            exposeFunctions,
-            moduleId,
-            onPlay,
-            runningData,
-            setFunctions,
-            updateActDataToAll,
-        ]
+        [activationItem, exposeFunctions, moduleId, onPlay, runningData, updateActDataToAll]
     );
 
     if (!moduleId) {
