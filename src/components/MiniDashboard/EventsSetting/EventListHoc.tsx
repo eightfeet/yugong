@@ -16,10 +16,11 @@ interface Props {
   moduleEvents: EventDataList[];
   onChange: (data: EventDataList[]) => void;
   onMinus: (index: number) => void;
+  handlePlay?: () => void;
 }
 
 const EventListHoc = SortableContainer(
-  ({ moduleEvents, onChange, onMinus }: Props) => {
+  ({ moduleEvents, onChange, onMinus, handlePlay }: Props) => {
     const appData = useSelector((state: RootState) => state.appData);
     const [currentModuleId, setCurrentModuleId] = useState<string>();
     const [argumentsVisible, setArgumentsVisible] = useState(false);
@@ -27,6 +28,7 @@ const EventListHoc = SortableContainer(
       useState<ArgumentsItem[]>();
     const [currentFunctionArguments, setCurrentFunctionArguments] =
       useState<ArgumentsItem[]>();
+      const [currentIndex, setCurrentIndex] = useState<number>()
 
     /**
      * 获取方法对应的参数
@@ -51,7 +53,8 @@ const EventListHoc = SortableContainer(
       (
         currentFunctionStaticArguments: ArgumentsItem[],
         currentFunctionArguments: ArgumentsItem[],
-        moduleId: string
+        moduleId: string,
+        index: number
       ) => {
         // 保存当前编辑面板静态参数
         setCurrentFunctionStaticArguments(currentFunctionStaticArguments);
@@ -59,6 +62,8 @@ const EventListHoc = SortableContainer(
         setCurrentFunctionArguments(currentFunctionArguments);
         // 保存当前模块id
         setCurrentModuleId(moduleId);
+        // 保存当前索引位
+        setCurrentIndex(index);
         // 开启参数编辑面板
         setArgumentsVisible(true);
       },
@@ -95,8 +100,8 @@ const EventListHoc = SortableContainer(
     const onSaveArgs = useCallback(
       (data) => {
         const operateEvents = [...moduleEvents];
-        operateEvents.forEach((item) => {
-          if (item.moduleUuid === currentModuleId) {
+        operateEvents.forEach((item, index) => {
+          if (item.moduleUuid === currentModuleId && index === currentIndex) {
             item.arguments = [...data];
           }
         });
@@ -104,9 +109,14 @@ const EventListHoc = SortableContainer(
         if (onChange instanceof Function) {
           onChange(operateEvents);
         }
+
+        if (handlePlay instanceof Function) {
+          handlePlay();
+        }
+        
         setArgumentsVisible(false);
       },
-      [currentModuleId, moduleEvents, onChange]
+      [currentIndex, currentModuleId, handlePlay, moduleEvents, onChange]
     );
 
     // 单项数据的更新
@@ -148,7 +158,8 @@ const EventListHoc = SortableContainer(
                   onSetArg(
                     currentStaticArguments,
                     event.arguments || [],
-                    event.moduleUuid
+                    event.moduleUuid,
+                    index
                   )
                 }
               />

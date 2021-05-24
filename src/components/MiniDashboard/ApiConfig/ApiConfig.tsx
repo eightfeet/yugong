@@ -369,6 +369,7 @@ const Apiconfig: React.FC<Props> = ({
         initArgumentData={argData?.results}
         onCancel={hideArg}
         onOk={onArgOk}
+        forceUpdate
       />
     </div>
   );

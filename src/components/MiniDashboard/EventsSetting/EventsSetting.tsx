@@ -76,6 +76,7 @@ const EventsSetting: React.FC<Props> = () => {
   return <div className={s.root}>
     {
       exposeEvents.map(element => (<EventGroup
+        eventName={element.name}
         key={element.name}
         value={getCurentEventByEventName(element.name, events)}
         curentEventInfomation={element}

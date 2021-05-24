@@ -420,6 +420,7 @@ const Pagesetting: React.FC<Props> = () => {
               {Output.exposeEvents?.map((item, index) => (
                 <EventGroup
                   key={index}
+                  eventName={item.name}
                   value={
                     item.name === "mount"
                       ? pageData.mountEnvents || []

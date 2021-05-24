@@ -48,6 +48,10 @@ interface Props {
    * title
    */
   title?: string;
+  /*
+  * forceUpdate
+  */
+  forceUpdate?: boolean;
 }
 
 const ArgumentsSetting: React.FC<Props> = ({
@@ -59,6 +63,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   title,
   dataFlexible = false,
   headerFlexible = false,
+  forceUpdate
 }) => {
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
@@ -78,11 +83,13 @@ const ArgumentsSetting: React.FC<Props> = ({
   // 弹窗确定收集编辑完毕的argument数据
   const onModalOk = useCallback(() => {
     if (onOk instanceof Function) {
-      // todo 为何强制更新页面？？
-      forceUpdateByStateTag();
+      // todo 确定页面为何强制更新？？
+      if (forceUpdate) {
+        forceUpdateByStateTag();
+      }
       onOk(argumentState);
     }
-  }, [onOk, forceUpdateByStateTag, argumentState]);
+  }, [onOk, forceUpdateByStateTag, argumentState, forceUpdate]);
 
   // number
   const onChangeInput = useCallback(

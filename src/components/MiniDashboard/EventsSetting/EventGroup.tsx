@@ -24,6 +24,8 @@ interface Props {
   ) => void;
   /**播放事件组 */
   onPlay: (curentEventInfomation: ExposeEvents, data: EventsTypeItem[]) => void;
+  /**事件名 */
+  eventName: string;
 }
 
 export interface EventDataList {
@@ -46,6 +48,7 @@ const EventGroup: React.FC<Props> = ({
   value,
   onChange,
   onPlay,
+  eventName,
 }) => {
 
   // 当前模块发布的事件状态清单
@@ -125,8 +128,6 @@ const EventGroup: React.FC<Props> = ({
   );
 
   const onPlayEnv = useCallback(() => {
-    console.log(5555, curentEventInfomation, value);
-    
     onPlay(curentEventInfomation, value);
   }, [curentEventInfomation, onPlay, value]);
 
@@ -158,7 +159,7 @@ const EventGroup: React.FC<Props> = ({
           <Button size="small" onClick={onPlus} icon={<PlusOutlined />} />
         </div>
       </div>
-      <EventListHoc onMinus={onMinus} onChange={handleOnChange} onSortEnd={onSortEnd} moduleEvents={currentModuleEvents} useDragHandle />
+      <EventListHoc onMinus={onMinus} onChange={handleOnChange} handlePlay={eventName === 'mount' ? onPlayEnv : undefined} onSortEnd={onSortEnd} moduleEvents={currentModuleEvents} useDragHandle />
     </>
   );
 };
