@@ -78,6 +78,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   // 弹窗确定收集编辑完毕的argument数据
   const onModalOk = useCallback(() => {
     if (onOk instanceof Function) {
+      // todo 为何强制更新页面？？
       forceUpdateByStateTag();
       onOk(argumentState);
     }

@@ -114,7 +114,7 @@ const Presetting: React.FC<Props> = () => {
                     const [, funName] = setItem.name.split('/');
                     if (
                         funName === staticItem.name &&
-                        setItem.arguments?.length
+                        Array.isArray(setItem.arguments)
                     ) {
                         staticItem.arguments = setItem.arguments;
                         return true;
@@ -129,7 +129,7 @@ const Presetting: React.FC<Props> = () => {
 
     // step2、获取预设数据 保存预设面板数据，用于页面render
     const runningData = getData();
-
+    
     // step3、数据变更
     const onChange = useCallback(
         ({ index, argIndex, value }: OnChangeProps) => {
@@ -138,7 +138,7 @@ const Presetting: React.FC<Props> = () => {
             if (copyRunningData[index].arguments) {
                 copyRunningData[index].arguments![argIndex] = value;
             }
-
+            
             // 从编辑器预设面板获取当前已设置的值copyRunningData；
             // 将预设值回填给运行时运行时mount数据；
             // step1、判断预设数据值有没有被编辑过，抽取被编辑过的数据
@@ -146,7 +146,7 @@ const Presetting: React.FC<Props> = () => {
             const readyToSetting: EventsTypeItem[] = [];
             copyRunningData.forEach((item, index) => {
                 if (
-                    !deepEqual(item.arguments, exposeFunctions[index].arguments)
+                    !deepEqual(item.arguments, exposeFunctions[index].arguments) || !item.arguments?.[index]?.data
                 ) {
                     readyToSetting.push({
                         name: `${moduleId}/${item.name}`,
@@ -154,6 +154,7 @@ const Presetting: React.FC<Props> = () => {
                     });
                 }
             });
+
 
             // step2、将抽取的数据更新到运行时mount数据；
             // 深拷一份当前组件运行时数据 activationItem
@@ -190,10 +191,6 @@ const Presetting: React.FC<Props> = () => {
 
               copyModuleData.events.mount = mount.reverse();
             }
-
-            console.log('readyToSetting', readyToSetting);
-            console.log('copyModuleData', copyModuleData);
-
             // 更新且播放所有内部事件
             updateActDataToAll(copyModuleData);
             onPlay(copyModuleData.events.mount);
