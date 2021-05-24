@@ -1,28 +1,28 @@
-import { Col, Input, PageHeader, Row, Tooltip } from "antd";
-import deepEqual from "deep-equal";
-import { cloneDeep } from "lodash";
-import React, { useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import useLocalStorage from "~/hooks/useLocalStorage";
-import usePostMessage from "~/hooks/usePostMessage";
-import { Dispatch, RootState } from "~/redux/store";
-import { AppDataLayoutItemTypes } from "~/types/appData";
-import { EventsTypeItem, ExposeFunctions, Modules } from "~/types/modules";
-import ArrayArguments from "../ArgumentsSetting/ArrayArguments";
-import BooleanArguments from "../ArgumentsSetting/BooleanArguments";
-import HtmlSuffix from "../ArgumentsSetting/HtmlSuffix";
-import MixedArguments from "../ArgumentsSetting/MixedArguments";
-import ObjectArguments from "../ArgumentsSetting/ObjectArguments";
-import s from "./Presetting.module.less";
+import { Col, Input, PageHeader, Row, Tooltip } from 'antd';
+import deepEqual from 'deep-equal';
+import { cloneDeep } from 'lodash';
+import React, { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useLocalStorage from '~/hooks/useLocalStorage';
+import usePostMessage from '~/hooks/usePostMessage';
+import { Dispatch, RootState } from '~/redux/store';
+import { AppDataLayoutItemTypes, ArgumentsItem } from '~/types/appData';
+import { EventsTypeItem, ExposeFunctions, Modules } from '~/types/modules';
+import ArrayArguments from '../ArgumentsSetting/ArrayArguments';
+import BooleanArguments from '../ArgumentsSetting/BooleanArguments';
+import HtmlSuffix from '../ArgumentsSetting/HtmlSuffix';
+import MixedArguments from '../ArgumentsSetting/MixedArguments';
+import ObjectArguments from '../ArgumentsSetting/ObjectArguments';
+import s from './Presetting.module.less';
 
 interface Props {}
 interface OnChangeProps {
-  /** 数据索引值 */ 
-  index: number;
-  /** 参数索引 */
-  argIndex: number;
-  /** 参数索引对应的参数值 */ 
-  value: any;
+    /* 数据索引值 */
+    index: number;
+    /* 参数索引 */
+    argIndex: number;
+    /* 参数索引对应的参数值 */
+    value: any;
 }
 /**
  * 所有预设事件将在挂载时运行，
@@ -31,223 +31,319 @@ interface OnChangeProps {
  * */
 
 const Presetting: React.FC<Props> = () => {
-  // 获取当前激活组件信息
-  const activationItem = useSelector(
-    (state: RootState) => state.activationItem
-  );
-
-  const appData = useSelector((state: RootState) => state.appData);
-  const [, setLocalStorage] = useLocalStorage("appData", null);
-
-  const { events, type, moduleId } = activationItem;
-
-  const module: Modules<any> = useMemo(
-    () => (!!type ? require(`~/modules/${type}`).default : {}),
-    [type]
-  );
-
-  const dispatch = useDispatch<Dispatch>();
-  const sendMessage = usePostMessage(() => {});
-
-  // 获取当前运行时模块已配置的内置方法
-  const setFunctions = useMemo(() => events?.mount || [], [events?.mount]);
-
-  // 获取当前模块类导出的内置方法，
-  const exposeFunctions: ExposeFunctions[] = useMemo(() => module.exposeFunctions || [], [module.exposeFunctions]);
-  // 事件更新
-  const onPlay = useCallback(
-    (data: EventsTypeItem[]) => {
-      const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
-            .contentWindow;
-      sendMessage(
-        {
-            tag: 'playEventEmit',
-            value: {
-              event: {name: "mount", description: "初始化"},
-              args: data
-            },
-        },
-        win
+    // 获取当前激活组件信息
+    const activationItem = useSelector(
+        (state: RootState) => state.activationItem
     );
-    },
-    [sendMessage],
-  )
-  // 数据更新
-  const updateActDataToAll = useCallback(
-    (actData: AppDataLayoutItemTypes) => {
-      dispatch.activationItem.updateActivationItem(actData);
-        const operateData = [...appData].map((item) => {
-          if (item.moduleId === actData.moduleId) {
-            return actData;
-          }
-          return item;
-        });
-        dispatch.appData.updateAppData(operateData);
-        setLocalStorage(operateData);
-    },
-    [appData, dispatch.activationItem, dispatch.appData, setLocalStorage],
-  )
-  
+    const { events, type, moduleId } = activationItem;
 
-  /**
-   * 合并三块数据、组件内部，运行时、以及编辑后的数据
-   * 组件内部数据是最全面的预设编辑数据，所以以他为预设的配置显示基准
-   * 而最完整的预设编辑数据的初始值包含内组件部默认数据，运行时mount事件中包含的数据，而运行时数据需要剔除非组件内部属性数据，
-   * 编辑完成后再剔除未配置的数据把配置好的数据返回到运行时数据中
-   */
+    // 获取当前appdata数据准备数据更新方法
+    const appData = useSelector((state: RootState) => state.appData);
+    const [, setLocalStorage] = useLocalStorage('appData', null);
+    const dispatch = useDispatch<Dispatch>();
+    // 数据更新
+    const updateActDataToAll = useCallback(
+        (actData: AppDataLayoutItemTypes) => {
+            dispatch.activationItem.updateActivationItem(actData);
+            const operateData = [...appData].map((item) => {
+                if (item.moduleId === actData.moduleId) {
+                    return actData;
+                }
+                return item;
+            });
+            dispatch.appData.updateAppData(operateData);
+            setLocalStorage(operateData);
+        },
+        [appData, dispatch.activationItem, dispatch.appData, setLocalStorage]
+    );
 
-  // step1、设置编辑前数据
-  // 运行时mount数据剔除非当前模块数据
-  // todo检查元素参数为何为空！！！
-  const getData = useCallback(() => {
-    const copyData =  cloneDeep(exposeFunctions);
-    const result: ExposeFunctions[] =
-    copyData.map((item) => {
-        setFunctions.some((setItem) => {
-          const [, fun] = setItem.name.split("/");
-          if (fun === item.name && setItem.arguments?.length) {
-            item.arguments = setItem.arguments;
-            return true;
-          }
-          return false;
-        });
-        return item;
-      }) || [];
+    // 获取当前模块
+    const module: Modules<any> = useMemo(
+        () => (!!type ? require(`~/modules/${type}`).default : {}),
+        [type]
+    );
+    // 获取当前运行时模块已配置的内置方法
+    const setFunctions = useMemo(() => events?.mount || [], [events?.mount]);
+    // 获取当前模块类导出的内置方法，
+    const exposeFunctions: ExposeFunctions[] = useMemo(
+        () => module.exposeFunctions || [],
+        [module.exposeFunctions]
+    );
 
-    return result;
-  }, [exposeFunctions, setFunctions]);
+    // 执行事件
+    const sendMessage = usePostMessage(() => {});
+    const onPlay = useCallback(
+        (data: EventsTypeItem[]) => {
+            const win = (
+                document.getElementById('wrapiframe') as HTMLIFrameElement
+            ).contentWindow;
+            sendMessage(
+                {
+                    tag: 'playEventEmit',
+                    value: {
+                        event: { name: 'mount', description: '初始化' },
+                        args: data,
+                    },
+                },
+                win
+            );
+        },
+        [sendMessage]
+    );
 
-  const runningData = getData();
-  const onChange = useCallback(
-    ({index, argIndex, value}: OnChangeProps) => {
-      let data = [...runningData];
-      
-      if (data[index].arguments) {
-        data[index].arguments![argIndex] = value;
-      }
-      // 从编辑器预设面板获取当前已设置的值data；
-      // 将预设值回填给运行时运行时mount数据；
-      // 第一步判断预设值有没有被编辑过；
-      data = data.filter((item, index) => !deepEqual(item.arguments, exposeFunctions[index].arguments))  || [];
-      
-      // 得到需要更新的data数据，将他合并到运行时mount数据；
-      let operateData = cloneDeep(setFunctions || []).reverse();
-      // 运行时mount数据存在时做更新，不存在时做添加
-      if (operateData.length) {
-        operateData.forEach(({name}, operateIndex) => {
-          const [id, fn] = name.split('/');
-          let gotIt = false;
-          if (id === moduleId) {
-            data.forEach((dataItem) => {
-              if (fn === dataItem.name) {
-                operateData[operateIndex].arguments = dataItem.arguments || []
-                gotIt = true;
+    /**
+     * 处理业务逻辑
+     * 合并三块数据、组件内部，运行时、以及编辑后的数据
+     * 组件内部数据是最全面的预设编辑数据，所以以他为预设的配置显示基准
+     * 而最完整的预设编辑数据的初始值包含内组件部默认数据，运行时mount事件中包含的数据，而运行时数据需要剔除非组件内部属性数据，
+     * 编辑完成后再剔除未配置的数据把配置好的数据返回到运行时数据中
+     */
+
+    // step1、设置预设编辑数据
+    // 运行时mount数据剔除非当前模块数据
+    const getData = useCallback(() => {
+        // 深拷一份组件内部数据 和组件运行时数据
+        const copyExposeFunctions = cloneDeep(exposeFunctions);
+        const copySetFunctions = cloneDeep(setFunctions);
+
+        const result: ExposeFunctions[] =
+            copyExposeFunctions.map((staticItem) => {
+                // copyExposeFunctions是用于即将预设的静态方法
+                // 断言运行时方法是否有维护当前方法关联的数据，这里使用倒序从后至依次断言，如果有数据，将最后一条数据收集给预设数据
+                copySetFunctions.reverse().some((setItem) => {
+                    const [, funName] = setItem.name.split('/');
+                    if (
+                        funName === staticItem.name &&
+                        setItem.arguments?.length
+                    ) {
+                        staticItem.arguments = setItem.arguments;
+                        return true;
+                    }
+                    return false;
+                });
+                return staticItem;
+            }) || [];
+
+        return result;
+    }, [exposeFunctions, setFunctions]);
+
+    // step2、获取预设数据 保存预设面板数据，用于页面render
+    const runningData = getData();
+
+    // step3、数据变更
+    const onChange = useCallback(
+        ({ index, argIndex, value }: OnChangeProps) => {
+            let copyRunningData = [...runningData];
+            // 当前编辑数据赋值
+            if (copyRunningData[index].arguments) {
+                copyRunningData[index].arguments![argIndex] = value;
+            }
+
+            // 从编辑器预设面板获取当前已设置的值copyRunningData；
+            // 将预设值回填给运行时运行时mount数据；
+            // step1、判断预设数据值有没有被编辑过，抽取被编辑过的数据
+            // (判断依据：预设数据和组件静态数据是否保持一至)；
+            const readyToSetting: EventsTypeItem[] = [];
+            copyRunningData.forEach((item, index) => {
+                if (
+                    !deepEqual(item.arguments, exposeFunctions[index].arguments)
+                ) {
+                    readyToSetting.push({
+                        name: `${moduleId}/${item.name}`,
+                        arguments: item.arguments || [],
+                    });
+                }
+            });
+
+            // step2、将抽取的数据更新到运行时mount数据；
+            // 深拷一份当前组件运行时数据 activationItem
+            const copyModuleData = cloneDeep(activationItem);
+            // 没有初始化事件时
+            if (!copyModuleData.events?.mount) {
+              // 还未定义mount事件
+              if (!copyModuleData.events) {
+                copyModuleData.events = {};
               }
-            })
-          }
-          if (gotIt) return true;
-        });
-      } else if (data.length) {
-        data.forEach(item => {
-          operateData.push({
-            name: `${moduleId}/${item.name}`,
-            arguments: item.arguments || []
-          });
-        });
-      }
-      
-      operateData = operateData.reverse();
-      const operateActData = cloneDeep(activationItem);
-      // 被激活组件是否有事件数据？
-      if (!operateActData.events) {
-        operateActData.events = {};
-      }
-      operateActData.events!.mount = operateData;
-      // 更新且播放所有内部事件
-      updateActDataToAll(operateActData);
-      onPlay(operateData);
-    },
-    [activationItem, exposeFunctions, moduleId, onPlay, runningData, setFunctions, updateActDataToAll]
-  );
+              // 给运行时追加准备数据
+              copyModuleData.events.mount = readyToSetting;
+            } else { // 有初始化事件
 
-  if (!moduleId) {
-    return null;
-  }
+            }
 
-  return (
-    <div>
-      {runningData.map((item, index) =>
-        !!item.arguments?.length ? (
-          <div key={index} className={s.item}>
-            <PageHeader title={item.description} />
-            {item.arguments?.map((argItem, argIndex) => (
-              <Row className={s.row} key={argIndex} gutter={10}>
-                <Col span={5} className={s.label}>
-                  <Tooltip placement="topRight" title={argItem.describe}>
-                    {argItem.name}
-                  </Tooltip>
-                </Col>
-                <Col span={19}>
-                  {argItem.type === "number" ||
-                  argItem.type === "string" ||
-                  argItem.type === "runningTime" ? (
-                    <Input
-                      onChange={(e) =>
-                        onChange({
-                          index, // 数据索引值
-                          argIndex, // 参数索引
-                          value: { // 参数索引对应的参数值
-                            ...argItem,
-                            data: e.target.value} 
-                        })
-                      }
-                      placeholder={`请输入值,${argItem.describe || ""}`}
-                      value={argItem.data}
-                      type="text"
-                      suffix={!!argItem.html ? <HtmlSuffix /> : null}
-                    />
-                  ) : null}
-                  {argItem.type === "array" ? (
-                    <ArrayArguments
-                      typeArguments={argItem}
-                      flexible
-                      htmlInput={!!argItem.html}
-                      onChange={(value) => onChange({index, argIndex, value})}
-                    />
-                  ) : null}
-                  {argItem.type === "boolean" ? (
-                    <BooleanArguments
-                      typeArguments={argItem}
-                      flexible={false}
-                      onChange={(value) => onChange({index, argIndex, value})}
-                    />
-                  ) : null}
-                  {argItem.type === "object" ? (
-                    <ObjectArguments
-                      describe={argItem.describe}
-                      htmlInput={!!argItem.html}
-                      onChange={(value) => onChange({index, argIndex, value})}
-                      typeArguments={argItem}
-                      flexible={false}
-                    />
-                  ) : null}
-                  {argItem.type === "mixed" ? (
-                    <MixedArguments
-                      onChange={(value) => onChange({index, argIndex, value})}
-                      typeArguments={argItem}
-                      flexible={false}
-                    />
-                  ) : null}
-                </Col>
-              </Row>
-            ))}
-          </div>
-        ) : null
-      )}
-    </div>
-  );
+            console.log('readyToSetting', readyToSetting);
+            console.log('copyModuleData', copyModuleData);
+
+
+
+            
+            // 深拷一份运行时数据
+            let copySetFunctions = cloneDeep(setFunctions || []);
+            // step2-1 运行时没有配置mount事件，则为组件运行时添加mount事件，并将数据更新到
+            // if (!copySetFunctions.length) {
+            //   if (!copyModuleData.events) {
+            //     copyModuleData.events = {};
+            //   }
+            //   copyModuleData.events.mount = [];
+            // }
+
+            // 运行时mount数据存在时做更新，不存在时做添加
+            if (copySetFunctions.length) {
+                copySetFunctions.forEach(({ name }, operateIndex) => {
+                    const [id, fn] = name.split('/');
+                    let gotIt = false;
+                    if (id === moduleId) {
+                        copyRunningData.forEach((dataItem) => {
+                            if (fn === dataItem.name) {
+                                copySetFunctions[operateIndex].arguments =
+                                    dataItem.arguments || [];
+                                gotIt = true;
+                            }
+                        });
+                    }
+                    if (gotIt) return true;
+                });
+            } else if (copyRunningData.length) {
+                copyRunningData.forEach((item) => {
+                    copySetFunctions.push({
+                        name: `${moduleId}/${item.name}`,
+                        arguments: item.arguments || [],
+                    });
+                });
+            }
+
+            copySetFunctions = copySetFunctions.reverse();
+            const operateActData = cloneDeep(activationItem);
+            // 被激活组件是否有事件数据？
+            if (!operateActData.events) {
+                operateActData.events = {};
+            }
+            operateActData.events!.mount = copySetFunctions;
+            // 更新且播放所有内部事件
+            updateActDataToAll(operateActData);
+            onPlay(copySetFunctions);
+        },
+        [
+            activationItem,
+            exposeFunctions,
+            moduleId,
+            onPlay,
+            runningData,
+            setFunctions,
+            updateActDataToAll,
+        ]
+    );
+
+    if (!moduleId) {
+        return null;
+    }
+
+    return (
+        <div>
+            {runningData.map((item, index) =>
+                !!item.arguments?.length ? (
+                    <div key={index} className={s.item}>
+                        <PageHeader title={item.description} />
+                        {item.arguments?.map((argItem, argIndex) => (
+                            <Row className={s.row} key={argIndex} gutter={10}>
+                                <Col span={5} className={s.label}>
+                                    <Tooltip
+                                        placement="topRight"
+                                        title={argItem.describe}
+                                    >
+                                        {argItem.name}
+                                    </Tooltip>
+                                </Col>
+                                <Col span={19}>
+                                    {argItem.type === 'number' ||
+                                    argItem.type === 'string' ||
+                                    argItem.type === 'runningTime' ? (
+                                        <Input
+                                            onChange={(e) =>
+                                                onChange({
+                                                    index, // 数据索引值
+                                                    argIndex, // 参数索引
+                                                    value: {
+                                                        // 参数索引对应的参数值
+                                                        ...argItem,
+                                                        data: e.target.value,
+                                                    },
+                                                })
+                                            }
+                                            placeholder={`请输入值,${
+                                                argItem.describe || ''
+                                            }`}
+                                            value={argItem.data}
+                                            type="text"
+                                            suffix={
+                                                !!argItem.html ? (
+                                                    <HtmlSuffix />
+                                                ) : null
+                                            }
+                                        />
+                                    ) : null}
+                                    {argItem.type === 'array' ? (
+                                        <ArrayArguments
+                                            typeArguments={argItem}
+                                            flexible
+                                            htmlInput={!!argItem.html}
+                                            onChange={(value) =>
+                                                onChange({
+                                                    index,
+                                                    argIndex,
+                                                    value,
+                                                })
+                                            }
+                                        />
+                                    ) : null}
+                                    {argItem.type === 'boolean' ? (
+                                        <BooleanArguments
+                                            typeArguments={argItem}
+                                            flexible={false}
+                                            onChange={(value) =>
+                                                onChange({
+                                                    index,
+                                                    argIndex,
+                                                    value,
+                                                })
+                                            }
+                                        />
+                                    ) : null}
+                                    {argItem.type === 'object' ? (
+                                        <ObjectArguments
+                                            describe={argItem.describe}
+                                            htmlInput={!!argItem.html}
+                                            onChange={(value) =>
+                                                onChange({
+                                                    index,
+                                                    argIndex,
+                                                    value,
+                                                })
+                                            }
+                                            typeArguments={argItem}
+                                            flexible={false}
+                                        />
+                                    ) : null}
+                                    {argItem.type === 'mixed' ? (
+                                        <MixedArguments
+                                            onChange={(value) =>
+                                                onChange({
+                                                    index,
+                                                    argIndex,
+                                                    value,
+                                                })
+                                            }
+                                            typeArguments={argItem}
+                                            flexible={false}
+                                        />
+                                    ) : null}
+                                </Col>
+                            </Row>
+                        ))}
+                    </div>
+                ) : null
+            )}
+        </div>
+    );
 };
 
 export default Presetting;
-
-
