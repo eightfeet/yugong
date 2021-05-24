@@ -16,11 +16,24 @@ export interface TextProps extends AppDataElementsTypes {
 
 const Text: Modules<TextProps> = (props) => {
     const { eventEmitter, events = {}, api, style } = props;
-    const [textArea, setTextArea] = useState<any>([
-        '通过事件调用模块的设置文本(setText)方法来，设置文本内容',
-    ]);
+    const [textArea, setTextArea] = useState<any>([]);
     const [autoNumber, setAutoNumber] = useState(false);
     const userClass = useStyles(style);
+
+    // 初始值
+    useEffect(() => {
+        const text = getArgumentsItem({
+            type: 'array',
+            name: '文本内容',
+            describe: '可设置多行文本内容',
+            html: true,
+            data: [
+                '文本<b>Text</b>',
+            ],
+            fieldName: 'textArray',
+        });
+        setTextArea(text);
+    }, [])
 
     // 设置文本
     const setText = useCallback((args: ArgumentsArray, autoNumber: ArgumentsBoolean) => {
@@ -78,10 +91,7 @@ Text.exposeFunctions = [
                 describe: '可设置多行文本内容',
                 html: true,
                 data: [
-                    '文本可以是一个段落，也可以是一个列表！',
-                    '通过调用Text的setText方法可以修改文本内容！',
-                    '每个段落都有一个序号前缀，可以单独定义样式去隐藏或美化前缀',
-                    '每段文本可以<b style="color:red">追加html标签</b>，以满足更灵活的样式编辑',
+                    '文本<b>Text</b>',
                 ],
                 fieldName: 'textArray',
             },
