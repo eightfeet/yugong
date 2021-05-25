@@ -12,25 +12,37 @@ import {
   ExposeFunctions,
 } from "~/types/modules";
 
-// Props
-export interface WithLifeCycleProps extends AppDataElementsTypes {
-  eventEmitter: EventEmitter;
-  eventDispatch: any;
-}
-
 // Config
 interface Configs {
-  exposeEvents?: ComExposeEvents;
+  exposeEvents: ComExposeEvents;
   exposeFunctions?: ExposeFunctions[];
   exposeApi?: ExposeApi[];
   exposeDefaultProps?: ExposeDefaultProps;
 }
 
+const myObj = {
+  x: 1,
+  y: '2',
+  z: true
+}
+
+type TP = keyof typeof myObj;
+
+// Props
+export interface WithLifeCycleProps<K = string> extends AppDataElementsTypes {
+  eventEmitter: EventEmitter;
+  eventDispatch: {[keys in TP] : Function};
+}
+
 export default function withLifeCycle<P extends WithLifeCycleProps>(
   WrappedComponent: React.ComponentType<P>,
-  config?: Configs
+  config: Configs
 ) {
-  const ComponentWithLifeCycle = (props: WithLifeCycleProps) => {
+
+  
+  type ValueAtKey = (typeof config.exposeEvents)[number]["name"];
+
+  const ComponentWithLifeCycle = (props: WithLifeCycleProps<ValueAtKey>) => {
     const { moduleId, eventEmitter } = props;
     const eventDispatch = useLifeCycle(eventEmitter, moduleId, {});
 
@@ -48,7 +60,7 @@ interface Props extends WithLifeCycleProps {
 const Button = withLifeCycle<Props>(
   (props) => {
     const { eventDispatch } = props;
-
+    
     return <div>按钮</div>;
   },
   {
