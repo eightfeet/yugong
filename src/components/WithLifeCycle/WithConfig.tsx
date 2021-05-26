@@ -22,7 +22,7 @@ interface DefaultProps extends AppDataElementsTypes {
     eventEmitter: EventEmitter
 }
 
-export function withConfig<TEvent, P = {}>(
+export default function withConfig<TEvent, P = {}>(
     config: Config<TEvent>,
     WrappedComponent: React.ComponentType<P & DefaultProps & DispatchEvents<TEvent>>
 ) {
