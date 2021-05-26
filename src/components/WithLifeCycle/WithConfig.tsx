@@ -1,40 +1,41 @@
 import React from "react";
+import EventEmitter from "~/core/EventEmitter";
 import { AppDataElementsTypes } from "~/types/appData";
+import { ExposeApi, ExposeDefaultProps } from "~/types/modules";
+import config from './config.json'
 
 
-
-
-type Describer<TEvent, TConfig> = {
-    name: string;
-    exposeEvents: TEvent;
-    exposeConfigs: TConfig;
-  };
-
-type EventEmitter<TEvent> = {
-    [K in keyof TEvent]: (...args: any[]) => any;
+type DispatchEvents<TEvent> = {
+    dispatchEvents: {
+        [K in keyof TEvent]: (...args: any[]) => any;
+    }
   };
 
 type Config<TEvent> = {
-    name: string;
-    exposeEvents: TEvent;
+    exposeEvents?: TEvent;
+    exposeFunctions?: any[];
+    exposeApi?: ExposeApi[];
+    exposeDefaultProps?: ExposeDefaultProps;
 };
 
-export function withTheme<TEvent, P = {}>(
-    config: Config<TEvent>,
-    WrappedComponent: React.ComponentType<P & TEvent>
-) {
-
-    const ComponentWithTheme = (props: AppDataElementsTypes) => {
-        return React.createElement(WrappedComponent, {...props as any});
-    };
-    return ComponentWithTheme as React.ComponentType<AppDataElementsTypes>;
+interface DefaultProps extends AppDataElementsTypes {
+    eventEmitter: EventEmitter
 }
 
-// comp.config.ts
-// {
-//     name: 'asd', 
-//     exposeEvents: {
-//        name: 111
-//     }
-// }
+export function withConfig<TEvent, P = {}>(
+    config: Config<TEvent>,
+    WrappedComponent: React.ComponentType<P & DefaultProps & DispatchEvents<TEvent>>
+) {
+    const ComponentWithConfig = (props: AppDataElementsTypes) => {
+        // todo 事件绑定与方法注册
+        return React.createElement(WrappedComponent, {...props as any});
+    };
+    return ComponentWithConfig;
+}
+
+withConfig(config, (props) => {
+    props.dispatchEvents.mount()
+    // props.dis
+    return <> asdasd</>
+})
 
