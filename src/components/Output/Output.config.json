@@ -1,0 +1,115 @@
+{
+    "exposeApi": [],
+    "exposeEvents": [
+       {
+          "name": "mount",
+          "description": "初始化"
+       },
+       {
+          "name": "unmount",
+          "description": "卸载"
+       }
+    ],
+    "exposeEventsObj": {
+       "mount": "初始化",
+       "unmount": "卸载"
+    },
+    "exposeFunctions": [
+       {
+          "name": "injectGlobal",
+          "description": "注入自定义全局数据",
+          "arguments": [
+             {
+                "type": "string",
+                "name": "变量名",
+                "fieldName": "name",
+                "describe": "唯一(英文)全局变量名",
+                "data": ""
+             },
+             {
+                "type": "mixed",
+                "name": "变量值",
+                "fieldName": "value",
+                "describe": "请输入变量数据"
+             }
+          ]
+       },
+       {
+          "name": "sleepFor",
+          "description": "等待",
+          "arguments": [
+             {
+                "type": "number",
+                "name": "休眠时间",
+                "fieldName": "sleepTime",
+                "describe": "休眠时间(ms)",
+                "data": ""
+             }
+          ]
+       },
+       {
+          "name": "redirect",
+          "description": "页面重定向",
+          "arguments": [
+             {
+                "type": "string",
+                "name": "跳转(-1或跳转url)",
+                "fieldName": "url",
+                "describe": "等于-1时浏览器返回，等于url时页面跳转到url",
+                "data": ""
+             },
+             {
+                "type": "boolean",
+                "name": "跳转方法",
+                "fieldName": "isReplace",
+                "describe": "默认false，true时使用replace重定向，浏览器将无法回退到当前页面",
+                "data": {
+                   "comparableAverageA": "0",
+                   "method": "===",
+                   "comparableAverageB": "1"
+                }
+             }
+          ]
+       },
+       {
+          "name": "trackPageViewBD",
+          "description": "百度页面统计",
+          "arguments": [
+             {
+                "type": "string",
+                "name": "路径",
+                "fieldName": "url",
+                "describe": "必填，以\"/\"开头，访问当前页面时百度统计将以此路径作为统计标识",
+                "data": ""
+             }
+          ]
+       },
+       {
+          "name": "trackEventBD",
+          "description": "百度事件统计",
+          "arguments": [
+             {
+                "type": "string",
+                "name": "类型",
+                "fieldName": "category",
+                "describe": "要监控的目标的类型名称\t不填、填\"-\"的事件会被抛弃",
+                "data": ""
+             },
+             {
+                "type": "string",
+                "name": "动作",
+                "fieldName": "action",
+                "describe": "用户跟网页进行交互的动作名称\t不填、填\"-\"的事件会被抛弃",
+                "data": ""
+             },
+             {
+                "type": "string",
+                "name": "信息(可选)",
+                "fieldName": "optLabel",
+                "describe": "事件的一些额外信息\t不填、填\"-\"代表此项为空",
+                "data": ""
+             }
+          ]
+       }
+    ]
+ }

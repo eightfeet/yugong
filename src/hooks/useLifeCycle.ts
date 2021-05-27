@@ -1,37 +1,37 @@
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import EventEmitter from "~/core/EventEmitter";
+import EventEmitter, { eventEmitter as globalEventEmitter } from "~/core/EventEmitter";
 import { RootState } from "~/redux/store";
-import { EventsType, ExposeEvents } from "~/types/modules";
+import { ComExposeEvents, EventsType } from "~/types/modules";
 
 interface Registers {
     [keys: string]: Function
 }
 
-interface EventsResult {
-    events?: EventsType;
-    staticEvents?:  ExposeEvents[]
+type RegistersEvents<TEvent> = {
+    [K in keyof TEvent]: any;
 }
 
-interface EventDispatch {
-    [key: string]: any
+type DispatchEvents<TEvent> = {
+    [K in keyof TEvent]: (...args: any[]) => any;
 }
 
-export const useLifeCycle = (eventEmitter: EventEmitter, moduleId: string, registers:Registers ) => {
+function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:Registers ): [DispatchEvents<TEvent>, EventEmitter] {
+    const eventEmitter = globalEventEmitter.bind(moduleId);
+
     const appData = useSelector((state: RootState) => state.appData);
-    const {events, staticEvents} = useMemo(() => {
-        const eventsResult: EventsResult = {events: {}, staticEvents: []};
+    const events = useMemo(() => {
+        let env: EventsType = {}
         appData.some(item => {
             if (item.moduleId === moduleId) {
                 if (item.events) {
-                    eventsResult.events = item.events;
+                    env = item.events;
                 }
-                eventsResult.staticEvents = require(`~/modules/${item.type}`).default.exposeEvents;
                 return true;
             }
             return false;
         })
-        return eventsResult;
+        return env;
     }, [appData, moduleId]);
 
     // 注册事件
@@ -46,13 +46,15 @@ export const useLifeCycle = (eventEmitter: EventEmitter, moduleId: string, regis
     }, [eventEmitter, registers])
 
     // 事件派发
-    const eventDispatch: EventDispatch = useMemo(() => {
+    const eventDispatch = useMemo(() => {
         const dispatch = {};
-        staticEvents?.forEach(({name}) => {
-            dispatch[name] = () => eventEmitter.emit(events?.[name]);
-        });
-        return dispatch;
-    }, [eventEmitter, events, staticEvents]);
+        for (const key in registersEvents) {
+            if (Object.prototype.hasOwnProperty.call(registersEvents, key)) {
+                dispatch[key as string] = () => eventEmitter.emit(events?.[key])
+            }
+        }
+        return dispatch as DispatchEvents<TEvent>;
+    }, [eventEmitter, events, registersEvents]);
     
     // 基本事件
     useEffect(() => {
@@ -64,32 +66,15 @@ export const useLifeCycle = (eventEmitter: EventEmitter, moduleId: string, regis
         };
     }, [eventEmitter, events?.mount, events?.unmount]);
 
-    return eventDispatch
+    return [eventDispatch, eventEmitter as EventEmitter ]
 }
 
+export function toRegEvents(events?: ComExposeEvents): {[key: string]: string} {
+    const data = {}
+    events?.forEach(({name, description }) => {
+        data[name] = description
+    })
+    return data;
+}
 
 export default useLifeCycle;
-
-// const Button = () => {
-//     const value = useLifeCycle({
-//         mount: () => {
-//             console.log()
-//         }
-//         show: () => {},
-//         hide: () => {},
-//     });
-
-//     value.
-
-//     return <></>;
-// };
-
-// type EventDispatch<K> = {
-//     [key in K extends string ? K : undefined]: () => any;
-// };
-
-// function useLifeCycle<T>(
-//     events: T
-// ): EventDispatch<keyof T | 'mount' | 'unmount'> {
-//     throw new Error();
-// }
