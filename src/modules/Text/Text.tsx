@@ -8,6 +8,7 @@ import s from './Text.module.less';
 import useStyles from './Text.useStyle';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import classNames from 'classnames';
+import useLifeCycle from '~/hooks/useLifeCycle';
 
 export interface TextProps extends AppDataElementsTypes {
     id: string;
@@ -15,10 +16,11 @@ export interface TextProps extends AppDataElementsTypes {
 }
 
 const Text: Modules<TextProps> = (props) => {
-    const { eventEmitter, events = {}, api, style } = props;
+    const { eventEmitter, events = {}, api, style, moduleId } = props;
     const [textArea, setTextArea] = useState<any>([]);
     const [autoNumber, setAutoNumber] = useState(false);
     const userClass = useStyles(style);
+    // const [eventsDispatch, eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {})
 
     // 初始值
     useEffect(() => {
