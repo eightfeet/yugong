@@ -170,7 +170,7 @@
              static: visualSense,
            }}
          >
-           <Elements id={item.layout?.i} {...itemMerge} />
+           <Elements {...itemMerge} />
          </div>
        )
      })}

@@ -1,9 +1,11 @@
 /**
  * 模块相关类型定义与标准
  */
+import EventEmitter from '~/core/EventEmitter';
 import {
     Api,
     AppDataElementsStyleTypes,
+    AppDataElementsTypes,
     ArgumentsItem,
 } from './appData';
 
@@ -111,9 +113,24 @@ export type ComExposeEvents = [Necessary<'mount', "初始化">, Necessary<'unmou
  * @extends {React.FC<TProps>}
  * @template TProps
  */
-export interface Modules<TProps> extends React.FC<TProps> {
+export interface Modules<TProps={}> extends React.FC<TProps & {eventEmitter: EventEmitter} & AppDataElementsTypes> {
     exposeEvents?: ComExposeEvents;
     exposeFunctions?: ExposeFunctions[];
     exposeApi?: ExposeApi[];
     exposeDefaultProps?: ExposeDefaultProps;
+}
+
+
+/**
+ * output静态事件导出
+ * @export
+ * @interface Modules
+ * @extends {React.FC<TProps>}
+ * @template TProps
+ */
+ export interface OutputModules<TProps={}> extends React.FC<TProps & {eventEmitter: EventEmitter}> {
+  exposeEvents?: ComExposeEvents;
+  exposeFunctions?: ExposeFunctions[];
+  exposeApi?: ExposeApi[];
+  exposeDefaultProps?: ExposeDefaultProps;
 }

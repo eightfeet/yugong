@@ -8,19 +8,18 @@ import usePostMessage from "~/hooks/usePostMessage";
 import classNames from "classnames";
 
 interface Props extends AppDataElementsTypes {
-  id: string;
   maxWidth?: boolean;
   maxHeight?: boolean;
   itemAlign?: 'top'|'center'|'bottom'
 }
 
 const Wrapper: React.FC<Props> = ({
-  id,
   style,
   children,
   layout,
   maxWidth,
   maxHeight,
+  moduleId,
   itemAlign="center",
 }) => {
   /**
@@ -45,10 +44,10 @@ const Wrapper: React.FC<Props> = ({
     setBasicStyle(styleCompiler(basic));
     if (basic.display?.zIndex !== undefined) {
       document.getElementById(
-        `wrap-${id}`
+        `wrap-${moduleId}`
       )!.style.zIndex = `${basic.display.zIndex}`;
     }
-  }, [id, style]);
+  }, [moduleId, style]);
 
   useEffect(() => {
     if (refWrap.current) {
@@ -65,10 +64,10 @@ const Wrapper: React.FC<Props> = ({
    */
   const onLayoutClick = useCallback(() => {
     if (!isEditing) return;
-    setEditingId(id);
+    setEditingId(moduleId);
     // 向父级窗口通知当前激活Id
-    sendMessage({ tag: "id", value: id }, window.top);
-  }, [isEditing, id, sendMessage, setEditingId]);
+    sendMessage({ tag: "id", value: moduleId }, window.top);
+  }, [isEditing, moduleId, sendMessage, setEditingId]);
   /**设置预览状态下不接受编辑事件 */
   const pointerEvents: React.CSSProperties = {};
   if (isEditing) {
@@ -100,7 +99,7 @@ const Wrapper: React.FC<Props> = ({
       onMouseDown={onLayoutClick}
       ref={refWrap}
     >
-      {actId === id ? (
+      {actId === moduleId ? (
         <div
           className={classNames(s.actwrap, {
             [s.isedit]: isEditing,
@@ -109,7 +108,7 @@ const Wrapper: React.FC<Props> = ({
         />
       ) : null}
       <div
-        id={id}
+        id={moduleId}
         className={s.secondwrap}
         style={{...defaultSize, ...basicStyle.style, ...pointerEvents }}
       >

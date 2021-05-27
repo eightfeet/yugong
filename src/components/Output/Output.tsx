@@ -5,12 +5,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OutputLayout from "~/OutputLayout";
-import EventEmitter from "~/core/EventEmitter";
 import requester from "~/core/fetch";
 import isUrl from "~/core/helper/isUrl";
 import useRem from "~/hooks/useRem";
 import { Dispatch, RootState } from "~/redux/store";
-import { EventsTypeItem, Modules } from "~/types/modules";
+import { EventsTypeItem, OutputModules } from "~/types/modules";
 import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
 import "./Output.less";
 import {
@@ -24,11 +23,12 @@ import { initTrack, trackEvent, trackPageView } from "~/core/tracking";
 import usePostMessage from "~/hooks/usePostMessage";
 
 interface Props {
-  eventEmitter: EventEmitter;
   pageData: RootState["pageData"];
 }
 
-const Output: Modules<Props> = ({ eventEmitter, pageData }) => {
+
+const Output: OutputModules<Props> = ({ eventEmitter, pageData }) => {
+  
   // 创建百度页面统计, 只做一次创建
   useEffect(() => {
     const { statisticsId } = pageData;

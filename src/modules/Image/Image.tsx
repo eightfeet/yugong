@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import WithConfig from "~/components/WithLifeCycle/WithConfig";
-import EventEmitter from "~/core/EventEmitter";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { AppDataElementsTypes, ArgumentsObject } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
-import config from './config.json'
+// import defaultImg from "./image.svg";
 import useStyles from "./Image.useStyle";
 
 export interface ImageProps extends AppDataElementsTypes {
-  id: string;
-  eventEmitter: EventEmitter;
 }
 
 interface ImgUrl {
@@ -18,9 +14,8 @@ interface ImgUrl {
   alt: string
 }
 
-const Image = WithConfig(config, (props) => {
-  const { eventEmitter, events = {}, style, dispatchEvents  } = props;
-  
+const Image: Modules<ImageProps> = (props) => {
+  const { eventEmitter, events = {}, style } = props;
   const [imgurl, setImgUrl] = useState<ImgUrl>();
   const userClass = useStyles(style);
   // 设置图片地址
@@ -54,7 +49,7 @@ const Image = WithConfig(config, (props) => {
       />
     </Wrapper>
   );
-});
+};
 
 /**
  * 注册方法的静态描述与默认参数定义

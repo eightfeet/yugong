@@ -173,9 +173,8 @@ const OutputLayout: React.FC<LayoutProps> = ({
                 <div
                     key={item.layout?.i}
                     className={s.nodisplay}
-                    id={item.layout?.i}
                 >
-                    <Elements id={item.layout?.i} {...itemMerge} />
+                    <Elements {...itemMerge} />
                 </div>
             );
         });
@@ -215,7 +214,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
                         static: visualSense,
                     }}
                 >
-                    <Elements id={item.layout?.i} {...itemMerge} />
+                    <Elements {...itemMerge} />
                 </div>
             );
         });

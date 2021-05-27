@@ -17,16 +17,10 @@
           ]
        }
     ],
-    "exposeEvents": [
-       {
-          "name": "mount",
-          "description": "初始化"
-       },
-       {
-          "name": "unmount",
-          "description": "卸载"
-       }
-    ],
+    "exposeEvents": {
+      "mount": "mount",
+      "unmount": "初始化"
+   },
     "exposeDefaultProps": {
        "style": {
           "basic": {},

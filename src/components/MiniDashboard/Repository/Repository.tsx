@@ -87,13 +87,11 @@ const Repository: React.FC = () => {
         ...(exposeDefaultProps?.layout || {}), // merge default
       };
 
-      const content = { text: 1 };
       const result: AppDataLayoutItemTypes = {
         moduleName: name || "未标题",
         moduleId,
         layout,
         style: style || { basic: {} }, // merge style
-        content,
         type: moduleType,
       };
       onAddItem(result);

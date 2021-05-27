@@ -142,7 +142,6 @@ export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
   rootFontsize?: number;
   events?: EventsType;
-  content: AnyObjectType;
   type: AppDataModuleTypes;
   moduleId: string;
   moduleName?: string;
