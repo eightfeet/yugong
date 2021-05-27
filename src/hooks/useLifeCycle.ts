@@ -4,7 +4,7 @@ import EventEmitter, { eventEmitter as globalEventEmitter } from "~/core/EventEm
 import { RootState } from "~/redux/store";
 import { ComExposeEvents, EventsType } from "~/types/modules";
 
-interface Registers {
+interface RegistersFunction {
     [keys: string]: Function
 }
 
@@ -16,7 +16,7 @@ type DispatchEvents<TEvent> = {
     [K in keyof TEvent]: (...args: any[]) => any;
 }
 
-function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:Registers ): [DispatchEvents<TEvent>, EventEmitter] {
+function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:RegistersFunction ): [DispatchEvents<TEvent>, EventEmitter] {
     const eventEmitter = useMemo(() => globalEventEmitter.bind(moduleId), [moduleId]);
     console.log('eventEmitter', eventEmitter);
     

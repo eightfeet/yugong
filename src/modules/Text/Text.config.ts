@@ -1,4 +1,11 @@
-{
+import { ComExposeEvents, ExposeApi, ExposeDefaultProps, ExposeFunctions } from "~/types/modules";
+
+const config: {
+   exposeFunctions: ExposeFunctions[];
+   exposeEvents: ComExposeEvents;
+   exposeDefaultProps: ExposeDefaultProps;
+   exposeApi: ExposeApi[]
+} = {
     "exposeFunctions": [
        {
           "name": "setText",
@@ -96,3 +103,5 @@
     },
     "exposeApi": []
  }
+
+ export default config;
