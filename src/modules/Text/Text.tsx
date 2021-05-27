@@ -20,8 +20,8 @@ const Text: Modules<TextProps> = (props) => {
     const [textArea, setTextArea] = useState<any>([]);
     const [autoNumber, setAutoNumber] = useState(false);
     const userClass = useStyles(style);
-    // const [eventsDispatch, eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {})
-
+    const [eventsDispatch, eventEmitterH] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {})
+    
     // 初始值
     useEffect(() => {
         const text = getArgumentsItem({

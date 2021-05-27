@@ -128,7 +128,7 @@ export interface Modules<TProps={}> extends React.FC<TProps & {eventEmitter: Eve
  * @extends {React.FC<TProps>}
  * @template TProps
  */
- export interface OutputModules<TProps={}> extends React.FC<TProps & {eventEmitter: EventEmitter}> {
+ export interface OutputModules<TProps={}> extends React.FC<TProps> {
   exposeEvents?: ComExposeEvents;
   exposeFunctions?: ExposeFunctions[];
   exposeApi?: ExposeApi[];

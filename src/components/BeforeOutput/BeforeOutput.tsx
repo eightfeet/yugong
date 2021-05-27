@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Output from "~/components/Output";
-import EventEmitter from "~/core/EventEmitter";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 import { Dispatch, RootState } from "~/redux/store";
@@ -15,23 +14,14 @@ const Beforeoutput: React.FC<Props> = () => {
   const { getPageData } = useDispatch<Dispatch>().pageData;
 
   const pageData = useSelector((state: RootState) => state.pageData);
-  
+
   // 缓存
   const [appDataLocalStoreData] = useLocalStorage("appData", null);
   const [pageDataLocalStoreData] = useLocalStorage("pageData", null);
   const [isAppdataReady, setIsAppdataReady] = useState(false);
   const [isPagedataReady, setIsPagedataReady] = useState(false);
-  const [isEventEmitterReady, setIsEventEmitterReady] = useState(false);
 
   // 创建全站事件处理器
-  const eventEmitter = useMemo(() => {
-    const env = new EventEmitter();
-    // 暴露事件到window下
-    (window.top as any).eventEmitter = (window as any).eventEmitter = env;
-    setIsEventEmitterReady(true)
-    return env;
-  }, []);
-
   const sendMessage = usePostMessage(() => {});
 
   // 数据初始化，获取页面数据
@@ -64,10 +54,10 @@ const Beforeoutput: React.FC<Props> = () => {
   }, [getPageData, pageDataLocalStoreData, sendMessage]);
 
   // 底层数据将完全准备就绪，再放行App！
-  if (!isAppdataReady || !isPagedataReady || !isEventEmitterReady || !pageData) {
+  if (!isAppdataReady || !isPagedataReady || !pageData) {
     return null;
   }
-  return <Output eventEmitter={eventEmitter} pageData={pageData} />;
+  return <Output pageData={pageData} />;
 };
 
 export default Beforeoutput;

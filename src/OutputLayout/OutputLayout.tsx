@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, Dispatch } from '~/redux/store';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
-import EventEmitter from '~/core/EventEmitter';
+import { eventEmitter } from '~/core/EventEmitter';
 import { backgroundGroup } from '~/compiler/compiler';
 import { cloneDeep } from 'lodash';
 // 当前是否被ifream引用
@@ -35,11 +35,6 @@ interface LayoutProps {
      */
     cols: number;
     /**
-     * 事件中心
-     * @memberof LayoutProps
-     */
-    eventEmitter: EventEmitter;
-    /**
      * 字体尺寸
      */
     rootFontsize: number;
@@ -57,7 +52,6 @@ const OutputLayout: React.FC<LayoutProps> = ({
     rowHeight,
     cols,
     space,
-    eventEmitter,
 }) => {
     const { updateAppData } = useDispatch<Dispatch>().appData;
     const { updatePage } = useDispatch<Dispatch>().pageData;
