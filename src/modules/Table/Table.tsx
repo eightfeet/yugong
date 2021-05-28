@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import parse from 'html-react-parser';
