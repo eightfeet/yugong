@@ -5,14 +5,14 @@ import {
   ExposeFunctions,
 } from "~/types/modules";
 
-interface StaticConstants {
+interface Config {
   exposeEvents?: ComExposeEvents;
   exposeFunctions?: ExposeFunctions[];
   exposeApi?: ExposeApi[];
   exposeDefaultProps?: ExposeDefaultProps;
 }
 
-const staticConstants: StaticConstants = {
+const config: Config = {
   /**
    * 注册方法的静态描述与默认参数定义
    */
@@ -176,4 +176,4 @@ const staticConstants: StaticConstants = {
   ],
 };
 
-export default staticConstants;
+export default config;

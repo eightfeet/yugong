@@ -1,472 +1,243 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import requester from "~/core/fetch";
-import EventEmitter from "~/core/EventEmitter";
-import parse from "html-react-parser";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import requester from '~/core/fetch';
+import EventEmitter from '~/core/EventEmitter';
+import parse from 'html-react-parser';
 import {
-  AnyObjectType,
-  AppDataElementsTypes,
-  ArgumentsArray,
-  ArgumentsBoolean,
-  ArgumentsNumber,
-  ArgumentsString,
-} from "~/types/appData";
-import { Modules } from "~/types/modules";
-import Wrapper from "../Wrapper";
-import s from "./Table.module.less";
-import useStyles from "./Table.useStyle";
-import classNames from "classnames";
-import PullToRefresh from "rmc-pull-updown-to-refresh";
-import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
-import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+    AnyObjectType,
+    AppDataElementsTypes,
+    ArgumentsArray,
+    ArgumentsBoolean,
+    ArgumentsNumber,
+    ArgumentsString,
+} from '~/types/appData';
+import { Modules } from '~/types/modules';
+import Wrapper from '../Wrapper';
+import s from './Table.module.less';
+import useStyles from './Table.useStyle';
+import classNames from 'classnames';
+import PullToRefresh from 'rmc-pull-updown-to-refresh';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import config from './Table.config';
+import useLifeCycle from '~/hooks/useLifeCycle';
 
 export interface TableProps extends AppDataElementsTypes {
-  id: string;
-  eventEmitter: EventEmitter;
+    id: string;
+    eventEmitter: EventEmitter;
 }
 
 const Table: Modules<TableProps> = (props) => {
-  const { eventEmitter, events = {}, api, style } = props;
-  const userClass = useStyles(style);
-  const [theadDataStatu, setTheadDataStatu] = useState<
-    {
-      width: any[]
-      data: (string | number | JSX.Element | JSX.Element[])[]
-    }>();
-  const [tbodyDataStatu, setTbodyDataStatu] = useState<
-    (
-      | string
-      | number
-      | boolean
-      | any[]
-      | Element
-      | Element[]
-      | AnyObjectType
-    )[][]
-  >([]);
-  // 保留一份源数据表格替换用
-  const [copyDataSource, setCopyDataSource] = useState<any>();
-  // 是否开启下拉与上拉事件
-  const [pullStates, setPullStates] = useState<{
-    pullDown: boolean,
-    pullUp: boolean
-  }>()
-  // API请求 注意依赖关系
-  useEffect(() => {
-    const apiArguments = api?.find((item) => item.apiId === "mount");
-    requester(apiArguments || {});
-  }, [api]);
-  // 基本事件
-  useEffect(() => {
-    // 执行挂载事件
-    eventEmitter.emit(events.mount);
-    return () => {
-      // 执行卸载事件
-      eventEmitter.emit(events.unmount);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const { events = {}, api, style, moduleId } = props;
+    const userClass = useStyles(style);
+    const [theadDataStatu, setTheadDataStatu] =
+        useState<{
+            width: any[];
+            data: (string | number | JSX.Element | JSX.Element[])[];
+        }>();
+    const [tbodyDataStatu, setTbodyDataStatu] = useState<
+        (
+            | string
+            | number
+            | boolean
+            | any[]
+            | Element
+            | Element[]
+            | AnyObjectType
+        )[][]
+    >([]);
+    // 保留一份源数据表格替换用
+    const [copyDataSource, setCopyDataSource] = useState<any>();
+    // 是否开启下拉与上拉事件
+    const [pullStates, setPullStates] =
+        useState<{
+            pullDown: boolean;
+            pullUp: boolean;
+        }>();
+    // API请求 注意依赖关系
+    useEffect(() => {
+        const apiArguments = api?.find((item) => item.apiId === 'mount');
+        requester(apiArguments || {});
+    }, [api]);
+    // 基本事件
+    useEffect(() => {
+        // 执行挂载事件
+        eventEmitter.emit(events.mount);
+        return () => {
+            // 执行卸载事件
+            eventEmitter.emit(events.unmount);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  /**设置表格交互 */
-  const setTable = useCallback(
-    (isPullDown: ArgumentsBoolean, isPullUp: ArgumentsBoolean) => {
-      setPullStates({
-        pullDown: getArgumentsItem(isPullDown) as boolean,
-        pullUp: getArgumentsItem(isPullUp) as boolean
-      })
-    },
-    [],
-  )
+    /**设置表格交互 */
+    const setTable = useCallback(
+        (isPullDown: ArgumentsBoolean, isPullUp: ArgumentsBoolean) => {
+            setPullStates({
+                pullDown: getArgumentsItem(isPullDown) as boolean,
+                pullUp: getArgumentsItem(isPullUp) as boolean,
+            });
+        },
+        []
+    );
 
-  /**设置表格头部 */
-  const setTheadData = useCallback((argsName: ArgumentsArray, argWidth: ArgumentsArray) => {
-    const data = getArgumentsItem(argsName);
-    const width = getArgumentsItem(argWidth);
-    setTheadDataStatu({data: data as any[], width: width as any[]});
-  }, []);
+    /**设置表格头部 */
+    const setTheadData = useCallback(
+        (argsName: ArgumentsArray, argWidth: ArgumentsArray) => {
+            const data = getArgumentsItem(argsName);
+            const width = getArgumentsItem(argWidth);
+            setTheadDataStatu({ data: data as any[], width: width as any[] });
+        },
+        []
+    );
 
-  /**设置表格数据 */
-  const setTbodyData = useCallback(
-    (
-      dataSource: ArgumentsArray,
-      isConcate: ArgumentsBoolean,
-      rowMap: ArgumentsArray
-    ) => {
-      const data = getArgumentsItem(dataSource);
-      setCopyDataSource(data);
-      const concat = getArgumentsItem(isConcate);
-      // 这里单独处理，定义列数据从原数据映射
-      const map = rowMap.data;
-      if (!Array.isArray(data)) {
-        return;
-      }
-
-      const result: any[] = [];
-      data.forEach((element) => {
-        const temp: any[] = [];
-        if (Array.isArray(map)) {
-          map.forEach((item) => {
-            if (item) {
-              temp.push(parse(getResult(item, element)));
+    /**设置表格数据 */
+    const setTbodyData = useCallback(
+        (
+            dataSource: ArgumentsArray,
+            isConcate: ArgumentsBoolean,
+            rowMap: ArgumentsArray
+        ) => {
+            const data = getArgumentsItem(dataSource);
+            setCopyDataSource(data);
+            const concat = getArgumentsItem(isConcate);
+            // 这里单独处理，定义列数据从原数据映射
+            const map = rowMap.data;
+            if (!Array.isArray(data)) {
+                return;
             }
-          });
+
+            const result: any[] = [];
+            data.forEach((element) => {
+                const temp: any[] = [];
+                if (Array.isArray(map)) {
+                    map.forEach((item) => {
+                        if (item) {
+                            temp.push(parse(getResult(item, element)));
+                        }
+                    });
+                }
+                result.push(temp);
+            });
+            // 递增翻页
+            if (concat) {
+                setTbodyDataStatu(tbodyDataStatu.concat(result));
+            } else {
+                setTbodyDataStatu(result);
+            }
+        },
+        [tbodyDataStatu]
+    );
+
+    /**
+     * 从数据源覆写表格，做到表格项灵活覆写，满足列表样式的各种变换
+     *
+     * */
+    const overrideTbodyItem = useCallback(
+        (
+            rowItem: ArgumentsNumber,
+            colItem: ArgumentsNumber,
+            override: ArgumentsString
+        ) => {
+            const row = (getArgumentsItem(rowItem) as number) - 1;
+            const col = (getArgumentsItem(colItem) as number) - 1;
+
+            if (
+                tbodyDataStatu[row] &&
+                tbodyDataStatu[row][col] &&
+                copyDataSource
+            ) {
+                const optTbodyDataStatu = [...tbodyDataStatu];
+                optTbodyDataStatu[row][col] = getArgumentsItem(
+                    override,
+                    copyDataSource[row]
+                );
+                setTbodyDataStatu(optTbodyDataStatu);
+            }
+        },
+        [tbodyDataStatu, copyDataSource]
+    );
+
+    const [eventsDispatch, eventEmitter] = useLifeCycle(
+        moduleId,
+        { mount: '初始化', unmount: '卸载', pullDown: '下拉', pullUp: '上拉' },
+        { setTable, setTheadData, setTbodyData, overrideTbodyItem }
+    );
+
+    /** 下拉事件*/
+    const onPullDown = useCallback(async () => {
+        const apiArguments = api?.find((item) => item.apiId === 'pullDown');
+        if (apiArguments) {
+            await requester(apiArguments || {});
         }
-        result.push(temp);
-      });
-      // 递增翻页
-      if (concat) {
-        setTbodyDataStatu(tbodyDataStatu.concat(result));
-      } else {
-        setTbodyDataStatu(result);
-      }
-    },
-    [tbodyDataStatu]
-  );
+        // 执行下拉事务
+        eventsDispatch.pullDown();
+    }, [api, eventsDispatch]);
 
-  /**
-   * 从数据源覆写表格，做到表格项灵活覆写，满足列表样式的各种变换
-   *
-   * */
-  const overrideTbodyItem = useCallback(
-    (
-      rowItem: ArgumentsNumber,
-      colItem: ArgumentsNumber,
-      override: ArgumentsString
-    ) => {
-      const row = (getArgumentsItem(rowItem) as number) - 1;
-      const col = (getArgumentsItem(colItem) as number) - 1;
+    /** 上拉事件*/
+    const onPullUp = useCallback(async () => {
+        const apiArguments = api?.find((item) => item.apiId === 'pullUp');
+        if (apiArguments) {
+            await requester(apiArguments || {});
+        }
+        // 执行下拉事务
+        eventsDispatch.pullUp();
+    }, [api, eventsDispatch]);
 
-      if (tbodyDataStatu[row] && tbodyDataStatu[row][col] && copyDataSource) {
-        const optTbodyDataStatu = [...tbodyDataStatu]
-        optTbodyDataStatu[row][col] = getArgumentsItem(
-          override,
-          copyDataSource[row]
-        );
-        setTbodyDataStatu(optTbodyDataStatu);
-      }
-    },
-    [tbodyDataStatu, copyDataSource]
-  );
-
-  /** 下拉事件*/
-  const onPullDown = useCallback(async () => {
-    const apiArguments = api?.find((item) => item.apiId === "pullDown");
-    if (apiArguments) {
-      await requester(apiArguments || {});
-    }
-    // 执行下拉事务
-    eventEmitter.emit(events.pullDown);
-  }, [api, eventEmitter, events.pullDown]);
-
-  /** 上拉事件*/
-  const onPullUp = useCallback(async () => {
-    const apiArguments = api?.find((item) => item.apiId === "pullUp");
-    if (apiArguments) {
-      await requester(apiArguments || {});
-    }
-    // 执行下拉事务
-    eventEmitter.emit(events.pullUp);
-  }, [api, eventEmitter, events.pullUp]);
-
-  // 向eventEmitter注册方法，向外公布
-  useMemo(() => {
-    eventEmitter.addEventListener("setTable", setTable);
-    eventEmitter.addEventListener("setTheadData", setTheadData);
-    eventEmitter.addEventListener("setTbodyData", setTbodyData);
-    eventEmitter.addEventListener("overrideTbodyItem", overrideTbodyItem);
-  }, [eventEmitter, overrideTbodyItem, setTbodyData, setTheadData, setTable]);
-
-  return (
-    <Wrapper {...props} maxHeight maxWidth>
-      <div className={s.tablewrap}>
-        <PullToRefresh
-          className={s.bg_orange}
-          onPullDown={onPullDown}
-          disablePullUp={!pullStates?.pullUp}
-          disablePullDown={!pullStates?.pullDown}
-          pullDownText="左下拉更新"
-          pullUpText="左上拉更新"
-          onPullUp={onPullUp}
-        >
-          <table className={classNames(s.table, userClass.table)}>
-            {theadDataStatu?.data.length ? (
-              <thead>
-                <tr>
-                  {theadDataStatu.data.map((item, index) => (
-                    <th key={index} scope="col" style={{width: theadDataStatu.width[index]}}>
-                      {item}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-            ) : null}
-            {tbodyDataStatu.length ? (
-              <tbody>
-                {tbodyDataStatu.map((item, ind) => (
-                  <tr key={ind}>
-                    {item.map((itemsub, index) => (
-                      <td key={index}>{itemsub}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            ) : null}
-          </table>
-        </PullToRefresh>
-      </div>
-    </Wrapper>
-  );
+    return (
+        <Wrapper {...props} maxHeight maxWidth>
+            <div className={s.tablewrap}>
+                <PullToRefresh
+                    className={s.bg_orange}
+                    onPullDown={onPullDown}
+                    disablePullUp={!pullStates?.pullUp}
+                    disablePullDown={!pullStates?.pullDown}
+                    pullDownText="下拉更新"
+                    pullUpText="上拉更新"
+                    onPullUp={onPullUp}
+                >
+                    <table className={classNames(s.table, userClass.table)}>
+                        {theadDataStatu?.data.length ? (
+                            <thead>
+                                <tr>
+                                    {theadDataStatu.data.map((item, index) => (
+                                        <th
+                                            key={index}
+                                            scope="col"
+                                            style={{
+                                                width: theadDataStatu.width[
+                                                    index
+                                                ],
+                                            }}
+                                        >
+                                            {item}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                        ) : null}
+                        {tbodyDataStatu.length ? (
+                            <tbody>
+                                {tbodyDataStatu.map((item, ind) => (
+                                    <tr key={ind}>
+                                        {item.map((itemsub, index) => (
+                                            <td key={index}>{itemsub}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        ) : null}
+                    </table>
+                </PullToRefresh>
+            </div>
+        </Wrapper>
+    );
 };
 
-/**
- * 注册方法的静态描述与默认参数定义
- */
-Table.exposeFunctions = [
-  {
-    name: "setTable",
-    description: "设置table基本功能",
-    arguments: [
-      {
-        type: "boolean",
-        name: "允许下拉事件",
-        describe: "表达式成立时允许下拉事件",
-        fieldName: "isPullDown",
-        data: {
-          comparableAverageA: "0",
-          comparableAverageB: "1",
-          method: "===",
-        },
-      },
-      {
-        type: "boolean",
-        name: "允许上拉事件",
-        describe: "表达式成立时允许上拉事件",
-        fieldName: "isPullUp",
-        data: {
-          comparableAverageA: "0",
-          comparableAverageB: "1",
-          method: "===",
-        },
-      },
-    ],
-  },
-  {
-    name: "setTheadData",
-    description: "设置表头",
-    arguments: [
-      {
-        type: "array",
-        fieldName: "setThead",
-        name: "设置表头项",
-        html: true,
-        describe: "设置表头标题，每项代表一列",
-        data: [],
-      },
-      {
-        type: "array",
-        fieldName: "setTheadWidth",
-        name: "设置表头项宽度",
-        describe: "设置表头每列宽度，每项代表一列",
-        data: [],
-      },
-    ],
-  },
-  {
-    name: "setTbodyData",
-    description: "表格数据",
-    arguments: [
-      {
-        type: "runningTime",
-        name: "数据源",
-        fieldName: "dataSource",
-        describe: "数据源，设置运行时或Api返回数据源",
-        data: "",
-      },
-      {
-        type: "boolean",
-        name: "合并历史数据",
-        describe: "设置每行内容，数据替换基于数据源！",
-        fieldName: "isConcate",
-        data: {
-          comparableAverageA: "0",
-          comparableAverageB: "1",
-          method: "===",
-        },
-      },
-      {
-        type: "array",
-        fieldName: "rowMap",
-        name: "行值",
-        html: true,
-        describe: "设置每行内容，数据替换基于数据源！",
-        data: [],
-      },
-    ],
-  },
-  {
-    name: "overrideTbodyItem",
-    description: "覆写表格，请在源数据准备完成后做覆写！",
-    arguments: [
-      {
-        type: "number",
-        fieldName: "rowItem",
-        name: "行",
-        describe: "tbody第几行",
-        data: "",
-      },
-      {
-        type: "number",
-        fieldName: "colItem",
-        name: "列",
-        describe: "tbody第几列",
-        data: "",
-      },
-      {
-        type: "string",
-        fieldName: "override",
-        name: "覆写",
-        html: true,
-        describe: "覆写表格项, 数据替换基于数据源！",
-        data: "",
-      },
-    ],
-  },
-];
-
-/**
- * 发布事件的静态描述
- */
-Table.exposeEvents = [
-  {
-    name: "mount",
-    description: "初始化",
-  },
-  {
-    name: "unmount",
-    description: "卸载",
-  },
-  {
-    name: "pullDown",
-    description: "下拉",
-  },
-  {
-    name: "pullUp",
-    description: "上拉",
-  },
-];
-
-/**
- * 发布默认porps
- */
-Table.exposeDefaultProps = {
-  layout: {
-    w: 20,
-  },
-  style: {
-    basic: {},
-    table: {},
-    thead: {},
-    tbody: {},
-    th: {},
-    td: {},
-    tr: {},
-    rowoddfirst: {},
-    rowoddlast: {},
-    rowodd: {},
-    roweven: {},
-    coloddfirst: {},
-    colevenlast: {},
-    colodd: {},
-    coleven: {},
-  },
-  styleDescription: [
-    {
-      title: "基础",
-      value: "basic",
-      children: [
-        {
-          title: "表格",
-          value: "table",
-          children: [{
-            title: "表头",
-            value: "thead",
-            children: [
-              {
-                title: "表头项",
-                value: "th",
-              }
-            ]
-          },{
-            title: "内容",
-            value: "tbody",
-            children: [
-              {
-                title: "内容项",
-                value: "td",
-                children: [
-                  {
-                    title: "行",
-                    value: "tr",
-                    children: [
-                      {
-                        title: "首行",
-                        value: "rowoddfirst"
-                      },
-                      {
-                        title: "末行",
-                        value: "rowoddlast"
-                      },
-                      {
-                        title: "奇数行",
-                        value: "rowodd"
-                      },
-                      {
-                        title: "偶数行",
-                        value: "roweven"
-                      }
-                    ]
-                  },
-                  {
-                    title: "首列",
-                    value: "coloddfirst"
-                  },
-                  {
-                    title: "未列",
-                    value: "colevenlast"
-                  },
-                  {
-                    title: "奇数列",
-                    value: "colodd"
-                  },
-                  {
-                    title: "偶数列",
-                    value: "coleven"
-                  }
-                ]
-              }
-            ]
-          }]
-        }
-      ]
+// bind static
+for (const key in config) {
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        Table[key] = config[key];
     }
-  ]
-};
-
-/**
- * 发布默认Api
- */
-Table.exposeApi = [
-  {
-    apiId: "mount",
-    name: "初始化",
-  },
-  {
-    apiId: "pullUp",
-    name: "上拉",
-  },
-  {
-    apiId: "pullDown",
-    name: "下拉",
-  },
-];
+}
 
 export default Table;

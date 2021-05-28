@@ -14,10 +14,11 @@ import Wrapper from "../Wrapper";
 import isUrl from "~/core/helper/isUrl";
 import s from "./Slider.module.less";
 import useStyles from "./Slider.useStyles";
-import staticConstants from "./Slider.staticConstants";
+import config from "./Slider.config";
 import classNames from "classnames";
 import requester from "~/core/fetch";
 import { getArguments, getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import useLifeCycle from "~/hooks/useLifeCycle";
 
 export interface SliderProps extends AppDataElementsTypes {
   id: string; // Wrapper 组件使用
@@ -41,24 +42,18 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
 
 const Slider: Modules<SliderProps> = (props) => {
   // ===================================获取变量=================================== //
-  const { eventEmitter, style, events = {}, moduleId, api } = props;
+  const { style, moduleId, api } = props;
   const prefix = `swiper${moduleId}`;
   // ===================================创建运行时class============================ //
   const useClass = useStyles(props.style);
   // ===================================定义方法=================================== //
-  const mount = useCallback(() => {
-    eventEmitter.emit(events.mount);
-  }, [eventEmitter, events]);
-
-  const unmount = useCallback(() => {
-    eventEmitter.emit(events.unmount);
-  }, [eventEmitter, events]);
 
   const [images, setImages] = useState<ImagesType[]>();
   const [delay, setDelay] = useState<number>(0);
   const [hideNav, setHideNav] = useState(false);
   const [hidePage, setHidePage] = useState(false);
   const [breakInterface, setBreakInterface] = useState(false);
+  // ===================================eventEmitter事件定义=================================== //
   const setData = useCallback((imageUrls: ArgumentsArray, imageLinks: ArgumentsArray) => {
     const data: ImagesType[] = [];
     const imageUrlsData = getArgumentsItem(imageUrls);
@@ -110,14 +105,7 @@ const Slider: Modules<SliderProps> = (props) => {
     [setDelay]
   );
 
-  useEffect(() => {
-    // 页面挂载
-    mount();
-    // 页面卸载
-    return () => {
-      unmount();
-    };
-  }, [mount, unmount]);
+  const [,eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {setData, setSlider})
 
   // API请求 注意依赖关系
   useEffect(() => {
@@ -252,24 +240,11 @@ const Slider: Modules<SliderProps> = (props) => {
   );
 };
 
-/**
- * 注册方法的静态描述与默认参数定义
- */
-Slider.exposeFunctions = staticConstants.exposeFunctions;
-
-/**
- * 发布事件的静态描述
- */
-Slider.exposeEvents = staticConstants.exposeEvents;
-
-/**
- * 发布默认porps
- */
-Slider.exposeDefaultProps = staticConstants.exposeDefaultProps;
-
-/**
- * 发布默认Api
- */
-Slider.exposeApi = staticConstants.exposeApi;
+// bind static
+for (const key in config) {
+  if (Object.prototype.hasOwnProperty.call(config, key)) {
+    Slider[key] = config[key];
+  }
+}
 
 export default Slider;

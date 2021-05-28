@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
 import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
@@ -11,6 +11,8 @@ import useStyles from './Module.useStyles';
 import IconCancel from './IconCancel';
 import s from './Modal.module.less';
 import ReactDOM from 'react-dom';
+import config from './Modal.config';
+import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
 
 export interface ModalProps extends AppDataElementsTypes {
     id: string;
@@ -45,10 +47,13 @@ interface Btnstate {
 }
 
 const Modal: Modules<ModalProps> = (props) => {
-    const { eventEmitter, events = {}, api, moduleId, style } = props;
+    const { api, moduleId, style } = props;
     const [useParams, setUserParams] = useState<UseParams>();
-
+    const eventEmitterRef = useRef<UseLifeCycleResult<{ [keys in 'mount' | 'unmount' | 'onOk' | 'onCancel' ]: Function }>>();
+    
     const MId = `MD${moduleId}`;
+    // 定义注册方法
+    // ===================================================================================
     const params = buildParams({
         id: MId,
         animationType: 'zoomIn',
@@ -57,7 +62,7 @@ const Modal: Modules<ModalProps> = (props) => {
         shouldCloseOnOverlayClick: true,
         ...(useParams || {}),
         onCancel: () => {
-            eventEmitter.emit(events.onCancel);
+            eventEmitterRef.current?.[0].onCancel();
         },
     });
 
@@ -83,7 +88,8 @@ const Modal: Modules<ModalProps> = (props) => {
             setUserParams({
                 ...useParams,
                 closable: argclosable as boolean,
-                shouldCloseOnOverlayClick: argshouldCloseOnOverlayClick as boolean,
+                shouldCloseOnOverlayClick:
+                    argshouldCloseOnOverlayClick as boolean,
             });
         },
         [useParams]
@@ -101,7 +107,6 @@ const Modal: Modules<ModalProps> = (props) => {
         },
         [useParams]
     );
-
 
     const show = useCallback(
         (data) => {
@@ -121,10 +126,11 @@ const Modal: Modules<ModalProps> = (props) => {
                 ? `<button class="${MId}_cancel" id="${MId}_cancel">${cancelText}</button>`
                 : '';
 
-            const footer = btnNodeOk || btnNodeCancel
-            ? `<div>${btnNodeOk || ''}${btnNodeCancel || ''}</div>`
-            : undefined;
-            
+            const footer =
+                btnNodeOk || btnNodeCancel
+                    ? `<div>${btnNodeOk || ''}${btnNodeCancel || ''}</div>`
+                    : undefined;
+
             createModal({
                 header,
                 article,
@@ -132,24 +138,25 @@ const Modal: Modules<ModalProps> = (props) => {
             }).then(() => {
                 // 关闭图标
                 if (params.closable) {
-                    const closeIconNode = document.querySelector(`.${MId}_close`);
-                    ReactDOM.render(
-                        <IconCancel />,
-                        closeIconNode
-                      );
+                    const closeIconNode = document.querySelector(
+                        `.${MId}_close`
+                    );
+                    ReactDOM.render(<IconCancel />, closeIconNode);
                 }
                 // 确定按钮
                 if (isOk) {
                     const okNode = document.getElementById(`${MId}_ok`);
                     if (isOkDisabled) {
-                        okNode?.setAttribute('disabled', 'disabled')
+                        okNode?.setAttribute('disabled', 'disabled');
                     }
                     okNode!.onclick = async () => {
                         // 确定api
-                        const apiArguments = api?.find((item) => item.apiId === "onOkApi");
+                        const apiArguments = api?.find(
+                            (item) => item.apiId === 'onOkApi'
+                        );
                         if (apiArguments) await requester(apiArguments);
                         // onOk
-                        await eventEmitter.emit(events.onOk);
+                        await eventEmitterRef.current?.[0].onOk();
                         hideModal(false);
                     };
                 }
@@ -157,15 +164,17 @@ const Modal: Modules<ModalProps> = (props) => {
                 if (isCancel) {
                     const cancelNode = document.getElementById(`${MId}_cancel`);
                     if (isCancelDisabled) {
-                        cancelNode?.setAttribute('disabled', 'disabled')
+                        cancelNode?.setAttribute('disabled', 'disabled');
                     }
                     cancelNode!.onclick = async () => {
                         // 取消api
-                        const apiArguments = api?.find((item) => item.apiId === "onCancelApi");
+                        const apiArguments = api?.find(
+                            (item) => item.apiId === 'onCancelApi'
+                        );
                         if (apiArguments) await requester(apiArguments);
                         // onCancel
                         hideModal(false);
-                        eventEmitter.emit(events.onCancel);
+                        eventEmitterRef.current?.[0].onCancel();
                     };
                 }
             });
@@ -174,7 +183,7 @@ const Modal: Modules<ModalProps> = (props) => {
                 rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
         },
-        [MId, api, btnstate, createModal, eventEmitter, events.onCancel, events.onOk, hideModal, modal, params.closable, userClass.root]
+        [MId, api, btnstate, createModal, hideModal, modal, params.closable, userClass.root]
     );
 
     const setButton = useCallback(
@@ -197,304 +206,31 @@ const Modal: Modules<ModalProps> = (props) => {
         []
     );
 
-    // 向eventEmitter注册事件，向外公布
-    useMemo(() => {
-        eventEmitter.addEventListener('setOnOff', setOnOff);
-        eventEmitter.addEventListener('setAnimation', setAnimation);
-        eventEmitter.addEventListener('createModal', show);
-        eventEmitter.addEventListener('hideModal', hideModal);
-        eventEmitter.addEventListener('setButton', setButton);
-    }, [eventEmitter, show, hideModal, setOnOff, setAnimation, setButton]);
+    eventEmitterRef.current = useLifeCycle(
+        moduleId,
+        {
+            mount: '初始化',
+            unmount: '卸载',
+            onOk: '确认',
+            onCancel: '取消/关闭',
+        },
+        { setOnOff, setAnimation, createModal: show, hideModal, setButton }
+    );
 
     // API请求 注意依赖关系
     useEffect(() => {
         const apiArguments = api?.find((item) => item.apiId === '');
         requester(apiArguments || {});
     }, [api]);
-    // 基本事件
-    useEffect(() => {
-        // 执行挂载事件
-        eventEmitter.emit(events.mount);
-        return () => {
-            // 执行卸载事件
-            eventEmitter.emit(events.unmount);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
     return <Wrapper {...props} maxHeight maxWidth />;
 };
 
-/**
- * 注册方法的静态描述与默认参数定义
- */
-Modal.exposeFunctions = [
-    {
-        name: 'setOnOff',
-        description: '设置开关',
-        arguments: [
-            {
-                type: 'boolean',
-                name: '是否可关闭',
-                describe: '控制弹窗有无关闭按钮',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '0',
-                    method: '===',
-                },
-                fieldName: 'closable',
-            },
-            {
-                type: 'boolean',
-                name: '点击背景可关闭',
-                describe: '点击蒙层背景关闭弹窗',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '1',
-                    method: '===',
-                },
-                fieldName: 'shouldCloseOnOverlayClick',
-            },
-        ],
-    },
-    {
-        name: 'setButton',
-        description: '设置按钮',
-        arguments: [
-            {
-                type: 'boolean',
-                name: '显示确认按钮',
-                describe: '条件成立显示确认按钮',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '0',
-                    method: '===',
-                },
-                fieldName: 'isOk',
-            },
-            {
-                type: 'boolean',
-                name: '禁用确认按钮',
-                describe: '条件成立禁用确认按钮',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '1',
-                    method: '===',
-                },
-                fieldName: 'isOkDisabled',
-            },
-            {
-                type: 'boolean',
-                name: '显示取消按钮',
-                describe: '条件成立显示取消按钮',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '1',
-                    method: '===',
-                },
-                fieldName: 'isCancel',
-            },
-            {
-                type: 'boolean',
-                name: '禁用取消按钮',
-                describe: '条件成立禁用取消按钮',
-                data: {
-                    comparableAverageA: '0',
-                    comparableAverageB: '1',
-                    method: '===',
-                },
-                fieldName: 'isCancelDisabled',
-            },
-            {
-                type: 'object',
-                name: '按钮文字',
-                describe: '设置按钮文字',
-                data: {
-                    okText: '确定',
-                    cancelText: '取消',
-                },
-                fieldName: 'buttontext',
-            },
-        ],
-    },
-    {
-        name: 'setAnimation',
-        description: '设置动画',
-        arguments: [
-            {
-                type: 'string',
-                name: '动画类型',
-                describe:
-                    '动画类型包含 "fadeInLeft" | "fadeInRight" | "fadeInDown" | "fadeInUp" | "zoomInLeft" | "zoomInRight" | "zoomInDown" | "zoomInUp" | "zoomIn" | "flipInX" | "flipInY"',
-                data: '',
-                fieldName: 'animationType',
-            },
-            {
-                type: 'string',
-                name: '动画时间',
-                describe: '转场动画时长(默认0.2s)',
-                data: '',
-                fieldName: 'animationDuration',
-            },
-        ],
-    },
-    {
-        name: 'createModal',
-        description: '显示弹窗',
-        arguments: [
-            {
-                type: 'object',
-                name: '数据',
-                describe: '对话框数据',
-                html: 'innerhtml',
-                data: {
-                    header: '<h3>header</h3>',
-                    article: '<p>内容</p>',
-                },
-                fieldName: 'modaldata',
-            },
-        ],
-    },
-    {
-        name: 'hideModal',
-        description: '隐藏弹窗',
-    },
-];
-
-/**
- * 发布事件的静态描述
- */
-Modal.exposeEvents = [
-    {
-        name: 'mount',
-        description: '初始化',
-    },
-    {
-        name: 'unmount',
-        description: '卸载',
-    },
-    {
-        name: 'onOk',
-        description: '确认',
-    },
-    {
-        name: 'onCancel',
-        description: '取消/关闭',
-    },
-];
-
-/**
- * 发布默认porps
- */
-Modal.exposeDefaultProps = {
-    layout: {
-        w: 0,
-        h: 0,
-        x: 0,
-        y: 0,
-    },
-    style: {
-        basic: {},
-        overlay: {},
-        container: {},
-        content: {},
-        header: {},
-        article: {},
-        close: {
-            display: {
-                width: [10, ''],
-                height: [10, ''],
-            }
-        },
-        ok: {},
-        okdisabled: {},
-        cancel: {},
-        canceldisabled: {},
-        modify1: {},
-        modify2: {},
-        modify3: {},
-        modify4: {},
-    },
-    styleDescription: [
-        {
-            title: "基础",
-            value: "basic",
-            children: [
-                {
-                    "title": "弹窗容器",
-                    "value": "container",
-                    "children":[
-                        {
-                            "title": "遮罩层",
-                            "value": "overlay"
-                        },
-                        {
-                            "title": "弹窗",
-                            "value": "content",
-                            "children":[
-                                {
-                                    "title": "头部",
-                                    "value": "header"
-                                },
-                                {
-                                    "title": "内容",
-                                    "value": "article"
-                                },
-                                {
-                                    "title": "关闭按钮",
-                                    "value": "close"
-                                },
-                                {
-                                    "title": "确定按钮",
-                                    "value": "ok"
-                                },
-                                {
-                                    "title": "确定按钮禁用",
-                                    "value": "okdisabled"
-                                },
-                                {
-                                    "title": "取消按钮",
-                                    "value": "cancel"
-                                },
-                                {
-                                    "title": "取消按钮禁用",
-                                    "value": "canceldisabled"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "修饰层1",
-                            "value": "modify1"
-                        },
-                        {
-                            "title": "修饰层2",
-                            "value": "modify2"
-                        },
-                        {
-                            "title": "修饰层3",
-                            "value": "modify3"
-                        },
-                        {
-                            "title": "修饰层4",
-                            "value": "modify4"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-};
-
-/**
- * 发布默认Api
- */
-Modal.exposeApi = [{
-    apiId: "onOkApi",
-    name: "确定",
-    description: "确认弹窗时可以调用api"
-  },{
-    apiId: "onCancelApi",
-    name: "取消",
-    description: "确认弹窗时可以调用api"
-  }];
+// bind static
+for (const key in config) {
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        Modal[key] = config[key];
+    }
+}
 
 export default Modal;

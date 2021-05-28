@@ -16,7 +16,9 @@ type DispatchEvents<TEvent> = {
     [K in keyof TEvent]: (...args: any[]) => any;
 }
 
-function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:RegistersFunction ): [DispatchEvents<TEvent>, EventEmitter] {
+export type UseLifeCycleResult<TEvent={}> = [DispatchEvents<TEvent>, EventEmitter]
+
+function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:RegistersFunction ): UseLifeCycleResult<TEvent> {
     const eventEmitter = useMemo(() => globalEventEmitter.bind(moduleId), [moduleId]);
     console.log('eventEmitter', eventEmitter);
     
