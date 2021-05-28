@@ -12,6 +12,7 @@ import {
 import MoveIcon from './MoveIcon';
 import classNames from 'classnames';
 import arrayMove from 'array-move';
+import { cloneDeep } from 'lodash';
 
 const DragHandle = SortableHandle(() => (
     <span className={s.icon}>
@@ -23,7 +24,7 @@ interface SortableItemProps {
     value: string | number | readonly string[] | undefined;
     htmlInput: boolean;
     index: number;
-    onChange: (index: number, value: string | null | undefined) => void;
+    onChange: (value: string | null | undefined) => void;
     onMinus: (index: number) => void;
     describe: string;
 }
@@ -42,7 +43,7 @@ const SortableItem = SortableElement(
                 <Col span={22}>
                     <DragHandle />
                     <Input
-                        onChange={(e) => onChange(index, e.target.value)}
+                        onChange={e => onChange(e.target.value)}
                         prefix={<div className={s.prefix}>{index}</div>}
                         suffix={htmlInput ? <HtmlSuffix /> : null}
                         placeholder={`请输入值${describe || ''}`}
@@ -88,8 +89,8 @@ const SortableList = SortableContainer(
                         index={index}
                         value={item}
                         htmlInput={htmlInput}
-                        onChange={onChange}
-                        onMinus={onMinus}
+                        onChange={(value) => onChange(index, value)}
+                        onMinus={() => onMinus(index)}
                         describe={describe}
                     />
                 ))}
@@ -164,8 +165,10 @@ const ArrayArguments: React.FC<Props> = ({
 
     const onSort = useCallback(
       ({oldIndex, newIndex}) => {
-        const result: anyObj = { ...argumentsState };
-        arrayMove(result.data, oldIndex, newIndex);
+        const result: anyObj = cloneDeep(argumentsState || []);
+        console.log('result', result);
+        
+        result.data = arrayMove(result.data, oldIndex, newIndex);
         if (onChange instanceof Function) {
           onChange(result as ArgumentsItem);
       }

@@ -10,8 +10,6 @@ import LazyLoader from '~/components/LazyLoader';
 interface ElementsProps extends AppDataElementsTypes {}
 
 const Elements: React.FC<ElementsProps> = (props) => {
-    console.log('props', props);
-    
     const { type } = props;
     return (
         <LazyLoader
