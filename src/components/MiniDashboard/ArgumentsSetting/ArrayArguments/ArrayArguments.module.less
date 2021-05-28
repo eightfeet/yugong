@@ -1,5 +1,6 @@
 .row {
     margin-top: 10px;
+    position: relative;
 }
 
 .btn {
@@ -22,4 +23,29 @@
 
 .prefix {
     color: @select-multiple-item-disabled-color;
+}
+
+.icon {
+    cursor: move;
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: -22px;
+    top: 5px;
+    color: #AAA;
+    svg {
+        display: block;
+        fill: currentColor;
+    }
+}
+
+.item {
+    position: relative;
+}
+
+:global {
+    body > .ant-row.arrayarguments{
+        z-index: 2000;
+    }
 }
