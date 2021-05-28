@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import requester from '~/core/fetch';
-import EventEmitter from '~/core/EventEmitter';
 import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
@@ -15,8 +14,6 @@ import config from './Modal.config';
 import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
 
 export interface ModalProps extends AppDataElementsTypes {
-    id: string;
-    eventEmitter: EventEmitter;
 }
 
 interface UseParams {

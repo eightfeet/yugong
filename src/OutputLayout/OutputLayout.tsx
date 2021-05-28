@@ -159,16 +159,12 @@ const OutputLayout: React.FC<LayoutProps> = ({
         );
         return optAppdata.map((item) => {
             // 事件处理器的bind方法将事件处理器绑定到各个组件
-            const itemMerge = {
-                eventEmitter: eventEmitter.bind(item.moduleId),
-                ...item,
-            };
             return (
                 <div
                     key={item.layout?.i}
                     className={s.nodisplay}
                 >
-                    <Elements {...itemMerge} />
+                    <Elements {...item} />
                 </div>
             );
         });
@@ -189,10 +185,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
                 item.layout.w = cols;
             }
             // 事件处理器的bind方法将事件处理器绑定到各个组件
-            const itemMerge = {
-                eventEmitter: eventEmitter.bind(item.moduleId),
-                ...item,
-            };
+
             return (
                 <div
                     id={`wrap-${item.layout?.i}`}
@@ -208,7 +201,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
                         static: visualSense,
                     }}
                 >
-                    <Elements {...itemMerge} />
+                    <Elements {...item} />
                 </div>
             );
         });

@@ -21,10 +21,7 @@ import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import config from './Table.config';
 import useLifeCycle from '~/hooks/useLifeCycle';
 
-export interface TableProps extends AppDataElementsTypes {
-    id: string;
-    eventEmitter: EventEmitter;
-}
+export interface TableProps extends AppDataElementsTypes {}
 
 const Table: Modules<TableProps> = (props) => {
     const { events = {}, api, style, moduleId } = props;

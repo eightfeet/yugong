@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import requester from '~/core/fetch';
 import { useLongPress } from 'react-use';
-import EventEmitter from '~/core/EventEmitter';
 import {
     AppDataElementsTypes,
     ArgumentsBoolean,
@@ -16,10 +15,7 @@ import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import config from './Button.config';
 import useLifeCycle from '~/hooks/useLifeCycle';
 
-export interface ButtonProps extends AppDataElementsTypes {
-    id: string;
-    eventEmitter: EventEmitter;
-}
+export interface ButtonProps extends AppDataElementsTypes {}
 
 const Button: Modules<ButtonProps> = (props) => {
     const { api, style, moduleId } = props;

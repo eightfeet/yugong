@@ -8,7 +8,6 @@ import SwiperCore, {
   Lazy,
 } from "swiper/core";
 import "swiper/swiper-bundle.min.css";
-import EventEmitter from "~/core/EventEmitter";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import isUrl from "~/core/helper/isUrl";
@@ -20,10 +19,7 @@ import requester from "~/core/fetch";
 import { getArguments, getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import useLifeCycle from "~/hooks/useLifeCycle";
 
-export interface SliderProps extends AppDataElementsTypes {
-  id: string; // Wrapper 组件使用
-  eventEmitter: EventEmitter;
-}
+export interface SliderProps extends AppDataElementsTypes {}
 
 interface ImagesType {
   imageUrl?: string;

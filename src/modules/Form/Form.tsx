@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import Grid from '@material-ui/core/Grid';
 import TextField from './compoments/TextField';
 import requester from '~/core/fetch';
-import EventEmitter from '~/core/EventEmitter';
 import { AppDataElementsTypes, ArgumentsItem } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
@@ -21,8 +20,6 @@ import classNames from 'classnames';
 import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
 
 export interface FormProps extends AppDataElementsTypes {
-    id: string;
-    eventEmitter: EventEmitter;
 }
 
 interface Config {

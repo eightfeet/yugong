@@ -20,8 +20,6 @@ export type UseLifeCycleResult<TEvent={}> = [DispatchEvents<TEvent>, EventEmitte
 
 function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:RegistersFunction ): UseLifeCycleResult<TEvent> {
     const eventEmitter = useMemo(() => globalEventEmitter.bind(moduleId), [moduleId]);
-    console.log('eventEmitter', eventEmitter);
-    
     const appData = useSelector((state: RootState) => state.appData);
     const events = useMemo(() => {
         let env: EventsType = {}

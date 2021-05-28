@@ -1,20 +1,17 @@
 import React from 'react';
-import { Layout } from 'react-grid-layout';
 import { AppDataElementsTypes } from 'types/appData';
 import LazyLoader from '~/components/LazyLoader';
 
 /**
- * To do list !!!
- * step1: 元件按需加载处理
- * step2: 元件框架与数据结构定义
- * step3: 测试元件
- *
+ * 元素
  * @interface ElementsProps
  * @extends {AppDataElementsTypes}
  */
 interface ElementsProps extends AppDataElementsTypes {}
 
 const Elements: React.FC<ElementsProps> = (props) => {
+    console.log('props', props);
+    
     const { type } = props;
     return (
         <LazyLoader
