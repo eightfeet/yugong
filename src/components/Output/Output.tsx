@@ -109,7 +109,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   }, []);
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
-  const [eventDispatch, eventEmitter] = useLifeCycle(
+  const [, eventEmitter] = useLifeCycle(
     "global",
     { mount: "初始化", unmount: "卸载" },
     { injectGlobal, redirect, trackPageViewBD, trackEventBD, sleepFor }

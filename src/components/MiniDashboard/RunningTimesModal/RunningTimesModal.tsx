@@ -43,7 +43,7 @@ const RunningTimesModal: React.FC<Props> = ({
       <div className={s.blank}>
         <Search onChange={onChange} placeholder="查找全局发布变量" />
       </div>
-      <ReactJson src={state} collapsed={1} style={{padding: '20px'}} />
+      <ReactJson src={state} collapsed={1} style={{padding: '20px'}} name="runningTimes" />
     </Modal>
   );
 };

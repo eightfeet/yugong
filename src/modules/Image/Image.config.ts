@@ -14,10 +14,11 @@ const config: {
                 {
                     type: 'object',
                     name: '图片路径与属性',
-                    describe: '图片url',
+                    describe: '图片路径/属性/跳转url',
                     data: {
                         url: '',
                         alt: '',
+                        linkUrl: ''
                     },
                     fieldName: 'img',
                 },

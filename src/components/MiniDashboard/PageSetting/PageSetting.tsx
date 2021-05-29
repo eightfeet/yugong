@@ -28,6 +28,7 @@ import usePostMessage from "~/hooks/usePostMessage";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import RunningTimesModal from "../RunningTimesModal";
 import BackgroundGroup from "../BackgroundGroup";
+import ReactJson from "react-json-view";
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -37,6 +38,7 @@ interface Props {}
 const units = ["px", "rem", "vw", "vh"];
 
 const Pagesetting: React.FC<Props> = () => {
+  const appData = useSelector((state: RootState) => state.appData);
   const pageData = useSelector((state: RootState) => state.pageData);
   const updatePage = useDispatch<Dispatch>().pageData.updatePage;
   const [showRunningTimes, setShowRunningTimes] = useState(false);
@@ -448,6 +450,9 @@ const Pagesetting: React.FC<Props> = () => {
               />
             </Col>
           </Row>
+        </Panel>
+        <Panel header="数据视图" key="pagedata">
+          <ReactJson src={{pageData, appData}} collapsed={1} name="project" />
         </Panel>
       </Collapse>
       <RunningTimesModal

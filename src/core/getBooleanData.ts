@@ -30,7 +30,7 @@ const getBooleanData = ({
     case "<=":
       return (Number(Left) || Left) <= (Number(Right) || Right);
     case "==":
-      // eslint-disable-next-line eqeqeq
+      // eslint-disable-next-line 
       return Left == Right;
     case "&&":
       return Left && Right;
