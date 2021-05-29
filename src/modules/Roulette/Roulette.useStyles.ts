@@ -11,7 +11,10 @@ import styleCompiler from "~/compiler";
 // modify3: "修饰器3"
 
 const useStyles = (id: string) => createUseStyles<string, any>({
+  
     wrap: (style) => {
+  console.log(555,id);
+
         return {
           ...(styleCompiler(style.wrap).style || {}),
           [`& .${id}_light`]: (styleCompiler(style.light).style || {}),
@@ -34,10 +37,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_successmodal_header`]: (styleCompiler(style.successheader).style || {}),
           [`& .${id}_successmodal_article`]: (styleCompiler(style.successarticle).style || {}),
           [`& .${id}_successmodal_close`]: (styleCompiler(style.successclose).style || {}),
-          [`& .${id}_successmodal_modify:first-child`]: (styleCompiler(style.successmodify1).style || {}),
-          [`& .${id}_successmodal_modify:nth-child(1)`]: (styleCompiler(style.successmodify2).style || {}),
-          [`& .${id}_successmodal_modify:nth-child(2)`]: (styleCompiler(style.successmodify3).style || {}),
-          [`& .${id}_successmodal_modify:nth-child(3)`]: (styleCompiler(style.successmodify4).style || {}),
+          [`& .${id}_successmodal_modify`]: (styleCompiler(style.successmodify1).style || {}),
           [`& .${id}_successmodal_ok`]: (styleCompiler(style.successok).style || {}),
           [`& .${id}_successmodal_ok:disabled`]: (styleCompiler(style.successokdisabled).style || {}),
           [`& .${id}_successmodal_cancel`]: (styleCompiler(style.successcancel).style || {}),

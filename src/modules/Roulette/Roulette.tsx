@@ -10,7 +10,8 @@ import s from "./Roulette.module.less";
 import prizes1 from "./mockData.json";
 import classNames from "classnames";
 import Backgrounp from "./Backgroup";
-import styleDescription from "./styleDescription.json";
+import config from "./Roulette.config";
+import useLifeCycle from "~/hooks/useLifeCycle";
 
 var start1 = function () {
   return new Promise(function (resolve) {
@@ -56,8 +57,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
   const MId = `gametarget${moduleId}`;
   const userClass = useStyles(MId)(style);
   const [game, nodes] = useGame({
-    targetId: `gametarget${props.id}`,
-    parentId: `game${props.id}`,
+    targetId: `gametarget${props.moduleId}`,
+    parentId: `game${props.moduleId}`,
     playerPhone: "13635219421",
     successModalTitle: "恭喜您，获得",
     SuccessModalAnimation: {
@@ -68,7 +69,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
     start: start1,
     saveAddress: saveAddress,
     receiverInfo: receiverInfo,
-    checkVerificationCode: checkVerificationCode, // 检查手机验证码
+    checkVerificationCode, // 检查手机验证码
     prizes: prizes1,
     onCancel: () => console.log("放弃1"),
     onEnsure: function (prize: any) {
@@ -87,28 +88,19 @@ const Roulette: Modules<RouletteProps> = (props) => {
       cycleTime: 1,
     },
   });
-  const { eventEmitter, events = {}, api } = props;
+  useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {});
+  const {api } = props;
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
     requester(apiArguments || {});
   }, [api]);
-  // 基本事件
-  useEffect(() => {
-    // 执行挂载事件
-    eventEmitter.emit(events.mount);
-    return () => {
-      // 执行卸载事件
-      eventEmitter.emit(events.unmount);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Wrapper {...props}>
       <div
-        className={classNames(s.root, s.bag, 3333, userClass.wrap)}
-        id={`game${props.id}`}
+        className={classNames(s.root, s.bag, userClass.wrap)}
+        id={`game${props.moduleId}`}
         ref={nodes}
       >
         <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}>
@@ -119,70 +111,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
   );
 };
 
-/**
- * 注册方法的静态描述与默认参数定义
- */
-Roulette.exposeFunctions = [];
-
-/**
- * 发布事件的静态描述
- */
-Roulette.exposeEvents = [
-  {
-    name: "mount",
-    description: "初始化",
-  },
-  {
-    name: "unmount",
-    description: "卸载",
-  },
-];
-
-/**
- * 发布默认porps
- */
-Roulette.exposeDefaultProps = {
-  style: {
-    basic: {
-    },
-    wrap: {
-    },
-    light: {
-    },
-    wheel: {
-    },
-    divide: {
-    },
-    prizealias: {
-    },
-    lotterybutton: {
-    },
-    needle: {
-    },
-    gameImg: {
-    },
-    successclose: {
-    },
-    successoverlay: {},
-    successcontainer: {},
-    successcontent: {},
-    successheader: {},
-    successarticle: {},
-    successok: {},
-    successokdisabled: {},
-    successcancel: {},
-    successcanceldisabled: {},
-    successmodify1: {},
-    successmodify2: {},
-    successmodify3: {},
-    successmodify4: {},
-  },
-  styleDescription,
-};
-
-/**
- * 发布默认Api
- */
-Roulette.exposeApi = [];
+// bind static
+for (const key in config) {
+  if (Object.prototype.hasOwnProperty.call(config, key)) {
+    Roulette[key] = config[key];
+  }
+}
 
 export default Roulette;
