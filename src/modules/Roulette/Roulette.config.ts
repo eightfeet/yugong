@@ -36,14 +36,78 @@ const config: {
   exposeDefaultProps: {
     style: {
       basic: {},
-      wrap: {},
+      wrap: {
+        backgroundGroup: {},
+        display: {
+          width: [600, ""],
+          height: [600, ""],
+        },
+      },
       light: {},
-      wheel: {},
-      divide: {},
-      prizealias: {},
-      lotterybutton: {},
-      needle: {},
-      gameImg: {},
+      wheel: {
+        backgroundGroup: {
+          backgroundColor: "rgba(209, 209, 209, 1)",
+        },
+        border: {
+          radiusTopLeft: [100, "%"],
+          radiusTopRight: [100, "%"],
+          radiusBottomLeft: [100, "%"],
+          radiusBottomRight: [100, "%"],
+        },
+      },
+      divide: {
+        backgroundGroup: {
+          backgroundColor: "rgba(237, 237, 239, 1)",
+        },
+      },
+      prizealias: {
+        font: {
+          fontStyle: "italic",
+        },
+      },
+      lotterybutton: {
+        font: {},
+        backgroundGroup: {
+          backgroundColor: "rgba(170, 170, 170, 1)",
+        },
+        border: {
+          radiusTopLeft: [100, "%"],
+          radiusTopRight: [100, "%"],
+          radiusBottomLeft: [100, "%"],
+          radiusBottomRight: [100, "%"],
+        },
+      },
+      needle: {
+        backgroundGroup: {
+          backgroundColor: "rgba(231, 231, 231, 0.26)",
+        },
+        display: {
+          width: [300, ""],
+          height: [300, ""],
+          margin: [
+            [-150, ""],
+            [null, ""],
+            [null, ""],
+            [-150, ""],
+          ],
+          position: "absolute",
+          left: [50, "%"],
+          top: [50, "%"],
+        },
+        border: {
+          radiusTopLeft: [100, "%"],
+          radiusTopRight: [100, "%"],
+          radiusBottomLeft: [100, "%"],
+          radiusBottomRight: [100, "%"],
+        },
+      },
+      gameImg: {
+        display: {
+          width: [20, "%"],
+          height: [null, "%"],
+          position: "relative",
+        },
+      },
       successclose: {},
       successoverlay: {},
       successcontainer: {},

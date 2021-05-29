@@ -57,7 +57,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
   const MId = `gametarget${moduleId}`;
   const userClass = useStyles(MId)(style);
   const [game, nodes] = useGame({
-    targetId: `gametarget${props.moduleId}`,
+    targetId: MId,
     parentId: `game${props.moduleId}`,
     playerPhone: "13635219421",
     successModalTitle: "恭喜您，获得",
@@ -97,7 +97,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
   }, [api]);
 
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} >
       <div
         className={classNames(s.root, s.bag, userClass.wrap)}
         id={`game${props.moduleId}`}
