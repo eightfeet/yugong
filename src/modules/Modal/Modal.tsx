@@ -133,6 +133,10 @@ const Modal: Modules<ModalProps> = (props) => {
                 article,
                 footer,
             }).then(() => {
+                const rootNode = modal?.state.contentDom;
+                if (!rootNode) {
+                    return;
+                }
                 // 关闭图标
                 if (params.closable) {
                     const closeIconNode = document.querySelector(

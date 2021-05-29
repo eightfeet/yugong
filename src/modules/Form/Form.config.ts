@@ -65,6 +65,7 @@ const config: {
         {
             name: 'setFormItem',
             description: '表单项对应的值',
+            presettable: false,
             arguments: [
                 {
                     type: 'string',

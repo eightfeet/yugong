@@ -115,6 +115,7 @@ const config = {
         {
             name: 'createModal',
             description: '显示弹窗',
+            presettable: false,
             arguments: [
                 {
                     type: 'object',
@@ -131,6 +132,7 @@ const config = {
         },
         {
             name: 'hideModal',
+            presettable: false,
             description: '隐藏弹窗',
         },
     ],

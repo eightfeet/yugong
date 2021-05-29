@@ -49,6 +49,7 @@ export interface ExposeFunctions {
     name: string;
     description: string;
     arguments?: ArgumentsItem[];
+    presettable?: boolean;
 }
 
 /**

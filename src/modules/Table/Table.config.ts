@@ -6,55 +6,6 @@ const config: {
      */
     exposeFunctions: [
         {
-            name: 'setTable',
-            description: '设置table基本功能',
-            arguments: [
-                {
-                    type: 'boolean',
-                    name: '允许下拉事件',
-                    describe: '表达式成立时允许下拉事件',
-                    fieldName: 'isPullDown',
-                    data: {
-                        comparableAverageA: '0',
-                        comparableAverageB: '1',
-                        method: '===',
-                    },
-                },
-                {
-                    type: 'boolean',
-                    name: '允许上拉事件',
-                    describe: '表达式成立时允许上拉事件',
-                    fieldName: 'isPullUp',
-                    data: {
-                        comparableAverageA: '0',
-                        comparableAverageB: '1',
-                        method: '===',
-                    },
-                },
-            ],
-        },
-        {
-            name: 'setTheadData',
-            description: '设置表头',
-            arguments: [
-                {
-                    type: 'array',
-                    fieldName: 'setThead',
-                    name: '设置表头项',
-                    html: true,
-                    describe: '设置表头标题，每项代表一列',
-                    data: [],
-                },
-                {
-                    type: 'array',
-                    fieldName: 'setTheadWidth',
-                    name: '设置表头项宽度',
-                    describe: '设置表头每列宽度，每项代表一列',
-                    data: [],
-                },
-            ],
-        },
-        {
             name: 'setTbodyData',
             description: '表格数据',
             arguments: [
@@ -87,7 +38,57 @@ const config: {
             ],
         },
         {
+            name: 'setTheadData',
+            description: '设置表头',
+            arguments: [
+                {
+                    type: 'array',
+                    fieldName: 'setThead',
+                    name: '设置表头项',
+                    html: true,
+                    describe: '设置表头标题，每项代表一列',
+                    data: [],
+                },
+                {
+                    type: 'array',
+                    fieldName: 'setTheadWidth',
+                    name: '设置表头项宽度',
+                    describe: '设置表头每列宽度，每项代表一列',
+                    data: [],
+                },
+            ],
+        },
+        {
+            name: 'setTable',
+            description: '设置table基本功能',
+            arguments: [
+                {
+                    type: 'boolean',
+                    name: '允许下拉事件',
+                    describe: '表达式成立时允许下拉事件',
+                    fieldName: 'isPullDown',
+                    data: {
+                        comparableAverageA: '0',
+                        comparableAverageB: '1',
+                        method: '===',
+                    },
+                },
+                {
+                    type: 'boolean',
+                    name: '允许上拉事件',
+                    describe: '表达式成立时允许上拉事件',
+                    fieldName: 'isPullUp',
+                    data: {
+                        comparableAverageA: '0',
+                        comparableAverageB: '1',
+                        method: '===',
+                    },
+                },
+            ],
+        },
+        {
             name: 'overrideTbodyItem',
+            presettable: false,
             description: '覆写表格，请在源数据准备完成后做覆写！',
             arguments: [
                 {

@@ -54,10 +54,10 @@ exposeFunctions: [
     },
     {
       name: "setButtonDisplay",
-      description: '设置按钮样式',
+      description: '设置按钮初始样式',
       arguments: [{
         type: "string",
-          name: "显示状态",
+          name: "初始显示状态",
           fieldName: "setButtonDisplay",
           describe: "按钮显状态，disabled(禁用), focus: (获取焦点), active: (激活), hover: (经过)",
           data: "",

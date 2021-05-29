@@ -102,8 +102,8 @@ const Presetting: React.FC<Props> = () => {
     // step1、设置预设编辑数据
     // 运行时mount数据剔除非当前模块数据
     const getData = useCallback(() => {
-        // 深拷一份组件内部数据 和组件运行时数据
-        const copyExposeFunctions = cloneDeep(exposeFunctions);
+        // 深拷一份组件内部可预设数据 和组件运行时数据
+        const copyExposeFunctions = cloneDeep(exposeFunctions).filter(item => item.presettable !== false);
         const copySetFunctions = cloneDeep(setFunctions);
 
         const result: ExposeFunctions[] =
@@ -205,7 +205,7 @@ const Presetting: React.FC<Props> = () => {
     return (
         <div>
             {runningData.map((item, index) =>
-                !!item.arguments?.length ? (
+                (!!item.arguments?.length && item.presettable !== false) ? (
                     <div key={index} className={s.item}>
                         <PageHeader title={item.description} />
                         {item.arguments?.map((argItem, argIndex) => (

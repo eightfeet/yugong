@@ -166,8 +166,6 @@ const ArrayArguments: React.FC<Props> = ({
     const onSort = useCallback(
       ({oldIndex, newIndex}) => {
         const result: anyObj = cloneDeep(argumentsState || []);
-        console.log('result', result);
-        
         result.data = arrayMove(result.data, oldIndex, newIndex);
         if (onChange instanceof Function) {
           onChange(result as ArgumentsItem);
