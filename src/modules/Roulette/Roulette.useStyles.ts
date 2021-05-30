@@ -13,7 +13,6 @@ import styleCompiler from "~/compiler";
 const useStyles = (id: string) => createUseStyles<string, any>({
   
     wrap: (style) => {
-  console.log(555,id);
 
         return {
           ...(styleCompiler(style.wrap).style || {}),
@@ -36,12 +35,27 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_successmodal_modules`]: (styleCompiler(style.successcontent).style || {}),
           [`& .${id}_successmodal_header`]: (styleCompiler(style.successheader).style || {}),
           [`& .${id}_successmodal_article`]: (styleCompiler(style.successarticle).style || {}),
+          [`& .${id}_successmodal_prizename`]: (styleCompiler(style.successmodalprizename).style || {}),
+          [`& .${id}_successmodal_prizeimg`]: (styleCompiler(style.successmodalprizeimg).style || {}),
+          [`& .${id}_successmodal_memo`]: (styleCompiler(style.successmodalmemo).style || {}),
           [`& .${id}_successmodal_close`]: (styleCompiler(style.successclose).style || {}),
           [`& .${id}_successmodal_modify`]: (styleCompiler(style.successmodify1).style || {}),
-          [`& .${id}_successmodal_ok`]: (styleCompiler(style.successok).style || {}),
-          [`& .${id}_successmodal_ok:disabled`]: (styleCompiler(style.successokdisabled).style || {}),
-          [`& .${id}_successmodal_cancel`]: (styleCompiler(style.successcancel).style || {}),
-          [`& .${id}_successmodal_cancel:disabled`]: (styleCompiler(style.successcanceldisabled).style || {})
+          [`& .${id}_successmodal_submit`]: (styleCompiler(style.successok).style || {}),
+        }
+      },
+
+      addressModal: (style) => {
+        return {
+          /**中奖弹窗 */
+          [`& .${id}_addressmodal_overlay`]: (styleCompiler(style.addressmodaloverlay).style || {}),
+          [`& .${id}_addressmodal_content`]: (styleCompiler(style.addressmodalcontent).style || {}),
+          [`& .${id}_addressmodal_modules`]: (styleCompiler(style.addressmodalcontent).style || {}),
+          [`& .${id}_addressmodal_formbox`]: (styleCompiler(style.addressmodalformbox).style || {}),
+          [`& .${id}_addressmodal_header`]: (styleCompiler(style.addressmodalheader).style || {}),
+          [`& .${id}_addressmodal_article`]: (styleCompiler(style.addressmodalarticle).style || {}),
+          [`& .${id}_addressmodal_close`]: (styleCompiler(style.addressmodalclose).style || {}),
+          [`& .${id}_addressmodal_modify`]: (styleCompiler(style.addressmodify1).style || {}),
+          [`& .${id}_addressmodal_submit`]: (styleCompiler(style.addressmodalok).style || {}),
         }
       }
 });

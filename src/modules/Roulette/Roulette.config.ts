@@ -4,6 +4,7 @@ import {
   ExposeDefaultProps,
   ExposeApi,
 } from "~/types/modules";
+import cancel from "./cancel.svg";
 
 const config: {
   exposeFunctions: ExposeFunctions[];
@@ -33,7 +34,7 @@ const config: {
     {
       name: "unmount",
       description: "卸载",
-    }
+    },
   ],
 
   /**
@@ -114,22 +115,265 @@ const config: {
           position: "relative",
         },
       },
+      
+      successoverlay: {},
+      successcontainer: {},
       successclose: {
         display: {
           width: [40, ""],
           height: [40, ""],
         },
+        backgroundGroup: {
+          backgroundList: [
+            {
+              imageUrl: cancel,
+              sizeY: [70, "%"],
+              sizeX: [70, "%"],
+              positionX: [50, "%"],
+              positionY: [50, "%"],
+              repeat: "no-repeat",
+            },
+          ],
+        },
       },
-      successoverlay: {},
-      successcontainer: {},
-      successcontent: {},
-      successheader: {},
+      successcontent: {
+        display: {
+          width: [280, ""],
+          padding: [
+            [null, ""],
+            [null, ""],
+            [20, ""],
+            [null, ""],
+          ],
+        },
+        border: {
+          radiusTopLeft: [10, ""],
+          radiusTopRight: [10, ""],
+          radiusBottomLeft: [10, ""],
+          radiusBottomRight: [10, ""],
+        },
+      },
+      successheader: {
+        border: {
+          radiusTopLeft: [10, ""],
+          radiusTopRight: [10, ""],
+        },
+        display: {
+          height: [40, ""],
+        },
+        font: {
+          fontWeight: "bold",
+          lineHeight: [40, ""],
+          align: "center",
+          color: "rgba(255, 255, 255, 1)",
+        },
+        backgroundGroup: {
+          backgroundList: [
+            {
+              gradient: [
+                {
+                  color: "rgba(255, 87, 34, 1)",
+                  transition: 1,
+                },
+                {
+                  color: "rgba(244, 67, 54, 1)",
+                  transition: 81,
+                },
+              ],
+              gradientDirections: "top",
+            },
+          ],
+        },
+      },
       successarticle: {},
-      successok: {},
+      successmodalprizename: {
+        font: {
+          fontSize: [26, ""],
+          align: "center",
+          color: "rgba(244, 67, 54, 1)",
+          fontWeight: "bold",
+          lineHeight: [45, ""],
+        },
+        display: {
+          margin: [
+            [20, ""],
+            [null, ""],
+            [null, ""],
+            [null, ""],
+          ],
+        },
+      },
+      successmodalawardmsg: {
+        font: {
+          fontSize: [20, ""],
+          align: "center",
+        },
+      },
+      successmodalprizeimg: {
+        display: {
+          width: [100, ""],
+          height: [100, ""],
+        },
+      },
+      successmodalmemo: {
+        display: {
+          margin: [
+            [null, ""],
+            [10, ""],
+            [10, ""],
+            [10, ""],
+          ],
+        },
+        font: {
+          fontSize: [13, ""],
+          align: "center",
+        },
+      },
+      successok: {
+        display: {
+          padding: [[10, ''], [30, ''], [10, ''], [30, '']],
+        },
+        border: {
+          borderColor: "rgba(205, 205, 205, 1)",
+          borderPosition: {
+            border: true,
+          },
+          borderWidth: [1, ''],
+          borderStyle: "solid",
+          radiusTopLeft: [6, ''],
+          radiusTopRight: [6, ''],
+          radiusBottomLeft: [6, ''],
+          radiusBottomRight: [6, ''],
+        },
+        backgroundCommon: {
+          backgroundColor: "rgba(226, 226, 226, 1)",
+        },
+        boxShadow: [
+          {
+            shiftDown: [2, ''],
+            color: "rgba(0, 0, 0, 0.15 )",
+            blur: [4, ''],
+          },
+        ],
+      },
       successokdisabled: {},
       successcancel: {},
       successcanceldisabled: {},
       successmodify: {},
+      // 地址弹窗
+      addressmodalcontainer: {},
+      addressmodaloverlay: {},
+      addressmodalcontent: {
+        display: {
+          width: [280, ""],
+          padding: [
+            [0, ""],
+            [0, ""],
+            [20, ""],
+            [0, ""],
+          ],
+        },
+        border: {
+          radiusTopLeft: [10, ""],
+          radiusTopRight: [10, ""],
+          radiusBottomLeft: [10, ""],
+          radiusBottomRight: [10, ""],
+        },
+      },
+      addressmodalformbox: {
+        display:{width: [100, "%"]}
+      },
+      addressmodalheader: {
+        border: {
+          radiusTopLeft: [10, ""],
+          radiusTopRight: [10, ""],
+        },
+        display: {
+          height: [40, ""],
+          padding: [
+            [0, ""],
+            [0, ""],
+            [0, ""],
+            [0, ""],
+          ],
+          margin: [
+            [0, ""],
+            [0, ""],
+            [0, ""],
+            [0, ""],
+          ],
+        },
+        font: {
+          fontWeight: "bold",
+          lineHeight: [40, ""],
+          align: "center",
+          color: "rgba(255, 255, 255, 1)",
+        },
+        backgroundGroup: {
+          backgroundList: [
+            {
+              gradient: [
+                {
+                  color: "rgba(255, 87, 34, 1)",
+                  transition: 1,
+                },
+                {
+                  color: "rgba(244, 67, 54, 1)",
+                  transition: 81,
+                },
+              ],
+              gradientDirections: "top",
+            },
+          ],
+        },
+      },
+      addressmodalarticle: {},
+      addressmodalclose: {
+        display: {
+          width: [40, ""],
+          height: [40, ""],
+        },
+        backgroundGroup: {
+          backgroundList: [
+            {
+              imageUrl: cancel,
+              sizeY: [70, "%"],
+              sizeX: [70, "%"],
+              positionX: [50, "%"],
+              positionY: [50, "%"],
+              repeat: "no-repeat",
+            },
+          ],
+        },
+      },
+      addressmodalok: {
+        display: {
+          padding: [[10, ''], [30, ''], [10, ''], [30, '']],
+        },
+        border: {
+          borderColor: "rgba(205, 205, 205, 1)",
+          borderPosition: {
+            border: true,
+          },
+          borderWidth: [1, ''],
+          borderStyle: "solid",
+          radiusTopLeft: [6, ''],
+          radiusTopRight: [6, ''],
+          radiusBottomLeft: [6, ''],
+          radiusBottomRight: [6, ''],
+        },
+        backgroundCommon: {
+          backgroundColor: "rgba(226, 226, 226, 1)",
+        },
+        boxShadow: [
+          {
+            shiftDown: [2, ''],
+            color: "rgba(0, 0, 0, 0.15 )",
+            blur: [4, ''],
+          },
+        ],
+      },
+      addressmodify1: {}
     },
     styleDescription: [
       {
@@ -191,25 +435,29 @@ const config: {
                     value: "successarticle",
                   },
                   {
+                    title: "奖品名称",
+                    value: "successmodalprizename",
+                  },
+                  {
+                    title: "获奖消息",
+                    value: "successmodalawardmsg",
+                  },
+                  {
+                    title: "奖品图片",
+                    value: "successmodalprizeimg",
+                  },
+                  {
+                    title: "奖品备注",
+                    value: "successmodalmemo",
+                  },
+                  {
                     title: "关闭按钮",
                     value: "successclose",
                   },
                   {
                     title: "确定按钮",
                     value: "successok",
-                  },
-                  {
-                    title: "确定按钮禁用",
-                    value: "successokdisabled",
-                  },
-                  {
-                    title: "取消按钮",
-                    value: "successcancel",
-                  },
-                  {
-                    title: "取消按钮禁用",
-                    value: "successcanceldisabled",
-                  },
+                  }
                 ],
               },
               {
@@ -218,6 +466,46 @@ const config: {
               },
             ],
           },
+          {
+            title: "地址弹窗",
+            value: "addressmodalcontainer",
+            children: [
+              {
+                title: "遮罩层",
+                value: "addressmodaloverlay",
+              },
+              {
+                title: "弹窗",
+                value: "addressmodalcontent",
+                children: [
+                  {
+                    title: "表单外框",
+                    value: "addressmodalformbox",
+                  },
+                  {
+                    title: "头部",
+                    value: "addressmodalheader",
+                  },
+                  {
+                    title: "内容",
+                    value: "addressmodalarticle",
+                  },
+                  {
+                    title: "关闭按钮",
+                    value: "addressmodalclose",
+                  },
+                  {
+                    title: "确定按钮",
+                    value: "addressmodalok",
+                  }
+                ],
+              },
+              {
+                title: "修饰层",
+                value: "addressmodify1",
+              },
+            ],
+          }
         ],
       },
     ],

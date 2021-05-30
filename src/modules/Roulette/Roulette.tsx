@@ -69,7 +69,10 @@ const Roulette: Modules<RouletteProps> = (props) => {
       SuccessModalTheme: {
         close: {
 
-        }
+        },
+        modify: [{
+          color: 'transparent'
+        }]
       },
     },
     start: start1,
@@ -87,6 +90,12 @@ const Roulette: Modules<RouletteProps> = (props) => {
         rootDom.className = userClass.successModal;
       }
     },
+    onShowAddress: () => {
+      const rootDom = document.getElementById(`${MId}_addressmodal`);
+      if (rootDom) {
+        rootDom.className = userClass.addressModal;
+      }
+    },
     loading: {
       size: 20,
       length: 5,
@@ -96,10 +105,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
   });
 
   const lottery = useCallback(() => {
-    console.log(777, game);
-
     game?.core.lottery();
-  }, [game, nodes]);
+  }, [game]);
 
   useLifeCycle(moduleId, { mount: "初始化", unmount: "卸载" }, { lottery });
   const { api } = props;
