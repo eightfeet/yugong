@@ -14,7 +14,13 @@ const config: {
   /**
    * 注册方法的静态描述与默认参数定义
    */
-  exposeFunctions: [],
+  exposeFunctions: [
+    {
+      name: "lottery",
+      description: "抽奖",
+      arguments: [],
+    },
+  ],
 
   /**
    * 发布事件的静态描述
@@ -27,20 +33,21 @@ const config: {
     {
       name: "unmount",
       description: "卸载",
-    },
+    }
   ],
 
   /**
    * 发布默认porps
    */
   exposeDefaultProps: {
+    layout: { w: 10, h: 10 },
     style: {
       basic: {},
       wrap: {
         backgroundGroup: {},
         display: {
-          width: [600, ""],
-          height: [600, ""],
+          width: [260, ""],
+          height: [260, ""],
         },
       },
       light: {},
@@ -82,13 +89,13 @@ const config: {
           backgroundColor: "rgba(231, 231, 231, 0.26)",
         },
         display: {
-          width: [300, ""],
-          height: [300, ""],
+          width: [40, "%"],
+          height: [40, "%"],
           margin: [
-            [-150, ""],
+            [-20, "%"],
             [null, ""],
             [null, ""],
-            [-150, ""],
+            [-20, "%"],
           ],
           position: "absolute",
           left: [50, "%"],
@@ -104,11 +111,15 @@ const config: {
       gameImg: {
         display: {
           width: [20, "%"],
-          height: [null, "%"],
           position: "relative",
         },
       },
-      successclose: {},
+      successclose: {
+        display: {
+          width: [40, ""],
+          height: [40, ""],
+        },
+      },
       successoverlay: {},
       successcontainer: {},
       successcontent: {},

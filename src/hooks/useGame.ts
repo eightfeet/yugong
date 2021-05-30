@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+import {Game} from '@byhealth/lottery/dist/games/Roulette';
 const routter = require('@byhealth/lottery/dist/lib/roulette');
 
 interface Params {
     [keys: string]: any
 }
 
-const useGame = (params: Params) => {
+const useGame = (params: Params): [Game, any] => {
     const targetNode = useRef<HTMLElement>();
     const game = useRef<any>();
-
-    const exportGame = useMemo(() => game.current, [])
-
     useEffect(() => {
         if (targetNode.current) {
             game.current = new routter.Game(params);
+
+            (window as any).game = game.current;
         }
         return () => {
             if (game.current) {
@@ -21,8 +21,7 @@ const useGame = (params: Params) => {
             }
         }
     }, [params, targetNode])
-
-    return [exportGame, targetNode]
+    return [game.current, targetNode]
 }
 
 export default useGame;

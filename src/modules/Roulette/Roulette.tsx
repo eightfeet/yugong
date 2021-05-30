@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
 import { AppDataElementsTypes } from "~/types/appData";
@@ -65,7 +65,13 @@ const Roulette: Modules<RouletteProps> = (props) => {
       form: "flipInY",
     },
     cardIdRequest: 3, // 填写收货地址时是否验证身份证: this.cardIdRequest = 1 隐藏身份证，2 验证身份证，3 身份证为空时不验证有填写时验证，4 不验证身份证
-    style: {},
+    style: {
+      SuccessModalTheme: {
+        close: {
+
+        }
+      },
+    },
     start: start1,
     saveAddress: saveAddress,
     receiverInfo: receiverInfo,
@@ -88,8 +94,15 @@ const Roulette: Modules<RouletteProps> = (props) => {
       cycleTime: 1,
     },
   });
-  useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {});
-  const {api } = props;
+
+  const lottery = useCallback(() => {
+    console.log(777, game);
+
+    game?.core.lottery();
+  }, [game, nodes]);
+
+  useLifeCycle(moduleId, { mount: "初始化", unmount: "卸载" }, { lottery });
+  const { api } = props;
   // API请求 注意依赖关系
   useEffect(() => {
     const apiArguments = api?.find((item) => item.apiId === "");
@@ -97,7 +110,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
   }, [api]);
 
   return (
-    <Wrapper {...props} >
+    <Wrapper {...props}>
       <div
         className={classNames(s.root, s.bag, userClass.wrap)}
         id={`game${props.moduleId}`}
