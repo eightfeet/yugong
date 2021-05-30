@@ -115,7 +115,7 @@ const config: {
           position: "relative",
         },
       },
-      
+
       successoverlay: {},
       successcontainer: {},
       successclose: {
@@ -231,28 +231,33 @@ const config: {
       },
       successok: {
         display: {
-          padding: [[10, ''], [30, ''], [10, ''], [30, '']],
+          padding: [
+            [10, ""],
+            [30, ""],
+            [10, ""],
+            [30, ""],
+          ],
         },
         border: {
           borderColor: "rgba(205, 205, 205, 1)",
           borderPosition: {
             border: true,
           },
-          borderWidth: [1, ''],
+          borderWidth: [1, ""],
           borderStyle: "solid",
-          radiusTopLeft: [6, ''],
-          radiusTopRight: [6, ''],
-          radiusBottomLeft: [6, ''],
-          radiusBottomRight: [6, ''],
+          radiusTopLeft: [6, ""],
+          radiusTopRight: [6, ""],
+          radiusBottomLeft: [6, ""],
+          radiusBottomRight: [6, ""],
         },
         backgroundCommon: {
           backgroundColor: "rgba(226, 226, 226, 1)",
         },
         boxShadow: [
           {
-            shiftDown: [2, ''],
+            shiftDown: [2, ""],
             color: "rgba(0, 0, 0, 0.15 )",
-            blur: [4, ''],
+            blur: [4, ""],
           },
         ],
       },
@@ -281,7 +286,7 @@ const config: {
         },
       },
       addressmodalformbox: {
-        display:{width: [100, "%"]}
+        display: { width: [100, "%"] },
       },
       addressmodalheader: {
         border: {
@@ -291,16 +296,16 @@ const config: {
         display: {
           height: [40, ""],
           padding: [
-            [0, ""],
-            [0, ""],
-            [0, ""],
-            [0, ""],
+            ["0", "-"],
+            ["0", "-"],
+            ["0", "-"],
+            ["0", "-"],
           ],
           margin: [
-            [0, ""],
-            [0, ""],
-            [0, ""],
-            [0, ""],
+            ["0", "-"],
+            ["0", "-"],
+            ["0", "-"],
+            ["0", "-"],
           ],
         },
         font: {
@@ -328,6 +333,30 @@ const config: {
         },
       },
       addressmodalarticle: {},
+      addressmodalrow: {
+        display: {
+          margin: [
+            [null, ""],
+            [10, ""],
+            [10, ""],
+            [10, ""],
+          ],
+        },
+      },
+      addressmodallabel: {},
+      addressmodalinput: {
+        font: {
+          fontSize: [13, ""],
+          lineHeight: [30, ""],
+        }
+      },
+      addresscheckphone: {
+        font: {
+          fontSize: [13, ""],
+          lineHeight: [30, ""],
+        }
+      },
+      addresscheckphonedisable: {},
       addressmodalclose: {
         display: {
           width: [40, ""],
@@ -348,32 +377,37 @@ const config: {
       },
       addressmodalok: {
         display: {
-          padding: [[10, ''], [30, ''], [10, ''], [30, '']],
+          padding: [
+            [10, ""],
+            [30, ""],
+            [10, ""],
+            [30, ""],
+          ],
         },
         border: {
           borderColor: "rgba(205, 205, 205, 1)",
           borderPosition: {
             border: true,
           },
-          borderWidth: [1, ''],
+          borderWidth: [1, ""],
           borderStyle: "solid",
-          radiusTopLeft: [6, ''],
-          radiusTopRight: [6, ''],
-          radiusBottomLeft: [6, ''],
-          radiusBottomRight: [6, ''],
+          radiusTopLeft: [6, ""],
+          radiusTopRight: [6, ""],
+          radiusBottomLeft: [6, ""],
+          radiusBottomRight: [6, ""],
         },
         backgroundCommon: {
           backgroundColor: "rgba(226, 226, 226, 1)",
         },
         boxShadow: [
           {
-            shiftDown: [2, ''],
+            shiftDown: [2, ""],
             color: "rgba(0, 0, 0, 0.15 )",
-            blur: [4, ''],
+            blur: [4, ""],
           },
         ],
       },
-      addressmodify1: {}
+      addressmodify1: {},
     },
     styleDescription: [
       {
@@ -457,7 +491,7 @@ const config: {
                   {
                     title: "确定按钮",
                     value: "successok",
-                  }
+                  },
                 ],
               },
               {
@@ -483,12 +517,32 @@ const config: {
                     value: "addressmodalformbox",
                   },
                   {
+                    title: "内容",
+                    value: "addressmodalarticle",
+                  },
+                  {
                     title: "头部",
                     value: "addressmodalheader",
                   },
                   {
-                    title: "内容",
-                    value: "addressmodalarticle",
+                    title: "表单行",
+                    value: "addressmodalrow",
+                  },
+                  {
+                    title: "表单标签",
+                    value: "addressmodallabel",
+                  },
+                  {
+                    title: "获取验证码按钮",
+                    value: "addresscheckphone",
+                  },
+                  {
+                    title: "获取验证码按钮(禁用状态)",
+                    value: "addresscheckphonedisable",
+                  },
+                  {
+                    title: "输入框",
+                    value: "addressmodalinput",
                   },
                   {
                     title: "关闭按钮",
@@ -497,7 +551,7 @@ const config: {
                   {
                     title: "确定按钮",
                     value: "addressmodalok",
-                  }
+                  },
                 ],
               },
               {
@@ -505,7 +559,7 @@ const config: {
                 value: "addressmodify1",
               },
             ],
-          }
+          },
         ],
       },
     ],

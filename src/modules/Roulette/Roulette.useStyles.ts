@@ -51,14 +51,18 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_addressmodal_content`]: (styleCompiler(style.addressmodalcontent).style || {}),
           [`& .${id}_addressmodal_modules`]: (styleCompiler(style.addressmodalcontent).style || {}),
           [`& .${id}_addressmodal_formbox`]: (styleCompiler(style.addressmodalformbox).style || {}),
-          [`& .${id}_addressmodal_header`]: (styleCompiler(style.addressmodalheader).style || {}),
+          [`& h3.${id}_addressmodal_header`]: (styleCompiler(style.addressmodalheader).style || {}),
           [`& .${id}_addressmodal_article`]: (styleCompiler(style.addressmodalarticle).style || {}),
+          [`& .${id}_addressmodal_row`]: (styleCompiler(style.addressmodalrow).style || {}),
+          [`& .${id}_addressmodal_label`]: (styleCompiler(style.addressmodallabel).style || {}),
+          [`& .${id}_addressmodal_input`]: (styleCompiler(style.addressmodalinput).style || {}),
+          '& .address__check__phone': (styleCompiler(style.addresscheckphone).style || {}),
+          '& .address__check__phone__disable': (styleCompiler(style.addresscheckphonedisable).style || {}),
           [`& .${id}_addressmodal_close`]: (styleCompiler(style.addressmodalclose).style || {}),
           [`& .${id}_addressmodal_modify`]: (styleCompiler(style.addressmodify1).style || {}),
-          [`& .${id}_addressmodal_submit`]: (styleCompiler(style.addressmodalok).style || {}),
+          [`& .${id}_addressmodal_footer button.${id}_addressmodal_submit`]: (styleCompiler(style.addressmodalok).style || {}),
         }
       }
 });
 
 export default useStyles;
-
