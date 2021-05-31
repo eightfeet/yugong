@@ -14,6 +14,7 @@ const Beforeoutput: React.FC<Props> = () => {
   const { getPageData } = useDispatch<Dispatch>().pageData;
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const setCurrentEditorStylePath = useDispatch<Dispatch>().controller.setCurrentEditorStylePath;
 
   // 缓存
   const [appDataLocalStoreData] = useLocalStorage("appData", null);
@@ -22,7 +23,12 @@ const Beforeoutput: React.FC<Props> = () => {
   const [isPagedataReady, setIsPagedataReady] = useState(false);
 
   // 创建全站事件处理器
-  const sendMessage = usePostMessage(() => {});
+  const sendMessage = usePostMessage((data) => {
+    const { tag, value } = data;
+    if (tag === "setCurrentEditorStylePath") {
+      setCurrentEditorStylePath(value);
+    }
+  });
 
   // 数据初始化，获取页面数据
   useMemo(() => {

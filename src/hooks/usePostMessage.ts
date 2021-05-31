@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 interface Result {
-    tag: 'id' | 'updatePage' | 'updateAppData' | 'setIsEditing' | 'updateActivationItem' | 'updateRunningTimes' | 'removeActivationItem' | 'playEventEmit';
+    tag: 'id' | 'updatePage' | 'updateAppData' | 'setIsEditing' | 'updateActivationItem' | 'updateRunningTimes' | 'removeActivationItem' | 'playEventEmit' | 'setCurrentEditorStylePath';
     value: any;
 }
 

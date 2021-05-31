@@ -261,9 +261,6 @@ const config: {
                     },
                 ],
             },
-            successokdisabled: {},
-            successcancel: {},
-            successcanceldisabled: {},
             successmodify: {},
             // 地址弹窗
             addressmodalcontainer: {},

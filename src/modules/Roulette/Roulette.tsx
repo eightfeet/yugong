@@ -12,6 +12,8 @@ import classNames from "classnames";
 import Backgrounp from "./Backgroup";
 import config from "./Roulette.config";
 import useLifeCycle from "~/hooks/useLifeCycle";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 var start1 = function () {
   return new Promise(function (resolve) {
@@ -54,6 +56,8 @@ export interface RouletteProps extends AppDataElementsTypes {
 
 const Roulette: Modules<RouletteProps> = (props) => {
   const { moduleId, style } = props;
+  const currentEditorStylePath = useSelector((state:RootState) => state.controller.currentEditorStylePath);
+
   const MId = `gametarget${moduleId}`;
   const userClass = useStyles(MId)(style);
   const [game, nodes] = useGame({
@@ -108,6 +112,12 @@ const Roulette: Modules<RouletteProps> = (props) => {
     game?.core.lottery();
   }, [game]);
 
+  useEffect(() => {
+    if (game) {
+      // game.core.showSuccessModal(prizes1[0])
+    }
+  }, [game])
+
   useLifeCycle(moduleId, { mount: "初始化", unmount: "卸载" }, { lottery });
   const { api } = props;
   // API请求 注意依赖关系
@@ -118,6 +128,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
 
   return (
     <Wrapper {...props}>
+      {currentEditorStylePath?.map(item => `${item.value}/`)}
       <div
         className={classNames(s.root, s.bag, userClass.wrap)}
         id={`game${props.moduleId}`}

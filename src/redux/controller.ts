@@ -5,7 +5,8 @@ const defaultData: {
     stateTag?: boolean;
     isEditing?: boolean;
     editingId?: string;
-    bestFont?: number
+    bestFont?: number;
+    currentEditorStylePath?: any[];
 } = {
     stateTag: false,
     isEditing: false,
@@ -26,6 +27,9 @@ export const controller = createModel<RootModel>()({
         },
         setBestFont(state, payload: number) {
             return { ...state, bestFont: payload };
+        },
+        setCurrentEditorStylePath(state, payload: any[]) {
+            return { ...state, currentEditorStylePath: payload };
         },
         initController(){
             return defaultData;
