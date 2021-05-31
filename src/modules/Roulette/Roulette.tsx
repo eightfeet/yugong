@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import requester from "~/core/fetch";
 import EventEmitter from "~/core/EventEmitter";
 import { AppDataElementsTypes } from "~/types/appData";
@@ -14,6 +14,8 @@ import config from "./Roulette.config";
 import useLifeCycle from "~/hooks/useLifeCycle";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import { debounce } from "lodash";
+
 
 var start1 = function () {
   return new Promise(function (resolve) {
@@ -112,11 +114,34 @@ const Roulette: Modules<RouletteProps> = (props) => {
     game?.core.lottery();
   }, [game]);
 
+  /**
+     * 高频编辑防抖处理
+     */
+   const onChangeDebounce = useMemo(
+    () => debounce(() => {
+      if (game && currentEditorStylePath?.length) {
+        const path = currentEditorStylePath?.map(item => item.value);
+        if (path.includes('successcontainer')) {
+          game.core.showSuccessModal(prizes1[0])
+        }
+        if (path.includes('addressmodalcontainer')) {
+          game.core.showAddressModal()
+        }
+      }
+    }, 1000),
+    [currentEditorStylePath, game]
+);
+
+  const editorShow = useCallback(
+    () => {
+      onChangeDebounce()
+    },
+    [onChangeDebounce],
+  )
+
   useEffect(() => {
-    if (game) {
-      // game.core.showSuccessModal(prizes1[0])
-    }
-  }, [game])
+    editorShow();
+  }, [editorShow]);
 
   useLifeCycle(moduleId, { mount: "初始化", unmount: "卸载" }, { lottery });
   const { api } = props;
@@ -128,7 +153,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
 
   return (
     <Wrapper {...props}>
-      {currentEditorStylePath?.map(item => `${item.value}/`)}
       <div
         className={classNames(s.root, s.bag, userClass.wrap)}
         id={`game${props.moduleId}`}
