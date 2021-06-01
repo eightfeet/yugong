@@ -44,6 +44,24 @@ const useStyles = (id: string) => createUseStyles<string, any>({
         }
       },
 
+      failedModal: (style) => {
+        return {
+          /**中奖弹窗 */
+          // failedmodal_content_wrap
+          [`& .${id}_failedmodal_overlay`]: (styleCompiler(style.failedoverlay).style || {}),
+          [`& .${id}_failedmodal_content`]: (styleCompiler(style.failedcontainer).style || {}),
+          [`& .${id}_failedmodal_modules`]: (styleCompiler(style.failedcontent).style || {}),
+          [`& .${id}_failedmodal_header`]: (styleCompiler(style.failedheader).style || {}),
+          [`& .${id}_failedmodal_article`]: (styleCompiler(style.failedarticle).style || {}),
+          [`& .${id}_failedmodal_prizename`]: (styleCompiler(style.failedmodalprizename).style || {}),
+          [`& .${id}_failedmodal_prizeimg`]: (styleCompiler(style.failedmodalprizeimg).style || {}),
+          [`& .${id}_failedmodal_memo`]: (styleCompiler(style.failedmodalmemo).style || {}),
+          [`& .${id}_failedmodal_close`]: (styleCompiler(style.failedclose).style || {}),
+          [`& .${id}_failedmodal_modify`]: (styleCompiler(style.failedmodify1).style || {}),
+          [`& .${id}_failedmodal_submit`]: (styleCompiler(style.failedok).style || {}),
+        }
+      },
+
       addressModal: (style) => {
         return {
           /**中奖弹窗 */

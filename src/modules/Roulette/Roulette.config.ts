@@ -172,11 +172,27 @@ const config: {
                         {
                             gradient: [
                                 {
-                                    color: 'rgba(255, 87, 34, 1)',
+                                    color: 'rgba(63, 81, 181, 0.53)',
+                                    transition: 51,
+                                },
+                                {
+                                    color: 'rgba(174, 93, 206, 0.73)',
+                                    transition: 54,
+                                },
+                            ],
+                            gradientDirections: '45deg',
+                            repeat: 'repeat',
+                            sizeX: [4, ''],
+                            sizeY: [4, ''],
+                        },
+                        {
+                            gradient: [
+                                {
+                                    color: 'rgba(139, 104, 206, 1)',
                                     transition: 1,
                                 },
                                 {
-                                    color: 'rgba(244, 67, 54, 1)',
+                                    color: 'rgba(174, 93, 206, 1)',
                                     transition: 81,
                                 },
                             ],
@@ -184,6 +200,14 @@ const config: {
                         },
                     ],
                 },
+                boxShadow: [],
+                textShadow: [
+                    {
+                        color: 'rgba(74, 25, 161, 1 )',
+                        shiftRight: [null, ""],
+                        shiftDown: [3, ""],
+                    },
+                ],
             },
             successarticle: {},
             successmodalprizename: {
@@ -262,6 +286,154 @@ const config: {
                 ],
             },
             successmodify: {},
+            // 失败弹窗
+
+            failedoverlay: {},
+            failedcontainer: {},
+            failedclose: {
+                display: {
+                    width: [40, ''],
+                    height: [40, ''],
+                },
+                backgroundGroup: {
+                    backgroundList: [
+                        {
+                            imageUrl: cancel,
+                            sizeY: [70, '%'],
+                            sizeX: [70, '%'],
+                            positionX: [50, '%'],
+                            positionY: [50, '%'],
+                            repeat: 'no-repeat',
+                        },
+                    ],
+                },
+            },
+            failedcontent: {
+                display: {
+                    width: [280, ''],
+                    padding: [
+                        [null, ''],
+                        [null, ''],
+                        [20, ''],
+                        [null, ''],
+                    ],
+                },
+                border: {
+                    radiusTopLeft: [10, ''],
+                    radiusTopRight: [10, ''],
+                    radiusBottomLeft: [10, ''],
+                    radiusBottomRight: [10, ''],
+                },
+            },
+            failedheader: {
+                border: {
+                    radiusTopLeft: [10, ''],
+                    radiusTopRight: [10, ''],
+                },
+                display: {
+                    height: [40, ''],
+                },
+                font: {
+                    fontWeight: 'bold',
+                    lineHeight: [40, ''],
+                    align: 'center',
+                    color: 'rgba(255, 255, 255, 1)',
+                },
+                backgroundGroup: {
+                    backgroundList: [
+                        {
+                            gradient: [
+                                {
+                                    color: 'rgba(170, 170, 170, 1)',
+                                    transition: 1,
+                                },
+                                {
+                                    color: 'rgba(187, 187, 187, 1)',
+                                    transition: 81,
+                                },
+                            ],
+                            gradientDirections: 'top',
+                        },
+                    ],
+                },
+            },
+            failedarticle: {},
+            failedmodalprizename: {
+                font: {
+                    fontSize: [26, ''],
+                    align: 'center',
+                    color: 'rgba(33, 150, 243, 1)',
+                    fontWeight: 'bold',
+                    lineHeight: [45, ''],
+                },
+                display: {
+                    margin: [
+                        [20, ''],
+                        [null, ''],
+                        [null, ''],
+                        [null, ''],
+                    ],
+                },
+            },
+            failedmodalawardmsg: {
+                font: {
+                    fontSize: [20, ''],
+                    align: 'center',
+                },
+            },
+            failedmodalprizeimg: {
+                display: {
+                    width: [100, ''],
+                    height: [100, ''],
+                },
+            },
+            failedmodalmemo: {
+                display: {
+                    margin: [
+                        [null, ''],
+                        [10, ''],
+                        [10, ''],
+                        [10, ''],
+                    ],
+                },
+                font: {
+                    fontSize: [13, ''],
+                    align: 'center',
+                },
+            },
+            failedok: {
+                display: {
+                    padding: [
+                        [10, ''],
+                        [30, ''],
+                        [10, ''],
+                        [30, ''],
+                    ],
+                },
+                border: {
+                    borderColor: 'rgba(205, 205, 205, 1)',
+                    borderPosition: {
+                        border: true,
+                    },
+                    borderWidth: [1, ''],
+                    borderStyle: 'solid',
+                    radiusTopLeft: [6, ''],
+                    radiusTopRight: [6, ''],
+                    radiusBottomLeft: [6, ''],
+                    radiusBottomRight: [6, ''],
+                },
+                backgroundCommon: {
+                    backgroundColor: 'rgba(226, 226, 226, 1)',
+                },
+                boxShadow: [
+                    {
+                        shiftDown: [2, ''],
+                        color: 'rgba(0, 0, 0, 0.15 )',
+                        blur: [4, ''],
+                    },
+                ],
+            },
+            failedmodify: {},
             // 地址弹窗
             addressmodalcontainer: {},
             addressmodaloverlay: {},
@@ -326,11 +498,27 @@ const config: {
                         {
                             gradient: [
                                 {
-                                    color: 'rgba(255, 87, 34, 1)',
+                                    color: 'rgba(63, 81, 181, 0.53)',
+                                    transition: 51,
+                                },
+                                {
+                                    color: 'rgba(174, 93, 206, 0.73)',
+                                    transition: 54,
+                                },
+                            ],
+                            gradientDirections: '45deg',
+                            repeat: 'repeat',
+                            sizeX: [4, ''],
+                            sizeY: [4, ''],
+                        },
+                        {
+                            gradient: [
+                                {
+                                    color: 'rgba(139, 104, 206, 1)',
                                     transition: 1,
                                 },
                                 {
-                                    color: 'rgba(244, 67, 54, 1)',
+                                    color: 'rgba(174, 93, 206, 1)',
                                     transition: 81,
                                 },
                             ],
@@ -338,6 +526,14 @@ const config: {
                         },
                     ],
                 },
+                boxShadow: [],
+                textShadow: [
+                    {
+                        color: 'rgba(74, 25, 161, 1 )',
+                        shiftRight: [null, ""],
+                        shiftDown: [3, ""],
+                    },
+                ],
             },
             addressmodalarticle: {},
             addressmodalsubtitle: {},
@@ -515,6 +711,58 @@ const config: {
                             {
                                 title: '修饰层',
                                 value: 'successmodify1',
+                            },
+                        ],
+                    },
+                    {
+                        title: '未中奖弹窗',
+                        value: 'failedcontainer',
+                        children: [
+                            {
+                                title: '遮罩层',
+                                value: 'failedoverlay',
+                            },
+                            {
+                                title: '弹窗',
+                                value: 'failedcontent',
+                                children: [
+                                    {
+                                        title: '头部',
+                                        value: 'failedheader',
+                                    },
+                                    {
+                                        title: '内容',
+                                        value: 'failedarticle',
+                                    },
+                                    {
+                                        title: '奖品名称',
+                                        value: 'failedmodalprizename',
+                                    },
+                                    {
+                                        title: '获奖消息',
+                                        value: 'failedmodalawardmsg',
+                                    },
+                                    {
+                                        title: '奖品图片',
+                                        value: 'failedmodalprizeimg',
+                                    },
+                                    {
+                                        title: '奖品备注',
+                                        value: 'failedmodalmemo',
+                                    },
+                                    {
+                                        title: '关闭按钮',
+                                        value: 'failedclose',
+                                    },
+                                    {
+                                        title: '确定按钮',
+                                        value: 'failedok',
+                                    },
+                                ],
+                            },
+                            {
+                                title: '修饰层',
+                                value: 'failedmodify1',
                             },
                         ],
                     },

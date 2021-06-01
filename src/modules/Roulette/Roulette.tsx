@@ -83,23 +83,14 @@ const Roulette: Modules<RouletteProps> = (props) => {
                     },
                 ],
             },
-            LoadingTheme: {
-                overlay: {
-                    backgroundColor: 'rgba(0,0,0,0)',
-                },
-                content: {
-                    backgroundColor: 'rgba(0,0,0,0)',
-                },
-                vertices: {
-                    height: '0.5em',
-                    width: '0.5em',
-                    borderRadius: '1em',
-                    backgroundColor: 'green',
-                    animationDuration: 'green', // 动画周期
-                    elements: ['red', 'green', 'yellow', 'orange', 'blue'],
-                    size: '20px',
-                },
-            },
+            FailedModalTheme: {
+                close: {},
+                modify: [
+                    {
+                        color: 'transparent',
+                    },
+                ],
+            }
         },
         start: start1,
         saveAddress: saveAddress,
@@ -114,6 +105,12 @@ const Roulette: Modules<RouletteProps> = (props) => {
             const rootDom = document.getElementById(`${MId}_successmodal`);
             if (rootDom) {
                 rootDom.className = userClass.successModal;
+            }
+        },
+        onShowFailed: () => {
+            const rootDom = document.getElementById(`${MId}_failedmodal`);
+            if (rootDom) {
+                rootDom.className = userClass.failedModal;
             }
         },
         onShowAddress: () => {
@@ -140,6 +137,9 @@ const Roulette: Modules<RouletteProps> = (props) => {
                     );
                     if (path.includes('successcontainer')) {
                         game.core.showSuccessModal(prizes1[0]);
+                    }
+                    if (path.includes('failedcontainer')) {
+                        game.core.showFailedModal(prizes1[1]);
                     }
                     if (path.includes('addressmodalcontainer')) {
                         game.core.showAddressModal();

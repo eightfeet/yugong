@@ -7,21 +7,21 @@
         "prizeName": "一等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得一等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722231845233.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     },
     {
         "prizeId": 2,
-        "prizeType": 1,
-        "receiveType": 2,
-        "prizeAlias": "二等奖",
-        "prizeName": "二等奖",
+        "prizeType": 0,
+        "receiveType": 1,
+        "prizeAlias": "谢谢参与",
+        "prizeName": "很遗憾",
         "status": 1,
-        "awardMsg": "亲！恭喜您获得二等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232003322.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "awardMsg": "对不起您没有中奖。",
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601160251825.jpg",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163509653.png",
+        "memo": "下次继续努力吧！"
     },
     {
         "prizeId": 3,
@@ -31,9 +31,9 @@
         "prizeName": "三等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得三等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232044621.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     },
     {
         "prizeId": 4,
@@ -43,9 +43,9 @@
         "prizeName": "四等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得四等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232124413.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     },
     {
         "prizeId": 5,
@@ -55,9 +55,9 @@
         "prizeName": "五等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得五等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232203346.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     },
     {
         "prizeId": 6,
@@ -67,9 +67,9 @@
         "prizeName": "六等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得六等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232236169.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     },
     {
         "prizeId": 1,
@@ -79,8 +79,8 @@
         "prizeName": "一等奖",
         "status": 1,
         "awardMsg": "亲！恭喜您获得一等奖！",
-        "prizeImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722231845233.png",
-        "gameImg": "http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190722232815048.png",
-        "memo": "该奖品由汤臣倍健药业有限公司统一提供！"
+        "prizeImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "gameImg": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png",
+        "memo": "该奖品由xxxx公司统一提供！"
     }
 ]
