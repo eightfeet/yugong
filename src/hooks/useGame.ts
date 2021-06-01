@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {Game} from '@byhealth/lottery/dist/games/Roulette';
+import loadScript from "~/core/loadScript";
 const routter = require('@byhealth/lottery/dist/lib/roulette');
 
 interface Params {
@@ -9,18 +10,26 @@ interface Params {
 const useGame = (params: Params): [Game, any] => {
     const targetNode = useRef<HTMLElement>();
     const game = useRef<any>();
+
+    const createGame = useCallback(
+        async () => loadScript("https://upload-yyj.by-health.com/frond-cdn/region/regions.js").then(() => {
+            game.current = new routter.Game(params);
+            (window as any).game = game.current;
+        }),
+        [params],
+    )
+
     useEffect(() => {
         if (targetNode.current) {
-            game.current = new routter.Game(params);
-
-            (window as any).game = game.current;
+            
+            createGame();
         }
         return () => {
             if (game.current) {
                 game.current?.distory()
             }
         }
-    }, [params, targetNode])
+    }, [createGame, params, targetNode])
     return [game.current, targetNode]
 }
 

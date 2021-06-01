@@ -48,6 +48,8 @@ var receiverInfo = {
     idCard: '430522201008124611',
     receiverPhone: '13622841234',
     address: 'address',
+    regionName: ['广东省', '广州市', '天河区'],
+    region: ['15', '1513', '151315'],
 };
 
 export interface RouletteProps extends AppDataElementsTypes {
@@ -119,13 +121,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             if (rootDom) {
                 rootDom.className = userClass.addressModal;
             }
-        },
-        loading: {
-            size: 20,
-            length: 5,
-            // verticesColor: ['red', 'green', 'blue', 'yellow', 'orange'],
-            cycleTime: 1,
-        },
+        }
     });
 
     const lottery = useCallback(() => {
