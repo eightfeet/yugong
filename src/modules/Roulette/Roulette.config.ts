@@ -19,7 +19,92 @@ const config: {
         {
             name: 'lottery',
             description: '抽奖',
+            presettable: false,
             arguments: [],
+        },
+        {
+            name: 'useConfig',
+            description: '设置抽奖用户',
+            arguments: [
+                {
+                    type: 'string',
+                    name: '手机',
+                    fieldName: 'phone',
+                    describe: '选填用户手机号码',
+                    data: '',
+                },
+                {
+                    type: 'number',
+                    name: '填写身份证',
+                    fieldName: 'cardIdRequest',
+                    describe:
+                        ' 1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证',
+                    data: '1',
+                },
+            ],
+        },
+        {
+            name: 'setDefaultReceiveInfo',
+            description: '设置收货人信息',
+            arguments: [
+                {
+                    type: 'string',
+                    name: '电话',
+                    fieldName: 'receiverPhone',
+                    describe: '收货人电话号码',
+                    data: '',
+                },
+                {
+                    type: 'string',
+                    name: '省市区名称',
+                    fieldName: 'regionName',
+                    describe: '输入省市区名用,隔开: xx省,xx市,xx区/县',
+                    data: '',
+                },
+                {
+                    type: 'string',
+                    name: '省市区id',
+                    fieldName: 'region',
+                    describe: '输入省市区id用,隔开: 15,1513,151315',
+                    data: '',
+                },
+                {
+                    type: 'string',
+                    name: '详细地址',
+                    fieldName: 'address',
+                    describe: '请输入详细地址',
+                    data: '',
+                },
+                {
+                    type: 'string',
+                    name: '身份证号',
+                    fieldName: 'idCard',
+                    describe: '获奖用户身份证号码',
+                    data: '',
+                },
+            ],
+        },
+        {
+            name: 'setSuccessModal',
+            description: '设置中奖弹窗',
+            arguments: [
+                {
+                    type: 'string',
+                    name: '标题',
+                    fieldName: 'title',
+                    describe: '中奖弹窗标题',
+                    data: '',
+                },
+                {
+                    type: 'string',
+                    name: '动画',
+                    fieldName: 'animation',
+                    describe: `中奖弹窗动画
+                    flipInY | flipInX | fadeInUp | fadeInDown | fadeInLeft 
+                    | fadeInRight | zoomIn | zoomInUp | zoomInDown | zoomInLeft | zoomInRight`,
+                    data: 'flipInY',
+                },
+            ],
         },
     ],
 
@@ -35,8 +120,27 @@ const config: {
             name: 'unmount',
             description: '卸载',
         },
+        {
+            name: 'onCancel',
+            description: '放弃中奖结果/关闭弹窗',
+        },
+        {
+            name: 'onEnsure',
+            description: '确认中奖结果',
+        },
+        {
+            name: 'onShowSuccess',
+            description: '显示中奖',
+        },
+        {
+            name: 'onShowFailed',
+            description: '显示未中奖',
+        },
+        {
+            name: 'onShowAddress',
+            description: '显示收货地址',
+        },
     ],
-
     /**
      * 发布默认porps
      */

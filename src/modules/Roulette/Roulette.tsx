@@ -1,13 +1,18 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import requester from '~/core/fetch';
 import EventEmitter from '~/core/EventEmitter';
-import { AppDataElementsTypes } from '~/types/appData';
+import {
+    AnyObjectType,
+    AppDataElementsTypes,
+    ArgumentsNumber,
+    ArgumentsString,
+} from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import useGame from '~/hooks/useGame';
 import useStyles from './Roulette.useStyles';
 import s from './Roulette.module.less';
-import prizes1 from './mockData.json';
+import * as mock from './mockData';
 import classNames from 'classnames';
 import Backgrounp from './Backgroup';
 import config from './Roulette.config';
@@ -15,42 +20,8 @@ import useLifeCycle from '~/hooks/useLifeCycle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
 import { debounce } from 'lodash';
-
-var start1 = function () {
-    return new Promise(function (resolve) {
-        window.setTimeout(function () {
-            resolve(prizes1[3]);
-        }, 1000);
-    });
-};
-
-var saveAddress = function (data: any) {
-    return new Promise<void>(function (resolve) {
-        window.setTimeout(function () {
-            console.log('data', data);
-            console.log('saveAddress');
-            resolve();
-        }, 3000);
-    }).catch((err) => {
-        console.log('处理', err);
-    });
-};
-
-var checkVerificationCode = function () {
-    return new Promise<void>(function (resolve) {
-        window.setTimeout(function () {
-            resolve();
-        }, 1000);
-    });
-};
-
-var receiverInfo = {
-    idCard: '430522201008124611',
-    receiverPhone: '13622841234',
-    address: 'address',
-    regionName: ['广东省', '广州市', '天河区'],
-    region: ['15', '1513', '151315'],
-};
+import { setClass } from './helper';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 
 export interface RouletteProps extends AppDataElementsTypes {
     id: string;
@@ -58,67 +29,132 @@ export interface RouletteProps extends AppDataElementsTypes {
 }
 
 const Roulette: Modules<RouletteProps> = (props) => {
+    const [prizes] = useState(mock.prizes);
+
     const { moduleId, style } = props;
-    const currentEditorStylePath = useSelector(
-        (state: RootState) => state.controller.currentEditorStylePath
+    const { currentEditorStylePath } = useSelector(
+        (state: RootState) => state.controller
     );
 
     const MId = `gametarget${moduleId}`;
     const userClass = useStyles(MId)(style);
+
+    /**
+     * 开始抽奖
+     * */
+    const startLottery = useCallback(async () => {
+        return prizes[Math.floor(Math.random() * 6)];
+    }, [prizes]);
+
+    /**
+     * 保存地址
+     * */
+    const saveAddress = useCallback(async (data) => {
+        // 处理收货地址
+        console.log('收货地址参数', data);
+    }, []);
+
+    /**
+     * 检查手机验证码
+     * */
+    const checkVerificationCode = useCallback(async (data) => {
+        // 处理收货地址
+        console.log('验证码参数', data);
+    }, []);
+
+    const [phoneAndRCardId, setPhoneAndRCardId] = useState<AnyObjectType>();
+    /**
+     * 活动设置
+     */
+    const useConfig = useCallback(
+        (phone: ArgumentsString, cardIdRequest: ArgumentsNumber) => {
+            const argOptPhone = getArgumentsItem(phone);
+            const argCardIdRequest = getArgumentsItem(cardIdRequest);
+            setPhoneAndRCardId({
+                phone: argOptPhone,
+                cardIdRequest: argCardIdRequest,
+            });
+        },
+        []
+    );
+
+    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(mock.receiverInfo);
+    /**
+     * 设置收货人信息
+     */
+    const setDefaultReceiveInfo = useCallback(
+        (
+            receiverPhone: ArgumentsString,
+            regionName: ArgumentsString,
+            region: ArgumentsString,
+            address: ArgumentsString,
+            idCard: ArgumentsString
+        ) => {
+            const argReceiverPhone = getArgumentsItem(receiverPhone);
+            let argRegionName: any = getArgumentsItem(regionName);
+            let argRegion: any = getArgumentsItem(region);
+            const argAddress = getArgumentsItem(address);
+            const argIdCard = getArgumentsItem(idCard);
+            argRegionName = argRegionName.replace(/，/g, ',').split(',');
+            argRegion = argRegion.replace(/，/g, ',').split(',');
+            setReceiverInfo({
+                receiverPhone: argReceiverPhone,
+                regionName: argRegionName,
+                address: argAddress,
+                region: argRegion,
+                idCard: argIdCard,
+            });
+        },
+        []
+    );
+
+    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>({})
+    /**
+     * 设置弹窗信息 
+     */
+    const setSuccessModal = useCallback(
+        (title: ArgumentsString, animation: ArgumentsString) => {
+            setSuccessmodalParams({
+                title: getArgumentsItem(title),
+                animation: getArgumentsItem(animation)
+            });
+        },
+        [],
+    )
+
+
+    /**
+     * 创建游戏
+     */
     const [game, nodes] = useGame({
         targetId: MId,
         parentId: `game${props.moduleId}`,
-        playerPhone: '13635219421',
-        successModalTitle: '恭喜您，获得',
+        playerPhone: phoneAndRCardId?.phone,
+        successModalTitle: successmodalParams.title || '恭喜您，获得',
         SuccessModalAnimation: {
-            form: 'flipInY',
+            form: successmodalParams.animation || 'flipInY',
         },
-        cardIdRequest: 3, // 填写收货地址时是否验证身份证: this.cardIdRequest = 1 隐藏身份证，2 验证身份证，3 身份证为空时不验证有填写时验证，4 不验证身份证
-        style: {
-            SuccessModalTheme: {
-                close: {},
-                modify: [
-                    {
-                        color: 'transparent',
-                    },
-                ],
-            },
-            FailedModalTheme: {
-                close: {},
-                modify: [
-                    {
-                        color: 'transparent',
-                    },
-                ],
-            }
-        },
-        start: start1,
-        saveAddress: saveAddress,
-        receiverInfo: receiverInfo,
+        cardIdRequest: phoneAndRCardId?.cardIdRequest, // 填写收货地址时是否验证身份证: this.cardIdRequest = 1 隐藏身份证，2 验证身份证，3 身份证为空时不验证有填写时验证，4 不验证身份证
+        style: mock.initStyle,
+        start: startLottery,
+        saveAddress,
+        receiverInfo,
         checkVerificationCode, // 检查手机验证码
-        prizes: prizes1,
-        onCancel: () => console.log('放弃1'),
-        onEnsure: function (prize: any) {
-            console.log('确定中奖结果1！', prize);
-        },
+        prizes,
+        onCancel: () => dispatchEvent.onCancel(),
+        onEnsure: () => dispatchEvent.onEnsure(),
         onShowSuccess: () => {
-            const rootDom = document.getElementById(`${MId}_successmodal`);
-            if (rootDom) {
-                rootDom.className = userClass.successModal;
-            }
+            setClass(`${MId}_successmodal`, userClass.successModal);
+            dispatchEvent.onShowSuccess();
         },
         onShowFailed: () => {
-            const rootDom = document.getElementById(`${MId}_failedmodal`);
-            if (rootDom) {
-                rootDom.className = userClass.failedModal;
-            }
+            setClass(`${MId}_failedmodal`, userClass.failedModal);
+            dispatchEvent.onShowFailed();
         },
         onShowAddress: () => {
-            const rootDom = document.getElementById(`${MId}_addressmodal`);
-            if (rootDom) {
-                rootDom.className = userClass.addressModal;
-            }
-        }
+            setClass(`${MId}_addressmodal`, userClass.addressModal);
+            dispatchEvent.onShowAddress();
+        },
     });
 
     const lottery = useCallback(() => {
@@ -136,10 +172,10 @@ const Roulette: Modules<RouletteProps> = (props) => {
                         (item) => item.value
                     );
                     if (path.includes('successcontainer')) {
-                        game.core.showSuccessModal(prizes1[0]);
+                        game.core.showSuccessModal(mock.prizes[0]);
                     }
                     if (path.includes('failedcontainer')) {
-                        game.core.showFailedModal(prizes1[1]);
+                        game.core.showFailedModal(mock.prizes[1]);
                     }
                     if (path.includes('addressmodalcontainer')) {
                         game.core.showAddressModal();
@@ -157,7 +193,20 @@ const Roulette: Modules<RouletteProps> = (props) => {
         editorShow();
     }, [editorShow]);
 
-    useLifeCycle(moduleId, { mount: '初始化', unmount: '卸载' }, { lottery });
+    const [dispatchEvent] = useLifeCycle(
+        moduleId,
+        {
+            mount: '初始化',
+            unmount: '卸载',
+            onCancel: '放弃中奖/关闭弹窗',
+            onEnsure: '确认中奖结果',
+            onShowSuccess: '显示中奖',
+            onShowFailed: '显示未中奖',
+            onShowAddress: '显示地址',
+        },
+        { lottery, useConfig, setDefaultReceiveInfo, setSuccessModal }
+    );
+
     const { api } = props;
     // API请求 注意依赖关系
     useEffect(() => {
