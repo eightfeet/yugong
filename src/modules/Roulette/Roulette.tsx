@@ -5,6 +5,7 @@ import {
     AnyObjectType,
     AppDataElementsTypes,
     ArgumentsNumber,
+    ArgumentsRunningTime,
     ArgumentsString,
 } from '~/types/appData';
 import { Modules } from '~/types/modules';
@@ -29,15 +30,27 @@ export interface RouletteProps extends AppDataElementsTypes {
 }
 
 const Roulette: Modules<RouletteProps> = (props) => {
-    const [prizes] = useState(mock.prizes);
-
+    
     const { moduleId, style } = props;
     const { currentEditorStylePath } = useSelector(
         (state: RootState) => state.controller
     );
 
+    const [prizes, setPrizes] = useState(mock.prizes);
+
     const MId = `gametarget${moduleId}`;
     const userClass = useStyles(MId)(style);
+
+    /**
+     * 设置奖品信息
+     */
+    const setRunningPrizes = useCallback(
+        (prizes: ArgumentsRunningTime) => {
+            const orgPrizes = getArgumentsItem(prizes) as any[];
+            setPrizes(orgPrizes)
+        },
+        [],
+    )
 
     /**
      * 开始抽奖
@@ -204,7 +217,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             onShowFailed: '显示未中奖',
             onShowAddress: '显示地址',
         },
-        { lottery, useConfig, setDefaultReceiveInfo, setSuccessModal }
+        { lottery, useConfig, setDefaultReceiveInfo, setSuccessModal, setRunningPrizes }
     );
 
     const { api } = props;
@@ -219,6 +232,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             <div
                 className={classNames(s.root, s.bag, userClass.wrap)}
                 id={`game${props.moduleId}`}
+                style={{visibility: !!prizes?.length ? 'visible' : 'hidden'}}
                 ref={nodes}
             >
                 <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}>

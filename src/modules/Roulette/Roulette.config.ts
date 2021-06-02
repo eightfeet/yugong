@@ -17,6 +17,17 @@ const config: {
      */
     exposeFunctions: [
         {
+            name: 'setRunningPrizes',
+            description: '设置奖品数据',
+            arguments: [{
+                type: 'runningTime',
+                describe: '从全局数据中设置奖品数据,无需转译符号{{}}',
+                name: '奖品数据',
+                fieldName: 'prizes',
+                data: ''
+            }]
+        },
+        {
             name: 'lottery',
             description: '抽奖',
             presettable: false,

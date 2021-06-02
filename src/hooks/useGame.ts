@@ -13,8 +13,9 @@ const useGame = (params: Params): [Game, any] => {
 
     const createGame = useCallback(
         async () => loadScript("https://upload-yyj.by-health.com/frond-cdn/region/regions.js").then(() => {
-            game.current = new routter.Game(params);
-            (window as any).game = game.current;
+            if (!!Array.isArray(params.prizes)) {
+                game.current = new routter.Game(params);
+            }
         }),
         [params],
     )
