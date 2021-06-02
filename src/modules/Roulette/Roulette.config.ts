@@ -204,8 +204,8 @@ const config: {
                 textShadow: [
                     {
                         color: 'rgba(74, 25, 161, 1 )',
-                        shiftRight: [null, ""],
-                        shiftDown: [3, ""],
+                        shiftRight: [null, ''],
+                        shiftDown: [3, ''],
                     },
                 ],
             },
@@ -344,11 +344,11 @@ const config: {
                         {
                             gradient: [
                                 {
-                                    color: 'rgba(170, 170, 170, 1)',
+                                    color: 'rgba(33, 150, 243, 1)',
                                     transition: 1,
                                 },
                                 {
-                                    color: 'rgba(187, 187, 187, 1)',
+                                    color: 'rgba(3, 169, 244, 1)',
                                     transition: 81,
                                 },
                             ],
@@ -530,8 +530,8 @@ const config: {
                 textShadow: [
                     {
                         color: 'rgba(74, 25, 161, 1 )',
-                        shiftRight: [null, ""],
-                        shiftDown: [3, ""],
+                        shiftRight: [null, ''],
+                        shiftDown: [3, ''],
                     },
                 ],
             },
