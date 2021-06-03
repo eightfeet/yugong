@@ -50,7 +50,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             const orgPrizes = getArgumentsItem(prizes) as any[];
             const orgMaps = getArgumentsItem(maps) as AnyObjectType;
             const opratePrizes = cloneDeep(orgPrizes);
-            // 做一次字段映射
+            // 做一次奖品字段映射
             if (Array.isArray(opratePrizes)) {
                 opratePrizes.forEach(operateItem => {
                     for (const key in orgMaps) {
@@ -63,7 +63,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
                         }   
                     }
                 });
-                console.log(opratePrizes);
                 setPrizes(opratePrizes);
             }
         },
