@@ -41,7 +41,7 @@ const config: {
                         memo: 奖品备注;
                         `,
                     name: '参数映射关系',
-                    fieldName: 'prizes',
+                    fieldName: 'maps',
                     data: {
                         prizeId: null, 
                         prizeType: null,

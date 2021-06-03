@@ -5,6 +5,7 @@ import {
     AnyObjectType,
     AppDataElementsTypes,
     ArgumentsNumber,
+    ArgumentsObject,
     ArgumentsRunningTime,
     ArgumentsString,
 } from '~/types/appData';
@@ -20,7 +21,7 @@ import config from './Roulette.config';
 import useLifeCycle from '~/hooks/useLifeCycle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
-import { debounce } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 import { setClass } from './helper';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 
@@ -45,9 +46,26 @@ const Roulette: Modules<RouletteProps> = (props) => {
      * 设置奖品信息
      */
     const setRunningPrizes = useCallback(
-        (prizes: ArgumentsRunningTime) => {
+        (prizes: ArgumentsRunningTime, maps: ArgumentsObject) => {
             const orgPrizes = getArgumentsItem(prizes) as any[];
-            setPrizes(orgPrizes)
+            const orgMaps = getArgumentsItem(maps) as AnyObjectType;
+            const opratePrizes = cloneDeep(orgPrizes);
+            // 做一次字段映射
+            if (Array.isArray(opratePrizes)) {
+                opratePrizes.forEach(operateItem => {
+                    for (const key in orgMaps) {
+                        if (Object.prototype.hasOwnProperty.call(orgMaps, key)) {
+                            // 覆写映射关系
+                            const value = operateItem[orgMaps[key]];
+                            if (value) {
+                                operateItem[key] = value;
+                            }
+                        }   
+                    }
+                });
+                console.log(opratePrizes);
+                setPrizes(opratePrizes);
+            }
         },
         [],
     )
@@ -56,7 +74,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
      * 开始抽奖
      * */
     const startLottery = useCallback(async () => {
-        return prizes[Math.floor(Math.random() * 6)];
+        return prizes[Math.floor(Math.random() * prizes.length - 1)];
     }, [prizes]);
 
     /**
