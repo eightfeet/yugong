@@ -1,4 +1,5 @@
 import { ClusterOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import parse from 'html-react-parser';
 import { Button, Card, Input, Select, Tooltip } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useState } from "react";
@@ -238,7 +239,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                         <span className={s.label}>名称：</span>
                         {item.name || initItem?.name || ""} &nbsp;
                         <Tooltip
-                          title={item.describe || initItem?.describe || ""}
+                          title={parse(item.describe || initItem?.describe || "")}
                         >
                           <InfoCircleOutlined
                             style={{ color: "rgba(0,0,0,.45)" }}

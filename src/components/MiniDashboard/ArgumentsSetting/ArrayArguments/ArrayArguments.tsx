@@ -39,11 +39,15 @@ const SortableItem = SortableElement(
         describe,
     }: SortableItemProps) => {
         return (
-            <Row className={classNames(s.row, 'arrayarguments')} gutter={4} key={index}>
+            <Row
+                className={classNames(s.row, 'arrayarguments')}
+                gutter={4}
+                key={index}
+            >
                 <Col span={22}>
                     <DragHandle />
                     <Input
-                        onChange={e => onChange(e.target.value)}
+                        onChange={(e) => onChange(e.target.value)}
                         prefix={<div className={s.prefix}>{index}</div>}
                         suffix={htmlInput ? <HtmlSuffix /> : null}
                         placeholder={`请输入值${describe || ''}`}
@@ -164,16 +168,16 @@ const ArrayArguments: React.FC<Props> = ({
     );
 
     const onSort = useCallback(
-      ({oldIndex, newIndex}) => {
-        const result: anyObj = cloneDeep(argumentsState || []);
-        result.data = arrayMove(result.data, oldIndex, newIndex);
-        if (onChange instanceof Function) {
-          onChange(result as ArgumentsItem);
-      }
-      setArgumentsState(result as ArgumentsItem);
-      },
-      [argumentsState, onChange],
-    )
+        ({ oldIndex, newIndex }) => {
+            const result: anyObj = cloneDeep(argumentsState || []);
+            result.data = arrayMove(result.data, oldIndex, newIndex);
+            if (onChange instanceof Function) {
+                onChange(result as ArgumentsItem);
+            }
+            setArgumentsState(result as ArgumentsItem);
+        },
+        [argumentsState, onChange]
+    );
 
     const data: any = argumentsState?.data || [];
     return (
@@ -188,7 +192,7 @@ const ArrayArguments: React.FC<Props> = ({
                 </Row>
             ) : null}
             <SortableList
-                onSortEnd = {onSort}
+                onSortEnd={onSort}
                 describe={describe || ''}
                 useDragHandle
                 data={data}

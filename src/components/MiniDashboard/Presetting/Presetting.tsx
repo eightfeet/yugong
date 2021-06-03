@@ -1,5 +1,6 @@
 import { Col, Input, PageHeader, Row, Tooltip } from 'antd';
 import deepEqual from 'deep-equal';
+import parse from 'html-react-parser';
 import { cloneDeep } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -213,7 +214,7 @@ const Presetting: React.FC<Props> = () => {
                                 <Col span={5} className={s.label}>
                                     <Tooltip
                                         placement="topRight"
-                                        title={argItem.describe}
+                                        title={parse(argItem.describe || '')}
                                     >
                                         {argItem.name}
                                     </Tooltip>
