@@ -31,16 +31,22 @@ export interface RouletteProps extends AppDataElementsTypes {
 }
 
 const Roulette: Modules<RouletteProps> = (props) => {
-    
     const { moduleId, style } = props;
     const { currentEditorStylePath } = useSelector(
         (state: RootState) => state.controller
     );
 
     const [prizes, setPrizes] = useState(mock.prizes);
+    const { api } = props;
 
     const MId = `gametarget${moduleId}`;
     const userClass = useStyles(MId)(style);
+
+    // 奖品结果state数据
+    const [winnerPrize, setWinnerPrize] = useState<{
+        runningTimeName?: string;
+        prizeMap?: AnyObjectType; 
+    }>({});
 
     /**
      * 设置奖品信息
@@ -52,29 +58,56 @@ const Roulette: Modules<RouletteProps> = (props) => {
             const opratePrizes = cloneDeep(orgPrizes);
             // 做一次奖品字段映射
             if (Array.isArray(opratePrizes)) {
-                opratePrizes.forEach(operateItem => {
+                opratePrizes.forEach((operateItem) => {
                     for (const key in orgMaps) {
-                        if (Object.prototype.hasOwnProperty.call(orgMaps, key)) {
+                        if (
+                            Object.prototype.hasOwnProperty.call(orgMaps, key)
+                        ) {
                             // 覆写映射关系
                             const value = operateItem[orgMaps[key]];
                             if (value) {
                                 operateItem[key] = value;
                             }
-                        }   
+                        }
                     }
                 });
                 setPrizes(opratePrizes);
             }
         },
-        [],
-    )
+        []
+    );
+
+    /**
+     * 设置中奖奖品信息
+     */
+     const setRunningWinnerPrizes = useCallback(
+        (prize: ArgumentsString, maps: ArgumentsObject) => {
+            const runningTimeName = getArgumentsItem(prize) as string;
+            const prizeMap = getArgumentsItem(maps) as AnyObjectType;
+            setWinnerPrize({
+                runningTimeName,
+                prizeMap
+            })
+        },
+        []
+    );
+
 
     /**
      * 开始抽奖
      * */
     const startLottery = useCallback(async () => {
+        const apiArguments = api?.find(
+            (item) => item.apiId === 'lottery'
+        );
+        // 获取抽奖结果数据， 将结果数据中转到全局数据中
+        if (apiArguments) {
+            const result = await requester(apiArguments || {}, true);
+        }
+        // 数据转换为下游中奖信息
+
         return prizes[Math.floor(Math.random() * prizes.length - 1)];
-    }, [prizes]);
+    }, [api, prizes]);
 
     /**
      * 保存地址
@@ -108,7 +141,9 @@ const Roulette: Modules<RouletteProps> = (props) => {
         []
     );
 
-    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(mock.receiverInfo);
+    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(
+        mock.receiverInfo
+    );
     /**
      * 设置收货人信息
      */
@@ -138,20 +173,21 @@ const Roulette: Modules<RouletteProps> = (props) => {
         []
     );
 
-    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>({})
+    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>(
+        {}
+    );
     /**
-     * 设置弹窗信息 
+     * 设置弹窗信息
      */
     const setSuccessModal = useCallback(
         (title: ArgumentsString, animation: ArgumentsString) => {
             setSuccessmodalParams({
                 title: getArgumentsItem(title),
-                animation: getArgumentsItem(animation)
+                animation: getArgumentsItem(animation),
             });
         },
-        [],
-    )
-
+        []
+    );
 
     /**
      * 创建游戏
@@ -234,14 +270,23 @@ const Roulette: Modules<RouletteProps> = (props) => {
             onShowFailed: '显示未中奖',
             onShowAddress: '显示地址',
         },
-        { lottery, useConfig, setDefaultReceiveInfo, setSuccessModal, setRunningPrizes }
+        {
+            lottery,
+            useConfig,
+            setDefaultReceiveInfo,
+            setSuccessModal,
+            setRunningPrizes,
+            setRunningWinnerPrizes
+        }
     );
 
-    const { api } = props;
+    
     // API请求 注意依赖关系
     useEffect(() => {
-        const apiArguments = api?.find((item) => item.apiId === '');
-        requester(apiArguments || {});
+        if (api?.length) {
+            const apiArguments = api?.find((item) => item.apiId === 'init');
+            requester(apiArguments || {});
+        }
     }, [api]);
 
     return (
@@ -249,7 +294,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             <div
                 className={classNames(s.root, s.bag, userClass.wrap)}
                 id={`game${props.moduleId}`}
-                style={{visibility: !!prizes?.length ? 'visible' : 'hidden'}}
+                style={{ visibility: !!prizes?.length ? 'visible' : 'hidden' }}
                 ref={nodes}
             >
                 <div className={classNames(s.root, s.bgwrap, `${MId}_light`)}>
