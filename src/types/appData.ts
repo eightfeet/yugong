@@ -129,6 +129,7 @@ export interface Api {
   body?: ArgumentsItem[];
   credentials?: RequestInit["credentials"];
   mode?: RequestInit["mode"];
+  dataMap? : ArgumentsItem[];
   successPublic?: ArgumentsItem[];
   errorPublic?: ArgumentsItem[];
 }

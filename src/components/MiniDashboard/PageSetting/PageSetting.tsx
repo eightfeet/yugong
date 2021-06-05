@@ -404,11 +404,12 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
         </Panel>
         <Panel header="初始化Api" key="pagemount">
-          <div className={s.events}>
+          <div className={s.apiwrap}>
             <h4 className={s.apititle}>
               <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
             </h4>
             <ApiConfig
+              sortable
               onRemove={onRemoveApi}
               apiData={pageData.onLoadApi}
               defaultApiData={cloneDeep(pageData.onLoadApi)}

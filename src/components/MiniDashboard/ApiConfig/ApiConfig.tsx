@@ -1,49 +1,12 @@
-import { MinusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Divider,
-  Input,
-  message,
-  Row,
-  Select,
-  Tooltip,
-} from "antd";
+import { message } from "antd";
+import arrayMove from "array-move";
 import cloneDeep from "lodash/cloneDeep";
 import React, { useCallback, useEffect, useState } from "react";
 import { AnyObjectType, Api, ArgumentsItem } from "~/types/appData";
 import { ExposeApi } from "~/types/modules";
 import ArgumentsSetting from "../ArgumentsSetting";
-import s from "./ApoConfig.module.less";
-
-const selectSetting = (onChange: any, value: any) => (
-  <Select
-    value={value}
-    onChange={onChange}
-    style={{ width: "100px" }}
-    placeholder="请选择"
-  >
-    <Select.Option value="mode">mode</Select.Option>
-    <Select.Option value="headers">headers</Select.Option>
-    <Select.Option value="credentials">credentials</Select.Option>
-  </Select>
-);
-
-const methodArray = ["GET", "POST", "PUT", "DELETE"];
-const selectMethod = (onChange: any, value: any) => (
-  <Select
-    value={value}
-    onChange={onChange}
-    style={{ width: "90px" }}
-    placeholder="请选择"
-  >
-    {methodArray.map((item) => (
-      <Select.Option key={item} value={item}>
-        {item}
-      </Select.Option>
-    ))}
-  </Select>
-);
+import s from "./ApiConfig.module.less";
+import ApiList from "./ApiList";
 
 interface Props {
   /**
@@ -62,6 +25,10 @@ interface Props {
    * 移除
    */
   onRemove?: (index: number, data: Api) => void;
+  /**
+   * 是否可排序
+   */
+  sortable?: boolean;
 }
 
 const Apiconfig: React.FC<Props> = ({
@@ -69,6 +36,7 @@ const Apiconfig: React.FC<Props> = ({
   defaultApiData,
   onChange,
   onRemove,
+  sortable,
 }) => {
   /**
    * 操作数据
@@ -102,14 +70,15 @@ const Apiconfig: React.FC<Props> = ({
   /**
    * api参数
    */
-  const [argData, setArgData] = useState<
-    | {
-        index: number;
-        results: ArgumentsItem[];
-        type?: string;
-      }
-    | undefined
-  >();
+  const [argData, setArgData] =
+    useState<
+      | {
+          index: number;
+          results: ArgumentsItem[];
+          type?: string;
+        }
+      | undefined
+    >();
 
   const [headerFlexible, setHeaderFlexible] = useState(false);
 
@@ -159,7 +128,7 @@ const Apiconfig: React.FC<Props> = ({
       let value: ArgumentsItem = {
         type: "string",
         data: "",
-        fieldName: ""
+        fieldName: "",
       };
       switch (e) {
         case "headers":
@@ -255,9 +224,9 @@ const Apiconfig: React.FC<Props> = ({
   );
 
   const onHandleUserArg = useCallback(
-    (index: number, type: "body" | "successPublic" | "errorPublic") => () => {
+    (index: number, type: "body" | "successPublic" | "errorPublic" | "dataMap") => {
       // 获取api的数据；
-      let data: Api["body" | "successPublic" | "errorPublic"] = [];
+      let data: Api["body" | "successPublic" | "errorPublic" | "dataMap"] = [];
       if (operateApi?.length) {
         data = operateApi[index][type];
       }
@@ -269,7 +238,7 @@ const Apiconfig: React.FC<Props> = ({
         useArgData.push({
           type: "string",
           data: "",
-          fieldName: type
+          fieldName: "",
         });
       }
       // 准备当前编辑参数到参数面板
@@ -280,83 +249,29 @@ const Apiconfig: React.FC<Props> = ({
     [operateApi]
   );
 
+  const onSortEnd = useCallback(
+    ({ oldIndex, newIndex }) => {
+      let result: ExposeApi[] = cloneDeep(operateApi || []);
+      result = arrayMove(result, oldIndex, newIndex);
+      updateApi(result);
+  },
+  [operateApi, updateApi]
+  )
+
   return (
     <div className={s.root}>
-      <>
-        {operateApi?.map((element, index) => {
-          const item = {
-            ...(apiData?.length ? apiData[index] : {}),
-            ...element,
-          };
-          return (
-            <div key={item.apiId}>
-              <div className={s.divide}>
-                <div className={s.title}>
-                  {item.name || item.apiId || "接口名称"}
-                </div>
-                {onRemove instanceof Function ? (
-                  <Button
-                    size="small"
-                    icon={<MinusOutlined onClick={() => onRemove(index, element)} />}
-                  />
-                ) : null}
-              </div>
-              <Row className={s.row} gutter={4}>
-                <Col span={24}>
-                  <Input
-                    onChange={onChangeUrl(index)}
-                    addonBefore={selectMethod(
-                      onChangeMethod(index),
-                      item.method
-                    )}
-                    addonAfter={selectSetting(
-                      onChangeSetting(index),
-                      "高级设置"
-                    )}
-                    value={item.url}
-                    placeholder="请输入Url 接口地址"
-                  />
-                </Col>
-              </Row>
-              {item.hideBodyInput ?  null : <Row className={s.row} gutter={4}>
-                <Col span={24}>
-                  <Button
-                    onClick={onHandleUserArg(index, "body")}
-                    style={{ width: "100%" }}
-                  >
-                    入参设置
-                  </Button>
-                </Col>
-              </Row>}
-              <Divider orientation="left" plain>
-                请求结果发布
-              </Divider>
-              <Row gutter={4}>
-                <Col span={12}>
-                  <Tooltip title={<div>将Api请求成功结果发布到全局</div>}>
-                    <Button
-                      onClick={onHandleUserArg(index, "successPublic")}
-                      style={{ width: "100%" }}
-                    >
-                      success
-                    </Button>
-                  </Tooltip>
-                </Col>
-                <Col span={12}>
-                  <Tooltip title={<div>将Api请求失败结果发布到全局</div>}>
-                    <Button
-                      onClick={onHandleUserArg(index, "errorPublic")}
-                      style={{ width: "100%" }}
-                    >
-                      error
-                    </Button>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </div>
-          );
-        })}
-      </>
+      <ApiList
+        sortable={sortable}
+        operateApi={operateApi}
+        apiData={apiData}
+        onRemove={onRemove}
+        onChangeUrl={onChangeUrl}
+        onChangeMethod={onChangeMethod}
+        onChangeSetting={onChangeSetting}
+        onHandleUserArg={onHandleUserArg}
+        useDragHandle
+        onSortEnd={onSortEnd}
+      />
       <ArgumentsSetting
         title={
           !argData?.type
