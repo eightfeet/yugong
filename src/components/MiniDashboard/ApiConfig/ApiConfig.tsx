@@ -224,9 +224,9 @@ const Apiconfig: React.FC<Props> = ({
   );
 
   const onHandleUserArg = useCallback(
-    (index: number, type: "body" | "successPublic" | "errorPublic" | "dataMap") => {
+    (index: number, type: "body" | "successPublic" | "errorPublic" ) => {
       // 获取api的数据；
-      let data: Api["body" | "successPublic" | "errorPublic" | "dataMap"] = [];
+      let data: Api["body" | "successPublic" | "errorPublic" ] = [];
       if (operateApi?.length) {
         data = operateApi[index][type];
       }

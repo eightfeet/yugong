@@ -1,0 +1,62 @@
+{
+    "pageData": {
+      "pageTitle": "页面标题",
+      "style": {},
+      "unit": "px",
+      "toUnit": "px",
+      "onLoadApi": [
+        {
+          "name": "ApiBeforMounted",
+          "apiId": "a053e3fd-d5d1-4838-ae99-03ed30794ff7",
+          "dataMap": [],
+          "url": "https://yyj.by-health.com/scrmv2/commonQueryService/commonQueryWithPower?viewName=yygj_live_invite_personal_rank",
+          "method": "POST",
+          "body": [
+            {
+              "type": "string",
+              "data": "yygj_live_invite_personal_rank",
+              "fieldName": "viewName",
+              "name": "viewName"
+            },
+            {
+              "name": "filterGroup",
+              "fieldName": "filterGroup",
+              "type": "mixed",
+              "data": {
+                "rules": [
+                  {
+                    "field": "dlr.act_id",
+                    "operate": "equal",
+                    "value": 18,
+                    "type": "Int"
+                  },
+                  {
+                    "field": "dlr.act_type",
+                    "operate": "equal",
+                    "value": 6,
+                    "type": "Int"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "params",
+              "fieldName": "params",
+              "type": "mixed",
+              "data": {
+                "member_id": 182468242
+              }
+            }
+          ]
+        }
+      ],
+      "mountEnvents": [],
+      "unmountEnvents": [],
+      "cols": 12,
+      "rowHeight": 20,
+      "space": 0,
+      "windowWidth": 414,
+      "windowHeight": 736
+    },
+    "appData": []
+  }

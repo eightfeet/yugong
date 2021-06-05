@@ -22,7 +22,7 @@ const ApiList = SortableContainer(
       onChangeSetting: (index: number) => any;
       onHandleUserArg: (
         index: number,
-        type: "body" | "successPublic" | "errorPublic" | "dataMap"
+        type: "body" | "successPublic" | "errorPublic" 
       ) => void;
       sortable?: boolean;
     }) => (

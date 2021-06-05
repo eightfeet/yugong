@@ -62,7 +62,7 @@ const ApiItem = SortableElement(
     onChangeSetting: (index: number) => any;
     onHandleUserArg: (
       index: number,
-      type: "body" | "successPublic" | "errorPublic" | "dataMap"
+      type: "body" | "successPublic" | "errorPublic" 
     ) => void;
     sortable?: boolean;
   }) => {
@@ -105,16 +105,6 @@ const ApiItem = SortableElement(
             </Col>
           </Row>
         )}
-        <Row className={s.row} gutter={4}>
-            <Col span={24}>
-              <Button
-                onClick={() => onHandleUserArg(currentIndex, "dataMap")}
-                style={{ width: "100%" }}
-              >
-                将返回数据转换与映射
-              </Button>
-            </Col>
-          </Row>
         <Divider orientation="left" plain>
           结果发布
         </Divider>
