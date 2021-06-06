@@ -108,16 +108,56 @@ export const fetchApi = async (
         if (!source || !map || !target) {
           return;
         }
-        const argMap = getArgumentsItem(map)
+        // 映射关系
+        const argMap = getArgumentsItem(map) as AnyObjectType;
+        // 数据源
         const sourceData = lodash.get(body, source);
-        console.log('sourceData', sourceData, 'argMap', argMap);
-        
+        // 暂时存储结果
         let mapResult;
+        /**
+         * 处理数据映射时仅对两类型数据源做转换，
+         * 1、数组对象型数据 [{foo:bar}]
+         * 2、对象型数据 {foo:bar}
+         * 3、字符串型数据直接转换
+         */
+        // 1、数组对象型数据
+        if (Object.prototype.toString.call(sourceData) === '[object Array]') {
+          mapResult = [];
+          sourceData.forEach((itemArgMap: any) => {
+            const tempData = {};
+            if (Object.prototype.toString.call(itemArgMap) === '[object Object]') {
+              for (const key in argMap) {
+                const targetKey = argMap[key];
+                tempData[targetKey] = itemArgMap[key];
+                mapResult.push(tempData);
+              }
+            }
+          });
+        }
+        // 2、对象型数据
+        if (Object.prototype.toString.call(sourceData) === '[object Object]') {
+          mapResult = {};
+          for (const key in argMap) {
+            if (Object.prototype.hasOwnProperty.call(argMap, key)) {
+              const targetKey = argMap[key];
+              mapResult[targetKey] = sourceData[key]
+            }
+          }
+        }
 
-        lodash.set(body, target, {aaa: 111});
+        // 3、字符串型数据
+        if (Object.prototype.toString.call(sourceData) === '[object String]') {
+          for (const key in argMap) {
+            if (Object.prototype.hasOwnProperty.call(argMap, key)) {
+              mapResult = sourceData;
+            }
+          }
+        }
 
-        console.log('body', body);
-        
+        // 赋值
+        if (mapResult) {
+          lodash.set(body, target, mapResult);
+        }
 
       })
     }
