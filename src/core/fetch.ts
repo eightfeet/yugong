@@ -1,14 +1,15 @@
 import { AnyObjectType, Api } from "~/types/appData";
 import { stringifyUrl } from "query-string";
-import { getArguments } from "./getArgumentsTypeDataFromDataSource";
+import { getArguments, getArgumentsItem } from "./getArgumentsTypeDataFromDataSource";
 import { store } from "~/redux/store";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 import loading from "./loading";
 import isType from "./helper/isType";
 import message from "~/components/Message";
+import lodash from "lodash";
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
-  const { method, body, headers, mode, credentials } = apiArguments;
+  const { method, body, headers, mode, credentials, dataMap } = apiArguments;
   if (!apiArguments.url) {
     console.warn(`api(${apiArguments.name})缺少url`);
     return {};
@@ -51,12 +52,13 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
     bodyData = temp;
   }
   
-  return await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials });
+  return await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials }, dataMap);
 };
 
 export const fetchApi = async (
   url: string,
-  { method, headers={}, body, mode="cors", credentials, ...others }: { [keys: string]: any }
+  { method, headers={}, body, mode="cors", credentials, ...others }: { [keys: string]: any },
+  dataMap: Api['dataMap']
 ) => {
   // 处理Url
   let urlData = url;
@@ -88,13 +90,40 @@ export const fetchApi = async (
   }
 
   const res = await fetch(urlData, {...others, ...args });
+
   /**
    * 状态范围
    */
   if (res.status >= 200 && res.status < 300) {
     const textData = await res.text();
     const resultData = JSON.parse(textData);
-    return resultData;
+
+    const body = {
+      data: resultData,
+    }
+
+    // 映射处理
+    if (dataMap?.length) {
+      dataMap.forEach(({source, target, map}) => {
+        if (!source || !map || !target) {
+          return;
+        }
+        const argMap = getArgumentsItem(map)
+        const sourceData = lodash.get(body, source);
+        console.log('sourceData', sourceData, 'argMap', argMap);
+        
+        let mapResult;
+
+        lodash.set(body, target, {aaa: 111});
+
+        console.log('body', body);
+        
+
+      })
+    }
+
+
+    return body;
   }
   throw res;
 };
