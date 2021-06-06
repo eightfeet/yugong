@@ -131,6 +131,17 @@ export interface Api {
   mode?: RequestInit["mode"];
   successPublic?: ArgumentsItem[];
   errorPublic?: ArgumentsItem[];
+  /**
+   * 映射关系
+   */
+  dataMap?: {
+    /**源 */
+    source?: string;
+    /**目标 */
+    target?: string;
+    /**映射关系 */
+    map?: ArgumentsObject;
+  }[]
 }
 
 /**

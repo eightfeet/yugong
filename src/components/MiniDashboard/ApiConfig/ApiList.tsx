@@ -12,11 +12,13 @@ const ApiList = SortableContainer(
       onChangeMethod,
       onChangeSetting,
       onHandleUserArg,
+      onchangeDatamap,
       sortable,
     }: {
       operateApi: ExposeApi[];
       apiData?: Api[];
       onRemove?: (index: number, data: Api) => void;
+      onchangeDatamap: (index: number, data: Api['dataMap']) => void;
       onChangeUrl: (index: number) => any;
       onChangeMethod: (index: number) => any;
       onChangeSetting: (index: number) => any;
@@ -30,6 +32,7 @@ const ApiList = SortableContainer(
         {operateApi?.map((element, index) => (
           <ApiItem
             key={`${element.apiId}${index}`}
+            onchangeDatamap={(data) => onchangeDatamap(index, data)}
             index={index}
             sortable={sortable}
             currentIndex={index}

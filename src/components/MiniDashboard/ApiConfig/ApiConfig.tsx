@@ -258,6 +258,15 @@ const Apiconfig: React.FC<Props> = ({
   [operateApi, updateApi]
   )
 
+  const onchangeDatamap = useCallback(
+    (index: number, data: Api['dataMap']) => {
+      const result = [...operateApi];
+      result[index].dataMap = data;
+      updateApi(result);
+    },
+    [operateApi, updateApi],
+  )
+
   return (
     <div className={s.root}>
       <ApiList
@@ -269,6 +278,7 @@ const Apiconfig: React.FC<Props> = ({
         onChangeMethod={onChangeMethod}
         onChangeSetting={onChangeSetting}
         onHandleUserArg={onHandleUserArg}
+        onchangeDatamap={onchangeDatamap}
         useDragHandle
         onSortEnd={onSortEnd}
       />

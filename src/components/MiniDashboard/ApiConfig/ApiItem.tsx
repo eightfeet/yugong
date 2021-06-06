@@ -5,6 +5,7 @@ import { SortableHandle, SortableElement } from "react-sortable-hoc";
 import { Api } from "~/types/appData";
 import MoveIcon from "./MoveIcon";
 import s from "./ApiConfig.module.less";
+import ApiDataMap from "./ApiDataMap";
 
 const selectSetting = (onChange: any, value: any) => (
   <Select
@@ -51,6 +52,7 @@ const ApiItem = SortableElement(
     onChangeMethod,
     onChangeSetting,
     onHandleUserArg,
+    onchangeDatamap,
     sortable
   }: {
     currentIndex: number;
@@ -65,6 +67,7 @@ const ApiItem = SortableElement(
       type: "body" | "successPublic" | "errorPublic" 
     ) => void;
     sortable?: boolean;
+    onchangeDatamap: (data: Api['dataMap']) => void;
   }) => {
     const item = {
       ...(apiData?.length ? apiData[currentIndex] : {}),
@@ -98,13 +101,14 @@ const ApiItem = SortableElement(
             <Col span={24}>
               <Button
                 onClick={() => onHandleUserArg(currentIndex, "body")}
-                style={{ width: "100%" }}
+                className={s.w100}
               >
                 入参设置
               </Button>
             </Col>
           </Row>
         )}
+        <ApiDataMap onChange={onchangeDatamap} dataMap={item?.dataMap} />
         <Divider orientation="left" plain>
           结果发布
         </Divider>
@@ -113,7 +117,7 @@ const ApiItem = SortableElement(
             <Tooltip title={<div>将Api请求成功结果发布到全局</div>}>
               <Button
                 onClick={() => onHandleUserArg(currentIndex, "successPublic")}
-                style={{ width: "100%" }}
+                className={s.w100}
               >
                 success
               </Button>
@@ -123,7 +127,7 @@ const ApiItem = SortableElement(
             <Tooltip title={<div>将Api请求失败结果发布到全局</div>}>
               <Button
                 onClick={() => onHandleUserArg(currentIndex, "errorPublic")}
-                style={{ width: "100%" }}
+                className={s.w100}
               >
                 error
               </Button>
