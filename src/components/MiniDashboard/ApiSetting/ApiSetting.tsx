@@ -52,7 +52,7 @@ const ApiSetting: React.FC<Props> = () => {
     return (
         <>
             <ApiConfig
-                apiData={api}
+                apiData={api || []}
                 defaultApiData={getDefaultApiData()}
                 onChange={onChangeApi}
             />

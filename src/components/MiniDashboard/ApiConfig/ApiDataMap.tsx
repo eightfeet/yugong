@@ -99,7 +99,7 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange}) => {
       {maps?.map((item, index) => (
         <Row key={index} gutter={4} className={classNames(s.row, s.map)}>
           <Col span={8}>
-            <Tooltip title={<div>root[data]; root.data</div>}>
+            <Tooltip title={<div>data.[any]</div>}>
               <Input
                 placeholder="输入源数据"
                 onChange={(e) => onChangeSource(index, e)}
@@ -107,7 +107,7 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange}) => {
             </Tooltip>
           </Col>
           <Col span={8}>
-            <Tooltip title={<div>root[target]; root.target</div>}>
+            <Tooltip title={<div>[target] | [target.[any]]</div>}>
               <Input
                 placeholder="输入目标数据"
                 onChange={(e) => onChangeTarget(index, e)}

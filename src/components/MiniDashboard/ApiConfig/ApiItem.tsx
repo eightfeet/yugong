@@ -1,4 +1,4 @@
-import { MinusOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, MinusOutlined } from "@ant-design/icons";
 import { Select, Row, Col, Input, Divider, Tooltip, Button } from "antd";
 import classNames from "classnames";
 import { SortableHandle, SortableElement } from "react-sortable-hoc";
@@ -38,7 +38,7 @@ const selectMethod = (onChange: any, value: any) => (
 
 const DragHandle = SortableHandle(() => (
   <span className={s.icon}>
-      <MoveIcon />
+    <MoveIcon />
   </span>
 ));
 
@@ -53,7 +53,7 @@ const ApiItem = SortableElement(
     onChangeSetting,
     onHandleUserArg,
     onchangeDatamap,
-    sortable
+    sortable,
   }: {
     currentIndex: number;
     element: any;
@@ -64,10 +64,10 @@ const ApiItem = SortableElement(
     onChangeSetting: (index: number) => any;
     onHandleUserArg: (
       index: number,
-      type: "body" | "successPublic" | "errorPublic" 
+      type: "body" | "successPublic" | "errorPublic"
     ) => void;
     sortable?: boolean;
-    onchangeDatamap: (data: Api['dataMap']) => void;
+    onchangeDatamap: (data: Api["dataMap"]) => void;
   }) => {
     const item = {
       ...(apiData?.length ? apiData[currentIndex] : {}),
@@ -77,11 +77,31 @@ const ApiItem = SortableElement(
       <div className={classNames(s.item, "apiitem")} key={item.apiId}>
         {sortable ? <DragHandle /> : null}
         <div className={s.divide}>
-          <div className={s.title}>{item.name || item.apiId || "接口名称"}</div>
+          <div className={s.title}>
+            {item.name || item.apiId || "接口名称"}{" "}
+            <Tooltip
+              title={
+                <div>
+                  返回数据结构(data: 原始数据, target: 目标数据)
+                  <br />
+                  {`{ `}<br />data: any, <br />
+                  [target1]: any, <br />
+                  [target2]: any, <br />
+                  [target...n]: any <br />{`}`}
+                </div>
+              }
+            >
+              <InfoCircleOutlined />
+            </Tooltip>
+          </div>
           {onRemove instanceof Function ? (
             <Button
               size="small"
-              icon={<MinusOutlined onClick={() => onRemove(currentIndex, element)} />}
+              icon={
+                <MinusOutlined
+                  onClick={() => onRemove(currentIndex, element)}
+                />
+              }
             />
           ) : null}
         </div>
@@ -89,8 +109,14 @@ const ApiItem = SortableElement(
           <Col span={24}>
             <Input
               onChange={onChangeUrl(currentIndex)}
-              addonBefore={selectMethod(onChangeMethod(currentIndex), item.method)}
-              addonAfter={selectSetting(onChangeSetting(currentIndex), "高级设置")}
+              addonBefore={selectMethod(
+                onChangeMethod(currentIndex),
+                item.method
+              )}
+              addonAfter={selectSetting(
+                onChangeSetting(currentIndex),
+                "高级设置"
+              )}
               value={item.url}
               placeholder="请输入Url 接口地址"
             />

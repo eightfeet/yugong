@@ -153,12 +153,11 @@ export const fetchApi = async (
             }
           }
         }
-
+        
         // 赋值
         if (mapResult) {
           lodash.set(body, target, mapResult);
         }
-
       })
     }
 
@@ -189,7 +188,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
       setRunningTimes(successPublicResult);
     }
     return result;
-  } catch (error) {
+  } catch (error: any) {
     message.error("请求失败");
     loading.hide();
     // 失败发布
