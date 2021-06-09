@@ -14,6 +14,15 @@ const config: {
 } = {
     /**
      * 注册方法的静态描述与默认参数定义
+     * "prizeId": 1, // 奖品id
+	"prizeType": 1, // 奖品类型 0 未中奖, 1 实物, 2 虚拟
+	"receiveType": 1, // 领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡
+	"prizeAlias": "巴西绿蜂胶", // 奖品别名
+	"prizeName": "蜂胶软胶囊彩盒装（60粒，巴西绿蜂胶）", // 奖品名称
+	"awardMsg": null, // 中奖提示信息
+	"gameImg": "./assets/images/card1.png", // 游戏图片
+	"prizeImg": "./assets/images/prize1.jpg", // 奖品图片
+	"memo": "奖品的备注说明！" // 奖品备注
      */
     exposeFunctions: [
         {
@@ -22,7 +31,28 @@ const config: {
             arguments: [
                 {
                     type: 'runningTime',
-                    describe: '从全局数据中设置奖品数据',
+                    describe: `从全局数据中设置奖品数据<br/>
+                                数据要求：<br />
+                                {<br /> 
+                                    prizeId: [number]奖品id
+                                    <br />
+                                    prizeType: [number]奖品类型 0 未中奖, 1 实物, 2 虚拟
+                                    <br />
+                                    receiveType: [number]领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡
+                                    <br />
+                                    prizeAlias: [string]奖品别名
+                                    <br />
+                                    prizeName: [string]奖品名称
+                                    <br />
+                                    awardMsg: [string]中奖提示信息
+                                    <br />
+                                    gameImg: [string]游戏图片地址
+                                    <br />
+                                    prizeImg: [string]奖品图片地址
+                                    <br />
+                                    memo: [string]奖品备注说明
+                                    <br />
+                                }`,
                     name: '奖品数据',
                     fieldName: 'prizes',
                     data: '',

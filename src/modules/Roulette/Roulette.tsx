@@ -52,27 +52,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
      * 设置奖品信息
      */
     const setRunningPrizes = useCallback(
-        (prizes: ArgumentsRunningTime, maps: ArgumentsObject) => {
-            const orgPrizes = getArgumentsItem(prizes) as any[];
-            const orgMaps = getArgumentsItem(maps) as AnyObjectType;
-            const opratePrizes = cloneDeep(orgPrizes);
+        (prizes: ArgumentsRunningTime) => {
+            const argPrizes = getArgumentsItem(prizes) as any[];
             // 做一次奖品字段映射
-            if (Array.isArray(opratePrizes)) {
-                opratePrizes.forEach((operateItem) => {
-                    for (const key in orgMaps) {
-                        if (
-                            Object.prototype.hasOwnProperty.call(orgMaps, key)
-                        ) {
-                            // 覆写映射关系
-                            const value = operateItem[orgMaps[key]];
-                            if (value) {
-                                operateItem[key] = value;
-                            }
-                        }
-                    }
-                });
-                setPrizes(opratePrizes);
-            }
+            console.log(argPrizes);
+            
         },
         []
     );
