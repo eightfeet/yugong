@@ -26,34 +26,7 @@ const config: {
                     name: '奖品数据',
                     fieldName: 'prizes',
                     data: '',
-                },
-                {
-                    type: 'object',
-                    describe:
-                        `prizeId: 奖品id;<br /> 
-                        prizeType:  奖品类型 0 未中奖, 1 实物, 2 虚拟; <br />
-                        receiveType:领取方式 1：默认 2：填写地址 3：链接类 4：虚拟卡; <br />
-                        prizeAlias: 奖品别名(一等奖...);<br />
-                        prizeName: 奖品名称;<br />
-                        awardMsg: 中奖提示信息;<br />
-                        gameImg: 游戏图片;<br />
-                        prizeImg: 奖品图片;<br />
-                        memo: 奖品备注;
-                        `,
-                    name: '参数映射关系',
-                    fieldName: 'maps',
-                    data: {
-                        prizeId: null, 
-                        prizeType: null,
-                        receiveType: null,
-                        prizeAlias: null, 
-                        prizeName: null, 
-                        awardMsg: null,
-                        gameImg: null, 
-                        prizeImg: null, 
-                        memo: null, 
-                    },
-                },
+                }
             ],
         },
         {
@@ -156,34 +129,7 @@ const config: {
                     name: '奖品数据',
                     fieldName: 'winnerPrizes',
                     data: '',
-                },
-                {
-                    type: 'object',
-                    describe:
-                        `prizeId: 奖品id;<br /> 
-                        prizeType:  奖品类型 0 未中奖, 1 实物, 2 虚拟; <br />
-                        receiveType:领取方式 1：默认 2：填写地址 3：链接类 4：虚拟卡; <br />
-                        prizeAlias: 奖品别名(一等奖...);<br />
-                        prizeName: 奖品名称;<br />
-                        awardMsg: 中奖提示信息;<br />
-                        gameImg: 游戏图片;<br />
-                        prizeImg: 奖品图片;<br />
-                        memo: 奖品备注;
-                        `,
-                    name: '参数映射关系',
-                    fieldName: 'maps',
-                    data: {
-                        prizeId: null, 
-                        prizeType: null,
-                        receiveType: null,
-                        prizeAlias: null, 
-                        prizeName: null, 
-                        awardMsg: null,
-                        gameImg: null, 
-                        prizeImg: null, 
-                        memo: null, 
-                    },
-                },
+                }
             ],
         },
     ],
