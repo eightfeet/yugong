@@ -22,7 +22,6 @@ const useGame = (params: Params): [Game, any] => {
 
     useEffect(() => {
         if (targetNode.current) {
-            
             createGame();
         }
         return () => {

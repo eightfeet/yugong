@@ -157,11 +157,11 @@ const OutputLayout: React.FC<LayoutProps> = ({
         const optAppdata = copyData.filter(
             (fItem) => fItem.layout?.w === 0 || fItem.layout?.h === 0
         );
-        return optAppdata.map((item) => {
+        return optAppdata.map((item, index) => {
             // 事件处理器的bind方法将事件处理器绑定到各个组件
             return (
                 <div
-                    key={item.layout?.i}
+                    key={item.layout?.i || index}
                     className={s.nodisplay}
                 >
                     <Elements {...item} />
@@ -176,7 +176,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
         const optAppdata = copyData.filter(
             (fItem) => fItem.layout?.w !== 0 && fItem.layout?.h !== 0
         );
-        return optAppdata.map((item) => {
+        return optAppdata.map((item, index) => {
             // 确保宽度不超过屏幕栅格
             // if (item.layout && item.layout.h > maxH) {
                 // item.layout.h = maxH;
@@ -193,7 +193,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
                         s.block,
                         isEditing === false ? s.view : s.modify
                     )}
-                    key={item.layout?.i}
+                    key={item.layout?.i || index}
                     data-grid={{
                         ...item.layout,
                         // 编辑模式或预览模式定义为不可编辑
@@ -215,7 +215,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
             rowHeight={rowHeight}
             width={document.body.offsetWidth}
             margin={[space, space]}
-            isDraggable={isEditing}
+            isDraggable={!!isEditing}
         >
             {renderGridItem()}
         </GridLayout>
