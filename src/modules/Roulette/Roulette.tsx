@@ -5,8 +5,6 @@ import {
   AnyObjectType,
   AppDataElementsTypes,
   ArgumentsNumber,
-  ArgumentsObject,
-  ArgumentsRunningTime,
   ArgumentsString,
 } from "~/types/appData";
 import { Modules } from "~/types/modules";
@@ -21,7 +19,7 @@ import config from "./Roulette.config";
 import useLifeCycle from "~/hooks/useLifeCycle";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import { cloneDeep, debounce } from "lodash";
+import { debounce } from "lodash";
 import { setClass } from "./helper";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import message from "~/components/Message";

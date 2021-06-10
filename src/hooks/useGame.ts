@@ -10,19 +10,20 @@ interface Params {
 const useGame = (params: Params): [Game, any] => {
     const targetNode = useRef<HTMLElement>();
     const game = useRef<any>();
-
+    
+    loadScript("https://upload-yyj.by-health.com/frond-cdn/region/regions.js");
     const createGame = useCallback(
-        async () => loadScript("https://upload-yyj.by-health.com/frond-cdn/region/regions.js").then(() => {
+        (params) => {
             if (!!Array.isArray(params.prizes)) {
                 game.current = new routter.Game(params);
             }
-        }),
-        [params],
+        },
+        [],
     )
 
     useEffect(() => {
         if (targetNode.current) {
-            createGame();
+            createGame(params);
         }
         return () => {
             if (game.current) {
@@ -30,6 +31,7 @@ const useGame = (params: Params): [Game, any] => {
             }
         }
     }, [createGame, params, targetNode])
+    console.log('gameParames', (window as any).game = game.current);
     return [game.current, targetNode]
 }
 
