@@ -48,6 +48,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
   );
 
   const [prizes, setPrizes] = useState<PrizeTypes[]>([]);
+  const [prizesIsReady , setPrizesIsReady] = useState<boolean>();
+
   const { api } = props;
 
   const MId = `gametarget${moduleId}`;
@@ -60,23 +62,20 @@ const Roulette: Modules<RouletteProps> = (props) => {
   }>({});
 
   /**
-   * 设置奖品信息
+   * 设置奖品数据
    */
-  const getPrizes = useCallback( async () => {
-    const apiArguments = api?.find((item) => item.apiId === "getPrizes");
-    // 获取抽奖结果数据， 将结果数据中转到全局数据中
-    if (apiArguments) {
-      await requester(apiArguments || {}, true);
-    } else {
-        // 数据转换为下游中奖信息
-        message.warning("没有设置获取奖品数据Api, 当前是模拟奖品数据！");
-        setPrizes(mock.prizes)
-    }
-  }, [api]);
-
-  useEffect(() => {
-    getPrizes();
-  }, [getPrizes]);
+  const setRunningPrizes = useCallback(
+    (prizes) => {
+      const prizesArg = getArgumentsItem(prizes) as any[];
+      if (Array.isArray(prizesArg) && prizesArg.length) {
+        setPrizes(prizesArg);
+        setPrizesIsReady(true);
+      } else {
+        setPrizes(mock.prizes);
+      }
+    },
+    [],
+  )
 
   /**
    * 开始抽奖
@@ -88,7 +87,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
       return requester(apiArguments || {}, true);
     }
     // 数据转换为下游中奖信息
-    message.warning("没有设置抽奖Api, 当前是模拟抽奖！");
+    message.warning("活动奖品未设置或者没有设置抽奖Api, 当前使用模拟抽奖！");
     return prizes[Math.floor(Math.random() * prizes.length - 1)];
   }, [api, prizes]);
 
@@ -96,9 +95,18 @@ const Roulette: Modules<RouletteProps> = (props) => {
    * 保存地址
    * */
   const saveAddress = useCallback(async (data) => {
+    // 这里不需要api设置参数
+    const apiArguments = api?.find((item) => item.apiId === "saveAddress");
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments) {
+      apiArguments.body = [
+          { type: 'object', fieldName: 'addressData', data },
+      ];
+      return requester(apiArguments || {}, true);
+    }
     // 处理收货地址
-    console.log("收货地址参数", data);
-  }, []);
+    message.warning("没有设置保存地址Api, 当前不可保存！");
+  }, [api]);
 
   /**
    * 检查手机验证码
@@ -252,6 +260,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
       onShowAddress: "显示地址",
     },
     {
+      setRunningPrizes,
       lottery,
       useConfig,
       setDefaultReceiveInfo,

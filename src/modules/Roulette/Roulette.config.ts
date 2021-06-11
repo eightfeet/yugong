@@ -44,7 +44,7 @@ const config: {
                                     <br />
                                     memo?: [string]奖品备注说明
                                     <br />
-                                }`,
+                                }[]`,
                     name: '奖品数据',
                     fieldName: 'prizes',
                     data: '',
@@ -998,6 +998,11 @@ const config: {
         {
             apiId: 'lottery',
             name: '抽奖',
+        },
+        {
+            apiId: 'saveAddress',
+            name: '保存收货地址',
+            hideBodyInput: true,
         },
     ],
 };
