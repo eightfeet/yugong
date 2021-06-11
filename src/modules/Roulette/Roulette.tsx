@@ -83,11 +83,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
   const startLottery = useCallback(() => {
     const apiArguments = api?.find((item) => item.apiId === "lottery");
     // 获取抽奖结果数据， 将结果数据中转到全局数据中
-    if (apiArguments) {
+    if (apiArguments && apiArguments.url && apiArguments.method) {
       return requester(apiArguments || {}, true);
     }
     // 数据转换为下游中奖信息
-    message.warning("活动奖品未设置或者没有设置抽奖Api, 当前使用模拟抽奖！");
+    message.warning("活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！");
     return prizes[Math.floor(Math.random() * prizes.length - 1)];
   }, [api, prizes]);
 
