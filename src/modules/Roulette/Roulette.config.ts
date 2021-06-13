@@ -1014,6 +1014,7 @@ const config: {
         {
             apiId: 'saveAddress',
             name: '保存收货地址',
+            enterDescription: '入参描述',
             hideBodyInput: true,
         },
     ],

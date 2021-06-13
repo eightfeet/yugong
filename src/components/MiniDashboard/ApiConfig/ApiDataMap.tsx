@@ -16,10 +16,11 @@ interface Props {
     dataMap: Api["dataMap"];
     onChange?: (data: Api["dataMap"]) => void;
     description?: string;
+    title: string;
 }
 
-const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description}) => {
-  const [maps, setMaps] = useState<Api["dataMap"]>();
+const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description, title}) => {
+  const [maps, setMaps] = useState<Api["dataMap"]>(dataMap);
   const [visableModal, setVisableModal] = useState<boolean>(false);
   const [mapsArg, setMapsArg] = useState<ArgumentsObject>();
   const [currentIndex, setCurrentIndex] = useState<number>();
@@ -97,7 +98,7 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description}) => {
         type="text"
         size="small"
       >
-        结果转换/映射 
+        {title}
       </Button>
       {description ? <Tooltip title={parser(description || '')} >
             <QuestionCircleOutlined />

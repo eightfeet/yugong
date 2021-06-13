@@ -340,7 +340,7 @@ const Dashboard: React.FC<Props> = () => {
                     <Col span={15}>
                         <Input
                             type="text"
-                            value={newModalName}
+                            value={newModalName as any}
                             onChange={(e) =>
                                 setNewModalName(e.target.value || undefined)
                             }

@@ -53,6 +53,7 @@ const ApiItem = SortableElement(
     onChangeSetting,
     onHandleUserArg,
     onchangeDatamap,
+    onchangeEntermap,
     sortable,
   }: {
     currentIndex: number;
@@ -68,6 +69,7 @@ const ApiItem = SortableElement(
     ) => void;
     sortable?: boolean;
     onchangeDatamap: (data: Api["dataMap"]) => void;
+    onchangeEntermap: (data: Api["enterMap"]) => void;
   }) => {
     const item = {
       ...(apiData?.length ? apiData[currentIndex] : {}),
@@ -108,7 +110,16 @@ const ApiItem = SortableElement(
             />
           </Col>
         </Row>
-        {item.hideBodyInput ? null : (
+        {item.hideBodyInput ? (
+          <div>
+            <ApiDataMap
+              title="入参转换/映射"
+              onChange={onchangeEntermap}
+              description={item.enterDescription}
+              dataMap={item?.enterMap}
+            />
+          </div>
+        ) : (
           <Row className={s.row} gutter={4}>
             <Col span={24}>
               <Button
@@ -120,7 +131,12 @@ const ApiItem = SortableElement(
             </Col>
           </Row>
         )}
-        <ApiDataMap onChange={onchangeDatamap} description={item.description} dataMap={item?.dataMap} />
+        <ApiDataMap
+          title="结果转换/映射"
+          onChange={onchangeDatamap}
+          description={item.description}
+          dataMap={item?.dataMap}
+        />
         <Divider orientation="left" plain>
           将结果发布到全局
         </Divider>

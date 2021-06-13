@@ -261,7 +261,16 @@ const Apiconfig: React.FC<Props> = ({
   const onchangeDatamap = useCallback(
     (index: number, data: Api['dataMap']) => {
       const result = [...operateApi];
-      result[index].dataMap = data;
+      result[index].dataMap = data || [];
+      updateApi(result);
+    },
+    [operateApi, updateApi],
+  )
+
+  const onchangeEntermap = useCallback(
+    (index: number, data: Api['enterMap']) => {
+      const result = [...operateApi];
+      result[index].enterMap = data || [];
       updateApi(result);
     },
     [operateApi, updateApi],
@@ -270,15 +279,16 @@ const Apiconfig: React.FC<Props> = ({
   return (
     <div className={s.root}>
       <ApiList
-        sortable={sortable}
+        sortable={!!sortable}
         operateApi={operateApi}
-        apiData={apiData}
+        apiData={apiData || []}
         onRemove={onRemove}
         onChangeUrl={onChangeUrl}
         onChangeMethod={onChangeMethod}
         onChangeSetting={onChangeSetting}
         onHandleUserArg={onHandleUserArg}
         onchangeDatamap={onchangeDatamap}
+        onchangeEntermap={onchangeEntermap}
         useDragHandle
         onSortEnd={onSortEnd}
       />
@@ -291,7 +301,7 @@ const Apiconfig: React.FC<Props> = ({
         headerFlexible={headerFlexible}
         dataFlexible
         visible={!!argData?.results?.length}
-        initArgumentData={argData?.results}
+        initArgumentData={argData?.results || []}
         onCancel={hideArg}
         onOk={onArgOk}
         forceUpdate

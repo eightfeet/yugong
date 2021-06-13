@@ -116,6 +116,10 @@ export interface Api {
    */
   description?: string;
   /**
+   * api入参描述
+   */
+   enterDescription?: string;
+  /**
    * api识别Id
    */
   apiId?: string;
@@ -135,6 +139,17 @@ export interface Api {
    * 映射关系
    */
   dataMap?: {
+    /**源 */
+    source?: string;
+    /**目标 */
+    target?: string;
+    /**映射关系 */
+    map?: ArgumentsObject;
+  }[];
+  /**
+   * 入参映射关系
+   */
+   enterMap?: {
     /**源 */
     source?: string;
     /**目标 */
