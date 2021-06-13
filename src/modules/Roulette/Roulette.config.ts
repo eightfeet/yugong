@@ -140,20 +140,7 @@ const config: {
                     data: 'flipInY',
                 },
             ],
-        },
-        {
-            name: 'setRunningWinnerPrizes',
-            description: '设置中奖结果数据',
-            arguments: [
-                {
-                    type: 'string',
-                    describe: '从全局数据中设置中奖结果数据(数据来自抽奖Api)',
-                    name: '奖品数据',
-                    fieldName: 'winnerPrizes',
-                    data: '',
-                }
-            ],
-        },
+        }
     ],
 
     /**
@@ -998,6 +985,31 @@ const config: {
         {
             apiId: 'lottery',
             name: '抽奖',
+            description: `通过数据映射/转换数据
+            <br/>
+            数据要求：<br />
+            {
+            &nbsp;data: ...<br />
+            &nbsp;prize: {<br /> 
+                &nbsp;&nbsp;prizeId: [number]奖品id
+                <br />
+                &nbsp;&nbsp;prizeType: [number]奖品类型 0 未中奖, 1 实物, 2 虚拟
+                <br />
+                &nbsp;&nbsp;receiveType?: [number]领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡
+                <br />
+                &nbsp;&nbsp;prizeAlias?: [string]奖品别名
+                <br />
+                &nbsp;&nbsp;prizeName: [string]奖品名称
+                <br />
+                &nbsp;&nbsp;awardMsg?: [string]中奖提示信息
+                <br />
+                &nbsp;&nbsp;gameImg?: [string]游戏图片地址
+                <br />
+                &nbsp;&nbsp;prizeImg: [string]奖品图片地址
+                <br />
+                &nbsp;&nbsp;memo?: [string]奖品备注说明
+                <br />
+                &nbsp;}<br />}`
         },
         {
             apiId: 'saveAddress',

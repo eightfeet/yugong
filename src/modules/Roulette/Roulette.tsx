@@ -55,12 +55,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
   const MId = `gametarget${moduleId}`;
   const userClass = useStyles(MId)(style);
 
-  // 奖品结果state数据
-  const [winnerPrize, setWinnerPrize] = useState<{
-    runningTimeName?: string;
-    prizeMap?: AnyObjectType;
-  }>({});
-
   /**
    * 设置奖品数据
    */

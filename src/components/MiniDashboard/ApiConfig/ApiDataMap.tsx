@@ -2,8 +2,10 @@ import {
   PlusOutlined,
   SettingOutlined,
   MinusOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Button } from "antd";
+import parser from 'html-react-parser';
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { Api, ArgumentsObject } from "~/types/appData";
@@ -13,9 +15,10 @@ import s from "./ApiConfig.module.less";
 interface Props {
     dataMap: Api["dataMap"];
     onChange?: (data: Api["dataMap"]) => void;
+    description?: string;
 }
 
-const ApiDataMap: React.FC<Props> = ({dataMap, onChange}) => {
+const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description}) => {
   const [maps, setMaps] = useState<Api["dataMap"]>();
   const [visableModal, setVisableModal] = useState<boolean>(false);
   const [mapsArg, setMapsArg] = useState<ArgumentsObject>();
@@ -94,8 +97,11 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange}) => {
         type="text"
         size="small"
       >
-        结果转换/映射
+        结果转换/映射 
       </Button>
+      {description ? <Tooltip title={parser(description || '')} >
+            <QuestionCircleOutlined />
+          </Tooltip> : null}
       {maps?.map((item, index) => (
         <Row key={index} gutter={4} className={classNames(s.row, s.map)}>
           <Col span={8}>

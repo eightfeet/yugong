@@ -79,20 +79,6 @@ const ApiItem = SortableElement(
         <div className={s.divide}>
           <div className={s.title}>
             {item.name || item.apiId || "接口名称"}{" "}
-            <Tooltip
-              title={
-                <div>
-                  返回数据结构(data: 原始数据, target: 目标数据)
-                  <br />
-                  {`{ `}<br />data: any, <br />
-                  [target1]: any, <br />
-                  [target2]: any, <br />
-                  [target...n]: any <br />{`}`}
-                </div>
-              }
-            >
-              <InfoCircleOutlined />
-            </Tooltip>
           </div>
           {onRemove instanceof Function ? (
             <Button
@@ -134,9 +120,9 @@ const ApiItem = SortableElement(
             </Col>
           </Row>
         )}
-        <ApiDataMap onChange={onchangeDatamap} dataMap={item?.dataMap} />
+        <ApiDataMap onChange={onchangeDatamap} description={item.description} dataMap={item?.dataMap} />
         <Divider orientation="left" plain>
-          结果发布
+          将结果发布到全局
         </Divider>
         <Row gutter={4}>
           <Col span={12}>
