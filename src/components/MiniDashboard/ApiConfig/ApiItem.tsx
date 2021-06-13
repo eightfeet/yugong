@@ -117,6 +117,7 @@ const ApiItem = SortableElement(
               onChange={onchangeEntermap}
               description={item.enterDescription}
               dataMap={item?.enterMap}
+              overwrite={true}
             />
           </div>
         ) : (

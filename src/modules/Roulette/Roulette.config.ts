@@ -1014,7 +1014,15 @@ const config: {
         {
             apiId: 'saveAddress',
             name: '保存收货地址',
-            enterDescription: '入参描述',
+            enterDescription: `原数据<br />{<br/>
+                address?: string 详细地址<br/>
+                idcode?: string 生份证号<br/>
+                phone?: string 电话号码<br/>
+                receiver?: string 收货人姓名<br/>
+                regions?: string 省市区id<br/>
+                regionsName?: string 省市区<br/>
+                verificationvode?: string 验证码<br/>
+            }`,
             hideBodyInput: true,
         },
     ],

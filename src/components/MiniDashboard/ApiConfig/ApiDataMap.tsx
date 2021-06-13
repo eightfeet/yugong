@@ -16,18 +16,23 @@ interface Props {
     dataMap: Api["dataMap"];
     onChange?: (data: Api["dataMap"]) => void;
     description?: string;
+    overwrite?: boolean;
     title: string;
 }
 
-const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description, title}) => {
+const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description, title, overwrite}) => {
   const [maps, setMaps] = useState<Api["dataMap"]>(dataMap);
   const [visableModal, setVisableModal] = useState<boolean>(false);
   const [mapsArg, setMapsArg] = useState<ArgumentsObject>();
   const [currentIndex, setCurrentIndex] = useState<number>();
 
   useEffect(() => {
-    setMaps([]);
-  }, []);
+    if (overwrite) {
+      setMaps(dataMap?.slice(0, 1));
+    } else {
+      setMaps(dataMap);
+    }
+  }, [dataMap, overwrite]);
 
   const updateMaps = useCallback((data: Api["dataMap"]) => {
     setMaps(data);
@@ -105,11 +110,13 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description, title}) =>
           </Tooltip> : null}
       {maps?.map((item, index) => (
         <Row key={index} gutter={4} className={classNames(s.row, s.map)}>
+          {overwrite ? null : <>
           <Col span={8}>
             <Tooltip title={<div>data.[any]</div>}>
               <Input
                 placeholder="输入源数据"
                 onChange={(e) => onChangeSource(index, e)}
+                value={item.source as any}
               />
             </Tooltip>
           </Col>
@@ -118,10 +125,12 @@ const ApiDataMap: React.FC<Props> = ({dataMap, onChange, description, title}) =>
               <Input
                 placeholder="输入目标数据"
                 onChange={(e) => onChangeTarget(index, e)}
+                value={item.target as any}
               />
             </Tooltip>
           </Col>
-          <Col span={7}>
+          </>}
+          <Col span={overwrite ? 23 : 7}>
             <Tooltip
               title={
                 <div>

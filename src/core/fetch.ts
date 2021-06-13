@@ -9,7 +9,7 @@ import message from "~/components/Message";
 import lodash from "lodash";
 
 const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
-  const { method, body, headers, mode, credentials, dataMap } = apiArguments;
+  const { method, body, headers, mode, credentials, dataMap, enterMap } = apiArguments;
   if (!apiArguments.url) {
     console.warn(`api(${apiArguments.name})缺少url`);
     return {};
@@ -51,7 +51,20 @@ const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
     });
     bodyData = temp;
   }
-  
+
+  // 映射转换
+  if (enterMap?.length) {
+    const maps = enterMap[0].map?.data || {};
+    for (const key in maps) {
+      if (Object.prototype.hasOwnProperty.call(maps, key)) {
+        const targetKey = maps[key];
+        if (bodyData[key]) {
+          bodyData[targetKey] = bodyData[key];
+        }
+      }
+    }
+  }
+
   return await fetchApi(url, { method, headers: headersData, body: bodyData, mode, credentials }, dataMap);
 };
 
