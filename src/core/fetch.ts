@@ -202,7 +202,8 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     // 处理请求结果
     // 成功发布
     if (successPublic?.length) {
-      const successPublicResult = getArguments(successPublic, { result });
+      const successPublicResult = getArguments(successPublic, result);
+      console.log('successPublicResult', successPublicResult);
       setRunningTimes(successPublicResult);
     }
     return result;
