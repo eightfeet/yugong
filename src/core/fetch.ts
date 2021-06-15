@@ -8,15 +8,14 @@ import isType from "./helper/isType";
 import message from "~/components/Message";
 import lodash from "lodash";
 
-const requester = async (apiArguments: Api, isDestructuring?: boolean) => {
+const requester = async (apiArguments: Api, isDestructuring?: boolean): Promise<AnyObjectType> => {
   const { method, body, headers, mode, credentials, dataMap, enterMap } = apiArguments;
-  if (!apiArguments.url) {
-    console.warn(`api(${apiArguments.name})缺少url`);
-    return {};
-  }
-  if (!method) {
-    console.warn(`api(${apiArguments.name})缺少method`);
-    return {};
+  // 没有Api Url 或者 Method 时 return 未设置，这里不做错误处理（throw Error），
+  // “未配置”不能归于错误，不能影响下游操作
+  // 下游对结果处理需要注意
+  if (!apiArguments.url || !method) {
+    console.warn(`api(${apiArguments.name})缺少url或method`);
+    return {api_unset: true};
   }
   
   // 从runningTime翻译Api数据;
@@ -194,6 +193,12 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     loading.show();
     const result = await requester(apiArguments, isDestructuring);
     loading.hide();
+
+    // 当前Api未设置则返回空
+    if (result.api_unset) {
+      return {};
+    }
+    
     // 处理请求结果
     // 成功发布
     if (successPublic?.length) {
