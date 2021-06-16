@@ -1,4 +1,4 @@
-import { Col, Input, PageHeader, Row, Tooltip } from 'antd';
+import { Col, Input, PageHeader, Row, Select, Tooltip } from 'antd';
 import deepEqual from 'deep-equal';
 import parse from 'html-react-parser';
 import { cloneDeep } from 'lodash';
@@ -42,6 +42,10 @@ const Presetting: React.FC<Props> = () => {
     const appData = useSelector((state: RootState) => state.appData);
     const [, setLocalStorage] = useLocalStorage('appData', null);
     const dispatch = useDispatch<Dispatch>();
+
+    // 获取runningtime的属性集合
+    const runningTimes = useSelector((state: RootState) => state.runningTimes);
+
     // 数据更新
     const updateActDataToAll = useCallback(
         (actData: AppDataLayoutItemTypes) => {
@@ -104,7 +108,9 @@ const Presetting: React.FC<Props> = () => {
     // 运行时mount数据剔除非当前模块数据
     const getData = useCallback(() => {
         // 深拷一份组件内部可预设数据 和组件运行时数据
-        const copyExposeFunctions = cloneDeep(exposeFunctions).filter(item => item.presettable !== false);
+        const copyExposeFunctions = cloneDeep(exposeFunctions).filter(
+            (item) => item.presettable !== false
+        );
         const copySetFunctions = cloneDeep(setFunctions);
 
         const result: ExposeFunctions[] =
@@ -130,7 +136,7 @@ const Presetting: React.FC<Props> = () => {
 
     // step2、获取预设数据 保存预设面板数据，用于页面render
     const runningData = getData();
-    
+
     // step3、数据变更
     const onChange = useCallback(
         ({ index, argIndex, value }: OnChangeProps) => {
@@ -139,7 +145,7 @@ const Presetting: React.FC<Props> = () => {
             if (copyRunningData[index].arguments) {
                 copyRunningData[index].arguments![argIndex] = value;
             }
-            
+
             // 从编辑器预设面板获取当前已设置的值copyRunningData；
             // 将预设值回填给运行时运行时mount数据；
             // step1、判断预设数据值有没有被编辑过，抽取被编辑过的数据
@@ -147,7 +153,11 @@ const Presetting: React.FC<Props> = () => {
             const readyToSetting: EventsTypeItem[] = [];
             copyRunningData.forEach((item, index) => {
                 if (
-                    !deepEqual(item.arguments, exposeFunctions[index].arguments) || !item.arguments?.[index]?.data
+                    !deepEqual(
+                        item.arguments,
+                        exposeFunctions[index].arguments
+                    ) ||
+                    !item.arguments?.[index]?.data
                 ) {
                     readyToSetting.push({
                         name: `${moduleId}/${item.name}`,
@@ -156,47 +166,54 @@ const Presetting: React.FC<Props> = () => {
                 }
             });
 
-
             // step2、将抽取的数据更新到运行时mount数据；
             // 深拷一份当前组件运行时数据 activationItem
             const copyModuleData = cloneDeep(activationItem);
             // 没有初始化事件时
             if (!copyModuleData.events?.mount) {
-              // 还未定义mount事件
-              if (!copyModuleData.events) {
-                copyModuleData.events = {};
-              }
-              // 给运行时追加准备数据
-              copyModuleData.events.mount = readyToSetting;
-            } else { // 有初始化事件
-               // 倒序是为了匹配最末一条
-              const mount = [...copyModuleData.events.mount].reverse();
-              // 遍历ready数据
-              readyToSetting.forEach(readyItem => {
-                // 是否数据覆盖
-                let isCove: boolean = false; 
-                mount.some(mountItem => {
-                  if (mountItem.name === readyItem.name) {
-                    mountItem.arguments = readyItem.arguments;
-                    // 覆盖旧值
-                    isCove = true;
-                    return true;
-                  }
-                  return false;
-                });
-                // 如果没有覆盖旧值则追加到mount数据上
-                if (!isCove) {
-                  mount.unshift(readyItem);
+                // 还未定义mount事件
+                if (!copyModuleData.events) {
+                    copyModuleData.events = {};
                 }
-              });
+                // 给运行时追加准备数据
+                copyModuleData.events.mount = readyToSetting;
+            } else {
+                // 有初始化事件
+                // 倒序是为了匹配最末一条
+                const mount = [...copyModuleData.events.mount].reverse();
+                // 遍历ready数据
+                readyToSetting.forEach((readyItem) => {
+                    // 是否数据覆盖
+                    let isCove: boolean = false;
+                    mount.some((mountItem) => {
+                        if (mountItem.name === readyItem.name) {
+                            mountItem.arguments = readyItem.arguments;
+                            // 覆盖旧值
+                            isCove = true;
+                            return true;
+                        }
+                        return false;
+                    });
+                    // 如果没有覆盖旧值则追加到mount数据上
+                    if (!isCove) {
+                        mount.unshift(readyItem);
+                    }
+                });
 
-              copyModuleData.events.mount = mount.reverse();
+                copyModuleData.events.mount = mount.reverse();
             }
             // 更新且播放所有内部事件
             updateActDataToAll(copyModuleData);
             onPlay(copyModuleData.events.mount);
         },
-        [activationItem, exposeFunctions, moduleId, onPlay, runningData, updateActDataToAll]
+        [
+            activationItem,
+            exposeFunctions,
+            moduleId,
+            onPlay,
+            runningData,
+            updateActDataToAll,
+        ]
     );
 
     if (!moduleId) {
@@ -206,7 +223,7 @@ const Presetting: React.FC<Props> = () => {
     return (
         <div>
             {runningData.map((item, index) =>
-                (!!item.arguments?.length && item.presettable !== false) ? (
+                !!item.arguments?.length && item.presettable !== false ? (
                     <div key={index} className={s.item}>
                         <PageHeader title={item.description} />
                         {item.arguments?.map((argItem, argIndex) => (
@@ -221,8 +238,7 @@ const Presetting: React.FC<Props> = () => {
                                 </Col>
                                 <Col span={19}>
                                     {argItem.type === 'number' ||
-                                    argItem.type === 'string' ||
-                                    argItem.type === 'runningTime' ? (
+                                    argItem.type === 'string' ? (
                                         <Input
                                             onChange={(e) =>
                                                 onChange({
@@ -247,6 +263,48 @@ const Presetting: React.FC<Props> = () => {
                                             }
                                         />
                                     ) : null}
+
+                                    {argItem.type === 'runningTime' ? (
+                                        <Select
+                                            className={s.select}
+                                            placeholder="请选择"
+                                            showSearch
+                                            value={argItem.data}
+                                            optionFilterProp="children"
+                                            filterOption={
+                                                (input, option) => {
+                                                    const str = option?.children
+                                                        .join('')
+                                                        .toLowerCase();
+                                                    if (str.indexOf(input) !== -1) {
+                                                        return true;
+                                                    }
+                                                    return false;
+                                                }
+                                                // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            onChange={(e) =>
+                                                onChange({
+                                                    index, // 数据索引值
+                                                    argIndex, // 参数索引
+                                                    value: {
+                                                        // 参数索引对应的参数值
+                                                        ...argItem,
+                                                        data: e,
+                                                    },
+                                                })
+                                            }
+                                        >
+                                            {Object.keys(runningTimes)?.map(
+                                                (item) => (
+                                                    <Select.Option value={item}>
+                                                        {item}
+                                                    </Select.Option>
+                                                )
+                                            )}
+                                        </Select>
+                                    ) : null}
+
                                     {argItem.type === 'array' ? (
                                         <ArrayArguments
                                             typeArguments={argItem}

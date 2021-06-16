@@ -46,6 +46,7 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
         // 处理运行时数据
         value = get(runningTimes, el);
       }
+      
       if (!!value) {
         return true
       } else {

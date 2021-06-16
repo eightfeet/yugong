@@ -31,7 +31,7 @@ export const getArgumentsItem = (
   const toJSX = (argmentsDataItem.html === true);
   switch (argmentsDataItem.type) {
     case "runningTime":
-      result = getResult(argmentsDataItem.data);
+      result = getResult(`{{${argmentsDataItem.data}}}`);
       break;
     case "string":
       result = getResult(argmentsDataItem.data, dataSource);

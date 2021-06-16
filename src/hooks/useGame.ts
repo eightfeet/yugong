@@ -10,7 +10,7 @@ interface Params {
 const useGame = (params: Params): [Game, any] => {
     const targetNode = useRef<HTMLElement>();
     const game = useRef<any>();
-
+    
     loadScript('https://upload-yyj.by-health.com/frond-cdn/region/regions.js');
     const createGame = useCallback((params) => {
         if (!!Array.isArray(params.prizes)) {

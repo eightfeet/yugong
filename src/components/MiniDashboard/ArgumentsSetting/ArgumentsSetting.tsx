@@ -102,6 +102,15 @@ const ArgumentsSetting: React.FC<Props> = ({
     [argumentState]
   );
 
+  const onChangeRunningTime = useCallback(
+    (index: number) => (e: any) => {
+      const result = [...argumentState];
+      result[index].data = e;
+      setArgumentState(result);
+    },
+    [argumentState]
+  );
+
   const onChangeObjType = useCallback(
     (index: number) => (data: ArgumentsItem) => {
       const result = [...argumentState];
@@ -303,7 +312,7 @@ const ArgumentsSetting: React.FC<Props> = ({
               }
             >
               <div>
-                {item.type === "number" || item.type === "string" || item.type === "runningTime" ? (
+                {item.type === "number" || item.type === "string" ? (
                   <Input
                     onChange={onChangeInput(index)}
                     placeholder={`请输入值,${item.describe || ""}`}
@@ -312,6 +321,36 @@ const ArgumentsSetting: React.FC<Props> = ({
                     suffix={!!item.html ? <HtmlSuffix /> : null}
                   />
                 ) : null}
+                {item.type === 'runningTime' ? (
+                      <Select
+                          className={s.select}
+                          placeholder="请选择"
+                          showSearch
+                          value={item.data}
+                          optionFilterProp="children"
+                          filterOption={
+                              (input, option) => {
+                                  const str = option?.children
+                                      .join('')
+                                      .toLowerCase();
+                                  if (str.indexOf(input) !== -1) {
+                                      return true;
+                                  }
+                                  return false;
+                              }
+                              // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          }
+                          onChange={onChangeRunningTime(index)}
+                      >
+                          {Object.keys(runningTimes)?.map(
+                              (optionsIitem) => (
+                                  <Select.Option value={optionsIitem}>
+                                      {optionsIitem}
+                                  </Select.Option>
+                              )
+                          )}
+                      </Select>
+                  ) : null}
                 {item.type === "object" ? (
                   <ObjectArguments
                     describe={item.describe}
