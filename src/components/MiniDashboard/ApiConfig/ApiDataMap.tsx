@@ -160,7 +160,7 @@ const ApiDataMap: React.FC<Props> = ({
                                 <Tooltip
                                     title={
                                         <div>
-                                            输入目标数据属性名称: <br /> 最终Api
+                                            输入目标数据: <br /> 最终Api
                                             return数据为
                                             <br />
                                             {`{`}
@@ -173,7 +173,7 @@ const ApiDataMap: React.FC<Props> = ({
                                     }
                                 >
                                     <Input
-                                        placeholder="输入目标数据属性名称"
+                                        placeholder="输入目标数据"
                                         onChange={(e) =>
                                             onChangeTarget(index, e)
                                         }
