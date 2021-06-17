@@ -114,16 +114,25 @@ export const fetchApi = async (
       response: resultData,
     }
 
-    // 映射处理
+    
+    // 结果处理
+    // 结果到映射
     if (dataMap?.length) {
       dataMap.forEach(({source, target, map}) => {
         if (!source || !map || !target) {
           return;
         }
-        // 映射关系
+        
+        // 源数据与目标数据的映射关系
         const argMap = getArgumentsItem(map) as AnyObjectType;
-        // 数据源
+        // 从返回数据中获取源数据
         const sourceData = lodash.get(body, source);
+        
+        // 无数据源时不做处理
+        if (!sourceData) { 
+          return;
+        }
+        
         // 暂时存储结果
         let mapResult;
         /**
@@ -136,13 +145,14 @@ export const fetchApi = async (
         if (Object.prototype.toString.call(sourceData) === '[object Array]') {
           mapResult = [];
           sourceData.forEach((itemArgMap: any) => {
-            const tempData = {};
             if (Object.prototype.toString.call(itemArgMap) === '[object Object]') {
+              const tempData = {};
               for (const key in argMap) {
-                const targetKey = argMap[key];
-                tempData[targetKey] = itemArgMap[key];
-                mapResult.push(tempData);
+                const orderKey = argMap[key];
+                // 当前项数据存在时
+                tempData[key] = itemArgMap[orderKey] || orderKey;
               }
+              mapResult.push(tempData);
             }
           });
         }
@@ -151,8 +161,8 @@ export const fetchApi = async (
           mapResult = {};
           for (const key in argMap) {
             if (Object.prototype.hasOwnProperty.call(argMap, key)) {
-              const targetKey = argMap[key];
-              mapResult[targetKey] = sourceData[key]
+              const orderKey = argMap[key];
+              mapResult[key] = sourceData[orderKey] || orderKey;
             }
           }
         }
@@ -172,7 +182,6 @@ export const fetchApi = async (
         }
       })
     }
-
 
     return body;
   }
@@ -194,7 +203,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     const result = await requester(apiArguments, isDestructuring);
     loading.hide();
 
-    // 当前Api未设置则返回空
+    // 当前Api未设置则返回空：api的url或方法未定义时定义为空
     if (result.api_unset) {
       return {};
     }
@@ -203,12 +212,10 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
     // 成功发布
     if (successPublic?.length) {
       const successPublicResult = getArguments(successPublic, result);
-      console.log('successPublicResult', successPublicResult);
       setRunningTimes(successPublicResult);
     }
     return result;
   } catch (error: any) {
-    message.error("请求失败");
     loading.hide();
     // 失败发布
     if (errorPublic?.length) {
