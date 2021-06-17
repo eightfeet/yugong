@@ -111,7 +111,7 @@ export const fetchApi = async (
     const resultData = JSON.parse(textData);
 
     const body = {
-      original: resultData,
+      response: resultData,
     }
 
     // 映射处理
