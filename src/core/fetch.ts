@@ -144,7 +144,8 @@ export const fetchApi = async (
                 const argMap = getArgumentsItem(map) as AnyObjectType;
                 // 从返回数据中获取源数据
                 const sourceData = lodash.get(body, source);
-
+                console.log('sourceData',source, sourceData);
+                
                 // 无数据源时不做处理
                 if (!sourceData) {
                     return;
@@ -218,7 +219,8 @@ export const fetchApi = async (
                 }
             });
         }
-
+        console.log('9999', body);
+        
         return body;
     }
     throw res;

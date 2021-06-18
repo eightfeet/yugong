@@ -246,7 +246,7 @@ const Responsive: React.FC<Props> = () => {
           <Drawer
             className={s.drawer}
             title="页面设置"
-            width={550}
+            width={580}
             onClose={() => setShowPageDrawer(false)}
             visible={showPageDrawer}
             bodyStyle={{ padding: "0", overflow: "auto" }}
@@ -258,7 +258,7 @@ const Responsive: React.FC<Props> = () => {
           <Drawer
             className={s.drawer}
             title="组件库"
-            width={550}
+            width={580}
             onClose={() => setShowDrawer(false)}
             visible={showDrawer}
             bodyStyle={{ padding: "0px" }}

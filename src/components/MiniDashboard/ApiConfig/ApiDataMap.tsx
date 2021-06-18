@@ -189,7 +189,7 @@ const ApiDataMap: React.FC<Props> = ({
                                 <div>
                                     确定转换映射关系，
                                     <br /> {`{ foo: bar }`} <br />
-                                    foo=源数据 key；bar=新数据 key<br /><br />
+                                    foo=新数据 key；bar=源数据 key<br /><br />
                                     {`{`}<br />
                                     {Object.keys(item?.map?.data || {}).map(key => <div> &nbsp; {key}: {item?.map?.data[key]}</div>)}
                                     {`}`}
