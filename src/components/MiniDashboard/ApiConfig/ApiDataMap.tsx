@@ -12,6 +12,7 @@ import { Api, ArgumentsObject } from '~/types/appData';
 import ArgumentsSetting from '../ArgumentsSetting';
 import s from './ApiConfig.module.less';
 
+
 interface Props {
     dataMap: Api['dataMap'];
     onChange?: (data: Api['dataMap']) => void;

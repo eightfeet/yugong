@@ -296,8 +296,8 @@ const Presetting: React.FC<Props> = () => {
                                             }
                                         >
                                             {Object.keys(runningTimes)?.map(
-                                                (item) => (
-                                                    <Select.Option value={item}>
+                                                (item, index) => (
+                                                    <Select.Option key={index} value={item}>
                                                         {item}
                                                     </Select.Option>
                                                 )
