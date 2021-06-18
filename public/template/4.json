@@ -21,9 +21,32 @@
         "successPublic": [
           {
             "type": "string",
-            "data": "1111111",
-            "fieldName": "prizeinfos",
-            "name": "prizeinfos"
+            "data": "{{prizes}}",
+            "fieldName": "prizes",
+            "name": "prizes"
+          }
+        ],
+        "dataMap": [
+          {
+            "map": {
+              "type": "object",
+              "describe": "",
+              "fieldName": "mapsArg",
+              "name": "映射关系",
+              "data": {
+                "prizeAlias": "prizeName",
+                "memo": "本奖品由{{search.title}}提供",
+                "prizeId": "prizeId",
+                "prizeType": "prizeType",
+                "receiveType": "receiveType",
+                "prizeName": "prizeName",
+                "awardMsg": "awardMsg",
+                "gameImg": "gameImg",
+                "prizeImg": "prizeImg"
+              }
+            },
+            "source": "response.data.prizeinfos",
+            "target": "prizes"
           }
         ]
       },
@@ -1176,7 +1199,101 @@
           "enterDescription": "原数据<br />{<br/>\n                address?: string 详细地址<br/>\n                idcode?: string 生份证号<br/>\n                phone?: string 电话号码<br/>\n                receiver?: string 收货人姓名<br/>\n                regions?: string 省市区id<br/>\n                regionsName?: string 省市区<br/>\n                verificationvode?: string 验证码<br/>\n            }",
           "hideBodyInput": true
         }
-      ]
+      ],
+      "events": {
+        "mount": [
+          {
+            "name": "c728b978-34cd-4461-a5f0-8b13c600c1a0/setRunningPrizes",
+            "arguments": [
+              {
+                "type": "runningTime",
+                "describe": "从全局数据中设置奖品数据\n                                <br/>\n                                数据要求：<br />\n                                {<br /> \n                                    prizeId: [number]奖品id\n                                    <br />\n                                    prizeType: [number]奖品类型 0 未中奖, 1 实物, 2 虚拟\n                                    <br />\n                                    receiveType?: [number]领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡\n                                    <br />\n                                    prizeAlias?: [string]奖品别名\n                                    <br />\n                                    prizeName: [string]奖品名称\n                                    <br />\n                                    awardMsg?: [string]中奖提示信息\n                                    <br />\n                                    gameImg?: [string]游戏图片地址\n                                    <br />\n                                    prizeImg: [string]奖品图片地址\n                                    <br />\n                                    memo?: [string]奖品备注说明\n                                    <br />\n                                }[]",
+                "name": "奖品数据",
+                "fieldName": "prizes",
+                "data": "prizes"
+              }
+            ]
+          },
+          {
+            "name": "c728b978-34cd-4461-a5f0-8b13c600c1a0/useConfig",
+            "arguments": [
+              {
+                "type": "string",
+                "name": "手机",
+                "fieldName": "phone",
+                "describe": "选填用户手机号码",
+                "data": ""
+              },
+              {
+                "type": "number",
+                "name": "填写身份证",
+                "fieldName": "cardIdRequest",
+                "describe": " 1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证",
+                "data": "1"
+              }
+            ]
+          },
+          {
+            "name": "c728b978-34cd-4461-a5f0-8b13c600c1a0/setDefaultReceiveInfo",
+            "arguments": [
+              {
+                "type": "string",
+                "name": "电话",
+                "fieldName": "receiverPhone",
+                "describe": "收货人电话号码",
+                "data": ""
+              },
+              {
+                "type": "string",
+                "name": "省市区名称",
+                "fieldName": "regionName",
+                "describe": "输入省市区名用,隔开: xx省,xx市,xx区/县",
+                "data": ""
+              },
+              {
+                "type": "string",
+                "name": "省市区id",
+                "fieldName": "region",
+                "describe": "输入省市区id用,隔开: 15,1513,151315",
+                "data": ""
+              },
+              {
+                "type": "string",
+                "name": "详细地址",
+                "fieldName": "address",
+                "describe": "请输入详细地址",
+                "data": ""
+              },
+              {
+                "type": "string",
+                "name": "身份证号",
+                "fieldName": "idCard",
+                "describe": "获奖用户身份证号码",
+                "data": ""
+              }
+            ]
+          },
+          {
+            "name": "c728b978-34cd-4461-a5f0-8b13c600c1a0/setSuccessModal",
+            "arguments": [
+              {
+                "type": "string",
+                "name": "标题",
+                "fieldName": "title",
+                "describe": "中奖弹窗标题",
+                "data": ""
+              },
+              {
+                "type": "string",
+                "name": "动画",
+                "fieldName": "animation",
+                "describe": "中奖弹窗动画\n                    flipInY | flipInX | fadeInUp | fadeInDown | fadeInLeft \n                    | fadeInRight | zoomIn | zoomInUp | zoomInDown | zoomInLeft | zoomInRight",
+                "data": "flipInY"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
