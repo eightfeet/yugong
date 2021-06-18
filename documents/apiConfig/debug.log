@@ -1,0 +1,1 @@
+[0617/170656:ERROR:sandbox_policy_base.cc(379)] Failed to add sandbox rule. error = 2, subsystem = 0, semantics = 0, pattern = '\\wsl$\Ubuntu\home\eightfeet\works\2020\yugong\documents\apiConfig\debug.log'

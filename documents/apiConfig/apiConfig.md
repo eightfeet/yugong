@@ -31,19 +31,34 @@
     数据映射转换是将旧数据转换为一个新的数据<br />
     
     ![-](./api_8.png)<br />
-    1. 旧数据原始数据, 比如我们要将旧数据是user转换为memberInfo<br />
+
+    Eg：比如我们要将旧数据中的是user转换为memberInfo新数据中的memberInfo
+
+    旧数据<br />
       ```json
         {
-          "data": {
+          "response": {
             "userInfo": {
               "name": "eightfeet",
               "age": ...
             }
           },
-          ...
-          "memberInfo": {
-
-          }
         }
 
+      ```
+
+    新数据<br />
+      ```json
+        {
+          "response": {
+            "userInfo": {
+              "name": "eightfeet",
+              "age": ...
+            }
+          },
+          "memberInfo": {
+            "firstName": "eightfeet",
+            "age": ...
+          }
+        }
       ```
