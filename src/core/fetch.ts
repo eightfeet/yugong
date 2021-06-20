@@ -131,7 +131,7 @@ export const fetchApi = async (
         const body = {
             response: resultData,
         };
-
+        
         // 结果处理
         // 结果到映射
         if (dataMap?.length) {
@@ -139,13 +139,12 @@ export const fetchApi = async (
                 if (!source || !map || !target) {
                     return;
                 }
-
-                // 源数据与目标数据的映射关系
-                const argMap = getArgumentsItem(map) as AnyObjectType;
+                
                 // 从返回数据中获取源数据
                 const sourceData = lodash.get(body, source);
-                console.log('sourceData',source, sourceData);
-                
+                // 源数据与目标数据的映射关系, 这里不通过getArgumentsItem获取，而是手动获取，这样避免规则标签被过滤
+                const argMap = map.data; //getArgumentsItem(map, sourceData) as AnyObjectType;
+
                 // 无数据源时不做处理
                 if (!sourceData) {
                     return;
@@ -181,7 +180,7 @@ export const fetchApi = async (
                                         fieldName: `${orderKey}`,
                                         data: orderKey,
                                         type: 'string',
-                                    });
+                                    }, itemArgMap);
                             }
                             mapResult.push(tempData);
                         }
@@ -196,7 +195,13 @@ export const fetchApi = async (
                     for (const key in argMap) {
                         if (Object.prototype.hasOwnProperty.call(argMap, key)) {
                             const orderKey = argMap[key];
-                            mapResult[key] = sourceData[orderKey] || orderKey;
+                            mapResult[key] = sourceData[orderKey] || 
+                            // 当前项数据不存在时从运行时取数据，运行时无数据时返回orderKey字符
+                            getArgumentsItem({
+                                fieldName: `${orderKey}`,
+                                data: orderKey,
+                                type: 'string',
+                            }, sourceData);
                         }
                     }
                 }
@@ -219,7 +224,6 @@ export const fetchApi = async (
                 }
             });
         }
-        console.log('9999', body);
         
         return body;
     }

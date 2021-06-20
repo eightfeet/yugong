@@ -3,6 +3,76 @@ import { store } from '~/redux/store';
 import { AnyObjectType } from "~/types/appData";
 const saferEval = require('safer-eval');
 
+// js规则:js{{}}
+const regexjswrap = /js\{\{(.[\w|\d|\-|/|.|\s|:*|\+|\-|\*|\/|\>|\||\<|\"|\?|=|!]+?)\}\}/gm;
+// 规则:{{}}
+const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
+// 规则:首尾空格
+const regexspace = /(^\s*)|(\s*$)/g;
+// 规则:强制runningTime
+const regexforceRT = /^\*\.+/;
+
+const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObjectType, isJs?: boolean ) => {
+  let result = target as any;
+  if (typeof result !== 'string') {
+      return result
+  }
+  ruleList?.forEach((item) => {
+    // 移除{{}} 或 js{{}}
+    let key;
+    let value;
+    // 运行时
+    const runningTimes = store.getState().runningTimes;
+    // 确定源数据
+    let data = dataSource || runningTimes;
+    // js 表达式
+    if (isJs) {
+      key = item.replace(regexjswrap, "$1");
+      // 尝试运行表达式
+      try {
+        // 将"this"字符转化为"data"
+        key = key.replace(/this/g, 'data');
+        value = saferEval(key, {data, runningTimes})
+      } catch (error) {
+        // 无法输入时直接使用key
+        value = key;
+      }
+
+    } else {
+      key = item.replace(regexwrap, "$1");
+      // 拆解key，逐个遍历并替换，直到找到数据为止，若从元数据中找不到数据则返回最后一个字符串
+      let keyArray = key.split('||');
+
+      keyArray.some((element, index) => {
+        // 元素：移除首尾空格
+        let el =  element.replace(regexspace,"");
+        // force global 强制从运行时取值
+        if (!!el.match(regexforceRT)?.length) {
+          data = runningTimes;
+          el = el.replace('*.', '');
+        }
+        // 取值
+        value = get(data, el);
+        
+        if (!!value) {
+          return true
+        } else {
+          if (index === (keyArray.length - 1)) {value = element}
+          return false
+        }
+      })
+    }
+
+    const type = Object.prototype.toString.call(value);
+    if (type === '[object Object]' || type === '[object Array]') {
+      result = value;
+    } else {
+      result = result.replace(item, `${value || ""}`);
+    }    
+  });
+  return result;
+}
+
 /**
  * 从原数据编译占位符 compilePlaceholderFromDataSource
  * 取值规则，
@@ -17,55 +87,19 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   if (typeof data !== "string") {
     return data || '';
   }
-  // js规则:js{{}}
-  const regexjswrap = /js\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
-  // 规则:{{}}
-  const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
-  // 规则:首尾空格
-  const regexspace = /(^\s*)|(\s*$)/g;
-  // 规则:强制runningTime
-  const regexforceRT = /^\*\.+/;
 
   // 匹配运行时
   let result: any = data;
 
+  const ruleJsList = data.match(regexjswrap);
+  if (ruleJsList?.length) {
+    result = matchRule(ruleJsList, result, dataSource, true);
+  }
+
   const ruleList = data.match(regexwrap);
-  ruleList?.forEach((item) => {
-    // 移除{{}}
-    const key = item.replace(regexwrap, "$1");
 
-    // 拆解key，逐个遍历并替换，直到找到数据为止，若从元数据中找不到数据则返回最后一个字符串
-    let keyArray = key.split('||');
-    const runningTimes = store.getState().runningTimes;
-
-    let value;
-    keyArray.some((element, index) => {
-      // 元素：移除首尾空格
-      let el =  element.replace(regexspace,"");
-      // 确定源数据
-      let source = dataSource || runningTimes;
-      // force global 强制从运行时取值
-      if (!!el.match(regexforceRT)?.length) {
-        source = runningTimes;
-        el = el.replace('*.', '');
-      }
-      // 取值
-      value = get(source, el);
-      
-      if (!!value) {
-        return true
-      } else {
-        if (index === (keyArray.length - 1)) {value = element}
-        return false
-      }
-    })
-
-    if ( typeof value === 'number' || typeof value === 'string') {
-      result = result.replace(item, `${value || ""}`);
-    } else {
-      result = value;
-    }
-  });
+  result = matchRule(ruleList, result, dataSource)
+  
   return result;
 };
 

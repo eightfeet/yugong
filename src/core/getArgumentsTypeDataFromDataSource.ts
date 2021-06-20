@@ -1,11 +1,21 @@
-import parse from "html-react-parser";
+import jsxParse from "html-react-parser";
 import cloneDeep from "lodash/cloneDeep";
 import set from "lodash/set";
-import { store } from "~/redux/store";
 import { AnyObjectType, ArgumentsItem } from "~/types/appData";
 import getBooleanData from "./getBooleanData";
 import { compilePlaceholderFromDataSource as getResult } from "./getDataFromSource";
 import deepForEach from "./helper/deepForeach";
+
+
+const parse = (target: any) => {
+  let data: any = `${target}`;
+  try {
+    data = jsxParse(data);
+  } catch (error) {
+    console.log(error);
+  }
+  return data;
+}
 
 /**
  * 单个参数获取数据源中的数据
@@ -24,7 +34,6 @@ export const getArgumentsItem = (
   | string
   | JSX.Element
   | JSX.Element[] => {
-    
   // 数据不存在时原状态返回
   if (!argmentsDataItem) return argmentsDataItem;
   let result = undefined;
