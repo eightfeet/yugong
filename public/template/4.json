@@ -35,7 +35,7 @@
               "name": "映射关系",
               "data": {
                 "prizeAlias": "prizeName",
-                "memo": "本奖品由{{search.title}}提供",
+                "memo": "js{{this.prizeId}}",
                 "prizeId": "prizeId",
                 "prizeType": "prizeType",
                 "receiveType": "receiveType",

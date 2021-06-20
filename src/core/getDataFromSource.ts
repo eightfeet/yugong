@@ -4,7 +4,7 @@ import { AnyObjectType } from "~/types/appData";
 const saferEval = require('safer-eval');
 
 // js规则:js{{}}
-const regexjswrap = /js\{\{(.[\w|\d|\-|/|.|\s|:*|\+|\-|\*|\/|\>|\||\<|\"|\?|=|!]+?)\}\}/gm;
+const regexjswrap = /js\{\{(.[\w|\d|\-|/|.|\s|:*|+|\-|*|/|>|||<|"|?|=|!|(|)|,)]+?)\}\}/gm;
 // 规则:{{}}
 const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
 // 规则:首尾空格
