@@ -75,6 +75,38 @@
             }
           }
         ]
+      },
+      {
+        "name": "获取用户信息",
+        "apiId": "7710769c-b09d-4ba2-82e4-f70e88a0ec3e",
+        "url": "https://wx-test1.by-health.com/scrm/employee/findEmployeeByJwt",
+        "method": "GET",
+        "headers": {
+          "Authorization": "Bearer {{search.jwt}}"
+        },
+        "dataMap": [
+          {
+            "source": "response",
+            "target": "userInfo",
+            "map": {
+              "type": "object",
+              "describe": "",
+              "fieldName": "mapsArg",
+              "name": "映射关系",
+              "data": {
+                "memberId": "memberId"
+              }
+            }
+          }
+        ],
+        "successPublic": [
+          {
+            "type": "string",
+            "data": "{{userInfo}}",
+            "fieldName": "userInfo",
+            "name": "userInfo"
+          }
+        ]
       }
     ],
     "mountEnvents": [],
