@@ -156,6 +156,10 @@ const config: {
             description: '卸载',
         },
         {
+            name: 'onStart',
+            description: '抽奖',
+        },
+        {
             name: 'onCancel',
             description: '放弃中奖结果/关闭弹窗',
         },
@@ -981,6 +985,11 @@ const config: {
         {
             apiId: 'init',
             name: '获取初始数据',
+        },
+        {
+            apiId: 'beforeDraw',
+            name: '抽奖前置验证(将在每次抽奖前调用)',
+            description: ""
         },
         {
             apiId: 'lottery',
