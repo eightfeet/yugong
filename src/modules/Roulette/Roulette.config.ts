@@ -987,7 +987,7 @@ const config: {
             name: '获取初始数据',
         },
         {
-            apiId: 'beforeDraw',
+            apiId: 'beforeStart',
             name: '抽奖前置验证(将在每次抽奖前调用)',
             description: ""
         },

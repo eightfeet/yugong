@@ -108,6 +108,23 @@ const Roulette: Modules<RouletteProps> = (props) => {
     );
 
     /**
+     * 保存地址
+     * */
+     const beforeStart = useCallback(
+        async () => {
+            // 这里不需要api设置参数
+            const apiArguments = api?.find(
+                (item) => item.apiId === 'beforeStart'
+            );
+            // 获取抽奖结果数据， 将结果数据中转到全局数据中
+            if (apiArguments && apiArguments.url && apiArguments.method) {
+                return requester(apiArguments || {}, true);
+            }
+        },
+        [api]
+    );
+
+    /**
      * 检查手机验证码
      * */
     const checkVerificationCode = useCallback(async (data) => {
