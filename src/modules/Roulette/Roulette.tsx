@@ -82,7 +82,9 @@ const Roulette: Modules<RouletteProps> = (props) => {
     }
     // 数据转换为下游中奖信息
     message.warning("活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！");
-    return prizes[Math.floor(Math.random() * prizes.length - 1)];
+    const winnerInfo = prizes[Math.floor(Math.random() * prizes.length - 1)];
+    winnerInfo.receiveType = 2;
+    return winnerInfo;
   }, [api, prizes]);
 
   /**

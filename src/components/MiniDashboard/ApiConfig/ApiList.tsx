@@ -14,6 +14,7 @@ const ApiList = SortableContainer(
       onHandleUserArg,
       onchangeDatamap,
       onchangeEntermap,
+      onChangeName,
       sortable,
     }: {
       operateApi: ExposeApi[];
@@ -28,6 +29,7 @@ const ApiList = SortableContainer(
         index: number,
         type: "body" | "successPublic" | "errorPublic" 
       ) => void;
+      onChangeName?: (index: number, value: string) => void;
       sortable?: boolean;
     }) => (
       <div>
@@ -46,6 +48,7 @@ const ApiList = SortableContainer(
             onChangeMethod={onChangeMethod}
             onChangeSetting={onChangeSetting}
             onHandleUserArg={onHandleUserArg}
+            onChangeName={onChangeName}
           />
         ))}
       </div>

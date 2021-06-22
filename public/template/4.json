@@ -6,7 +6,7 @@
     "toUnit": "px",
     "onLoadApi": [
       {
-        "name": "ApiBeforMounted",
+        "name": "获取活动信息",
         "apiId": "27d0ece9-39e4-4b2b-afb8-e7fd6947d6ea",
         "url": "https://wx-test1.by-health.com/scrmv2/marketing/queryLotteryInfo",
         "body": [
@@ -24,6 +24,18 @@
             "data": "{{prizes}}",
             "fieldName": "prizes",
             "name": "prizes"
+          },
+          {
+            "name": "rules",
+            "fieldName": "rules",
+            "type": "string",
+            "data": "{{response.data.comments}}"
+          },
+          {
+            "name": "activity",
+            "fieldName": "activity",
+            "type": "string",
+            "data": "{{activity}}"
           }
         ],
         "dataMap": [
@@ -47,12 +59,22 @@
             },
             "source": "response.data.prizeinfos",
             "target": "prizes"
+          },
+          {
+            "source": "response.data",
+            "target": "activity",
+            "map": {
+              "type": "object",
+              "describe": "",
+              "fieldName": "mapsArg",
+              "name": "映射关系",
+              "data": {
+                "activityId": "activityId",
+                "activityName": "activityName"
+              }
+            }
           }
         ]
-      },
-      {
-        "name": "ApiBeforMounted",
-        "apiId": "f7444897-efc7-4f01-a5ea-8c09decb6e88"
       }
     ],
     "mountEnvents": [],
@@ -1197,7 +1219,8 @@
           "apiId": "saveAddress",
           "name": "保存收货地址",
           "enterDescription": "原数据<br />{<br/>\n                address?: string 详细地址<br/>\n                idcode?: string 生份证号<br/>\n                phone?: string 电话号码<br/>\n                receiver?: string 收货人姓名<br/>\n                regions?: string 省市区id<br/>\n                regionsName?: string 省市区<br/>\n                verificationvode?: string 验证码<br/>\n            }",
-          "hideBodyInput": true
+          "hideBodyInput": true,
+          "url": ""
         }
       ],
       "events": {
