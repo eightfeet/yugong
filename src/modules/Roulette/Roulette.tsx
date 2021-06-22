@@ -69,9 +69,29 @@ const Roulette: Modules<RouletteProps> = (props) => {
     }, []);
 
     /**
+     * 保存地址
+     * */
+     const beforeStart = useCallback(
+        async () => {
+            // 这里不需要api设置参数
+            const apiArguments = api?.find(
+                (item) => item.apiId === 'beforeStart'
+            );
+            // 获取抽奖结果数据， 将结果数据中转到全局数据中
+            if (apiArguments && apiArguments.url && apiArguments.method) {
+                return requester(apiArguments || {}, true);
+            }
+        },
+        [api]
+    );
+
+    /**
      * 开始抽奖
      * */
     const startLottery = useCallback(async () => {
+        // 前置
+        await beforeStart();
+
         const apiArguments = api?.find((item) => item.apiId === 'lottery');
         // 获取抽奖结果数据， 将结果数据中转到全局数据中
         if (apiArguments && apiArguments.url && apiArguments.method) {
@@ -83,7 +103,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             prizes[Math.floor(Math.random() * prizes.length - 1)];
         winnerInfo.receiveType = 2;
         return winnerInfo;
-    }, [api, prizes]);
+    }, [api, beforeStart, prizes]);
 
     /**
      * 保存地址
@@ -103,23 +123,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
             }
             // 处理收货地址
             message.warning('没有设置保存地址Api, 当前不可保存！');
-        },
-        [api]
-    );
-
-    /**
-     * 保存地址
-     * */
-     const beforeStart = useCallback(
-        async () => {
-            // 这里不需要api设置参数
-            const apiArguments = api?.find(
-                (item) => item.apiId === 'beforeStart'
-            );
-            // 获取抽奖结果数据， 将结果数据中转到全局数据中
-            if (apiArguments && apiArguments.url && apiArguments.method) {
-                return requester(apiArguments || {}, true);
-            }
         },
         [api]
     );

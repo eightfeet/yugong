@@ -1243,6 +1243,33 @@
           ]
         },
         {
+          "apiId": "beforeStart",
+          "name": "抽奖前置验证(将在每次抽奖前调用)",
+          "description": "",
+          "url": "https://wx-test1.by-health.com/scrm/marketing/getLotteryChance",
+          "method": "POST",
+          "body": [
+            {
+              "type": "number",
+              "data": "1",
+              "fieldName": "activityId",
+              "name": "activityId"
+            },
+            {
+              "name": "memberId",
+              "fieldName": "memberId",
+              "type": "number",
+              "data": "51329646"
+            },
+            {
+              "name": "chancefromcomment",
+              "fieldName": "chancefromcomment",
+              "type": "string",
+              "data": "task_lottery"
+            }
+          ]
+        },
+        {
           "apiId": "lottery",
           "name": "抽奖",
           "description": "通过数据映射/转换数据\n            <br/>\n            数据要求：<br />\n            {\n             data: ...<br />\n             prize: {<br /> \n                  prizeId: [number]奖品id\n                <br />\n                  prizeType: [number]奖品类型 0 未中奖, 1 实物, 2 虚拟\n                <br />\n                  receiveType?: [number]领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡\n                <br />\n                  prizeAlias?: [string]奖品别名\n                <br />\n                  prizeName: [string]奖品名称\n                <br />\n                  awardMsg?: [string]中奖提示信息\n                <br />\n                  gameImg?: [string]游戏图片地址\n                <br />\n                  prizeImg: [string]奖品图片地址\n                <br />\n                  memo?: [string]奖品备注说明\n                <br />\n                 }<br />}"

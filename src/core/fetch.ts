@@ -17,6 +17,7 @@ const requester = async (
 ): Promise<AnyObjectType> => {
     const { method, body, headers, mode, credentials, dataMap, enterMap } =
         apiArguments;
+        
     // 没有Api Url 或者 Method 时 return 未设置，这里不做错误处理（throw Error），
     // “未配置”不能归于错误，不能影响下游操作
     // 下游对结果处理需要注意
@@ -44,9 +45,12 @@ const requester = async (
             }
         }
     }
+    
 
     // 关联body
     let bodyData: any = getArguments(body || []);
+
+    console.log('bodyData', bodyData);
 
     // 解构api时只取第一个参数
     if (isDestructuring && isType(bodyData, 'Object')) {
