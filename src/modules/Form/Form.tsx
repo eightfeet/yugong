@@ -117,7 +117,7 @@ const Form: Modules<FormProps> = (props) => {
                 apiArguments.body = [
                     { type: 'mixed', fieldName: 'formdata', data },
                 ];
-                await requester(apiArguments || {}, true);
+                await requester(apiArguments || {});
             }
             // 执行提交后续事务
             useLifeCycleRef.current?.[0].submit();

@@ -47,19 +47,19 @@ const requester = async (
     }
     
 
-    // 关联body
-    let bodyData: any = getArguments(body || []);
-
-    console.log('bodyData', bodyData);
-
     // 解构api时只取第一个参数
-    if (isDestructuring && isType(bodyData, 'Object')) {
-        let temp = {};
-        Object.keys(bodyData).some((key) => {
-            temp = bodyData[key];
-            return true;
-        });
-        bodyData = temp;
+    /**
+     * bodyData 只有一个属性key时并且bodyData[key]值类型为Object时
+     * 只取bodyData[key]作为参数
+     */
+    let bodyData: any = getArguments(body || []);
+    const bodyDataKeys = Object.keys(bodyData);
+    if (bodyDataKeys.length === 1) {
+        const onlyData = bodyData[bodyDataKeys[0]];
+        const typeofOnlyData = Object.prototype.toString.call(onlyData);
+        if (onlyData && typeofOnlyData === '[object Object]') {
+            bodyData = bodyData[bodyDataKeys[0]];
+        }
     }
 
     // 映射转换
@@ -74,7 +74,7 @@ const requester = async (
             }
         }
     }
-
+    console.log('bodyData2', bodyData);
     return await fetchApi(
         url,
         { method, headers: headersData, body: bodyData, mode, credentials },

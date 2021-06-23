@@ -79,7 +79,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             );
             // 获取抽奖结果数据， 将结果数据中转到全局数据中
             if (apiArguments && apiArguments.url && apiArguments.method) {
-                return requester(apiArguments || {}, true);
+                return requester(apiArguments || {});
             }
         },
         [api]
@@ -95,7 +95,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
         const apiArguments = api?.find((item) => item.apiId === 'lottery');
         // 获取抽奖结果数据， 将结果数据中转到全局数据中
         if (apiArguments && apiArguments.url && apiArguments.method) {
-            return requester(apiArguments || {}, true);
+            return requester(apiArguments || {});
         }
         // 数据转换为下游中奖信息
         message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
@@ -119,7 +119,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
                 apiArguments.body = [
                     { type: 'object', fieldName: 'addressData', data },
                 ];
-                return requester(apiArguments || {}, true);
+                return requester(apiArguments || {});
             }
             // 处理收货地址
             message.warning('没有设置保存地址Api, 当前不可保存！');
