@@ -68,6 +68,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
         }
     }, []);
 
+    // 禁用抽奖
+    const shutdown = useCallback(() => {
+        onChangeDebounce();
+    }, []);
+
     /**
      * 保存地址
      * */
@@ -291,6 +296,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             useConfig,
             setDefaultReceiveInfo,
             setSuccessModal,
+            shutdown,
         }
     );
 

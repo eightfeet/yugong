@@ -140,7 +140,23 @@ const config: {
                     data: 'flipInY',
                 },
             ],
-        }
+        },
+        {
+            name: 'shutdown',
+            description: '禁用抽奖',
+            presettable: false,
+            arguments: [{
+                type: 'boolean',
+                name: '禁用',
+                fieldName: 'prevent',
+                describe: '条件成立时禁止抽奖',
+                data: {
+                    comparableAverageA: 'a',
+                    comparableAverageB: 'b',
+                    method: '==='
+                }
+            }],
+        },
     ],
 
     /**
