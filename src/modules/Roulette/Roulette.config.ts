@@ -1050,6 +1050,11 @@ const config: {
             }`,
             hideBodyInput: true,
         },
+        {
+            apiId: 'getVerificationCode',
+            name: '获取验证码',
+            enterDescription: `获取验证码`
+        },
     ],
 };
 
