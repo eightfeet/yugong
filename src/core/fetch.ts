@@ -21,7 +21,8 @@ const requester = async (
     // 没有Api Url 或者 Method 时 return 未设置，这里不做错误处理（throw Error），
     // “未配置”不能归于错误，不能影响下游操作
     // 下游对结果处理需要注意
-    if (!apiArguments.url || !method) {
+    
+    if (!apiArguments.url || !apiArguments?.url.length || !method) {
         console.warn(`api(${apiArguments.name})缺少url或method`);
         return { api_unset: true };
     }
@@ -74,7 +75,7 @@ const requester = async (
             }
         }
     }
-    console.log('bodyData2', bodyData);
+
     return await fetchApi(
         url,
         { method, headers: headersData, body: bodyData, mode, credentials },

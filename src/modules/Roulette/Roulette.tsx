@@ -4,6 +4,7 @@ import EventEmitter from '~/core/EventEmitter';
 import {
     AnyObjectType,
     AppDataElementsTypes,
+    ArgumentsBoolean,
     ArgumentsNumber,
     ArgumentsString,
 } from '~/types/appData';
@@ -48,6 +49,22 @@ const Roulette: Modules<RouletteProps> = (props) => {
     );
 
     const [prizes, setPrizes] = useState<PrizeTypes[]>([]);
+    const [phoneAndRCardId, setPhoneAndRCardId] = useState<AnyObjectType>();
+    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(
+        mock.receiverInfo
+    );
+    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>(
+        {}
+    );
+
+    // 禁用抽奖
+    const checked = useRef<{
+        /**禁用信息 */
+        message?: string,
+        /**是否禁用 */
+        enabled: boolean
+    }>({enabled: true})
+
 
     // 确定数据是否准备就是，没有准备好时会启用模拟数据
     const prizesIsReadyRef = useRef<boolean>();
@@ -143,7 +160,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
     );
 
 
-    // ===========================================组件参数============================================
+    // ===========================================组件方法============================================
     /**
      * 设置奖品数据, 无数据时使用mock
      */
@@ -158,32 +175,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
             setPrizes(mock.prizes);
         }
     }, []);
-
     
     /**
-     * 开始抽奖
-     * */
-    const startLottery = useCallback(async () => {
-        // step1、前置api 用于抽奖前检查是否满足抽奖条件
-        await apiBeforeStart();
-        // step2、检查是否可以抽奖
-
-        // step3、返回抽奖接口
-        const settedApi = await apiStart();
-        
-        // 没有设置Api时启用mock数据
-        if (!settedApi) {
-            message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
-            const winnerInfo =
-                prizes[Math.floor(Math.random() * prizes.length - 1)];
-            winnerInfo.receiveType = 2;
-            return winnerInfo;
-        }
-    }, [apiBeforeStart, apiStart, prizes]);
-
-    const [phoneAndRCardId, setPhoneAndRCardId] = useState<AnyObjectType>();
-    /**
-     * 活动设置
+     * 设置玩家基本信息
+     * @param phone 设置玩家手机号码
+     * @param cardIdRequest 设置领取奖品时是否需要填写身份证1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证
      */
     const useConfig = useCallback(
         (phone: ArgumentsString, cardIdRequest: ArgumentsNumber) => {
@@ -197,11 +193,13 @@ const Roulette: Modules<RouletteProps> = (props) => {
         []
     );
 
-    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(
-        mock.receiverInfo
-    );
     /**
-     * 设置收货人信息
+     * 设置默认实物奖品邮寄地址，用于地址填写时回填信息
+     * @param receiverPhone 收货电话
+     * @param regionName 收货姓名
+     * @param region 收货人省市区
+     * @param address 收货人详细地址
+     * @param idCard 人身份证id
      */
     const setDefaultReceiveInfo = useCallback(
         (
@@ -229,11 +227,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
         []
     );
 
-    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>(
-        {}
-    );
+    
     /**
-     * 设置弹窗信息
+     * 设置中奖弹窗
+     * @param title 中将弹窗标题
+     * @param animation 中将弹窗动画
      */
     const setSuccessModal = useCallback(
         (title: ArgumentsString, animation: ArgumentsString) => {
@@ -244,6 +242,62 @@ const Roulette: Modules<RouletteProps> = (props) => {
         },
         []
     );
+    
+    /**
+     * 检查抽奖
+     * @param 
+     */
+    const checkedLottery = useCallback(
+        (enabled: ArgumentsBoolean, message: ArgumentsString) => {
+            const argEnabled = getArgumentsItem(enabled) as boolean;
+            const argMessage = getArgumentsItem(message) as string;
+            checked.current = {
+                enabled: argEnabled,
+                message: argMessage
+            }
+        },
+        [],
+    )
+
+    
+    // ==============================================end=============================================
+    // hank 等待
+    const setDelayStart = useCallback(
+        () => new Promise(res => setTimeout(() => {
+            dispatchEventRef.current?.onStart();
+            res(null);
+        })),
+        [],
+    )
+
+    /**
+     * 开始抽奖
+     * */
+     const startLottery = useCallback(async () => {
+        // step1、执行前置api 用于抽奖前检查是否满足抽奖条件
+        await apiBeforeStart();
+
+        // step2 执行抽奖事件
+        await setDelayStart();
+        
+        // step3、检查状态是否可以抽奖
+        if (!checked.current.enabled) {
+            console.log('没有权限，请勿抽奖！');
+            message.error(checked.current?.message || '暂无抽奖权限！');
+            throw checked.current?.message;
+        }
+        // step4、返回抽奖接口
+        const settedApi = await apiStart();
+        
+        // 没有设置Api时启用mock数据
+        if (!settedApi) {
+            message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
+            const winnerInfo =
+                prizes[Math.floor(Math.random() * prizes.length - 1)];
+            winnerInfo.receiveType = 2;
+            return winnerInfo;
+        }
+    }, [apiBeforeStart, apiStart, checked, prizes, setDelayStart]);
 
     const gamePrames = useMemo(
         () => ({
@@ -299,6 +353,9 @@ const Roulette: Modules<RouletteProps> = (props) => {
      */
     const [game, nodes] = useGame(gamePrames);
 
+    /**
+     * 抽奖方法
+     */
     const lottery = useCallback(() => {
         game?.core.lottery();
     }, [game]);
@@ -355,6 +412,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
         {
             setRunningPrizes,
             lottery,
+            checkedLottery,
             useConfig,
             setDefaultReceiveInfo,
             setSuccessModal,

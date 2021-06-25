@@ -142,19 +142,25 @@ const config: {
             ],
         },
         {
-            name: 'shutdown',
-            description: '禁用抽奖',
+            name: 'checkedLottery',
+            description: '抽奖前置检查',
             presettable: false,
             arguments: [{
                 type: 'boolean',
                 name: '禁用',
-                fieldName: 'prevent',
-                describe: '条件成立时禁止抽奖',
+                fieldName: 'enabled',
+                describe: '条件不成立时禁止抽奖',
                 data: {
                     comparableAverageA: 'a',
-                    comparableAverageB: 'b',
+                    comparableAverageB: 'a',
                     method: '==='
                 }
+            },{
+                type: 'string',
+                name: '信息',
+                fieldName: 'message',
+                describe: '提示信息',
+                data: ""
             }],
         },
     ],
