@@ -249,7 +249,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
         loading.show();
         const result = await requester(apiArguments, isDestructuring);
         loading.hide();
-
+        
         // 当前Api未设置则返回空：api的url或方法未定义时定义为空
         if (result.api_unset) {
             return {};

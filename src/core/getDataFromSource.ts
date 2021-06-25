@@ -2,9 +2,9 @@ import get from "lodash/get";
 import { store } from '~/redux/store';
 import { AnyObjectType } from "~/types/appData";
 const saferEval = require('safer-eval');
-
+//  const regex = new RegExp(`${escapeRegExp(start)}([\\S\\s]+?)${escapeRegExp(end)}`, 'gi');
 // js规则:js{{}}
-const regexjswrap = /js\{\{(.[\w|\d|\-|/|.|\s|:*|+|\-|*|/|>|||<|"|?|=|!|(|)|,)]+?)\}\}/gm;
+const regexjswrap = /js\{\{([^}]+)\}\}/gm;
 // 规则:{{}}
 const regexwrap = /\{\{(.[\w|\d|\-|/|.|\s|:*]+?)\}\}/gm;
 // 规则:首尾空格
@@ -18,6 +18,12 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
       return result
   }
   ruleList?.forEach((item) => {
+    // 是否是完整数据
+    let isCompleteData = false;
+    if (item === result) {
+      isCompleteData = true;
+    }
+
     // 移除{{}} 或 js{{}}
     let key;
     let value;
@@ -28,12 +34,16 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
     // js 表达式
     if (isJs) {
       key = item.replace(regexjswrap, "$1");
+      console.log('key', key);
+      
       // 尝试运行表达式
       try {
         // 将"this"字符转化为"data"
         key = key.replace(/this/g, 'data');
+        console.log(item, key);
         value = saferEval(key, {data, runningTimes})
       } catch (error) {
+        console.log(error);
         // 无法输入时直接使用key
         value = key;
       }
@@ -53,8 +63,7 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
         }
         // 取值
         value = get(data, el);
-        
-        if (!!value) {
+        if (!!value || value === 0) {
           return true
         } else {
           if (index === (keyArray.length - 1)) {value = element}
@@ -64,10 +73,10 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
     }
 
     const type = Object.prototype.toString.call(value);
-    if (type === '[object Object]' || type === '[object Array]') {
+    if (type === '[object Object]' || type === '[object Array]' || isCompleteData) {
       result = value;
     } else {
-      result = result.replace(item, `${value || ""}`);
+      result = result.replace(item, (value || value === 0) ? value : '');
     }    
   });
   return result;
@@ -97,9 +106,8 @@ export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyO
   }
 
   const ruleList = data.match(regexwrap);
+  result = matchRule(ruleList, result, dataSource);
 
-  result = matchRule(ruleList, result, dataSource)
-  
   return result;
 };
 
