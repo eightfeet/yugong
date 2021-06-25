@@ -294,7 +294,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
             message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
             const winnerInfo =
                 prizes[Math.floor(Math.random() * prizes.length - 1)];
-            winnerInfo.receiveType = 2;
             return winnerInfo;
         }
     }, [apiBeforeStart, apiStart, checked, prizes, setDelayStart]);
@@ -361,7 +360,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
     }, [game]);
 
     /**
-     * 高频编辑防抖处理
+     * 编辑弹窗样式时可视化弹窗
+     * 做高频编辑防抖处理
      */
     const onChangeDebounce = useMemo(
         () =>
@@ -392,11 +392,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
         editorShow();
     }, [editorShow]);
 
-    // 禁用抽奖
-    const shutdown = useCallback(() => {
-        onChangeDebounce();
-    }, [onChangeDebounce]);
-
+    // lifeCycle
     const [dispatchEvent] = useLifeCycle(
         moduleId,
         {
@@ -415,11 +411,10 @@ const Roulette: Modules<RouletteProps> = (props) => {
             checkedLottery,
             useConfig,
             setDefaultReceiveInfo,
-            setSuccessModal,
-            shutdown,
+            setSuccessModal
         }
     );
-
+    // ref存储
     dispatchEventRef.current = dispatchEvent;
 
     // API请求 注意依赖关系
