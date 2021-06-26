@@ -110,6 +110,26 @@
                 "data": ""
              }
           ]
+       },
+       {
+          "name": "globalMessage",
+          "description": "消息广播",
+          "arguments": [
+             {
+                "type": "number",
+                "name": "类型",
+                "fieldName": "messageType",
+                "describe": "信息类型，1:消息，2:成功，3:警告，4:错误",
+                "data": ""
+             },
+             {
+                "type": "string",
+                "name": "消息",
+                "fieldName": "messageStr",
+                "describe": "弹窗信息",
+                "data": ""
+             }
+          ]
        }
     ]
  }

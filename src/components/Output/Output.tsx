@@ -27,6 +27,8 @@ import { initTrack, trackEvent, trackPageView } from "~/core/tracking";
 import usePostMessage from "~/hooks/usePostMessage";
 import useLifeCycle from "~/hooks/useLifeCycle";
 import config from "./Output.config.json";
+import message from '~/components/Message';
+import { ArgumentsItem } from "~/types/appData";
 
 interface Props {
   pageData: RootState["pageData"];
@@ -99,6 +101,34 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     }
   }, []);
 
+  // message
+  const globalMessage = useCallback(
+    (messageType: ArgumentsItem, messageStr: ArgumentsItem) => {
+        const argMessageType = getArgumentsItem(messageType) as number;
+        const argMessageStr = getArgumentsItem(messageStr) as string;
+        if (!argMessageStr?.length) {
+          return;
+        }
+        switch (argMessageType) {
+          case 1:
+            message.info(argMessageStr);
+            break;
+          case 2:
+            message.success(argMessageStr);
+            break;
+          case 3:
+            message.warning(argMessageStr);
+            break;
+          case 4:
+            message.error(argMessageStr);
+            break;
+          default:
+            break;
+        }
+    },
+    [],
+  );
+
   const sleepFor = useCallback((sleepTime) => {
     const argSleepTime = (getArgumentsItem(sleepTime) as number) || 1000;
     return new Promise<void>((resolve) =>
@@ -112,7 +142,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   const [, eventEmitter] = useLifeCycle(
     "global",
     { mount: "初始化", unmount: "卸载" },
-    { injectGlobal, redirect, trackPageViewBD, trackEventBD, sleepFor }
+    { injectGlobal, redirect, trackPageViewBD, trackEventBD, sleepFor, globalMessage }
   );
 
   const onMount = useCallback(async () => {

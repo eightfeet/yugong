@@ -192,7 +192,7 @@ const ApiDataMap: React.FC<Props> = ({
                                     <br /> {`{ foo: bar }`} <br />
                                     foo=新数据 key；bar=源数据 key<br /><br />
                                     {`{`}<br />
-                                    {Object.keys(item?.map?.data || {}).map(key => <div> &nbsp; {key}: {item?.map?.data[key]}</div>)}
+                                    {Object.keys(item?.map?.data || {}).map(key => <div key={key}> &nbsp; {key}: {item?.map?.data[key]}</div>)}
                                     {`}`}
                                 </div>
                             }
