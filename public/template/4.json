@@ -1347,6 +1347,39 @@
               }
             ]
           }
+        ],
+        "unmount": [],
+        "onEnd": [
+          {
+            "name": "global/globalMessage",
+            "arguments": [
+              {
+                "type": "boolean",
+                "name": "条件",
+                "fieldName": "condition",
+                "describe": "前置条件，条件成立时才显示信息",
+                "data": {
+                  "comparableAverageA": "{{lotteryResult}}",
+                  "comparableAverageB": "2",
+                  "method": ">="
+                }
+              },
+              {
+                "type": "number",
+                "name": "类型",
+                "fieldName": "messageType",
+                "describe": "信息类型，1:消息，2:成功，3:警告，4:错误",
+                "data": "4"
+              },
+              {
+                "type": "string",
+                "name": "消息",
+                "fieldName": "messageStr",
+                "describe": "弹窗信息",
+                "data": "{{lotteryResultMsg}}"
+              }
+            ]
+          }
         ]
       },
       "api": [
@@ -1425,7 +1458,21 @@
               "data": "1-29O97N7"
             }
           ],
-          "method": "POST"
+          "method": "POST",
+          "successPublic": [
+            {
+              "type": "string",
+              "data": "{{response.lotteryResultMsg}}",
+              "fieldName": "lotteryResultMsg",
+              "name": "lotteryResultMsg"
+            },
+            {
+              "name": "lotteryResult",
+              "fieldName": "lotteryResult",
+              "type": "string",
+              "data": "{{response.result}}"
+            }
+          ]
         },
         {
           "apiId": "saveAddress",

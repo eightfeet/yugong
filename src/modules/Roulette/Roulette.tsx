@@ -73,6 +73,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
         mount: () => void;
         unmount: () => void;
         onStart: () => void;
+        onEnd: () => void;
         onCancel: () => void;
         onEnsure: () => void;
         onShowSuccess: () => void;
@@ -288,7 +289,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
         }
         // step4、返回抽奖接口
         const settedApi = await apiStart();
-        
+        dispatchEventRef.current?.onEnd();
         // 没有设置Api时启用mock数据
         if (!settedApi) {
             message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
@@ -399,6 +400,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             mount: '初始化',
             unmount: '卸载',
             onStart: '抽奖',
+            onEnd: '抽奖结束',
             onCancel: '放弃中奖/关闭弹窗',
             onEnsure: '确认中奖结果',
             onShowSuccess: '显示中奖',

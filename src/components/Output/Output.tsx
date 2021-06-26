@@ -103,10 +103,11 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
   // message
   const globalMessage = useCallback(
-    (messageType: ArgumentsItem, messageStr: ArgumentsItem) => {
+    (condition: ArgumentsItem, messageType: ArgumentsItem, messageStr: ArgumentsItem) => {
+        const argCondition = getArgumentsItem(condition) as boolean;
         const argMessageType = getArgumentsItem(messageType) as number;
         const argMessageStr = getArgumentsItem(messageStr) as string;
-        if (!argMessageStr?.length) {
+        if (!argMessageStr?.length || !argCondition) {
           return;
         }
         switch (argMessageType) {

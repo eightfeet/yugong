@@ -182,6 +182,10 @@ const config: {
             description: '抽奖',
         },
         {
+            name: 'onEnd',
+            description: '抽奖结束',
+        },
+        {
             name: 'onCancel',
             description: '放弃中奖结果/关闭弹窗',
         },

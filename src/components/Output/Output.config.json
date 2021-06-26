@@ -116,6 +116,17 @@
           "description": "消息广播",
           "arguments": [
              {
+               "type": "boolean",
+               "name": "条件",
+               "fieldName": "condition",
+               "describe": "前置条件，条件成立时才显示信息",
+               "data":{
+                  "comparableAverageA":"0",
+                  "comparableAverageB":"0",
+                  "method":"==="
+               }
+             },
+             {
                 "type": "number",
                 "name": "类型",
                 "fieldName": "messageType",
