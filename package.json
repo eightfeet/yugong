@@ -60,8 +60,7 @@
     "build:uat": "env-cmd -f .env.uat react-app-rewired build",
     "build:prod": "env-cmd -f .env.prod react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "createModule": "sh ./creatModule.sh"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
