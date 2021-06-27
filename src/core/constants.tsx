@@ -63,6 +63,15 @@ export const LOTTERY = [
   }
 ]
 
+export const MSGBROADCAST = [
+  {
+    moduleName: "Broadcast",
+    title: "Broadcast",
+    discribe: "滚动播报",
+    icon: <Icon component={IconRoulette} />,
+  }
+]
+
 export const MODULES = [
   {
     name: "base",
@@ -73,6 +82,11 @@ export const MODULES = [
     name: "lottery",
     describe: "抽奖组件",
     modules: LOTTERY,
+  },
+  {
+    name: "message",
+    describe: "消息广播",
+    modules: MSGBROADCAST,
   },
 ];
 

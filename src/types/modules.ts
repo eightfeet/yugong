@@ -108,6 +108,16 @@ interface Necessary<N, D> {
 export type ComExposeEvents = [Necessary<'mount', "初始化">, Necessary<'unmount', '卸载'>, ...ExposeEvents[]];
 
 /**
+ * 静态
+ */
+export interface ModulesStatic {
+  exposeEvents?: ComExposeEvents;
+  exposeFunctions?: ExposeFunctions[];
+  exposeApi?: ExposeApi[];
+  exposeDefaultProps?: ExposeDefaultProps;
+}
+
+/**
  * 静态事件导出
  * @export
  * @interface Modules
@@ -135,3 +145,4 @@ export interface Modules<TProps={}> extends React.FC<TProps & {eventEmitter: Eve
   exposeApi?: ExposeApi[];
   exposeDefaultProps?: ExposeDefaultProps;
 }
+
