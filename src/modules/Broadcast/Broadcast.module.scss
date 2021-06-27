@@ -1,0 +1,113 @@
+.broadcast {
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    margin: 0;
+    padding: 0 20px;
+    list-style: none;
+    text-align: right;
+    font-size: 24px;
+    justify-content: flex-end;
+    pointer-events: none;
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+    backface-visibility: hidden;
+  }
+  
+  
+  .message {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    margin: 6px 0;
+    padding: 5px 16px;
+    padding-left: 46px;
+    position: relative;
+    line-height: 36px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transform: translateZ(0);
+    transform: rotateZ(360deg);
+    color: #fff;
+    border-radius: 40px;
+    background: rgba(7, 66, 145, 0.55);
+  
+    & > span {
+      color: #ffed24;
+    }
+  }
+  
+  .fade {
+    transition: all ease-in 300ms;
+    background-color: rgba(7, 66, 145, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    & > span {
+      color: rgba(255, 237, 36, 0.486);
+    }
+    & > img {
+      opacity: 0.6;
+    }
+  }
+
+  :global(.broadcast) {
+    position: absolute;
+    right: 0;
+    top: 1.3rem;
+    height: 5rem;
+    z-index: 2;
+  }
+  
+  :global(.broadcast-enter) {
+    max-height: 0;
+    p {
+      background-color: rgba(7, 66, 145, 0.2 * 0.6);
+      color: rgba(255, 255, 255, 0.6 * 0.6);
+      & > span {
+        color: rgba(255, 237, 36, 0.486 * 0.6);
+      }
+
+      & > img {
+        opacity: 0.6;
+      }
+    }
+    
+  }
+  
+  :global(.broadcast-enter-active) {
+    max-height: 72px;
+    transition: max-height ease-in 400ms, all ease-in 300ms;
+    p {
+      transition: all ease-in 300ms;
+      background-color: rgba(7, 66, 145, 0.2);
+      color: rgba(255, 255, 255, 0.6);
+      & > span {
+        color: rgba(255, 237, 36, 0.486);
+      }
+      & > img {
+        opacity: 0.1;
+      }
+    }
+  }
+  
+  :global(.broadcast-exit-active) {
+    transition: all ease-in 300ms;
+    p {
+      background-color: rgba(7, 66, 145, 0);
+      color: rgba(255, 255, 255, 0);
+      & > span {
+        color: rgba(255, 237, 36, 0);
+      }
+      & > img {
+        opacity: 0.05;
+      }
+    }
+  }
+
+  .headphoto {
+      left: 8px;
+      display: block;
+      height: 30px;
+      width: 30px;
+      top: 6px;
+      border-radius: 30px;
+      position: absolute;
+  }
