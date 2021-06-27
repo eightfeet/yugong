@@ -29,9 +29,9 @@ if [ ! -d $PATHUrl$NAME ]; then
     cp $PATHTPL/ModuleTpl.txt $PATHUrl$NAME/$NAME.tsx
     # replace
     sed -i '' -e "s/ModuleTpl/"${NAME}"/g" $PATHUrl$NAME/$NAME.tsx
-    echo -e $SUCCESS'模块'$NAME'已创建！'$RES  ctrl+click $LINK $PATHUrl$NAME $RES
+    echo -e $SUCCESS'模块'$NAME'已创建！' $LINK $PATHUrl$NAME $RES
     echo
     exit
 fi
-    echo -e $WRAM'模块'$NAME'已存在，请勿重复创建！'$RES  ctrl+click $LINK $PATHUrl$NAME $RES
+    echo -e $WRAM'模块'$NAME'已存在，请勿重复创建！'$RES  $LINK $PATHUrl$NAME $RES
     echo
