@@ -6,6 +6,7 @@ if [ -z $NAME ]; then
 fi
 mkdir $PATHUrl$NAME;
 touch $PATHUrl$NAME/index.ts;
+echo "Hello,${y_name}" >> $PATHUrl$NAME/index.ts;
 touch $PATHUrl$NAME/$NAME.config.ts;
 touch $PATHUrl$NAME/$NAME.useStyles.ts;
 touch $PATHUrl$NAME/$NAME.tsx;

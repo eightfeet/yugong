@@ -1,0 +1,2 @@
+import ModuleTpl from './ModuleTpl';
+export default ModuleTpl;
