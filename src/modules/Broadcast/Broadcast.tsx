@@ -23,7 +23,8 @@ let timerId: any;
 
 const Broadcast: Modules<BroadcastProps> = (props) => {
   const { style, moduleId} = props;
-
+  // 列表
+  const [list, setList, listRef] = useRefState<string[]>([]);
   // 等待队列
   const [waitQueue, setWaitQueue, waitQueueRef] = useRefState<Queue[]>([]);
   // 队列
@@ -42,6 +43,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       const argMessages = getArgumentsItem(messages) as string[];
       const argCounter = getArgumentsItem(counter) as number;
       const argInterval = getArgumentsItem(interval) as number;
+      setList(argMessages)
       // setInterval 间隔时长
       if (argInterval) setInterval(argInterval);
       // setIntersection 限制交叉条目
@@ -54,7 +56,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       
       console.log('datas', queueData, queueWaiteData);
     },
-    [intersection, setQueue, setWaitQueue],
+    [intersection, setList, setQueue, setWaitQueue],
   )
 
   // inject class from jss
@@ -122,13 +124,16 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const opacity = 1 / queue.length;
   
   return (
-    <Wrapper {...props} maxWidth maxHeight>
-      <div className={classNames(s.wrap, userClass.wrap)}>
-        <ul className={s.msglist} ref={listWrapRef} style={{top: itemHeight * (counter.current + 1) * -1}}>
-          {queue?.map((item, index) => (<li key={index} style={{top: itemHeight * item.counter, opacity: (index === queue.length - 1 || index === 0) ? 0 : opacity*index }}>
-            {index} - {item.message}
-          </li>))}
-        </ul>
+    <Wrapper {...props}>
+      <div className={s.display} style={{height:itemHeight*intersection}}>
+        <div className={s.listwrap} style={{height: list.length*itemHeight*2}}>
+          <ul ref={listWrapRef}>
+            {list.map((item, index) => <li key={`top${index}`}>{item}</li>)}
+          </ul>
+          <ul>
+            {list.map((item, index) => <li key={`buttom${index}`}>{item}</li>)}
+          </ul>
+        </div>
       </div>
     </Wrapper>
   );
