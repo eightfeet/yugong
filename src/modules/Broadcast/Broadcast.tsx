@@ -34,6 +34,8 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const [interval, setInterval] = useState<number>(2500);
   // 当前索引位
   const counter = useRef<number>(0);
+  // listwrap
+  const listWrapRef = useRef<any>();
 
   const setMessages =  useCallback(
     (messages: ArgumentsItem, counter: ArgumentsItem, interval: ArgumentsItem) => {
@@ -86,7 +88,13 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const loop = useCallback((interval) => {
     const Q = queueRef.current[0];
     const WQ = waitQueueRef.current[0];
-
+    counter.current++;
+    const lastIndex = counter.current + waitQueueRef.current.length-1;
+    
+    if (Q) {
+      Q.counter = lastIndex;
+    }
+    
     updateQueue(setQueue, WQ)
     updateQueue(setWaitQueue, Q)
 
@@ -109,28 +117,17 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       }
     };
   }, []);
-
+  
+  const itemHeight = (listWrapRef.current?.children[0]?.offsetHeight || 0) as number;
+  
   return (
     <Wrapper {...props} maxWidth maxHeight>
-      <div className={userClass.wrap}>
-        <TransitionGroup component="ul" className={classNames(s.broadcast)}>
-          {queue?.map((item, index) => (
-            <CSSTransition
-              key={item.counter}
-              timeout={400}
-            >
-              <li>
-                <p
-                  className={classNames(s.message, {
-                    [s.fade]: index !== queue.length - 1,
-                  })}
-                >
-                  {item.message}
-                </p>
-              </li>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+      <div className={classNames(s.wrap, userClass.wrap)}>
+        <ul className={s.msglist} ref={listWrapRef} style={{top: itemHeight * (counter.current + 1) * -1}}>
+          {queue?.map((item, index) => (<li key={index} style={{top: itemHeight * item.counter}}>
+            {item.message}
+          </li>))}
+        </ul>
       </div>
     </Wrapper>
   );
