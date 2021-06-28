@@ -37,6 +37,10 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const counter = useRef<number>(0);
   // listwrap
   const listWrapRef = useRef<any>();
+  const [listWrapStyle, setListWrapStyle, listWrapStyleRef] = useRefState<React.CSSProperties>({height: 0});
+  const [listItemHeight, setListItemHeight, listItemHeightRef] = useRefState<number>(0);
+  const currentItem = useRef(0)
+  
 
   const setMessages =  useCallback(
     (messages: ArgumentsItem, counter: ArgumentsItem, interval: ArgumentsItem) => {
@@ -88,24 +92,26 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   )
   
   const loop = useCallback((interval) => {
-    const Q = queueRef.current[0];
-    const WQ = waitQueueRef.current[0];
+    // itemHeight
+    const itemHeight = (listWrapRef.current?.children[0]?.offsetHeight || 0) as number;
+    const transition = {transition: 'all ease-in 300ms'};
+    setListItemHeight(itemHeight);
+    setListWrapStyle({
+      height: list.length*listItemHeight*2,
+      top: currentItem.current*listItemHeight*-1,
+      ...transition
+    });
+    currentItem.current++;
     counter.current++;
-    const lastIndex = counter.current + waitQueueRef.current.length-1;
     
-    if (Q) {
-      Q.counter = lastIndex;
-    }
+    console.log('counter.current', counter.current);
     
-    updateQueue(setQueue, WQ)
-    updateQueue(setWaitQueue, Q)
-
     if (refTimerId.current) {
       clearTimeout(refTimerId.current);
     }
     refTimerId.current = setTimeout(loop, interval, interval);
     
-  }, [queueRef, setQueue, setWaitQueue, updateQueue, waitQueueRef]);
+  }, [list.length, listItemHeight, setListItemHeight, setListWrapStyle]);
 
   // 运行
   useEffect(() => {
@@ -119,14 +125,12 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       }
     };
   }, []);
-  
-  const itemHeight = (listWrapRef.current?.children[0]?.offsetHeight || 0) as number;
-  const opacity = 1 / queue.length;
-  
+    
   return (
     <Wrapper {...props}>
-      <div className={s.display} style={{height:itemHeight*intersection}}>
-        <div className={s.listwrap} style={{height: list.length*itemHeight*2}}>
+      {currentItem.current}
+      <div className={s.display} style={{height:listItemHeight*intersection}}>
+        <div className={s.listwrap} style={{...listWrapStyle}}>
           <ul ref={listWrapRef}>
             {list.map((item, index) => <li key={`top${index}`}>{item}</li>)}
           </ul>

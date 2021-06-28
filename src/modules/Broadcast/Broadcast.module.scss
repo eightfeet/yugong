@@ -132,6 +132,7 @@
 
   .listwrap {
     height: 0;
+    position: absolute;
     overflow: hidden;
     >ul {
       padding: 0;
