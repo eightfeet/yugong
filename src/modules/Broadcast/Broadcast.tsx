@@ -119,13 +119,14 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   }, []);
   
   const itemHeight = (listWrapRef.current?.children[0]?.offsetHeight || 0) as number;
+  const opacity = 1 / queue.length;
   
   return (
     <Wrapper {...props} maxWidth maxHeight>
       <div className={classNames(s.wrap, userClass.wrap)}>
         <ul className={s.msglist} ref={listWrapRef} style={{top: itemHeight * (counter.current + 1) * -1}}>
-          {queue?.map((item, index) => (<li key={index} style={{top: itemHeight * item.counter}}>
-            {item.message}
+          {queue?.map((item, index) => (<li key={index} style={{top: itemHeight * item.counter, opacity: (index === queue.length - 1 || index === 0) ? 0 : opacity*index }}>
+            {index} - {item.message}
           </li>))}
         </ul>
       </div>
