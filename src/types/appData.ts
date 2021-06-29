@@ -288,6 +288,7 @@ export interface DisplayTypesOfStyleItems {
   display?: string;
   overflow?: string;
   boxSizing?: string;
+  pointerEvents?: string;
 }
 
 export interface BackgroundGradientTypesOfStyleItems {

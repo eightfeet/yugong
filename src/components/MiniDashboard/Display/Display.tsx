@@ -26,7 +26,8 @@ type ChangeType =
   | "bottom"
   | "display"
   | "boxSizing"
-  | "overflow";
+  | "overflow"
+  | "pointerEvents";
 
 const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
   const [displayData, setDisplayData] = useState<DisplayTypesOfStyleItems>({});
@@ -46,7 +47,8 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     padding,
     display,
     overflow,
-    boxSizing
+    boxSizing,
+    pointerEvents
   } = displayData;
 
   useEffect(() => {
@@ -178,7 +180,12 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
         <Col span={12}>
-          &nbsp;
+          <Select
+            label="事件响应"
+            value={pointerEvents}
+            optionsData={{ auto: "自动", none: "不接受任何事件"}}
+            onChange={onChangeDisplay("pointerEvents")}
+          />
         </Col>
       </Row>
       {position === "absolute" || position === "fixed" ? (
