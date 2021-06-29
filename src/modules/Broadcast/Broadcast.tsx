@@ -159,7 +159,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
     )
 
     return (
-        <Wrapper {...props} maxWidth>
+        <Wrapper {...props} maxWidth itemAlign="bottom">
             <div
                 className={s.display}
                 style={{ height: listItemHeight * intersection }}
@@ -178,7 +178,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                         {list.map((item, index) => (
                             <li key={`buttom${index}`} style={{opacity: setItemAlph(index)}}>
                                 <div>
-                                    <div className={classNames(userClass.item, s.item)}>{item}</div>
+                                    <div className={classNames(userClass.item, s.item)} style={{maxWidth:listWrapRef.current?.offsetWidth}}>{item}</div>
                                 </div>
                             </li>
                         ))}
