@@ -39,7 +39,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const listWrapRef = useRef<any>();
   const [listWrapStyle, setListWrapStyle, listWrapStyleRef] = useRefState<React.CSSProperties>({height: 0});
   const [listItemHeight, setListItemHeight, listItemHeightRef] = useRefState<number>(0);
-  const currentItem = useRef(0)
+  const currentItem = useRef(0);
   
 
   const setMessages =  useCallback(
@@ -94,18 +94,18 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   const loop = useCallback((interval) => {
     // itemHeight
     const itemHeight = (listWrapRef.current?.children[0]?.offsetHeight || 0) as number;
-    const transition = {transition: 'all ease-in 300ms'};
-    setListItemHeight(itemHeight);
-    setListWrapStyle({
+    const displayStyle = (s: number) => ({
+      transition: `all ease-in ${s}ms`,
       height: list.length*listItemHeight*2,
       top: currentItem.current*listItemHeight*-1,
-      ...transition
     });
+
+    setListItemHeight(itemHeight);
+    setListWrapStyle(displayStyle(300));
+    
     currentItem.current++;
-    counter.current++;
-    
-    console.log('counter.current', counter.current);
-    
+    currentItem.current = list.length ? currentItem.current % list.length : 0;
+
     if (refTimerId.current) {
       clearTimeout(refTimerId.current);
     }
@@ -127,7 +127,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   }, []);
     
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} maxWidth>
       {currentItem.current}
       <div className={s.display} style={{height:listItemHeight*intersection}}>
         <div className={s.listwrap} style={{...listWrapStyle}}>
