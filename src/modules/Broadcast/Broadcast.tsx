@@ -20,7 +20,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
     // 列表
     const [list, setList, listRef] = useRefState<string[]>([]);
     // 限制交叉条目
-    const [intersection, setIntersection] = useState<number>(3);
+    const [intersection, setIntersection, intersectionRef] = useRefState<number>(3);
     // 间隔时长
     const [interval, setInterval] = useState<number>(2500);
     // listwrap
@@ -52,7 +52,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                         : argCounter
                 );
         },
-        [setList]
+        [setIntersection, setList]
     );
 
     // inject class from jss
@@ -126,6 +126,20 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
         };
     }, []);
 
+    const setItemAlph = useCallback(
+      (index) => {
+        const step = 100 / intersectionRef.current;
+        
+        if (index === currentItem.current) {
+          console.log(step);
+          return 1
+        }
+
+        return 0.05
+      },
+      [intersectionRef],
+    )
+
     return (
         <Wrapper {...props} maxWidth>
             <div
@@ -135,7 +149,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                 <div className={s.listwrap} style={listWrapStyle}>
                     <ul ref={listWrapRef}>
                         {list.map((item, index) => (
-                            <li key={`top${index}`} style={{opacity: 1/(intersection + index)}}>
+                            <li key={`top${index}`} style={{opacity: setItemAlph(index)}}>
                                 <div>
                                     <div className={userClass.item}>{item}</div>
                                 </div>
@@ -144,7 +158,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                     </ul>
                     <ul>
                         {list.map((item, index) => (
-                            <li key={`buttom${index}`} style={{opacity: currentItem.current === index ? '1' : '0.5'}}>
+                            <li key={`buttom${index}`} style={{opacity: setItemAlph(index)}}>
                                 <div>
                                     <div className={userClass.item}>{item}</div>
                                 </div>
