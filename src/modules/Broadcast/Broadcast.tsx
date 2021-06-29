@@ -9,6 +9,7 @@ import s from './Broadcast.module.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import useRefState from '~/hooks/useRefState';
+import classNames from 'classnames';
 
 export interface BroadcastProps extends AppDataElementsTypes {
     id: string;
@@ -40,7 +41,8 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
         ) => {
             const argMessages = getArgumentsItem(messages) as string[];
             const argCounter = getArgumentsItem(counter) as number;
-            const argInterval = getArgumentsItem(interval) as number;
+            let argInterval = getArgumentsItem(interval) as number;
+            if (argInterval < 300) argInterval = 300;
             setList(argMessages);
             // setInterval 间隔时长
             if (argInterval) setInterval(argInterval);
@@ -126,18 +128,34 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
         };
     }, []);
 
-    const setItemAlph = useCallback(
-      (index) => {
-        const step = 100 / intersectionRef.current;
-        
-        if (index === currentItem.current) {
-          console.log(step);
-          return 1
+    const getAlphStep = useCallback(
+      (counter: number) => {
+        const step = 100 / counter;
+        const steps = []
+        for (let ind = 1; ind <= counter; ind++) {
+          steps.push(ind*step*0.01);
         }
-
-        return 0.05
+        return steps;
       },
-      [intersectionRef],
+      [],
+    )
+
+    const setItemAlph = useCallback(
+      (currentIndex: number) => {
+        const alphs = getAlphStep(intersectionRef.current);
+        let alph = 0
+        alphs.some((item, index) => {
+          const targetIndex = currentItem.current + index;
+          if (currentIndex === targetIndex % listRef.current.length) {
+            alph = item;
+            return true;
+          }
+          return false;
+        })
+        
+        return alph
+      },
+      [getAlphStep, intersectionRef, listRef],
     )
 
     return (
@@ -151,7 +169,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                         {list.map((item, index) => (
                             <li key={`top${index}`} style={{opacity: setItemAlph(index)}}>
                                 <div>
-                                    <div className={userClass.item}>{item}</div>
+                                    <div className={classNames(userClass.item, s.item)} style={{maxWidth:listWrapRef.current?.offsetWidth}}>{item}</div>
                                 </div>
                             </li>
                         ))}
@@ -160,7 +178,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
                         {list.map((item, index) => (
                             <li key={`buttom${index}`} style={{opacity: setItemAlph(index)}}>
                                 <div>
-                                    <div className={userClass.item}>{item}</div>
+                                    <div className={classNames(userClass.item, s.item)}>{item}</div>
                                 </div>
                             </li>
                         ))}
