@@ -138,6 +138,14 @@
     >ul {
       padding: 0;
       margin: 0;
+      >li {
+        margin: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: all ease-in 300ms;
+      }
     }
   }
 

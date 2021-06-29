@@ -63,7 +63,7 @@ const config: ModulesStatic = {
         },
         style: {
             basic: {},
-            wrap: {},
+            item: {},
         },
         styleDescription: [
             {
@@ -71,8 +71,8 @@ const config: ModulesStatic = {
                 value: 'basic',
                 children: [
                     {
-                        title: '包裹器',
-                        value: 'wrap',
+                        title: '条',
+                        value: 'item',
                         children: [],
                     },
                 ],
