@@ -7,7 +7,6 @@ import {
 import { store } from '~/redux/store';
 import { compilePlaceholderFromDataSource as getResult } from './getDataFromSource';
 import loading from './loading';
-import isType from './helper/isType';
 import message from '~/components/Message';
 import lodash from 'lodash';
 
@@ -254,9 +253,10 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
         if (result.api_unset) {
             return {};
         }
-
+        console.log('result', result);
+        
         // 处理请求结果
-        // 成功发布
+        // 成功发布（注意这是映射过的结果）
         if (successPublic?.length) {
             const successPublicResult = getArguments(successPublic, result);
             setRunningTimes(successPublicResult);

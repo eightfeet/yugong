@@ -287,8 +287,10 @@ const Roulette: Modules<RouletteProps> = (props) => {
             message.error(checked.current?.message || '暂无抽奖权限！');
             throw checked.current?.message;
         }
+        
         // step4、返回抽奖接口
         const settedApi = await apiStart();
+        
         dispatchEventRef.current?.onEnd();
         // 没有设置Api时启用mock数据
         if (!settedApi) {
