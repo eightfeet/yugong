@@ -82,7 +82,7 @@
         "url": "https://wx-test1.by-health.com/scrm/employee/findEmployeeByJwt",
         "method": "GET",
         "headers": {
-          "Authorization": "Bearer {{search.jwt}}"
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MjUxMDI0MzcsImV4cCI6MTYyNTcwNzIzNywiaXNzIjoiRW1wbG95ZWUiLCJzdWIiOiI1MTMyOTY0NiJ9.mIwDvqBV36NANh1k5rwibZDM5j6tizjGshNRHfBLdmLn5fQAf07sz_9PwFzoORVojEGDd_wT2XBiMIpzwCe32w"
         },
         "dataMap": [
           {

@@ -13,7 +13,7 @@ const Elements: React.FC<ElementsProps> = (props) => {
     const { type } = props;
     return (
         <LazyLoader
-            path={`modules/${type}`}
+            path={type}
             {...props}
         />
     );

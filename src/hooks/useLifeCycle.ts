@@ -1,8 +1,12 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
+import requester from '~/core/fetch';
 import EventEmitter, { eventEmitter as globalEventEmitter } from "~/core/EventEmitter";
 import { RootState } from "~/redux/store";
+import { Api } from "~/types/appData";
 import { ComExposeEvents, EventsType } from "~/types/modules";
+import { debounce } from 'lodash';
+
 
 interface RegistersFunction {
     [keys: string]: Function
@@ -18,7 +22,7 @@ type DispatchEvents<TEvent> = {
 
 export type UseLifeCycleResult<TEvent={}> = [DispatchEvents<TEvent>, EventEmitter]
 
-function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registers:RegistersFunction ): UseLifeCycleResult<TEvent> {
+function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registersFunction:RegistersFunction, mountApi?: Api  ): UseLifeCycleResult<TEvent> {
     const eventEmitter = useMemo(() => globalEventEmitter.bind(moduleId), [moduleId]);
     const appData = useSelector((state: RootState) => state.appData);
     const events = useMemo(() => {
@@ -38,13 +42,13 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
     // 注册事件
     // 向eventEmitter注册事件，向外公布当前组件包含的生命周期事件
     useMemo(() => {
-        for (const key in registers) {
-            if (Object.prototype.hasOwnProperty.call(registers, key)) {
-                const fun = registers[key];
+        for (const key in registersFunction) {
+            if (Object.prototype.hasOwnProperty.call(registersFunction, key)) {
+                const fun = registersFunction[key];
                 eventEmitter.addEventListener(key, fun);
             }
         }
-    }, [eventEmitter, registers])
+    }, [eventEmitter, registersFunction])
 
     // 事件派发
     const eventDispatch = useMemo(() => {
@@ -56,16 +60,27 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
         }
         return dispatch as DispatchEvents<TEvent>;
     }, [eventEmitter, events, registersEvents]);
+
+    const mountDebounce = useMemo(
+        () =>
+        debounce(async () => {
+            if (mountApi) {
+                await requester(mountApi || {});
+            }
+            // 执行挂载事件
+            eventEmitter.emit(events?.mount);
+        }, 3500),
+        [eventEmitter, events?.mount, mountApi]
+    );
     
     // 基本事件
     useEffect(() => {
-        // 执行挂载事件
-        eventEmitter.emit(events?.mount);
+        mountDebounce();
         return () => {
             // 执行卸载事件
             eventEmitter.emit(events?.unmount);
         };
-    }, [eventEmitter, events?.mount, events?.unmount]);
+    }, [eventEmitter, events?.unmount, mountDebounce]);
 
     return [eventDispatch, eventEmitter as EventEmitter ]
 }

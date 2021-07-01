@@ -414,7 +414,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
             useConfig,
             setDefaultReceiveInfo,
             setSuccessModal
-        }
+        },
+        api?.find((item) => item.apiId === 'init')
     );
     // ref存储
     dispatchEventRef.current = dispatchEvent;
