@@ -13,7 +13,7 @@ const config: ModulesStatic = {
                     type: 'runningTime',
                     fieldName: 'messages',
                     name: '数据',
-                    describe: '播报数据',
+                    describe: '播报数据,数据结构 string[] 或者 { message: string, ... }[]',
                     data: '',
                 },
                 {
