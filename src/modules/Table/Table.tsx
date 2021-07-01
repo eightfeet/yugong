@@ -50,11 +50,7 @@ const Table: Modules<TableProps> = (props) => {
             pullDown: boolean;
             pullUp: boolean;
         }>();
-    // API请求 注意依赖关系
-    useEffect(() => {
-        const apiArguments = api?.find((item) => item.apiId === 'mount');
-        requester(apiArguments || {});
-    }, [api]);
+
     // 基本事件
     useEffect(() => {
         // 执行挂载事件
@@ -157,7 +153,8 @@ const Table: Modules<TableProps> = (props) => {
     const [eventsDispatch, eventEmitter] = useLifeCycle(
         moduleId,
         { mount: '初始化', unmount: '卸载', pullDown: '下拉', pullUp: '上拉' },
-        { setTable, setTheadData, setTbodyData, overrideTbodyItem }
+        { setTable, setTheadData, setTbodyData, overrideTbodyItem },
+        api?.find((item) => item.apiId === 'mount')
     );
 
     /** 下拉事件*/

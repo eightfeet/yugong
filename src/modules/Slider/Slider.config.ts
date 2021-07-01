@@ -171,7 +171,7 @@ const config: Config = {
   exposeApi: [
     {
       apiId: "init",
-      name: "初始化数据",
+      name: "获取初始数据(将在初始化事件前调用)",
     },
   ],
 };

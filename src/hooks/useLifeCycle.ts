@@ -63,7 +63,11 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
     const mount = useCallback(
         async () => {
             if (mountApi) {
-                await requester(mountApi || {});
+                try {
+                    await requester(mountApi || {});
+                } catch (error) {
+                    console.error(error);
+                }
             }
             if (events) {
                 eventEmitter.current.emit(events.mount);

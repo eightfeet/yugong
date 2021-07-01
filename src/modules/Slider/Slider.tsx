@@ -101,13 +101,7 @@ const Slider: Modules<SliderProps> = (props) => {
     [setDelay]
   );
 
-  const [,eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {setData, setSlider})
-
-  // API请求 注意依赖关系
-  useEffect(() => {
-    const apiArguments = api?.find((item) => item.apiId === "init");
-    requester(apiArguments || {});
-  }, [api]);
+  const [,eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {setData, setSlider}, api?.find((item) => item.apiId === "init"))
 
   // ===================================定义组件方法=================================== //
   //向eventEmitter注册事件，向外公布

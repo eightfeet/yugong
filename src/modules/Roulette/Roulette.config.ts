@@ -1010,7 +1010,7 @@ const config: {
      exposeApi: [
         {
             apiId: 'init',
-            name: '获取初始数据',
+            name: '获取初始数据(将在初始化事件前调用)',
         },
         {
             apiId: 'beforeStart',
