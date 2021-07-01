@@ -151,7 +151,7 @@
         "w": 10,
         "h": 10,
         "x": 1,
-        "y": 2,
+        "y": 8,
         "i": "25652aea-53c6-492f-98bc-91dc171b0c4d",
         "moved": false,
         "static": false
@@ -1346,6 +1346,32 @@
                 "data": "flipInY"
               }
             ]
+          },
+          {
+            "name": "6e5ff757-807f-4181-92db-6f8ad5a72351/setText",
+            "arguments": [
+              {
+                "type": "array",
+                "name": "文本内容",
+                "describe": "可设置多行文本内容",
+                "html": true,
+                "data": [
+                  "今天还有<b style=\"color:red\">{{chances}}</b>次抽奖机会"
+                ],
+                "fieldName": "textArray"
+              },
+              {
+                "type": "boolean",
+                "name": "自动序号",
+                "describe": "自动生成1开始的序号",
+                "data": {
+                  "comparableAverageA": "a",
+                  "comparableAverageB": "b",
+                  "method": "==="
+                },
+                "fieldName": "autoNumber"
+              }
+            ]
           }
         ],
         "unmount": [],
@@ -1359,9 +1385,9 @@
                 "fieldName": "condition",
                 "describe": "前置条件，条件成立时才显示信息",
                 "data": {
-                  "comparableAverageA": "{{lotteryResult}}",
-                  "comparableAverageB": "2",
-                  "method": ">="
+                  "comparableAverageA": "{{chances}}",
+                  "comparableAverageB": "0",
+                  "method": "<="
                 }
               },
               {
@@ -1386,7 +1412,7 @@
         {
           "apiId": "init",
           "name": "获取初始数据",
-          "url": "https://wx-test1.by-health.com/scrm/marketing/getLotteryChance",
+          "url": "https://wx-test1.by-health.com/scrm/marketing/countLotteryChance",
           "body": [
             {
               "type": "number",
@@ -1407,7 +1433,15 @@
               "data": "{{userInfo.memberId}}"
             }
           ],
-          "method": "POST"
+          "method": "POST",
+          "successPublic": [
+            {
+              "type": "string",
+              "data": "{{response.chancetimes}}",
+              "fieldName": "chances",
+              "name": "chances"
+            }
+          ]
         },
         {
           "apiId": "beforeStart",
@@ -1486,6 +1520,34 @@
           "enterDescription": "获取验证码"
         }
       ]
+    },
+    {
+      "moduleName": "chances",
+      "moduleId": "6e5ff757-807f-4181-92db-6f8ad5a72351",
+      "layout": {
+        "w": 8,
+        "h": 2,
+        "x": 2,
+        "y": 2,
+        "i": "6e5ff757-807f-4181-92db-6f8ad5a72351",
+        "moved": false,
+        "static": false
+      },
+      "style": {
+        "basic": {
+          "font": {
+            "align": "center"
+          }
+        },
+        "wrap": {},
+        "paragraph": {},
+        "prefix": {},
+        "even": {},
+        "odd": {},
+        "first": {},
+        "last": {}
+      },
+      "type": "Text"
     }
   ]
 }
