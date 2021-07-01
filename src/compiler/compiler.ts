@@ -626,7 +626,7 @@ export const border = function (styleObj: BorderTypesOfStyleItems): resultType {
             ].join(' ');
         });
     }
-
+    
     return {
         result: values,
         string: createInlineStyles(values) || '',

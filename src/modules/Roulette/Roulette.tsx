@@ -420,14 +420,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
     // ref存储
     dispatchEventRef.current = dispatchEvent;
 
-    // API请求 注意依赖关系
-    useEffect(() => {
-        if (api?.length) {
-            const apiArguments = api?.find((item) => item.apiId === 'init');
-            requester(apiArguments || {});
-        }
-    }, [api]);
-
     return (
         <Wrapper {...props}>
             <div

@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import requester from '~/core/fetch';
 import EventEmitter, { eventEmitter as globalEventEmitter } from "~/core/EventEmitter";
 import { RootState } from "~/redux/store";
 import { Api } from "~/types/appData";
 import { ComExposeEvents, EventsType } from "~/types/modules";
-import { debounce } from 'lodash';
-
 
 interface RegistersFunction {
     [keys: string]: Function
@@ -23,7 +21,8 @@ type DispatchEvents<TEvent> = {
 export type UseLifeCycleResult<TEvent={}> = [DispatchEvents<TEvent>, EventEmitter]
 
 function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvents<TEvent>,  registersFunction:RegistersFunction, mountApi?: Api  ): UseLifeCycleResult<TEvent> {
-    const eventEmitter = useMemo(() => globalEventEmitter.bind(moduleId), [moduleId]);
+
+    const eventEmitter = useRef(globalEventEmitter.bind(moduleId))
     const appData = useSelector((state: RootState) => state.appData);
     const events = useMemo(() => {
         let env: EventsType = {}
@@ -45,7 +44,7 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
         for (const key in registersFunction) {
             if (Object.prototype.hasOwnProperty.call(registersFunction, key)) {
                 const fun = registersFunction[key];
-                eventEmitter.addEventListener(key, fun);
+                eventEmitter.current.addEventListener(key, fun);
             }
         }
     }, [eventEmitter, registersFunction])
@@ -55,34 +54,35 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
         const dispatch = {};
         for (const key in registersEvents) {
             if (Object.prototype.hasOwnProperty.call(registersEvents, key)) {
-                dispatch[key as string] = () => eventEmitter.emit(events?.[key])
+                dispatch[key as string] = () => eventEmitter.current.emit(events?.[key])
             }
         }
         return dispatch as DispatchEvents<TEvent>;
-    }, [eventEmitter, events, registersEvents]);
+    }, [events, registersEvents]);
 
-    const mountDebounce = useMemo(
-        () =>
-        debounce(async () => {
+    const mount = useCallback(
+        async () => {
             if (mountApi) {
                 await requester(mountApi || {});
             }
-            // 执行挂载事件
-            eventEmitter.emit(events?.mount);
-        }, 3500),
-        [eventEmitter, events?.mount, mountApi]
+            if (events) {
+                eventEmitter.current.emit(events.mount);
+            }
+        },
+        [events, mountApi],
     );
     
     // 基本事件
     useEffect(() => {
-        mountDebounce();
+        mount();
         return () => {
             // 执行卸载事件
-            eventEmitter.emit(events?.unmount);
+            eventEmitter.current.emit(events?.unmount);
         };
-    }, [eventEmitter, events?.unmount, mountDebounce]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    return [eventDispatch, eventEmitter as EventEmitter ]
+    return [eventDispatch, eventEmitter.current as EventEmitter ]
 }
 
 export function toRegEvents(events?: ComExposeEvents): {[key: string]: string} {
