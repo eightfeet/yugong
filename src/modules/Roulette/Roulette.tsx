@@ -289,9 +289,25 @@ const Roulette: Modules<RouletteProps> = (props) => {
         }
         
         // step4、返回抽奖接口
-        const settedApi = await apiStart();
-        
+        const settedApi = await apiStart() as AnyObjectType;
+        // step5、执行结束事件，可用于重置数据
         dispatchEventRef.current?.onEnd();
+        if (settedApi.response.prizeId !== undefined) {
+            let currentPrise = settedApi.response;
+            prizes.some(prize => {
+                if (prize.prizeId === currentPrise.prizeId) {
+                    currentPrise = {
+                        ...currentPrise,
+                        ...(prize||{})
+                    }
+                    return true;
+                }
+                return false;
+            });
+            
+            return currentPrise;
+        }
+        
         // 没有设置Api时启用mock数据
         if (!settedApi) {
             message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
