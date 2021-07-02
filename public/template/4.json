@@ -133,6 +133,43 @@
             "data": "1-29O97N7"
           }
         ]
+      },
+      {
+        "name": "获取最新获奖信息",
+        "apiId": "b3a68328-53b6-48e5-82cb-4e3ae1dd1b08",
+        "url": "https://wx-test1.by-health.com/scrm/marketing/getNewestPrizerecord",
+        "method": "POST",
+        "body": [
+          {
+            "type": "number",
+            "data": "1",
+            "fieldName": "activityId",
+            "name": "activityId"
+          }
+        ],
+        "dataMap": [
+          {
+            "source": "response",
+            "target": "messages",
+            "map": {
+              "type": "object",
+              "describe": "",
+              "fieldName": "mapsArg",
+              "name": "映射关系",
+              "data": {
+                "message": "{{memberName}}抽中{{prizeName}}"
+              }
+            }
+          }
+        ],
+        "successPublic": [
+          {
+            "type": "string",
+            "data": "{{messages}}",
+            "fieldName": "messages",
+            "name": "messages"
+          }
+        ]
       }
     ],
     "mountEnvents": [],
@@ -1548,6 +1585,58 @@
         "last": {}
       },
       "type": "Text"
+    },
+    {
+      "moduleName": "message",
+      "moduleId": "dd386a59-f8c9-4dae-b0ed-d5e4c61189cb",
+      "layout": {
+        "w": 8,
+        "h": 1,
+        "x": 2,
+        "y": 24,
+        "i": "dd386a59-f8c9-4dae-b0ed-d5e4c61189cb",
+        "moved": false,
+        "static": false
+      },
+      "style": {
+        "basic": {},
+        "item": {
+          "font": {
+            "align": "center"
+          }
+        }
+      },
+      "type": "Broadcast",
+      "events": {
+        "mount": [
+          {
+            "name": "dd386a59-f8c9-4dae-b0ed-d5e4c61189cb/setMessages",
+            "arguments": [
+              {
+                "type": "runningTime",
+                "fieldName": "messages",
+                "name": "数据",
+                "describe": "播报数据,数据结构 string[] 或者 { message: string, ... }[]",
+                "data": "messages"
+              },
+              {
+                "type": "number",
+                "fieldName": "counter",
+                "name": "显示条数",
+                "describe": "循环显示条数",
+                "data": "3"
+              },
+              {
+                "type": "number",
+                "fieldName": "interval",
+                "name": "时间间隔",
+                "describe": "时间间隔",
+                "data": "2500"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
