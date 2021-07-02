@@ -47,7 +47,7 @@
               "name": "映射关系",
               "data": {
                 "prizeAlias": "prizeName",
-                "memo": "js{{this.prizeId}}",
+                "memo": "memo",
                 "prizeId": "prizeId",
                 "prizeType": "prizeType",
                 "receiveType": "receiveType",
