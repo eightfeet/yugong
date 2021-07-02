@@ -47,7 +47,7 @@
               "name": "映射关系",
               "data": {
                 "prizeAlias": "prizeName",
-                "memo": "memo",
+                "memo": "prizeName",
                 "prizeId": "prizeId",
                 "prizeType": "prizeType",
                 "receiveType": "receiveType",
