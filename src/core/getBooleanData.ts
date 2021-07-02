@@ -14,21 +14,23 @@ const getBooleanData = ({
   comparableAverageB,
   method,
 }: ArgumentsBoolean["data"]) => {
-  const Left = getResult(comparableAverageA);
-  const Right = getResult(comparableAverageB);
+  let Left = getResult(comparableAverageA);
+  let Right = getResult(comparableAverageB);
+  const NLeft = (Number(Left) || Left);
+  const NRight = (Number(Right) || Right);
   switch (method) {
     case "===":
       return Left === Right;
     case "!==":
       return Left !== Right;
     case ">=":
-      return (Number(Left) || Left) >= (Number(Right) || Right);
+      return NLeft >= NRight;
     case "<":
-      return (Number(Left) || Left) < (Number(Right) || Right);
+      return NLeft < NRight;
     case ">":
-      return (Number(Left) || Left) > (Number(Right) || Right);
+      return NLeft > NRight;
     case "<=":
-      return (Number(Left) || Left) <= (Number(Right) || Right);
+      return NLeft <= NRight;
     case "==":
       // eslint-disable-next-line 
       return Left == Right;

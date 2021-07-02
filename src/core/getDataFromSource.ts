@@ -34,8 +34,6 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
     // js 表达式
     if (isJs) {
       key = item.replace(regexjswrap, "$1");
-      console.log('key', key);
-      
       // 尝试运行表达式
       try {
         // 将"this"字符转化为"data"
