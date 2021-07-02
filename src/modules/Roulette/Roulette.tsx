@@ -231,8 +231,8 @@ const Roulette: Modules<RouletteProps> = (props) => {
     
     /**
      * 设置中奖弹窗
-     * @param title 中将弹窗标题
-     * @param animation 中将弹窗动画
+     * @param title 中奖弹窗标题
+     * @param animation 中奖弹窗动画
      */
     const setSuccessModal = useCallback(
         (title: ArgumentsString, animation: ArgumentsString) => {
