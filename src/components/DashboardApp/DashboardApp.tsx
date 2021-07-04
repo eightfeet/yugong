@@ -11,9 +11,6 @@ const Home = () => {
 interface Props {}
 
 const Dashboardapp: React.FC<Props> = () => {
-    useEffect(() => {
-        request.get('/api/template/getItem').then(res => console.log(3333,res))
-    }, [])
     return (
         <Router>
             <Layout>
