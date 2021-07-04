@@ -1,9 +1,9 @@
 import { Card, Tag, Tabs } from "antd";
 import Meta from "antd/lib/card/Meta";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import request from "~/core/request";
 import EmptyIcon from "../CreateProject/EmptyIcon";
 import Searchbar from "./Searchbar";
-import templates from "./template.json";
 import s from "./TemplateList.module.less";
 
 interface Props {
@@ -12,12 +12,30 @@ interface Props {
 const { TabPane } = Tabs;
 
 const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
+
+  const [templateList, setTemplateList] = useState([]);
+
+  const getTemplateList = useCallback(
+    () => {
+      request.get('/api/template/getList?type=2').then(res => {
+        if (res.success === true) {
+          setTemplateList(res.data)
+        }
+      })      
+    },
+    [],
+  )
+
+  useEffect(() => {
+    getTemplateList();
+  }, [getTemplateList]);
+
   return (
     <Tabs className={s.tab} defaultActiveKey="1" onChange={() => console.log()}>
       <TabPane tab="从模板创建" key="1">
         <Searchbar />
         <div className={s.container}>
-          {templates.map((item, index) => (
+          {templateList.map((item: any, index) => (
             <Card
               key={index}
               onClick={()=> onSelectedTemplate(item.id)}
@@ -30,7 +48,7 @@ const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
                 </div>
               }
             >
-              <Meta title={item.title} description={item.tag.map((tag, tagInd) => <Tag key={tagInd}>{tag}</Tag>)} />
+              <Meta title={item.title} description={item.tag.map((tag: any, tagInd: number) => <Tag key={tagInd}>{tag}</Tag>)} />
             </Card>
           ))}
         </div>

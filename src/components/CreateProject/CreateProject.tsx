@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
 import request from "~/core/request";
+import { AnyObjectType } from "~/types/appData";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -56,9 +57,19 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     });
   }, [createBlank, localAppData?.length, localPageData]);
 
+  const getTemplate:(id: string) => Promise<AnyObjectType> = useCallback(
+    (id) => {
+      return request.get(`/api/template/getItem?id=${id}`);
+    },
+    [],
+  )
+
   const onSelectedTemplate = useCallback(
     async (id) => {
-      const { appData, pageData } = await request.get(`/template/${id}.json`);
+
+      const {success, data} = await getTemplate(id);
+      if (!success) return;
+      const { appData, pageData } = data;
 
       const fn = () => {
         /**初始化 */
@@ -85,16 +96,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         onOk: fn,
       });
     },
-    [
-      dispatch.appData,
-      dispatch.pageData,
-      goBack,
-      initData,
-      localAppData?.length,
-      localPageData,
-      setLocalAppData,
-      setLocalPageData,
-    ]
+    [dispatch.appData, dispatch.pageData, getTemplate, goBack, initData, localAppData?.length, localPageData, setLocalAppData, setLocalPageData]
   );
 
   return (
