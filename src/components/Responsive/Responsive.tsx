@@ -10,6 +10,7 @@ import {
   FileAddOutlined,
   PlusOutlined,
   SettingOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -26,6 +27,7 @@ import CreateProject from '../CreateProject';
 import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
+import { createTemplate } from "~/api";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -180,6 +182,27 @@ const Responsive: React.FC<Props> = () => {
       sendMessage({ tag: "removeActivationItem", value: undefined }, win);
     }
   }, [removeActivationItem, sendMessage, win]);
+
+  const saveProject = useCallback(
+    () => {
+      console.log('保存数据');
+      createTemplate({
+        template:{
+          appData,
+          pageData
+        }
+      });
+    },
+    [appData, pageData],
+  )
+
+  const onSaveProject = useCallback(
+    () => {
+      console.log('发布');
+      saveProject();
+    },
+    [saveProject],
+  )
   
   return (
     <>
@@ -202,45 +225,56 @@ const Responsive: React.FC<Props> = () => {
               </div>
             </Draggable>
           ) : null}
-          <div>
-            <Button
-              type="primary"
-              onClick={toggleCreate}
-              icon={<FileAddOutlined />}
-            />
-            &nbsp;
-            {!isEditing ? (
+          <div className={s.topmenu}>
+            <div className={s.create}>
               <Button
                 type="primary"
-                className={s.toggle}
-                onClick={toggleEdit}
-                icon={<EditOutlined />}
+                onClick={toggleCreate}
+                icon={<FileAddOutlined />}
               />
-            ) : null}
-            {isEditing ? (
+              &nbsp;
+              {!isEditing ? (
+                <Button
+                  type="default"
+                  className={s.toggle}
+                  onClick={toggleEdit}
+                  icon={<EditOutlined />}
+                />
+              ) : null}
+              {isEditing ? (
+                <Button
+                  type="default"
+                  className={s.toggle}
+                  onClick={toggleEdit}
+                  icon={<EyeOutlined />}
+                />
+              ) : null}
+              &nbsp;
+              <Button
+                type="default"
+                icon={<SettingOutlined />}
+                onClick={() => setShowPageDrawer(true)}
+              >
+                页面
+              </Button>
+              &nbsp;
+              <Button
+                type="default"
+                icon={<PlusOutlined />}
+                onClick={() => setShowDrawer(true)}
+              >
+                组件
+              </Button>
+            </div>
+            <div className={s.save}>
               <Button
                 type="primary"
-                className={s.toggle}
-                onClick={toggleEdit}
-                icon={<EyeOutlined />}
-              />
-            ) : null}
-            &nbsp;
-            <Button
-              type="primary"
-              icon={<SettingOutlined />}
-              onClick={() => setShowPageDrawer(true)}
-            >
-              页面
-            </Button>
-            &nbsp;
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setShowDrawer(true)}
-            >
-              组件
-            </Button>
+                icon={<UploadOutlined />}
+                onClick={() => onSaveProject()}
+              >
+                发布
+              </Button>
+            </div>
           </div>
           <Ruler onChange={onChangeRule} />
           <Drawer

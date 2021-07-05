@@ -111,3 +111,22 @@ export const timeout: Middleware = (context: Context<{ timeout?: number }>, next
 
   return next();
 };
+
+
+// 封装获取 cookie 的方法
+function getCookie(name: string): string{
+  let arr;
+  const reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+  arr = document.cookie.match(reg);
+  if(arr)
+  return unescape(arr[2]);
+  else
+  return '';
+}
+
+// csrf安全策略
+export const csrfToken: Middleware = (context: Context, next: NextFunction) => {
+  context.headers['x-csrf-token'] = getCookie('csrfToken');
+  return next();
+};
+
