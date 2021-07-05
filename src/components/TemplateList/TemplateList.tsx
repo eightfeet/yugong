@@ -11,7 +11,7 @@ interface Props {
 }
 const { TabPane } = Tabs;
 
-const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
+const TemplateList: React.FC<Props> = ({onSelectedTemplate}) => {
 
   const [templateList, setTemplateList] = useState([]);
 
@@ -60,4 +60,4 @@ const Templatelist: React.FC<Props> = ({onSelectedTemplate}) => {
   );
 };
 
-export default Templatelist;
+export default TemplateList;

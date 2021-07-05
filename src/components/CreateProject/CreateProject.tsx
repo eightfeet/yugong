@@ -65,13 +65,12 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   )
 
   const onSelectedTemplate = useCallback(
-    async (id) => {
+    (id) => {
+      const fn = async () => {
+        const {success, data} = await getTemplate(id);
+        if (!success) return;
+        const { appData, pageData } = data;
 
-      const {success, data} = await getTemplate(id);
-      if (!success) return;
-      const { appData, pageData } = data;
-
-      const fn = () => {
         /**初始化 */
         initData();
         setLocalAppData(appData);
