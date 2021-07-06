@@ -17,10 +17,8 @@ const TemplateList: React.FC<Props> = ({onSelectedTemplate}) => {
 
   const getTemplateList = useCallback(
     () => {
-      request.get('/api/template/getList?type=2').then(res => {
-        if (res.success === true) {
-          setTemplateList(res.data)
-        }
+      request.get('/api/template?type=2').then(res => {
+        setTemplateList(res)
       })      
     },
     [],

@@ -59,7 +59,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
   const getTemplate:(id: string) => Promise<AnyObjectType> = useCallback(
     (id) => {
-      return request.get(`/api/template/getItem?id=${id}`);
+      return request.get(`/api/template/show?id=${id}`);
     },
     [],
   )
@@ -67,8 +67,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   const onSelectedTemplate = useCallback(
     (id) => {
       const fn = async () => {
-        const {success, data} = await getTemplate(id);
-        if (!success) return;
+        const data = await getTemplate(id);
         const { appData, pageData } = data;
 
         /**初始化 */
