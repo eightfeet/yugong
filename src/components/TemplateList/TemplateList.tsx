@@ -1,7 +1,7 @@
 import { Card, Tag, Tabs, Button } from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useCallback, useEffect, useState } from "react";
-import request from "~/core/request";
+import { deleteTemplate, queryTemplate, queryTemplateParams } from "~/api";
 import EmptyIcon from "../CreateProject/EmptyIcon";
 import Searchbar from "./Searchbar";
 import s from "./TemplateList.module.less";
@@ -13,11 +13,14 @@ const { TabPane } = Tabs;
 
 const TemplateList: React.FC<Props> = ({onSelectedTemplate}) => {
 
-  const [templateList, setTemplateList] = useState([]);
+  const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
 
+  /**
+   * @param type 
+   */
   const getTemplateList = useCallback(
-    () => {
-      request.get('/api/template?isPublic=1').then(res => {
+    (query?: queryTemplateParams) => {
+      queryTemplate(query||{}).then(res => {
         setTemplateList(res)
       })      
     },
@@ -25,12 +28,12 @@ const TemplateList: React.FC<Props> = ({onSelectedTemplate}) => {
   )
 
   useEffect(() => {
-    getTemplateList();
+    getTemplateList({isPublic:'1'});
   }, [getTemplateList]);
 
   const del = useCallback(
     (id)=> () => {
-      request.delete(`/api/template/${id}`).then(res => {
+      deleteTemplate(id).then(res => {
         getTemplateList()
       })  
     },
