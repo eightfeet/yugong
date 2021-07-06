@@ -185,16 +185,15 @@ const Responsive: React.FC<Props> = () => {
 
   const saveProject = useCallback(
     () => {
-      console.log('保存数据');
       createTemplate({
-        title: pageData.pageTitle || '为标题',
-        pageData: JSON.stringify(pageData),
-        appData: JSON.stringify(appData),
+        title: pageData.pageTitle || '',
+        pageData: pageData,
+        appData: appData,
         terminal: 'mobile',
         cove: 'http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190516113447362.png',
         discript: '店员活动，天天抽奖',
         tag: '天天抽奖',
-        public: 1
+        isPublic: 1
       });
     },
     [appData, pageData],
