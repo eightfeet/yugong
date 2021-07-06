@@ -34,6 +34,8 @@ export interface createTemplateParams {
     pageData?: string;
     /**组件数据 */
     appData?: string;
+    /**模板类型, 0:不公开，1:公开 */
+    public?: number;
 }
 /**
  * 创建结果返回
@@ -51,6 +53,6 @@ export interface createTemplateResult {}
  * @return {*}  {Promise<createTemplateResult>}
  */
 export function createTemplate(params:createTemplateParams): Promise<createTemplateResult> {
-    return request.post('/api/template/create', params);
+    return request.post('/api/template', params);
 }
 

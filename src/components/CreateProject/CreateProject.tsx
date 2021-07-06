@@ -59,7 +59,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
   const getTemplate:(id: string) => Promise<AnyObjectType> = useCallback(
     (id) => {
-      return request.get(`/api/template/show?id=${id}`);
+      return request.get(`/api/template/${id}`);
     },
     [],
   )
@@ -72,10 +72,14 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
         /**初始化 */
         initData();
-        setLocalAppData(appData);
-        setLocalPageData(pageData);
-        dispatch.appData.updateAppData(appData);
-        dispatch.pageData.updatePage(pageData);
+        
+        const parseAppData = JSON.parse(appData);
+        const parsePageData = JSON.parse(pageData);
+
+        setLocalAppData(parseAppData);
+        setLocalPageData(parsePageData);
+        dispatch.appData.updateAppData(parseAppData);
+        dispatch.pageData.updatePage(parsePageData);
         goBack();
       };
 

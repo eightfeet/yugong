@@ -191,9 +191,10 @@ const Responsive: React.FC<Props> = () => {
         pageData: JSON.stringify(pageData),
         appData: JSON.stringify(appData),
         terminal: 'mobile',
-        cove: 'http://www.baidu.com',
-        discript: '这是一个描述',
-        tag: '抽奖'
+        cove: 'http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190516113447362.png',
+        discript: '店员活动，天天抽奖',
+        tag: '天天抽奖',
+        public: 1
       });
     },
     [appData, pageData],
