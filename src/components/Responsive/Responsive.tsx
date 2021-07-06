@@ -187,10 +187,13 @@ const Responsive: React.FC<Props> = () => {
     () => {
       console.log('保存数据');
       createTemplate({
-        template:{
-          appData,
-          pageData
-        }
+        title: pageData.pageTitle || '为标题',
+        pageData: JSON.stringify(pageData),
+        appData: JSON.stringify(appData),
+        terminal: 'mobile',
+        cove: 'http://www.baidu.com',
+        discript: '这是一个描述',
+        tag: '抽奖'
       });
     },
     [appData, pageData],

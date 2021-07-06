@@ -20,13 +20,20 @@ function getCookie(name: string): string{
  * @interface createTemplateParams
  */
 export interface createTemplateParams {
-    /**模板数据 */
-    template: {
-        /**页面数据 */
-        pageData: PageData;
-        /**组件数据 */
-        appData: AppDataListTypes
-    }
+    /**标题 */
+    title?: string;
+    /**描述 */
+    discript?: string;
+    /**封面图片 */
+    cove?: string;
+    /**终端 */
+    terminal?: string;
+    /**标签 */
+    tag?: string;
+    /**页面数据 */
+    pageData?: string;
+    /**组件数据 */
+    appData?: string;
 }
 /**
  * 创建结果返回
