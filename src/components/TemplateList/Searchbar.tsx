@@ -1,12 +1,19 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Select, Button } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
 const { Option } = Select;
 
-interface Props {}
+interface queryParams {
+    title?: string,
+    terminal?: string,
+}
 
-const Searchbar: React.FC<Props> = () => {
+interface Props {
+  onClick: (query: queryParams) => void;
+}
+
+const Searchbar: React.FC<Props> = ({onClick}) => {
   const children: any[] = [];
   for (let i = 10; i < 36; i++) {
     children.push(
@@ -16,12 +23,14 @@ const Searchbar: React.FC<Props> = () => {
     );
   }
 
+  const [query, setQuery] = useState<queryParams>({})
+
   return (
     <>
       <Row gutter={[5, 24]}>
         <Col span={4}>
           <Tooltip title="请输入模板名称">
-            <Input type="text" placeholder="模版名称" />
+            <Input type="text" placeholder="模版名称" onChange={(e) => setQuery({...query, title: e.target.value})} />
           </Tooltip>
         </Col>
         <Col span={4}>
@@ -31,7 +40,7 @@ const Searchbar: React.FC<Props> = () => {
               style={{ width: "100%" }}
               placeholder="终端类型"
               defaultValue={"pc"}
-              onChange={() => {}}
+              onChange={(terminal) => setQuery({...query, terminal})}
             >
               <Option value="mobile">移动端</Option>
               <Option value="pc">PC端</Option>
@@ -53,7 +62,7 @@ const Searchbar: React.FC<Props> = () => {
           </Tooltip>
         </Col>
         <Col span={2}>
-          <Button type="default" icon={<SearchOutlined />}>
+          <Button type="default" icon={<SearchOutlined />} onClick={() => onClick(query)}>
             查找模板
           </Button>
         </Col>
