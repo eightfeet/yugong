@@ -9,6 +9,7 @@ import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
 import request from "~/core/request";
 import { AnyObjectType } from "~/types/appData";
+import { queryTemplateById } from "~/api";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -57,24 +58,26 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     });
   }, [createBlank, localAppData?.length, localPageData]);
 
-  const getTemplate:(id: string) => Promise<AnyObjectType> = useCallback(
+  const getTemplate = useCallback(
     (id) => {
-      return request.get(`/api/template/${id}`);
+      return queryTemplateById(id)
     },
     [],
   )
 
   const onSelectedTemplate = useCallback(
-    (id) => {
+    (id, type: 'edit' | 'create') => {
       const fn = async () => {
         const data = await getTemplate(id);
         const { appData, pageData } = data;
-
+        if (type === 'create') {
+          console.log('类型');
+        }
         /**初始化 */
         initData();
         
-        const parseAppData = JSON.parse(appData);
-        const parsePageData = JSON.parse(pageData);
+        const parseAppData = JSON.parse(appData || '"[]"');
+        const parsePageData = JSON.parse(pageData || '"[]"');
 
         setLocalAppData(parseAppData);
         setLocalPageData(parsePageData);
@@ -90,7 +93,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
       confirm({
         content: (
-          <div>当前有历史页面正在编辑，创建新模板将清除历史数据！</div>
+          <div>当前有历史页面正在编辑，{type === 'create' ? '创建新': '编辑'}模板将清除历史数据！</div>
         ),
         okText: "确定",
         cancelText: "取消",

@@ -65,7 +65,7 @@ const Searchbar: React.FC<Props> = ({onClick}) => {
               allowClear
               style={{ width: "100%" }}
               placeholder="终端类型"
-              defaultValue={"pc"}
+              value={query.terminal}
               onChange={(terminal) => setQuery({...query, terminal})}
             >
               <Option value="mobile">移动端</Option>
