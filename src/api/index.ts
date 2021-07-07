@@ -1,7 +1,7 @@
 import request from "~/core/request";
-import { PageData } from "~/redux/pageData";
 import { AppDataListTypes } from "~/types/appData";
 import { stringify } from "query-string";
+import { PageData } from "~/types/pageData";
 
 /**
  * 创建模板入参

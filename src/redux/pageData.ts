@@ -4,47 +4,10 @@ import {
     Api,
     BackgroundCommonTypesOfStyleItems,
     BackgroundGradientTypesOfStyleItems,
-    BackgroundGroupTypesOfStyleItems,
 } from '~/types/appData';
-import { EventsType, EventsTypeItem } from '~/types/modules';
+import { EventsType } from '~/types/modules';
+import { PageData } from '~/types/pageData';
 import { RootModel } from './models';
-
-export interface PageData {
-    /* *页面标题 */
-    pageTitle?: string;
-    /* 页面单位 */
-    unit?: 'px' | 'rem' | 'vh' | 'vw';
-    /* 转换到页面单位 */
-    toUnit?: 'px' | 'rem' | 'vh' | 'vw';
-    /* UI宽度 */
-    UIWidth?: number;
-    /* 基准字符大小 */
-    baseFont?: number;
-    /* 样式 */
-    style?: {
-        backgroundCommon?: BackgroundCommonTypesOfStyleItems;
-        backgroundGradient?: BackgroundGradientTypesOfStyleItems;
-        backgroundGroup?: BackgroundGroupTypesOfStyleItems
-    };
-    /* api */ 
-    onLoadApi?: Api[];
-    /* 挂载事件 */
-    mountEnvents?: EventsTypeItem[];
-    /* 卸载事件 */
-    unmountEnvents?: EventsTypeItem[];
-    /* 百度统计Id */
-    statisticsId?: string;
-    /* 删格列数*/
-    cols?: number;
-    /* 删格间距*/
-    space?:number;
-    /* 删格行高*/
-    rowHeight?: number;
-    /** window height */
-    windowWidth?: number;
-    /** window width */
-    windowHeight?: number;
-}
 
 // grid 部分参数无法热更新，这里优先使用最正确的数据，然后使用默认数据
 let localPageData:PageData = {};
