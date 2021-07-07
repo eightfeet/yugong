@@ -1,12 +1,14 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Select, Button } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { queryTag, queryTagParams } from "~/api";
 
 const { Option } = Select;
 
 interface queryParams {
     title?: string,
     terminal?: string,
+    tag?: number[]
 }
 
 interface Props {
@@ -14,27 +16,39 @@ interface Props {
 }
 
 const Searchbar: React.FC<Props> = ({onClick}) => {
-  const children: any[] = [];
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option key={i.toString(36) + i} value={i.toString(36) + i}>
-        {i.toString(36) + i}
-      </Option>
-    );
-  }
 
   const [query, setQuery] = useState<queryParams>({});
+  const [tags, setTags] = useState<queryTagParams[]>([]);
+
+  const getTags = useCallback(
+    async () => {
+      const tagsResult = await queryTag();
+      setTags(tagsResult)
+    },
+    [],
+  )
+
+  useEffect(() => {
+    getTags()
+  }, [getTags])
 
   const onSearch = useCallback(
     (e) => {
       e.preventDefault();
       const params = {};
       Object.keys(query).forEach((key) => {
-        if (query[key]?.length) params[key] = query[key];
+        if (query[key]?.length) params[key] = key === 'tag' ? query[key]?.join(',') : query[key];
       })
       onClick(params)
     },
     [onClick, query],
+  )
+
+  const onChangTag = useCallback(
+    (value) => {
+      setQuery({...query, tag: value})
+    },
+    [query],
   )
 
   return (
@@ -60,16 +74,16 @@ const Searchbar: React.FC<Props> = ({onClick}) => {
           </Tooltip>
         </Col>
         <Col span={8}>
-          <Tooltip title="按模板类型查找">
+          <Tooltip title="按模板标签查找">
             <Select
               mode="multiple"
               allowClear
               style={{ width: "100%" }}
-              placeholder="模板类型"
-              defaultValue={["a10", "c12"]}
-              onChange={() => {}}
+              placeholder="标签"
+              value={query.tag}
+              onChange={onChangTag}
             >
-              {children}
+              {tags.map(item => (<Option key={item.id} value={`${item.id}`}>{item.name}</Option>))}
             </Select>
           </Tooltip>
         </Col>

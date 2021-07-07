@@ -51,9 +51,12 @@ export function createTemplate(
   return request.post("/api/template", data);
 }
 
+
 /**
- * 查询模板
- * 
+ * 查询模板列表参数
+ *
+ * @export
+ * @interface queryTemplateParams
  */
 export interface queryTemplateParams {
   /**模板id */
@@ -73,15 +76,71 @@ export interface queryTemplateParams {
 }
 
 /**
+ * 查询模板列表
  *
- * @param params
+ * @export
+ * @param {queryTemplateParams} params
+ * @return {*}  {Promise<queryTemplateParams[]>}
  */
 export function queryTemplate(params: queryTemplateParams): Promise<queryTemplateParams[]> {
   const query = stringify(params);
   return request.get(`/api/template?${query}`);
 }
 
+/**
+ * 根据模板id查询模板结果类型
+ *
+ * @export
+ * @interface queryTemplateByIdResult
+ * @extends {queryTemplateParams}
+ */
+export interface queryTemplateByIdResult extends queryTemplateParams{
+  pageData?: string,
+  appData?: string
+}
 
+/**
+ * 根据模板id查询模板
+ *
+ * @export
+ * @param {((number | string))} id
+ * @return {*}  {Promise<boolean>}
+ */
+export function queryTemplateById(id:(number | string)): Promise<queryTemplateByIdResult> {
+  return request.get(`/api/template/${id}`)
+}
+
+
+/**
+ * 删除模板
+ *
+ * @export
+ * @param {((number | string))} id 模板id
+ * @return {*}  {Promise<boolean>}
+ */
 export function deleteTemplate(id:(number | string)): Promise<boolean> {
     return request.delete(`/api/template/${id}`)
+}
+
+/**
+ * 查询标签参数
+ *
+ * @export
+ * @interface queryTagParams
+ */
+export interface queryTagParams {
+  id?: number,
+  name?: string,
+}
+
+/**
+ * 查询标签
+ *
+ * @export
+ * @param {queryTagParams} [params]
+ * @return {*}  {Promise<queryTagParams[]>}
+ */
+export function queryTag(params?: queryTagParams): Promise<queryTagParams[]> {
+  const query = stringify(params || {});
+  return request.get(`/api/tag/${query}`)
 }
