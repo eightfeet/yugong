@@ -1,6 +1,6 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Select, Button } from "antd";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 const { Option } = Select;
 
@@ -23,7 +23,19 @@ const Searchbar: React.FC<Props> = ({onClick}) => {
     );
   }
 
-  const [query, setQuery] = useState<queryParams>({})
+  const [query, setQuery] = useState<queryParams>({});
+
+  const onSearch = useCallback(
+    (e) => {
+      e.preventDefault();
+      const params = {};
+      Object.keys(query).forEach((key) => {
+        if (query[key]?.length) params[key] = query[key];
+      })
+      onClick(params)
+    },
+    [onClick, query],
+  )
 
   return (
     <>
@@ -62,7 +74,7 @@ const Searchbar: React.FC<Props> = ({onClick}) => {
           </Tooltip>
         </Col>
         <Col span={2}>
-          <Button type="default" icon={<SearchOutlined />} onClick={() => onClick(query)}>
+          <Button type="default" icon={<SearchOutlined />} onClick={onSearch}>
             查找模板
           </Button>
         </Col>

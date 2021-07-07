@@ -13,7 +13,7 @@ const { TabPane } = Tabs;
 
 const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
-  const [templateParams, setTemplateParams] = useState<queryTemplateParams>({title: '天天抽奖'});
+  const [templateParams, setTemplateParams] = useState<queryTemplateParams>({});
   /**
    * 获取列表
    * @param type
@@ -40,17 +40,18 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const onChangeTab = useCallback(
     (key) => {
+      setTemplateParams({...templateParams, isPublic: key })
       getTemplateList({ isPublic: key });
     },
-    [getTemplateList]
+    [getTemplateList, templateParams]
   );
 
   const onSearch = useCallback(
     (data) => {
       console.log(data);
-      
+      getTemplateList({ isPublic: '1', ...data });
     },
-    [],
+    [getTemplateList],
   )
 
   return (
