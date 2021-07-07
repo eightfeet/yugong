@@ -354,7 +354,7 @@ const Responsive: React.FC<Props> = () => {
           </div>
         </div>
       }
-      <TemplateInfoModal visible />
+      <TemplateInfoModal visible={true} />
     </>
   );
 };
