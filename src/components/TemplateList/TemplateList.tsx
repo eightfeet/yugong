@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Card, Tag, Tabs, Button } from 'antd';
+import { Card, Tag, Tabs, Button, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import React, { useCallback, useEffect, useState } from 'react';
 import { deleteTemplate, queryTemplate, queryTemplateParams } from '~/api';
@@ -11,6 +11,7 @@ interface Props {
     onSelectedTemplate: (id: string, type: 'create' | 'edit') => void;
 }
 const { TabPane } = Tabs;
+const { confirm } = Modal;
 
 const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
@@ -36,7 +37,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     }, [getTemplateList, templateParams]);
 
     const del = useCallback(
-        (id) => () => {
+        (id) => {
             deleteTemplate(id).then(() => {
                 getTemplateList(templateParams);
             });
@@ -59,6 +60,23 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         },
         [getTemplateList, templateParams]
     );
+
+    
+
+    const onDelete = useCallback(
+      (id) => () => {
+        confirm({
+          content: (
+            <div>确定要删除当前模板？</div>
+          ),
+          okText: "确定",
+          cancelText: "取消",
+          onCancel: () => {},
+          onOk: () => del(id),
+        });
+      },
+      [del],
+    )
 
     return (
         <>
@@ -107,7 +125,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                                         <Button
                                             size="small"
                                             icon={<DeleteOutlined />}
-                                            onClick={del(item.id)}
+                                            onClick={onDelete(item.id)}
                                         />
                                     </div>
                                 </>

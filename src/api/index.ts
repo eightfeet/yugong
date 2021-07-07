@@ -27,13 +27,6 @@ export interface createTemplateParams {
   /**模板类型, 0:不公开，1:公开 */
   isPublic?: number;
 }
-/**
- * 创建结果返回
- *
- * @export
- * @interface createTemplateResult
- */
-export interface createTemplateResult {}
 
 /**
  * 创建模板
@@ -44,7 +37,7 @@ export interface createTemplateResult {}
  */
 export function createTemplate(
   params: createTemplateParams
-): Promise<createTemplateResult> {
+): Promise<number> {
   const data: any = { ...params };
   data.appData = JSON.stringify(data.appData);
   data.pageData = JSON.stringify(data.pageData);

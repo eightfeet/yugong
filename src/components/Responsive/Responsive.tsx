@@ -28,6 +28,8 @@ import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { createTemplate } from "~/api";
+import { cloneDeep } from "lodash";
+import TemplateInfoModal from "../TemplateInfoModal";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -184,8 +186,8 @@ const Responsive: React.FC<Props> = () => {
   }, [removeActivationItem, sendMessage, win]);
 
   const saveProject = useCallback(
-    () => {
-      createTemplate({
+    async () => {
+      const id: number = await createTemplate({
         title: pageData.pageTitle || '',
         pageData: pageData,
         appData: appData,
@@ -195,16 +197,35 @@ const Responsive: React.FC<Props> = () => {
         tag: '天天抽奖',
         isPublic: 1
       });
+
+      if (id) {
+        const copyPageData = cloneDeep(pageData);
+        copyPageData.template = {
+          id,
+        }
+        updatePageData(copyPageData)
+      }
+      
     },
-    [appData, pageData],
+    [appData, pageData, updatePageData],
+  )
+
+  const updateProject = useCallback(
+    () => {
+      console.log("更新项目");
+    },
+    [],
   )
 
   const onSaveProject = useCallback(
     () => {
-      console.log('发布');
+      if (!!pageData.template?.id) {
+        updateProject();
+        return;
+      }
       saveProject();
     },
-    [saveProject],
+    [pageData.template?.id, saveProject, updateProject],
   )
   
   return (
@@ -273,9 +294,9 @@ const Responsive: React.FC<Props> = () => {
               <Button
                 type="primary"
                 icon={<UploadOutlined />}
-                onClick={() => onSaveProject()}
+                onClick={onSaveProject}
               >
-                发布
+                {pageData.template?.id ? '修改' : '发布'}
               </Button>
             </div>
           </div>
@@ -333,6 +354,7 @@ const Responsive: React.FC<Props> = () => {
           </div>
         </div>
       }
+      <TemplateInfoModal visible />
     </>
   );
 };

@@ -8,8 +8,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
 import request from "~/core/request";
-import { AnyObjectType } from "~/types/appData";
+import { AnyObjectType, AppDataListTypes } from "~/types/appData";
 import { queryTemplateById } from "~/api";
+import { PageData } from "~/types/pageData";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -70,15 +71,16 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
       const fn = async () => {
         const data = await getTemplate(id);
         const { appData, pageData } = data;
-        if (type === 'create') {
-          console.log('类型');
-        }
+        
         /**初始化 */
         initData();
         
-        const parseAppData = JSON.parse(appData || '"[]"');
-        const parsePageData = JSON.parse(pageData || '"[]"');
-
+        const parseAppData: AppDataListTypes = JSON.parse(appData || '"[]"');
+        const parsePageData: PageData = JSON.parse(pageData || '"{}"');
+        if (type === 'create') {
+          delete parsePageData.template?.id
+        }
+        
         setLocalAppData(parseAppData);
         setLocalPageData(parsePageData);
         dispatch.appData.updateAppData(parseAppData);
