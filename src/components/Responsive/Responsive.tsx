@@ -213,27 +213,40 @@ const Responsive: React.FC<Props> = () => {
   )
 
   interface TemplateAll extends Template {
-    pageData: PageData;
-    appData: AppDataListTypes
+    pageData: string;
+    appData: string
   }
   
   // 保存或更新项目
   const onSaveProject = useCallback(
-    ({cove=[], terminal, isPublic, discript, tag}:TemplateInfo) => {
-      const params: TemplateAll = {
-        title: pageData.pageTitle || '',
-        pageData: pageData,
-        appData: appData,
+    ({cove=[], terminal, isPublic, discript, tag, title, id}:TemplateInfo) => {
+      // copy
+      const pageDataCopy = cloneDeep(pageData);
+      // template数据
+      const templateData: Template = {
+        title: title || pageData.pageTitle,
         terminal,
         cove: cove[0]?.thumbUrl,
         discript,
         tag: tag?.join(','),
         isPublic: isPublic === true ? 1 : 0
       }
+      // 存入模板信息到pageData
+      pageDataCopy.template = templateData;
+
+      // 完整数据
+      const params: TemplateAll = {
+        pageData: JSON.stringify(pageData),
+        appData: JSON.stringify(appData),
+        ...templateData
+      }
+      // 更新
       if (!!pageData.template?.id) {
+        params.id = id;
         updateProject(params);
         return;
       }
+      // 新增
       saveProject(params);
     },
     [appData, pageData, saveProject, updateProject],

@@ -71,6 +71,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
       const fn = async () => {
         const data = await getTemplate(id);
         const { appData, pageData, ...templateArg } = data;
+        console.log(5555, data);
         
         /**初始化 */
         initData();
@@ -81,8 +82,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         if (type === 'create') {
           delete templateArg.id
         }
-        console.log('templateArg', templateArg);
-        
+
         parsePageData.template = templateArg;
         setLocalAppData(parseAppData);
         setLocalPageData(parsePageData);
