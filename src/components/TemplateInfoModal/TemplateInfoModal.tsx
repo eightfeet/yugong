@@ -3,11 +3,17 @@ import { Template } from "~/types/pageData";
 import { Form, Input, Button, Checkbox, Modal, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { queryTag, queryTagParams } from "~/api";
+import isType from "~/core/helper/isType";
+import { AnyObject } from "yup/lib/types";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
+
+let count = 1;
 
 interface Props {
-  visible?: boolean;
-  onOk?: (template: Template) => void;
-  onCancel?: () => void;
+  visible: boolean;
+  onOk: (template: Template) => void;
+  onCancel: () => void;
 }
 
 const normFile = (e: any) => {
@@ -20,6 +26,8 @@ const normFile = (e: any) => {
 
 const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
   const [tags, setTags] = useState<queryTagParams[]>([]);
+  const pageData = useSelector((state: RootState) => state.pageData);
+  const [defaultValue, setDefaultValue] = useState<AnyObject>();
 
   const getTags = useCallback(async () => {
     const tagsResult = await queryTag();
@@ -27,23 +35,36 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
   }, []);
 
   useEffect(() => {
+    const { template={}, pageTitle } = pageData;
+    for (const key in template) {
+      const element = template[key];
+      if (!element) {
+        delete template[key];
+      }
+    }
+
+    template.title = template.title || pageTitle;
+    template.cove = template.cove ? [template.cove] as any : undefined;
+    setDefaultValue(template);
+  }, [pageData])
+
+  useEffect(() => {
     getTags();
   }, [getTags]);
 
-  const handleOk = useCallback(() => {
+  const handleSubmit = useCallback((data: AnyObject) => {
+    if (!isType(data, 'Object')) return;
+    data.isPublic = data.isPublic === true ? 1 : 0;
+    data.discript = data.discript || '';
+    data.tag = data.tag.join(',');
     if (onOk instanceof Function) onOk({});
   }, [onOk]);
-  const handleCancel = useCallback(() => {
-    console.log("cccccancel!");
-    if (onCancel instanceof Function) onCancel();
-  }, [onCancel]);
 
   return (
     <Modal
       title="模版信息"
       visible={visible}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      onCancel={onCancel}
       okText={"确定"}
       cancelText={"取消"}
       footer={null}
@@ -52,7 +73,8 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
         name="templateInfo"
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
-        initialValues={{ remember: true }}
+        initialValues={defaultValue}
+        onFinish={handleSubmit}
       >
         <Form.Item
           label="模板标题"

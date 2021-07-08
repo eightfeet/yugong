@@ -72,6 +72,8 @@ const Responsive: React.FC<Props> = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [templateInfo, setTemplateInfo] = useState<{[keys: string]: any}>()
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -216,9 +218,12 @@ const Responsive: React.FC<Props> = () => {
     },
     [],
   )
-
+  
+  // 保存或更新项目
   const onSaveProject = useCallback(
-    () => {
+    (data) => {
+      console.log('data', data);
+      
       if (!!pageData.template?.id) {
         updateProject();
         return;
@@ -294,7 +299,7 @@ const Responsive: React.FC<Props> = () => {
               <Button
                 type="primary"
                 icon={<UploadOutlined />}
-                onClick={onSaveProject}
+                onClick={() => setShowTemplateModal(true)}
               >
                 {pageData.template?.id ? '修改' : '发布'}
               </Button>
@@ -354,7 +359,7 @@ const Responsive: React.FC<Props> = () => {
           </div>
         </div>
       }
-      <TemplateInfoModal visible={true} />
+      <TemplateInfoModal visible={showTemplateModal} onOk={onSaveProject} onCancel={() => setShowTemplateModal(false)} />
     </>
   );
 };
