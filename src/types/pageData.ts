@@ -15,7 +15,7 @@ export interface Template {
     /**描述 */
     discript?: string;
     /**0不公开，1公开 */
-    isPublic?: '0' | '1';
+    isPublic?: 0 | 1;
 }
 
 export interface PageData {

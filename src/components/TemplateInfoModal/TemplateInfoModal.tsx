@@ -8,9 +8,26 @@ import { AnyObject } from "yup/lib/types";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 
+export interface TemplateInfo {
+  /**模板id */
+  id?: number;
+  /**名称 */
+  title?: string;
+  /**标签 */
+  tag?: string[];
+  /**终端 */
+  terminal?: string;
+  /**封面 */
+  cove?: any[];
+  /**描述 */
+  discript?: string;
+  /**0不公开，1公开 */
+  isPublic?: boolean;
+}
+
 interface Props {
   visible: boolean;
-  onOk: (template: Template) => void;
+  onOk: (template: TemplateInfo) => void;
   onCancel: () => void;
 }
 
@@ -42,7 +59,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     }
 
     template.title = template.title || pageTitle;
-    template.cove = template.cove ? [{thumbUrl: template.cove}] as any : undefined;
+    template.cove = template.cove ? [{thumbUrl: template.cove}] as any : [];
     setDefaultValue(template);
   }, [pageData])
 
@@ -50,11 +67,11 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     getTags();
   }, [getTags]);
 
+  
   const handleSubmit = useCallback((data: AnyObject) => {
     if (!isType(data, 'Object')) return;
     data.isPublic = data.isPublic === true ? 1 : 0;
     data.discript = data.discript || '';
-    data.tag = data.tag.join(',');
     if (onOk instanceof Function) onOk(data);
   }, [onOk]);
 

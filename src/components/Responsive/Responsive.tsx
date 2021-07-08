@@ -25,11 +25,13 @@ import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
 import CreateProject from '../CreateProject';
 import classNames from "classnames";
-import { AppDataListTypes } from "~/types/appData";
+import { AnyObjectType, AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { createTemplate } from "~/api";
 import { cloneDeep } from "lodash";
 import TemplateInfoModal from "../TemplateInfoModal";
+import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
+import { PageData, Template } from "~/types/pageData";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -188,17 +190,8 @@ const Responsive: React.FC<Props> = () => {
   }, [removeActivationItem, sendMessage, win]);
 
   const saveProject = useCallback(
-    async () => {
-      const id: number = await createTemplate({
-        title: pageData.pageTitle || '',
-        pageData: pageData,
-        appData: appData,
-        terminal: 'mobile',
-        cove: 'http://by-health-portal-2019.oss-cn-shenzhen.aliyuncs.com/images/20190516113447362.png',
-        discript: '店员活动，天天抽奖',
-        tag: '天天抽奖',
-        isPublic: 1
-      });
+    async (data: Template) => {
+      const id: number = await createTemplate(data);
 
       if (id) {
         const copyPageData = cloneDeep(pageData);
@@ -209,28 +202,41 @@ const Responsive: React.FC<Props> = () => {
       }
       
     },
-    [appData, pageData, updatePageData],
+    [pageData, updatePageData],
   )
 
   const updateProject = useCallback(
-    () => {
-      console.log("更新项目");
+    (data: Template) => {
+      console.log("更新项目", data);
     },
     [],
   )
+
+  interface TemplateAll extends Template {
+    pageData: PageData;
+    appData: AppDataListTypes
+  }
   
   // 保存或更新项目
   const onSaveProject = useCallback(
-    (data) => {
-      console.log('data', data);
-      
+    ({cove=[], terminal, isPublic, discript, tag}:TemplateInfo) => {
+      const params: TemplateAll = {
+        title: pageData.pageTitle || '',
+        pageData: pageData,
+        appData: appData,
+        terminal,
+        cove: cove[0]?.thumbUrl,
+        discript,
+        tag: tag?.join(','),
+        isPublic: isPublic === true ? 1 : 0
+      }
       if (!!pageData.template?.id) {
-        updateProject();
+        updateProject(params);
         return;
       }
-      saveProject();
+      saveProject(params);
     },
-    [pageData.template?.id, saveProject, updateProject],
+    [appData, pageData, saveProject, updateProject],
   )
   
   return (

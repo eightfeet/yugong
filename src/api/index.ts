@@ -65,7 +65,7 @@ export interface queryTemplateParams {
   /**描述 */
   discript?: string;
   /**0不公开，1公开 */
-  isPublic?: '0' | '1';
+  isPublic?: 0 | 1;
 }
 
 /**

@@ -16,7 +16,7 @@ const { confirm } = Modal;
 const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
     const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
-        isPublic: '1',
+        isPublic: 1,
     });
     /**
      * 获取列表

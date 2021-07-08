@@ -70,17 +70,20 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     (id, type: 'edit' | 'create') => {
       const fn = async () => {
         const data = await getTemplate(id);
-        const { appData, pageData } = data;
+        const { appData, pageData, ...templateArg } = data;
         
         /**初始化 */
         initData();
         
         const parseAppData: AppDataListTypes = JSON.parse(appData || '"[]"');
         const parsePageData: PageData = JSON.parse(pageData || '"{}"');
+
         if (type === 'create') {
-          delete parsePageData.template?.id
+          delete templateArg.id
         }
+        console.log('templateArg', templateArg);
         
+        parsePageData.template = templateArg;
         setLocalAppData(parseAppData);
         setLocalPageData(parsePageData);
         dispatch.appData.updateAppData(parseAppData);
