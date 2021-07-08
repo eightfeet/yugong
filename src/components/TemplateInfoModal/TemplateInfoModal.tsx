@@ -8,8 +8,6 @@ import { AnyObject } from "yup/lib/types";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 
-let count = 1;
-
 interface Props {
   visible: boolean;
   onOk: (template: Template) => void;
@@ -44,7 +42,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     }
 
     template.title = template.title || pageTitle;
-    template.cove = template.cove ? [template.cove] as any : undefined;
+    template.cove = template.cove ? [{thumbUrl: template.cove}] as any : undefined;
     setDefaultValue(template);
   }, [pageData])
 
@@ -57,7 +55,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     data.isPublic = data.isPublic === true ? 1 : 0;
     data.discript = data.discript || '';
     data.tag = data.tag.join(',');
-    if (onOk instanceof Function) onOk({});
+    if (onOk instanceof Function) onOk(data);
   }, [onOk]);
 
   return (
