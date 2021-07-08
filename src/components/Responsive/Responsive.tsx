@@ -27,7 +27,7 @@ import CreateProject from '../CreateProject';
 import classNames from "classnames";
 import { AnyObjectType, AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
-import { createTemplate } from "~/api";
+import { createTemplate, updateTemplate } from "~/api";
 import { cloneDeep } from "lodash";
 import TemplateInfoModal from "../TemplateInfoModal";
 import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
@@ -195,10 +195,8 @@ const Responsive: React.FC<Props> = () => {
 
       if (id) {
         const copyPageData = cloneDeep(pageData);
-        copyPageData.template = {
-          id,
-        }
-        updatePageData(copyPageData)
+        copyPageData.template = {...data, id};
+        return updatePageData(copyPageData)
       }
       
     },
@@ -207,9 +205,10 @@ const Responsive: React.FC<Props> = () => {
 
   const updateProject = useCallback(
     (data: Template) => {
-      console.log("更新项目", data);
+      data.id = pageData.template?.id;
+      return updateTemplate(data)
     },
-    [],
+    [pageData.template?.id],
   )
 
   interface TemplateAll extends Template {
@@ -219,7 +218,7 @@ const Responsive: React.FC<Props> = () => {
   
   // 保存或更新项目
   const onSaveProject = useCallback(
-    ({cove=[], terminal, isPublic, discript, tag, title, id}:TemplateInfo) => {
+    async ({cove=[], terminal, isPublic, discript, tag, title, id}:TemplateInfo) => {
       // copy
       const pageDataCopy = cloneDeep(pageData);
       // template数据
@@ -238,18 +237,22 @@ const Responsive: React.FC<Props> = () => {
       const params: TemplateAll = {
         pageData: JSON.stringify(pageData),
         appData: JSON.stringify(appData),
+        id,
         ...templateData
       }
       // 更新
       if (!!pageData.template?.id) {
-        params.id = id;
-        updateProject(params);
-        return;
+        await updateProject(params);
+      } else {
+        // 新增
+        await saveProject(params);
       }
-      // 新增
-      saveProject(params);
+      // 更新
+      updatePageData(pageDataCopy)
+      // 关闭弹窗
+      setShowTemplateModal(false);
     },
-    [appData, pageData, saveProject, updateProject],
+    [appData, pageData, saveProject, updatePageData, updateProject],
   )
   
   return (

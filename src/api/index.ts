@@ -21,9 +21,9 @@ export interface createTemplateParams {
   /**标签 */
   tag?: string;
   /**页面数据 */
-  pageData?: PageData;
+  pageData?: string;
   /**组件数据 */
-  appData?: AppDataListTypes;
+  appData?: string;
   /**模板类型, 0:不公开，1:公开 */
   isPublic?: number;
 }
@@ -39,11 +39,22 @@ export function createTemplate(
   params: createTemplateParams
 ): Promise<number> {
   const data: any = { ...params };
-  data.appData = JSON.stringify(data.appData);
-  data.pageData = JSON.stringify(data.pageData);
   return request.post("/api/template", data);
 }
 
+/**
+ * 更新模板
+ *
+ * @export
+ * @param {createTemplateParams} params
+ * @return {*}  {Promise<createTemplateResult>}
+ */
+ export function updateTemplate(
+  params: createTemplateParams
+): Promise<number> {
+  const data: any = { ...params };
+  return request.put(`/api/template/${data.id}`, data);
+}
 
 /**
  * 查询模板列表参数

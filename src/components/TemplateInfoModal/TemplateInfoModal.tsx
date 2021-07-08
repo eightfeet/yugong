@@ -69,7 +69,6 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     const handleSubmit = useCallback(
         (data: AnyObject) => {
             if (!isType(data, 'Object')) return;
-            data.isPublic = data.isPublic === true ? 1 : 0;
             data.discript = data.discript || '';
             if (onOk instanceof Function) onOk(data);
         },
