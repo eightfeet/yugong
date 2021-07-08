@@ -2,7 +2,7 @@ import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Card, Tag, Tabs, Button, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import React, { useCallback, useEffect, useState } from 'react';
-import { deleteTemplate, queryTemplate, queryTemplateParams } from '~/api';
+import { deleteTemplate, queryTag, queryTagParams, queryTemplate, queryTemplateParams } from '~/api';
 import EmptyIcon from '../CreateProject/EmptyIcon';
 import Searchbar from './Searchbar';
 import s from './TemplateList.module.less';
@@ -18,6 +18,29 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
         isPublic: 1,
     });
+
+    const [tags, setTags] = useState<queryTagParams[]>([]);
+
+    const getTags = useCallback(
+        async () => {
+        const tagsResult = await queryTag();
+        setTags(tagsResult)
+        },
+        [],
+    )
+
+    useEffect(() => {
+        getTags()
+    }, [getTags])
+
+    const renderTags = useCallback(
+        (tag: string) => {
+            const tagTsx = tag.split(',').map(id => tags.some(group => group.id === Number(id)));
+            return tagTsx
+        },
+        [tags],
+    )
+
     /**
      * 获取列表
      * @param type
@@ -61,8 +84,6 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         [getTemplateList, templateParams]
     );
 
-    
-
     const onDelete = useCallback(
       (id) => () => {
         confirm({
@@ -84,7 +105,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                 <TabPane tab="公共模板" key="1"></TabPane>
                 <TabPane tab="我的项目" key="0"></TabPane>
             </Tabs>
-            <Searchbar onClick={onSearch} />
+            <Searchbar onClick={onSearch} tags={tags} />
             <div className={s.container}>
                 {templateList.map((item: any, index) => (
                     <Card
@@ -108,7 +129,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                             title={item.title}
                             description={
                                 <>
-                                    <div>{item.tag}</div>
+                                    <div>{renderTags(item.tag)}</div>
                                     <div className={s.buttonbar}>
                                         <Button
                                             size="small"

@@ -25,13 +25,13 @@ import Repository from "../MiniDashboard/Repository";
 import PageSetting from "../MiniDashboard/PageSetting";
 import CreateProject from '../CreateProject';
 import classNames from "classnames";
-import { AnyObjectType, AppDataListTypes } from "~/types/appData";
+import { AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { createTemplate, updateTemplate } from "~/api";
 import { cloneDeep } from "lodash";
 import TemplateInfoModal from "../TemplateInfoModal";
 import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
-import { PageData, Template } from "~/types/pageData";
+import { Template } from "~/types/pageData";
 // import loading from "~/core/loading";
 
 interface Props {}

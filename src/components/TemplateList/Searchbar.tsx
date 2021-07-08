@@ -13,24 +13,12 @@ interface queryParams {
 
 interface Props {
   onClick: (query: queryParams) => void;
+  tags: queryTagParams[]
 }
 
-const Searchbar: React.FC<Props> = ({onClick}) => {
+const Searchbar: React.FC<Props> = ({onClick, tags}) => {
 
   const [query, setQuery] = useState<queryParams>({});
-  const [tags, setTags] = useState<queryTagParams[]>([]);
-
-  const getTags = useCallback(
-    async () => {
-      const tagsResult = await queryTag();
-      setTags(tagsResult)
-    },
-    [],
-  )
-
-  useEffect(() => {
-    getTags()
-  }, [getTags])
 
   const onSearch = useCallback(
     (e) => {
