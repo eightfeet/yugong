@@ -13,7 +13,7 @@ export interface createTemplateParams {
   /**标题 */
   title?: string;
   /**描述 */
-  discript?: string;
+  describe?: string;
   /**封面图片 */
   cove?: string;
   /**终端 */
@@ -74,7 +74,7 @@ export interface queryTemplateParams {
   /**封面 */
   cove?: string;
   /**描述 */
-  discript?: string;
+  describe?: string;
   /**0不公开，1公开 */
   isPublic?: 0 | 1;
 }

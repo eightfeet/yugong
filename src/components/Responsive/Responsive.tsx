@@ -217,7 +217,7 @@ const Responsive: React.FC<Props> = () => {
   
   // 保存或更新项目
   const onSaveProject = useCallback(
-    async ({cove=[], terminal, isPublic, discript, tag, title, id}:TemplateInfo) => {
+    async ({cove=[], terminal, isPublic, describe, tag, title, id}:TemplateInfo) => {
       // copy
       const pageDataCopy = cloneDeep(pageData);
       // template数据
@@ -225,7 +225,7 @@ const Responsive: React.FC<Props> = () => {
         title: title || pageData.pageTitle,
         terminal,
         cove: cove[0]?.thumbUrl,
-        discript,
+        describe,
         tag: tag?.join(','),
         isPublic: isPublic === true ? 1 : 0
       }

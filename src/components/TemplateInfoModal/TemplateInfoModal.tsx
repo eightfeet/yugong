@@ -19,7 +19,7 @@ export interface TemplateInfo {
     /**封面 */
     cove?: any[];
     /**描述 */
-    discript?: string;
+    describe?: string;
     /**0不公开，1公开 */
     isPublic?: boolean;
 }
@@ -50,13 +50,13 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
 
     useEffect(() => {
         const { template = {}, pageTitle } = pageData;
-        const { title, cove, tag, isPublic, discript, terminal } = template;
+        const { title, cove, tag, isPublic, describe, terminal } = template;
         const defaultParams: TemplateInfo = {
             title: title || pageTitle,
             cove: !!cove ? [{thumbUrl: cove}] : [],
             tag: !!tag ? tag.split(',') : [],
             isPublic: !!isPublic,
-            discript,
+            describe,
             terminal,
         };
         setDefaultValue(defaultParams);
@@ -69,7 +69,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     const handleSubmit = useCallback(
         (data: AnyObject) => {
             if (!isType(data, 'Object')) return;
-            data.discript = data.discript || '';
+            data.describe = data.describe || '';
             if (onOk instanceof Function) onOk(data);
         },
         [onOk]
@@ -124,7 +124,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
                         <Button icon={<UploadOutlined />}>上传图片</Button>
                     </Upload>
                 </Form.Item>
-                <Form.Item label="描述" name="discript">
+                <Form.Item label="描述" name="describe">
                     <Input.TextArea rows={3} />
                 </Form.Item>
                 <Form.Item

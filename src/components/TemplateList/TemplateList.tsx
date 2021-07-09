@@ -1,6 +1,7 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Card, Tag, Tabs, Button, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
+import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import { deleteTemplate, queryTag, queryTagParams, queryTemplate, queryTemplateParams } from '~/api';
 import EmptyIcon from '../CreateProject/EmptyIcon';
@@ -35,10 +36,8 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
     const renderTags = useCallback(
         (tag: string) => {
-            const tagTsx = tag.split(',').filter(item=> Number(item)).map(el => <div>{tags.map(one => {if(Number(el) === one.id) return one.name}) }</div>);
+            const tagTsx = tag.split(',').filter(item=> Number(item)).map(el => <>{tags.map((one, index) => (Number(el) === one.id) ? <Tag>{one.name}</Tag> : null) }</>);
             console.log(tagTsx);
-            
-            // const tagTsx = tag.split(',').map(id => tags.some(group => group.id === Number(id)));
             return tagTsx
         },
         [tags],
@@ -118,7 +117,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                         key={`${item.id}${index}`}
                         cover={
                             <div
-                                className={s.projectcove}
+                                className={classNames(s.projectcove, s.projectcovetpl)}
                             >
                                 {item.cove ? (
                                     <img src={item.cove} alt={item.title} />
@@ -132,7 +131,8 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                             title={item.title}
                             description={
                                 <>
-                                    <div>{renderTags(item.tag)}</div>
+                                    <div>{item.describe}</div>
+                                    <div className={s.tag}>{renderTags(item.tag)}</div>
                                     <div className={s.buttonbar}>
                                         <Button
                                             size="small"

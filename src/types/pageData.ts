@@ -13,7 +13,7 @@ export interface Template {
     /**封面 */
     cove?: string;
     /**描述 */
-    discript?: string;
+    describe?: string;
     /**0不公开，1公开 */
     isPublic?: 0 | 1;
 }

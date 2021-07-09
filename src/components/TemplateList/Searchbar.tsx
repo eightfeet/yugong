@@ -1,7 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Select, Button } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
-import { queryTag, queryTagParams } from "~/api";
+import React, { useCallback, useState } from "react";
+import { queryTagParams } from "~/api";
 
 const { Option } = Select;
 
