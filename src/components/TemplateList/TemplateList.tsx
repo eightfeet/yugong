@@ -128,14 +128,17 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                         }
                     >
                         <Meta
-                            title={item.title}
+                            title={<>
+                                <h4 className={s.tpltitle}>{item.title}</h4>
+                                <div className={s.tpldescript}>{item.describe}</div>
+                            </>}
                             description={
                                 <>
-                                    <div>{item.describe}</div>
                                     <div className={s.tag}>{renderTags(item.tag)}</div>
                                     <div className={s.buttonbar}>
                                         <Button
                                             size="small"
+                                            type="primary"
                                             icon={<CopyOutlined />}
                                             onClick={() => onSelectedTemplate(item.id, 'create')}
                                         >
