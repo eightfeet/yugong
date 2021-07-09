@@ -35,7 +35,10 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
     const renderTags = useCallback(
         (tag: string) => {
-            const tagTsx = tag.split(',').map(id => tags.some(group => group.id === Number(id)));
+            const tagTsx = tag.split(',').filter(item=> Number(item)).map(el => <div>{tags.map(one => {if(Number(el) === one.id) return one.name}) }</div>);
+            console.log(tagTsx);
+            
+            // const tagTsx = tag.split(',').map(id => tags.some(group => group.id === Number(id)));
             return tagTsx
         },
         [tags],

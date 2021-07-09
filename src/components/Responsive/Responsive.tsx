@@ -75,7 +75,6 @@ const Responsive: React.FC<Props> = () => {
   const [showPageDrawer, setShowPageDrawer] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
-  const [templateInfo, setTemplateInfo] = useState<{[keys: string]: any}>()
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
