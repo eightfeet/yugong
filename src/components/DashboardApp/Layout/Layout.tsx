@@ -21,7 +21,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
 
   return (
     <Layout>
-      <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
+      <Sider theme="light" className={s.side} trigger={null} collapsible collapsed={collapsed}>
         <div className={s.logo} ><GroupOutlined /> {collapsed ? '' : 'YUG'}</div>
         <Menu theme="light" mode="inline" defaultSelectedKeys={[location.pathname]}>
           {menus.map(item => <Menu.Item key={item.path} icon={item.icon}>
@@ -38,11 +38,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           })}
         </Header>
         <Content
-          className="site-layout-background"
-          style={{
-            margin: '16px',
-            minHeight: 280,
-          }}
+          className={s.content}
         >
           {children}
         </Content>
