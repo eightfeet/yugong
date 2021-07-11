@@ -3,7 +3,10 @@ import { Card, Tag, Tabs, Button, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { deleteTemplate, queryTag, queryTagParams, queryTemplate, queryTemplateParams } from '~/api';
+import { RootState } from '~/redux/store';
 import EmptyIcon from '../CreateProject/EmptyIcon';
 import Searchbar from './Searchbar';
 import s from './TemplateList.module.less';
@@ -15,6 +18,8 @@ const { TabPane } = Tabs;
 const { confirm } = Modal;
 
 const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
+    const { auth } = useSelector((state: RootState) => state.controller);
+    const history = useHistory();
     const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
     const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
         isPublic: 1,
@@ -72,10 +77,12 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
     const onChangeTab = useCallback(
         (key) => {
+            // 拦截到登录
+            if (key === '0' && !auth?.isLogin) history.push('/login');
             setTemplateParams({ ...templateParams, isPublic: key });
             getTemplateList({ isPublic: key });
         },
-        [getTemplateList, templateParams]
+        [auth?.isLogin, getTemplateList, history, templateParams]
     );
 
     const onSearch = useCallback(

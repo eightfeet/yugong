@@ -20,7 +20,7 @@ const PageLogin:React.FC<Props> = ({}) => {
                 isLogin: true,
                 session: user
             })
-            history.replace('/');
+            history.goBack();
             message.success('登录成功')
         },
         [history, setAuth],

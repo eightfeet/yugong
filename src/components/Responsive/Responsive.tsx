@@ -12,7 +12,7 @@ import {
   SettingOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, message } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -32,6 +32,7 @@ import { cloneDeep } from "lodash";
 import TemplateInfoModal from "../TemplateInfoModal";
 import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
 import { Template } from "~/types/pageData";
+import { useHistory } from "react-router-dom";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -41,9 +42,11 @@ const Responsive: React.FC<Props> = () => {
    * 定义编辑模式
    * ----------
    */
-  const isEditing = useSelector(
-    (state: RootState) => state.controller.isEditing
+  const {isEditing, auth} = useSelector(
+    (state: RootState) => state.controller
   );
+
+  const history = useHistory();
 
   const appData = useSelector((state: RootState) => state.appData);
   const activationItem = useSelector(
@@ -218,6 +221,10 @@ const Responsive: React.FC<Props> = () => {
   // 保存或更新项目
   const onSaveProject = useCallback(
     async ({cove=[], terminal, isPublic, describe, tag, title, id}:TemplateInfo) => {
+      if (!auth?.isLogin) {
+        history.push('/login');
+        return;
+      }
       // copy
       const pageDataCopy = cloneDeep(pageData);
       // template数据
@@ -227,7 +234,8 @@ const Responsive: React.FC<Props> = () => {
         cove: cove[0]?.thumbUrl,
         describe,
         tag: tag?.join(','),
-        isPublic: isPublic === true ? 1 : 0
+        isPublic: isPublic === true ? 1 : 0,
+        userId: auth.session?.id,
       }
       // 存入模板信息到pageData
       pageDataCopy.template = templateData;
@@ -237,6 +245,7 @@ const Responsive: React.FC<Props> = () => {
         pageData: JSON.stringify(pageData),
         appData: JSON.stringify(appData),
         id,
+        userId: auth.session?.id,
         ...templateData
       }
       // 更新
@@ -246,12 +255,23 @@ const Responsive: React.FC<Props> = () => {
         // 新增
         await saveProject(params);
       }
+      message.success('已发布')
       // 更新
       updatePageData(pageDataCopy)
       // 关闭弹窗
       setShowTemplateModal(false);
     },
-    [appData, pageData, saveProject, updatePageData, updateProject],
+    [appData, auth?.isLogin, auth?.session?.id, history, pageData, saveProject, updatePageData, updateProject],
+  )
+
+  const showPublishModal = useCallback(
+    () => {
+      if (!auth?.isLogin) {
+        history.push('/login');
+      }
+      setShowTemplateModal(true);
+    },
+    [auth?.isLogin, history],
   )
   
   return (
@@ -320,7 +340,7 @@ const Responsive: React.FC<Props> = () => {
               <Button
                 type="primary"
                 icon={<UploadOutlined />}
-                onClick={() => setShowTemplateModal(true)}
+                onClick={showPublishModal}
               >
                 {pageData.template?.id ? '修改' : '发布'}
               </Button>

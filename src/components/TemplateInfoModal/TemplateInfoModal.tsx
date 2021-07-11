@@ -50,12 +50,12 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
 
     useEffect(() => {
         const { template = {}, pageTitle } = pageData;
-        const { title, cove, tag, isPublic, describe, terminal } = template;
+        const { title, cove, tag, describe, terminal } = template;
         const defaultParams: TemplateInfo = {
             title: title || pageTitle,
             cove: !!cove ? [{thumbUrl: cove}] : [],
             tag: !!tag ? tag.split(',') : [],
-            isPublic: !!isPublic,
+            isPublic: false,
             describe,
             terminal,
         };

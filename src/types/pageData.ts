@@ -4,6 +4,8 @@ import { EventsTypeItem } from "./modules";
 export interface Template {
     /**模板id */
     id?: number;
+    /**用户id */
+    userId?: number;
     /**名称 */
     title?: string;
     /**标签 */

@@ -9,16 +9,18 @@ import {
 import { useLocation, Link, useHistory } from "react-router-dom";
 import s from "./Layout.module.less";
 import menus from "./../minu";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch, RootState } from "~/redux/store";
 const { Header, Sider, Content } = Layout;
 
 interface Props {}
 const MainLayout: React.FC<Props> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(true);
+  
   let location = useLocation();
   const history = useHistory();
   const { auth } = useSelector((state: RootState) => state.controller);
+  const { loginOut } = useDispatch<Dispatch>().controller;
   return (
     <Layout>
       <Sider
@@ -59,7 +61,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
               <div>
                 <Avatar size="small" icon={<UserOutlined />} />&nbsp;&nbsp;
                 {auth.session?.username}
-                <Button type="link">退出</Button>
+                <Button type="link" onClick={loginOut}>退出</Button>
               </div>
             ) : (
               <>

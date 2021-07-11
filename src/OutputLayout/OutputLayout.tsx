@@ -70,8 +70,8 @@ const OutputLayout: React.FC<LayoutProps> = ({
     useEffect(() => {
         const topLocation = window.top?.location;
         if (
-            topLocation.origin === window.origin &&
-            topLocation.pathname === '/dashboard'
+            topLocation?.origin === window.origin &&
+            topLocation?.pathname === '/dashboard'
         ) {
             setIsEditing(true);
         }

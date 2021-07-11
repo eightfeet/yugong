@@ -1,9 +1,10 @@
 import { createModel } from '@rematch/core';
+import { loginOut } from '~/api';
 import { RootModel } from './models';
 
 interface Auth {
     isLogin?: boolean,
-    session?: {id: number, username: string}
+    session?: {id?: number, username?: string}
 }
 
 const defaultData: {
@@ -52,6 +53,15 @@ export const controller = createModel<RootModel>()({
                     resolve();
                 }))
                 dispatch.controller.setStateTag(false);
+            },
+
+            loginOut: async () => {
+                loginOut().then(() => {
+                    dispatch.controller.setAuth({
+                        isLogin: false,
+                        session: {}
+                    })
+                })
             }
         }
     }

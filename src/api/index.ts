@@ -170,7 +170,18 @@ export interface registerParams {
   password: string;
   confirm: string;
 }
-
+/**
+ * 用户注册
+ * @param params 注册
+ * @returns 
+ */
 export function register (params: registerParams): Promise<userResult> {
   return request.post('/api/register', params)
+}
+/**
+ * 
+ * @returns 退出
+ */
+export function loginOut (): Promise<any> {
+  return request.post('/api/loginOut')
 }
