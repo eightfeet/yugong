@@ -191,13 +191,13 @@ const Responsive: React.FC<Props> = () => {
     }
   }, [removeActivationItem, sendMessage, win]);
 
-  const saveProject = useCallback(
+  const saveProjects = useCallback(
     async (data: Template) => {
+      
       const id: number = await createTemplate(data);
-
       if (id) {
         const copyPageData = cloneDeep(pageData);
-        copyPageData.template = {...data, id};
+        copyPageData.template = {...copyPageData.template || {}, id};
         return updatePageData(copyPageData)
       }
       
@@ -234,11 +234,10 @@ const Responsive: React.FC<Props> = () => {
         cove: cove[0]?.thumbUrl,
         describe,
         tag: tag?.join(','),
-        isPublic: isPublic === true ? 1 : 0,
-        userId: auth.session?.id,
+        isPublic: isPublic === true ? 1 : 0
       }
       // 存入模板信息到pageData
-      pageDataCopy.template = templateData;
+      pageDataCopy.template = templateData || {};
 
       // 完整数据
       const params: TemplateAll = {
@@ -248,20 +247,22 @@ const Responsive: React.FC<Props> = () => {
         userId: auth.session?.id,
         ...templateData
       }
+      
       // 更新
       if (!!pageData.template?.id) {
         await updateProject(params);
       } else {
         // 新增
-        await saveProject(params);
+        const newId = await createTemplate(params);
+        pageDataCopy.template.id = newId;
       }
-      message.success('已发布')
+      message.success('已发布');
       // 更新
       updatePageData(pageDataCopy)
       // 关闭弹窗
       setShowTemplateModal(false);
     },
-    [appData, auth?.isLogin, auth?.session?.id, history, pageData, saveProject, updatePageData, updateProject],
+    [appData, auth?.isLogin, auth?.session?.id, history, pageData, updatePageData, updateProject],
   )
 
   const showPublishModal = useCallback(

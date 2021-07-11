@@ -63,6 +63,8 @@ export function createTemplate(
 export interface queryTemplateParams {
   /**模板id */
   id?: number;
+  /**用户id */
+  userId?: number;
   /**名称 */
   title?: string;
   /**标签 */

@@ -42,7 +42,6 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     const renderTags = useCallback(
         (tag: string) => {
             const tagTsx = tag.split(',').filter(item=> Number(item)).map(el => <>{tags.map((one, index) => (Number(el) === one.id) ? <Tag>{one.name}</Tag> : null) }</>);
-            console.log(tagTsx);
             return tagTsx
         },
         [tags],
@@ -53,44 +52,57 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
      * @param type
      */
     const getTemplateList = useCallback(
-        (query: queryTemplateParams) => {
-            const params = { ...query, ...templateParams };
+        (query?: queryTemplateParams) => {
+            const params = { ...templateParams, ...query };
             queryTemplate(params).then((res) => {
                 setTemplateList(res);
             });
         },
         [templateParams]
     );
-
+    
     useEffect(() => {
-        getTemplateList(templateParams);
-    }, [getTemplateList, templateParams]);
+        getTemplateList({ isPublic: 1 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const del = useCallback(
         (id) => {
             deleteTemplate(id).then(() => {
-                getTemplateList(templateParams);
+                getTemplateList();
             });
         },
-        [getTemplateList, templateParams]
+        [getTemplateList]
     );
 
     const onChangeTab = useCallback(
         (key) => {
             // 拦截到登录
-            if (key === '0' && !auth?.isLogin) history.push('/login');
-            setTemplateParams({ ...templateParams, isPublic: key });
-            getTemplateList({ isPublic: key });
+            if (key === '0') {
+                if (!auth?.isLogin) {
+                    history.push('/login');
+                    return;
+                }
+                getTemplateList({ isPublic: 0, userId: auth?.session?.id });
+            }
+            if (key === '1') {
+                getTemplateList({ isPublic: 1 });
+
+            };
+            setTemplateParams({ ...templateParams, isPublic: Number(key) as 1 | 0, });
+            
         },
-        [auth?.isLogin, getTemplateList, history, templateParams]
+        [auth?.isLogin, auth?.session?.id, getTemplateList, history, templateParams]
     );
 
     const onSearch = useCallback(
         (data) => {
-            console.log(data);
-            getTemplateList({ ...templateParams, ...data });
+            if (templateParams.isPublic === 0) {
+                data.userId = auth?.session?.id
+            }
+            getTemplateList(data);
         },
-        [getTemplateList, templateParams]
+        [auth?.session?.id, getTemplateList, templateParams.isPublic]
     );
 
     const onDelete = useCallback(
@@ -114,7 +126,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                 <TabPane tab="公共模板" key="1"></TabPane>
                 <TabPane tab="我的项目" key="0"></TabPane>
             </Tabs>
-            <Searchbar onClick={onSearch} tags={tags} />
+            <Searchbar key={templateParams.isPublic} onClick={onSearch} tags={tags} />
             <div className={s.container}>
                 {templateList.map((item: any, index) => (
                     <Card
