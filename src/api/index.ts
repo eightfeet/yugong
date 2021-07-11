@@ -1,7 +1,5 @@
 import request from "~/core/request";
-import { AppDataListTypes } from "~/types/appData";
 import { stringify } from "query-string";
-import { PageData } from "~/types/pageData";
 
 /**
  * 创建模板入参
@@ -147,4 +145,32 @@ export interface queryTagParams {
 export function queryTag(params?: queryTagParams): Promise<queryTagParams[]> {
   const query = stringify(params || {});
   return request.get(`/api/tag/${query}`)
+}
+
+export interface userResult {
+  username: string;
+  id: number;
+}
+
+export interface loginParams {
+  username: string;
+  password: string;
+}
+/**
+ * 用户登录
+ * @param params username & password
+ * @returns 
+ */
+export function login (params: loginParams): Promise<userResult> {
+  return request.post('/api/login', params)
+}
+
+export interface registerParams {
+  username: string;
+  password: string;
+  confirm: string;
+}
+
+export function register (params: registerParams): Promise<userResult> {
+  return request.post('/api/register', params)
 }

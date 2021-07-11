@@ -1,12 +1,18 @@
 import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 
+interface Auth {
+    isLogin?: boolean,
+    session?: {id: number, username: string}
+}
+
 const defaultData: {
     stateTag?: boolean;
     isEditing?: boolean;
     editingId?: string;
     bestFont?: number;
     currentEditorStylePath?: any[];
+    auth?: Auth
 } = {
     stateTag: false,
     isEditing: false,
@@ -33,6 +39,9 @@ export const controller = createModel<RootModel>()({
         },
         initController(){
             return defaultData;
+        },
+        setAuth(state, payload: Auth){
+            return { ...state, auth: payload}
         }
     },
     effects: (dispatch) => {
