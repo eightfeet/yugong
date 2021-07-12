@@ -187,3 +187,11 @@ export function register (params: registerParams): Promise<userResult> {
 export function loginOut (): Promise<any> {
   return request.post('/api/loginOut')
 }
+
+/**
+ * 同步用户信息
+ * @returns 
+ */
+export function userSync (): Promise<userResult> {
+  return request.get('/api/userSync')
+} 
