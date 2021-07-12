@@ -162,17 +162,22 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                                             onClick={() => onSelectedTemplate(item.id, 'create')}
                                         >
                                             从模板创建
-                                        </Button>&nbsp;
-                                        <Button
-                                            size="small"
-                                            icon={<EditOutlined />}
-                                            onClick={() => onSelectedTemplate(item.id, 'edit')}
-                                        />&nbsp;
-                                        <Button
-                                            size="small"
-                                            icon={<DeleteOutlined />}
-                                            onClick={onDelete(item.id)}
-                                        />
+                                        </Button>
+                                        { (auth?.session?.id === item.userId) ? 
+                                        <>
+                                            &nbsp;
+                                            <Button
+                                                size="small"
+                                                icon={<EditOutlined />}
+                                                onClick={() => onSelectedTemplate(item.id, 'edit')}
+                                            />
+                                            &nbsp;
+                                            <Button
+                                                size="small"
+                                                icon={<DeleteOutlined />}
+                                                onClick={onDelete(item.id)}
+                                            />
+                                        </> : null}
                                     </div>
                                 </>
                             }
