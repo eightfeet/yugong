@@ -81,7 +81,7 @@ const BooleanArguments: React.FC<Props> = ({
         <Col span={2} style={{lineHeight: '30px'}}>
         <Tooltip
             placement="topRight"
-            title={<span>{`${argumentsState && getBooleanData(argumentsState?.data) ? '当前状态：开启' : '当前状态：关闭'}`}<br />(等式成立时开启)</span>}
+            title={<span>{`${argumentsState && getBooleanData(argumentsState?.data) ? '当前状态：开启' : '当前状态：关闭'}`}<br />(条件成立时开启)</span>}
         >
             <InfoCircleOutlined />
         </Tooltip>
