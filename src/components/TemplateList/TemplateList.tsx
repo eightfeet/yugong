@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Card, Tag, Tabs, Button, Modal } from "antd";
+import { Card, Tag, Tabs, Button, Modal, Pagination } from "antd";
 import Meta from "antd/lib/card/Meta";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
@@ -29,9 +29,13 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
   const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
     isPublic: 1,
+    limit: 4,
+    offset: 0,
   });
-
+  const [total, setTotal] = useState<number>();
+  const [CurrentPage, setCurrentPage] = useState(1)
   const [tags, setTags] = useState<queryTagParams[]>([]);
+  
 
   const getTags = useCallback(async () => {
     const tagsResult = await queryTag();
@@ -66,8 +70,10 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const getTemplateList = useCallback(
     (query?: queryTemplateParams) => {
       const params = { ...templateParams, ...query };
-      queryTemplate(params).then(({rows=[], limit, offset}) => {
+      queryTemplate(params).then(({rows=[], limit, offset, count}) => {
         setTemplateList(rows);
+        setTotal(count/limit);
+        setCurrentPage((params?.offset || 0) + 1)
       });
     },
     [templateParams]
@@ -127,6 +133,15 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     },
     [del]
   );
+
+  const onChangePagination = useCallback(
+      (page) => {
+          getTemplateList({
+              offset: page - 1
+          })
+      },
+      [getTemplateList],
+  )
 
   return (
     <>
@@ -194,6 +209,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
           </Card>
         ))}
       </div>
+      {!!total && <Pagination current={CurrentPage} pageSize={(templateParams?.limit || 5)} onChange={onChangePagination} total={total} />}
     </>
   );
 };
