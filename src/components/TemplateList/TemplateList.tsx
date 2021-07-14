@@ -66,8 +66,8 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const getTemplateList = useCallback(
     (query?: queryTemplateParams) => {
       const params = { ...templateParams, ...query };
-      queryTemplate(params).then((res) => {
-        setTemplateList(res);
+      queryTemplate(params).then(({rows=[], limit, offset}) => {
+        setTemplateList(rows);
       });
     },
     [templateParams]

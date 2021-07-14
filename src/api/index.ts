@@ -77,6 +77,10 @@ export interface queryTemplateParams {
   describe?: string;
   /**0不公开，1公开 */
   isPublic?: 0 | 1;
+  /**页码 */
+  limit?: number;
+  /**条数 */
+  offset?: number;
 }
 
 /**
@@ -86,7 +90,11 @@ export interface queryTemplateParams {
  * @param {queryTemplateParams} params
  * @return {*}  {Promise<queryTemplateParams[]>}
  */
-export function queryTemplate(params: queryTemplateParams): Promise<queryTemplateParams[]> {
+export function queryTemplate(params: queryTemplateParams): Promise<{
+  rows: queryTemplateParams[];
+  limit: number;
+  offset: number;
+}> {
   const query = stringify(params);
   return request.get(`/api/template?${query}`);
 }
