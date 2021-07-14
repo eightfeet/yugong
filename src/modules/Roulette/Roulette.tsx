@@ -215,15 +215,20 @@ const Roulette: Modules<RouletteProps> = (props) => {
             let argRegion: any = getArgumentsItem(region);
             const argAddress = getArgumentsItem(address);
             const argIdCard = getArgumentsItem(idCard);
-            argRegionName = argRegionName.replace(/，/g, ',').split(',');
-            argRegion = argRegion.replace(/，/g, ',').split(',');
-            setReceiverInfo({
+            argRegionName = argRegionName?.replace(/，/g, ',')?.split(',')?.filter(Boolean);
+            argRegion = argRegion?.replace(/，/g, ',')?.split(',');
+            const parames = {
                 receiverPhone: argReceiverPhone,
-                regionName: argRegionName,
                 address: argAddress,
                 region: argRegion,
                 idCard: argIdCard,
-            });
+            }
+
+            if (!!argRegionName.length) {
+                (parames as any).regionName = argRegionName
+            }
+            
+            setReceiverInfo(parames);
         },
         []
     );
@@ -275,12 +280,12 @@ const Roulette: Modules<RouletteProps> = (props) => {
      * 开始抽奖
      * */
      const startLottery = useCallback(async () => {
+         
         // step1、执行前置api 用于抽奖前检查是否满足抽奖条件
         await apiBeforeStart();
 
         // step2 执行抽奖事件
         await setDelayStart();
-        
         // step3、检查状态是否可以抽奖
         if (!checked.current.enabled) {
             console.log('没有权限，请勿抽奖！');
@@ -290,9 +295,10 @@ const Roulette: Modules<RouletteProps> = (props) => {
         
         // step4、返回抽奖接口
         const settedApi = await apiStart() as AnyObjectType;
+        
         // step5、执行结束事件，可用于重置数据
         dispatchEventRef.current?.onEnd();
-        if (settedApi.response.prizeId !== undefined) {
+        if (settedApi?.response?.prizeId !== undefined) {
             let currentPrise = settedApi.response;
             prizes.some(prize => {
                 if (prize.prizeId === currentPrise.prizeId) {
