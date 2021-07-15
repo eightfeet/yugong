@@ -14,7 +14,7 @@ interface queryParams {
 interface Props {
   onClick: (query: queryParams) => void;
   tags: queryTagParams[];
-  onChange: (data: queryParams) => void;
+  onChange?: (data: queryParams) => void;
 }
 
 const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
@@ -36,7 +36,9 @@ const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
   const onChangTag = useCallback(
     (tag) => {
       const data = {...query, tag};
-      onChange(data);
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
       setQuery(data)
     },
     [onChange, query],
@@ -45,7 +47,9 @@ const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
   const onChangeTitle = useCallback(
     (e) => {
       const data = {...query, title: e.target.value};
-      onChange(data);
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
       setQuery(data)
     },
     [onChange, query],
@@ -54,7 +58,9 @@ const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
   const onChangeType = useCallback(
     (terminal) => {
       const data = {...query, terminal};
-      onChange(data);
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
       setQuery(data)
     },
     [onChange, query],

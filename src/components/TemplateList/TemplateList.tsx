@@ -14,6 +14,7 @@ import {
 } from "~/api";
 import { RootState } from "~/redux/store";
 import EmptyIcon from "../CreateProject/EmptyIcon";
+import clearEmptyOfObject from '~/core/helper/clearEmptyOfObject';
 import Searchbar from "./Searchbar";
 import s from "./TemplateList.module.less";
 
@@ -75,12 +76,14 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         ...templateParams,
         ...query,
       };
+      params = clearEmptyOfObject(params)
       if (force) {
         params = {...query}
       }
       if (params.isPublic === 0) {
         params.userId = auth?.session?.id
       }
+
       const { rows = [], limit, offset, count } = await queryTemplate(params);
           setTemplateList(rows);
           setTotal(Math.ceil(count / limit) * limit);
@@ -127,8 +130,21 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const onSearch = useCallback(
     (data) => {
-      setTemplateParams({...templateParams, ...data})
-      getTemplateList(data);
+        console.log(data);
+        
+      const optData = {...templateParams, ...data};
+      if (!data.tag) {
+        delete optData.tag;
+      }
+      if (!data.title) {
+        delete optData.title;
+      }
+      if (!data.terminal) {
+        delete optData.terminal;
+      }
+      console.log(optData);
+      setTemplateParams(optData)
+      getTemplateList(optData);
     },
     [getTemplateList, templateParams]
   );
@@ -157,29 +173,13 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     [getTemplateList, templateParams.limit]
   );
 
-  const onChangeSearch = useCallback(
-      (data) => {
-          console.log(data);
-          
-          // 清洗
-          Object.keys(data).forEach(key => {
-            const element = data[key];
-            if (!element && element !== 0) {
-                delete data[key];
-            }
-          })
-          setTemplateParams({...templateParams, ...data})
-      },
-      [templateParams],
-  )
-
   return (
     <>
       <Tabs className={s.tab} defaultActiveKey="1" onChange={onChangeTab}>
         <TabPane tab="公共模板" key="1"></TabPane>
         <TabPane tab="我的项目" key="0"></TabPane>
       </Tabs>
-      <Searchbar key={templateParams.isPublic} onChange={onChangeSearch} onClick={onSearch} tags={tags} />
+      <Searchbar key={templateParams.isPublic} onClick={onSearch} tags={tags} />
       <div className={s.container}>
         {templateList.map((item: any, index) => (
           <Card
@@ -242,7 +242,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
       {!!total && (
         <Pagination
           current={current}
-          pageSize={templateParams?.limit}
+          pageSize={templateParams?.limit || 0}
           onChange={onChangePagination}
           total={total}
         />
