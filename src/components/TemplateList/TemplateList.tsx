@@ -29,13 +29,15 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
   const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
     isPublic: 1,
-    limit: 4,
+    limit: 2,
     offset: 0,
   });
+  // 总条数决定页数
   const [total, setTotal] = useState<number>();
-  const [CurrentPage, setCurrentPage] = useState(1)
+  // 当前页
+  const [current, setCurrent] = useState(1)
+
   const [tags, setTags] = useState<queryTagParams[]>([]);
-  
 
   const getTags = useCallback(async () => {
     const tagsResult = await queryTag();
@@ -68,15 +70,23 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
    * @param type
    */
   const getTemplateList = useCallback(
-    (query?: queryTemplateParams) => {
-      const params = { ...templateParams, ...query };
-      queryTemplate(params).then(({rows=[], limit, offset, count}) => {
-        setTemplateList(rows);
-        setTotal(count/limit);
-        setCurrentPage((params?.offset || 0) + 1)
-      });
+    async (query?: queryTemplateParams, force?: boolean) => {
+      let params = {
+        ...templateParams,
+        ...query,
+      };
+      if (force) {
+        params = {...query}
+      }
+      if (params.isPublic === 0) {
+        params.userId = auth?.session?.id
+      }
+      const { rows = [], limit, offset, count } = await queryTemplate(params);
+          setTemplateList(rows);
+          setTotal(Math.ceil(count / limit) * limit);
+          setCurrent(offset / limit + 1);
     },
-    [templateParams]
+    [auth?.session?.id, templateParams]
   );
 
   useEffect(() => {
@@ -96,29 +106,31 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const onChangeTab = useCallback(
     (key) => {
       // 拦截到登录
-      if (key === "0") {
-        if (!auth?.isLogin) {
-          history.push("/login");
-          return;
-        }
-        getTemplateList({ isPublic: 0, userId: auth?.session?.id });
+      if (key === "0" && !auth?.isLogin) {
+        history.push("/login");
+        return;
       }
-      if (key === "1") {
-        getTemplateList({ isPublic: 1 });
-      }
-      setTemplateParams({ ...templateParams, isPublic: Number(key) as 1 | 0 });
+      setTemplateParams({
+        limit: templateParams.limit,
+        offset: 0,
+        isPublic: Number(key) as 1 | 0,
+      });
+
+      getTemplateList({
+        limit: templateParams.limit,
+        offset: 0,
+        isPublic: Number(key) as 1 | 0,
+      }, true)
     },
-    [auth?.isLogin, auth?.session?.id, getTemplateList, history, templateParams]
+    [auth?.isLogin, getTemplateList, history, templateParams]
   );
 
   const onSearch = useCallback(
     (data) => {
-      if (templateParams.isPublic === 0) {
-        data.userId = auth?.session?.id;
-      }
+      setTemplateParams({...templateParams, ...data})
       getTemplateList(data);
     },
-    [auth?.session?.id, getTemplateList, templateParams.isPublic]
+    [getTemplateList, templateParams]
   );
 
   const onDelete = useCallback(
@@ -135,12 +147,30 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   );
 
   const onChangePagination = useCallback(
-      (page) => {
-          getTemplateList({
-              offset: page - 1
+    (page) => {
+        const currentOffset = (page - 1)*(templateParams.limit || 0);
+        
+      getTemplateList({
+          offset: currentOffset
+      });
+    },
+    [getTemplateList, templateParams.limit]
+  );
+
+  const onChangeSearch = useCallback(
+      (data) => {
+          console.log(data);
+          
+          // 清洗
+          Object.keys(data).forEach(key => {
+            const element = data[key];
+            if (!element && element !== 0) {
+                delete data[key];
+            }
           })
+          setTemplateParams({...templateParams, ...data})
       },
-      [getTemplateList],
+      [templateParams],
   )
 
   return (
@@ -149,7 +179,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         <TabPane tab="公共模板" key="1"></TabPane>
         <TabPane tab="我的项目" key="0"></TabPane>
       </Tabs>
-      <Searchbar key={templateParams.isPublic} onClick={onSearch} tags={tags} />
+      <Searchbar key={templateParams.isPublic} onChange={onChangeSearch} onClick={onSearch} tags={tags} />
       <div className={s.container}>
         {templateList.map((item: any, index) => (
           <Card
@@ -209,7 +239,14 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
           </Card>
         ))}
       </div>
-      {!!total && <Pagination current={CurrentPage} pageSize={(templateParams?.limit || 5)} onChange={onChangePagination} total={total} />}
+      {!!total && (
+        <Pagination
+          current={current}
+          pageSize={templateParams?.limit}
+          onChange={onChangePagination}
+          total={total}
+        />
+      )}
     </>
   );
 };

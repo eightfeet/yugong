@@ -13,10 +13,11 @@ interface queryParams {
 
 interface Props {
   onClick: (query: queryParams) => void;
-  tags: queryTagParams[]
+  tags: queryTagParams[];
+  onChange: (data: queryParams) => void;
 }
 
-const Searchbar: React.FC<Props> = ({onClick, tags}) => {
+const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
 
   const [query, setQuery] = useState<queryParams>({});
 
@@ -33,18 +34,39 @@ const Searchbar: React.FC<Props> = ({onClick, tags}) => {
   )
 
   const onChangTag = useCallback(
-    (value) => {
-      setQuery({...query, tag: value})
+    (tag) => {
+      const data = {...query, tag};
+      onChange(data);
+      setQuery(data)
     },
-    [query],
+    [onChange, query],
   )
+
+  const onChangeTitle = useCallback(
+    (e) => {
+      const data = {...query, title: e.target.value};
+      onChange(data);
+      setQuery(data)
+    },
+    [onChange, query],
+  )
+
+  const onChangeType = useCallback(
+    (terminal) => {
+      const data = {...query, terminal};
+      onChange(data);
+      setQuery(data)
+    },
+    [onChange, query],
+  )
+
 
   return (
     <>
       <Row gutter={[5, 24]}>
         <Col span={4}>
           <Tooltip title="请输入模板名称">
-            <Input type="text" placeholder="模版名称" onChange={(e) => setQuery({...query, title: e.target.value})} />
+            <Input type="text" placeholder="模版名称" onChange={onChangeTitle} />
           </Tooltip>
         </Col>
         <Col span={4}>
@@ -54,7 +76,7 @@ const Searchbar: React.FC<Props> = ({onClick, tags}) => {
               style={{ width: "100%" }}
               placeholder="终端类型"
               value={query.terminal}
-              onChange={(terminal) => setQuery({...query, terminal})}
+              onChange={onChangeType}
             >
               <Option value="mobile">移动端</Option>
               <Option value="pc">PC端</Option>
