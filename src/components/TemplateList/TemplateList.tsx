@@ -130,8 +130,6 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const onSearch = useCallback(
     (data) => {
-        console.log(data);
-        
       const optData = {...templateParams, ...data};
       if (!data.tag) {
         delete optData.tag;
@@ -142,9 +140,8 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
       if (!data.terminal) {
         delete optData.terminal;
       }
-      console.log(optData);
       setTemplateParams(optData)
-      getTemplateList(optData);
+      getTemplateList(optData, true);
     },
     [getTemplateList, templateParams]
   );
