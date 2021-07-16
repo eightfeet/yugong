@@ -50,17 +50,18 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
 
     useEffect(() => {
         const { template = {}, pageTitle } = pageData;
-        const { title, cove, tag, describe, terminal } = template;
+        const { title, cove, tag, describe, terminal, isPublic } = template;
         const defaultParams: TemplateInfo = {
             title: title || pageTitle,
             cove: !!cove ? [{thumbUrl: cove}] : [],
             tag: !!tag ? tag.split(',') : [],
-            isPublic: false,
+            isPublic: (isPublic === 1),
             describe,
             terminal,
         };
         setDefaultValue(defaultParams);
-    }, [pageData]);
+        
+    }, [pageData, pageData.template, visible]);
 
     useEffect(() => {
         getTags();
@@ -77,6 +78,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
 
     return (
         <Modal
+            key={`${visible}`}
             title="模版信息"
             visible={visible}
             onCancel={onCancel}
