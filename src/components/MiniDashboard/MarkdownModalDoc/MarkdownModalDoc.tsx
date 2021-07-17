@@ -17,7 +17,7 @@ const MarkdownModalDoc: React.FC<Props> = ({ visible, moduleName, onCancel }) =>
             setHelper('');
           return;
       }
-    let text: string = "";
+    let text: string = `<h3>找不到${name}文档</h3>请联系模块作者补充`;
     try {
       const file = await import(`~/modules/${name}/README.md`);
       const response = await fetch(file.default);

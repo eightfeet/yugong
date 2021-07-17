@@ -29,6 +29,10 @@ if [ ! -d $PATHUrl$NAME ]; then
     cp $PATHTPL/ModuleTpl.txt $PATHUrl$NAME/$NAME.tsx
     # replace
     sed -i '' -e "s/ModuleTpl/"${NAME}"/g" $PATHUrl$NAME/$NAME.tsx
+    # copy
+    cp $PATHTPL/README.txt $PATHUrl$NAME/README.md
+    # replace
+    sed -i '' -e "s/ModuleTpl/"${NAME}"/g" $PATHUrl$NAME/README.md
     echo -e $SUCCESS'模块'$NAME'已创建！' $LINK $PATHUrl$NAME $RES
     echo
     exit
