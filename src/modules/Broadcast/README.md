@@ -1,7 +1,7 @@
 ## 消息滚动播报
 
 - 创建模块静态属性
-    ```typescript 
+    ```javascript 
         import {
             ModulesStatic,
         } from "~/types/modules";
@@ -60,8 +60,6 @@
         };
 
         export default config;
-
-
     ```
 
 - 创建模块

@@ -343,8 +343,8 @@ const ArgumentsSetting: React.FC<Props> = ({
                           onChange={onChangeRunningTime(index)}
                       >
                           {Object.keys(runningTimes)?.map(
-                              (optionsIitem) => (
-                                  <Select.Option value={optionsIitem}>
+                              (optionsIitem, optionsIitemIndex) => (
+                                  <Select.Option key={optionsIitemIndex} value={optionsIitem}>
                                       {optionsIitem}
                                   </Select.Option>
                               )

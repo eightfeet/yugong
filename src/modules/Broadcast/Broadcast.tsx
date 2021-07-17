@@ -168,7 +168,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       >
         <div className={s.listwrap} style={listWrapStyle}>
           <ul ref={listWrapRef}>
-            {list?.map((item, index) => (
+            {Array.isArray(list) && list?.map((item, index) => (
               <li key={`top${index}`} style={{ opacity: setItemAlph(index) }}>
                 <div>
                   <div
@@ -182,7 +182,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
             ))}
           </ul>
           <ul>
-            {list?.map((item, index) => (
+            {Array.isArray(list) && list?.map((item, index) => (
               <li
                 key={`buttom${index}`}
                 style={{ opacity: setItemAlph(index) }}

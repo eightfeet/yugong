@@ -7,6 +7,7 @@ import IconTable from "./icons/IconTable";
 import IconForm from "./icons/IconForm";
 import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
+import IconBroadcast from "./icons/IconBroadcast";
 
 export const BASEMODULES = [
   {
@@ -52,6 +53,12 @@ export const BASEMODULES = [
     tips: "对话框属于隐形模块，请在设置面板中选择编辑",
     icon: <Icon component={IconModal} />,
   },
+  {
+    moduleName: "Broadcast",
+    title: "Broadcast",
+    discribe: "滚动播报",
+    icon: <Icon component={IconBroadcast} />,
+  }
 ];
 
 export const LOTTERY = [
@@ -59,15 +66,6 @@ export const LOTTERY = [
     moduleName: "Roulette",
     title: "Roulette",
     discribe: "转盘抽奖",
-    icon: <Icon component={IconRoulette} />,
-  }
-]
-
-export const MSGBROADCAST = [
-  {
-    moduleName: "Broadcast",
-    title: "Broadcast",
-    discribe: "滚动播报",
     icon: <Icon component={IconRoulette} />,
   }
 ]
@@ -82,11 +80,6 @@ export const MODULES = [
     name: "lottery",
     describe: "抽奖组件",
     modules: LOTTERY,
-  },
-  {
-    name: "message",
-    describe: "消息广播",
-    modules: MSGBROADCAST,
   },
 ];
 

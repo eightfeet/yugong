@@ -1,14 +1,16 @@
 import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from "antd";
 import Draggable from "react-draggable";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MODULES } from "~/core/constants";
 import { v4 as uuidv4 } from "uuid";
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from "~/types/appData";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
+
 import s from "./Repository.module.less";
 import useKeyDown from "~/hooks/useKeyDown";
 import useLocalStorage from "~/hooks/useLocalStorage";
+import useMarked from "~/hooks/useMarked";
 
 const { Panel } = Collapse;
 
@@ -31,6 +33,27 @@ const Repository: React.FC = () => {
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   // 缓存
   const [, setAppdataLocalStorage] = useLocalStorage("appData", null);
+
+  const [helper, setHelper ] = useMarked();
+
+  const getMd = useCallback(async (name: string) => {
+    let text: string = "";
+    try {
+      const file = await import(`~/modules/${name}/README.md`);
+      const response = await fetch(file.default);
+      text = await response.text();
+    } catch (error) {
+      console.warn(error);
+    }
+    setHelper(text);
+  }, [setHelper]);
+
+  // 获取说明文档
+  useEffect(() => {
+    if (addedModal) {
+      getMd(addedModal.moduleName);
+    }
+  }, [addedModal, getMd]);
 
   const onStopDrag = useCallback(
     (module: ModalType) => (e: any) => {
@@ -115,7 +138,7 @@ const Repository: React.FC = () => {
 
   return (
     <>
-      <Collapse bordered={false} defaultActiveKey={'base'}>
+      <Collapse bordered={false} defaultActiveKey={"base"}>
         {MODULES.map((moduleGroup, mdindex) => (
           <Panel header={moduleGroup.describe} key={moduleGroup.name}>
             <Row key={mdindex} gutter={[16, 16]}>
@@ -155,6 +178,7 @@ const Repository: React.FC = () => {
           addedModal?.moduleName || ""
         })组件`}
         visible={!!addedModal}
+        width={700}
         footer={null}
         onCancel={() => setAddedModal(undefined)}
         bodyStyle={{ padding: "20px 10px 30px 10px" }}
@@ -180,6 +204,9 @@ const Repository: React.FC = () => {
             </Button>
           </Col>
         </Row>
+        <div className={s.mdwrap}>
+          <div>{helper}</div>
+        </div>
       </Modal>
     </>
   );
