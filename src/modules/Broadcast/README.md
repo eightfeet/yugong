@@ -1,126 +1,31 @@
 ## 消息滚动播报
 
-- 创建模块静态属性
-    ```javascript 
-        import {
-            ModulesStatic,
-        } from "~/types/modules";
+用于消息轮播展示（最新中奖、最新报名、最新下单）
 
-        const config: ModulesStatic = {
-            /**
-            * publish functions
-            */
-            exposeFunctions: [],
+### 预设说明
+- 设置<br />
+    - 数据：必选参数，用于轮播展示数据, 请从runningTime中选择，支持以下两种数据格式<br /> 
+        1. string[]
+            ```json
+                [
+                    "第一条消息",
+                    "第二条消息",
+                    ...
+                ]
+            ```
+        2. { message: string, ... }[]
+            ```json
+                [
+                    { "message": "第一条消息", ...},
+                    { "message": "第二条消息", ...},
+                    ...
+                ]
+            ```
+    - 显示条数：<br />
+        轮播时同时显示的条数，默认值3 最小值为1，**最大值不超过数据总条数，当值大于总条数时默认显示所有条数**
 
-            /**
-            * register events
-            */
-            exposeEvents: [
-                {
-                name: "mount",
-                description: "初始化",
-                },
-                {
-                name: "unmount",
-                description: "卸载",
-                },
-            ],
+    - 时间间隔：<br />
+        轮播时间间隔**以毫秒为单位**默认值 2500ms
 
-            /**
-            * publish Api
-            */
-            exposeApi: [],
 
-            /**
-            * publish defaultporps styles
-            */
-            exposeDefaultProps: {
-                layout: {
-                w: 5, // width
-                h: 3, // height
-                },
-                style: {
-                basic: {},
-                wrap: {},
-                },
-                styleDescription: [
-                {
-                    title: "基础",
-                    value: "basic",
-                    children: [
-                    {
-                        title: "包裹器",
-                        value: "wrap",
-                        children: [],
-                    },
-                    ],
-                },
-                ],
-            },
-        };
-
-        export default config;
-    ```
-
-- 创建模块
-    ```typescript
-        import EventEmitter from '~/core/EventEmitter';
-        import { AppDataElementsTypes } from '~/types/appData';
-        import { Modules } from '~/types/modules';
-        import config from './Broadcast.config';
-        import Wrapper from '../Wrapper';
-        import useLifeCycle from '~/hooks/useLifeCycle';
-        import useStyles from './Broadcast.useStyles';
-
-        export interface BroadcastProps extends AppDataElementsTypes {
-            id: string;
-            eventEmitter: EventEmitter;
-        }
-
-        const Broadcast:Modules<BroadcastProps> = (props) => {
-            const { style, moduleId } = props;
-            // inject class from jss
-            const userClass = useStyles(style);
-            // Register events and publish functions
-            const [eventsDispatch] = useLifeCycle(
-                moduleId,
-                // register events
-                {
-                    mount: '初始化',
-                    unmount: '卸载'
-                },
-                // publish functions
-                { }
-            );
-
-            return (
-                <Wrapper {...props}>
-                    <div className={userClass.wrap}>
-                    Broadcast
-                    </div>
-                </Wrapper>
-            )
-        }
-
-        // bind static
-        for (const key in config) {
-            if (Object.prototype.hasOwnProperty.call(config, key)) {
-                Broadcast[key] = config[key];
-            }
-        }
-
-        export default Broadcast;
-    ```
-
-- 创建模块样式编辑器
-    ```typescript
-        import { createUseStyles } from "react-jss";
-        import styleCompiler from "~/compiler";
-
-        const useStyles = createUseStyles<string, any>({
-        wrap: (style) => styleCompiler(style.wrap).style || {}
-        });
-
-        export default useStyles;
-
-    ```
+    
