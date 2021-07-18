@@ -19,7 +19,7 @@ const ConfigurationController = () => {
   );
 
   const { type } = activationItem;
-
+    
   /**
    * 获取当前被选组件导出的（自定义）默认Api数据
    */
@@ -84,7 +84,7 @@ const ConfigurationController = () => {
         </Panel>
       ) : null}
     </Collapse>
-    <MarkdownModalDoc visible={showHelp} moduleName={module.name} onCancel={() => setShowHelp(false)} />
+    <MarkdownModalDoc visible={showHelp} moduleName={type} onCancel={() => setShowHelp(false)} />
     </>
   );
 };
