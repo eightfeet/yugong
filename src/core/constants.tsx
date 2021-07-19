@@ -67,6 +67,13 @@ export const LOTTERY = [
     title: "Roulette",
     discribe: "转盘抽奖",
     icon: <Icon component={IconRoulette} />,
+  },
+  {
+    moduleName: "LuckyRecord",
+    title: "LuckyRecord",
+    discribe: "中奖记录",
+    tips: "中奖记录属于隐形模块，请在设置面板中选择编辑",
+    icon: <Icon component={IconRoulette} />,
   }
 ]
 
