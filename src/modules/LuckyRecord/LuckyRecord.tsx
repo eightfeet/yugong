@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import requester from '~/core/fetch';
-import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
+import { AnyObjectType, AppDataElementsTypes, ArgumentsItem } from '~/types/appData';
 import { Modules } from '~/types/modules';
 import Wrapper from '../Wrapper';
 import useModal from '~/hooks/useModal';
@@ -12,6 +12,8 @@ import s from './LuckyRecord.module.less';
 import ReactDOM from 'react-dom';
 import config from './LuckyRecord.config';
 import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/redux/store';
 
 export interface LuckyRecordProps extends AppDataElementsTypes {
 }
@@ -34,20 +36,15 @@ interface UseParams {
     shouldCloseOnOverlayClick?: boolean;
 }
 
-interface Btnstate {
-    isOk: boolean;
-    okText: string;
-    isCancel: boolean;
-    cancelText: string;
-    isOkDisabled: boolean;
-    isCancelDisabled: boolean;
-}
-
 const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
     const { api, moduleId, style } = props;
+    const { editingId,  currentEditorStylePath} = useSelector(
+        (state: RootState) => state.controller
+    );
+
     const [useParams, setUserParams] = useState<UseParams>();
     const eventEmitterRef = useRef<UseLifeCycleResult<{ [keys in 'mount' | 'unmount' | 'onCancel' ]: Function }>>();
-    
+    const [modalTitle, setModalTitle] = useState<string>();
     const MId = `MD${moduleId}`;
     // 定义注册方法
     // ===================================================================================
@@ -67,6 +64,14 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
     const { createModal, hideModal, modal } = useModal(params);
     const userClass = useStyles(MId)(style);
 
+    const setTitle = useCallback(
+        (title: ArgumentsItem) => {
+            const argtitle = getArgumentsItem(title) as string;
+            setModalTitle(argtitle)
+        },
+        [],
+    )
+
     const setAnimation = useCallback(
         (animationType, animationDuration) => {
             const arganimationDuration = getArgumentsItem(animationDuration);
@@ -82,23 +87,26 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
 
     const show = useCallback(
         (data) => {
-            const { header, article } = getArgumentsItem(data) as AnyObjectType;
-
-
             const footer = '';
-
             createModal({
-                header,
-                article,
+                header: modalTitle,
+                article: `<div class="article ${s.articalinit}">列表内容</div>`,
                 footer,
             }).then(() => {
                 const rootNode = modal?.state.contentDom;
                 if (!rootNode) {
                     return;
                 }
+
+                // 内容挂载
+                const contentWrap = rootNode.querySelector('.article');
+                ReactDOM.render(<IconCancel />, contentWrap, () => {
+                    contentWrap?.classList.add(s.artical)
+                });
+
                 // 关闭图标
                 if (params.closable) {
-                    const closeIconNode = document.querySelector(
+                    const closeIconNode = rootNode.querySelector(
                         `.${MId}_close`
                     );
                     ReactDOM.render(<IconCancel />, closeIconNode);
@@ -109,9 +117,8 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
                 rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
         },
-        [MId, createModal, modal, params.closable, userClass.root]
+        [MId, createModal, modal, modalTitle, params.closable, userClass.root]
     );
-
 
     eventEmitterRef.current = useLifeCycle(
         moduleId,
@@ -120,8 +127,19 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
             unmount: '卸载',
             onCancel: '取消/关闭',
         },
-        { setAnimation, createModal: show, hideModal }
+        { setTitle, setAnimation, createModal: show, hideModal }
     );
+
+    useEffect(() => {
+        console.log(currentEditorStylePath, currentEditorStylePath);
+        // 如何显示弹窗
+        // if (editingId === moduleId) {
+        //     show({})
+        // }
+        // return () => {
+        //     hideModal(false)
+        // }
+    }, [currentEditorStylePath])
 
     // API请求 注意依赖关系
     useEffect(() => {

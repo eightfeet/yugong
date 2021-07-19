@@ -4,6 +4,19 @@ const config = {
      */
     exposeFunctions: [
         {
+            name: 'setTitle',
+            description: '标题',
+            arguments: [
+                {
+                    type: 'string',
+                    name: '弹窗标题',
+                    describe: '设置标题',
+                    data: '',
+                    fieldName: 'modalTitle',
+                }
+            ],
+        },
+        {
             name: 'setAnimation',
             description: '设置动画',
             arguments: [
