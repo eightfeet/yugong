@@ -72,7 +72,7 @@ export const controller = createModel<RootModel>()({
                         session: res
                     })
                 }
-            }
+            },
         }
     }
 });

@@ -14,6 +14,7 @@ import config from './LuckyRecord.config';
 import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
+import List from './List';
 
 export interface LuckyRecordProps extends AppDataElementsTypes {
 }
@@ -84,40 +85,52 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
         },
         [useParams]
     );
+    
+    const renderList = useCallback(
+        () => {
+            
+        },
+        [],
+    )
 
     const show = useCallback(
-        (data) => {
-            const footer = '';
-            createModal({
-                header: modalTitle,
-                article: `<div class="article ${s.articalinit}">列表内容</div>`,
-                footer,
-            }).then(() => {
-                const rootNode = modal?.state.contentDom;
-                if (!rootNode) {
-                    return;
-                }
-
-                // 内容挂载
-                const contentWrap = rootNode.querySelector('.article');
-                ReactDOM.render(<IconCancel />, contentWrap, () => {
-                    contentWrap?.classList.add(s.artical)
+        async (data, MId) => {
+            
+            try {
+                await createModal({
+                    header: modalTitle,
+                    article: `<div class="article ${s.articalinit}">列表内容</div>`,
+                    footer: '',
                 });
+            } catch (error) {
+                console.log(error);
+            }
+            
+            const rootNode = modal?.state.contentDom;
+            if (!rootNode) {
+                return;
+            }
 
-                // 关闭图标
-                if (params.closable) {
-                    const closeIconNode = rootNode.querySelector(
-                        `.${MId}_close`
-                    );
-                    ReactDOM.render(<IconCancel />, closeIconNode);
-                }
-            });
+            // 内容挂载
+            const contentWrap = rootNode.querySelector('.article');
+            if (contentWrap) {
+                ReactDOM.render(<List />, contentWrap, () => {
+                    contentWrap?.classList.add(s.artical);
+                });
+            }
+            
+            // 关闭图标
+            const closeIconNode = rootNode.querySelector(`.${MId}_close`);
+            if (params.closable && closeIconNode) {
+                ReactDOM.render(<IconCancel />, closeIconNode);
+            }
             const rootDom = document.getElementById(MId);
-            if (rootDom && modal) {
+            
+            if (rootDom) {
                 rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
         },
-        [MId, createModal, modal, modalTitle, params.closable, userClass.root]
+        [createModal, modal, modalTitle, params.closable, userClass.root]
     );
 
     eventEmitterRef.current = useLifeCycle(
@@ -131,15 +144,10 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
     );
 
     useEffect(() => {
-        console.log(currentEditorStylePath, currentEditorStylePath);
-        // 如何显示弹窗
-        // if (editingId === moduleId) {
-        //     show({})
-        // }
-        // return () => {
-        //     hideModal(false)
-        // }
-    }, [currentEditorStylePath])
+        if (editingId === moduleId) {
+            show({}, MId).catch()
+        }
+    }, [editingId, moduleId, show, currentEditorStylePath, MId])
 
     // API请求 注意依赖关系
     useEffect(() => {
