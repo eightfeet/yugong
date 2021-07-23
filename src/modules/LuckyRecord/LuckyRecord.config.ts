@@ -85,8 +85,8 @@ const config = {
      */
     exposeDefaultProps: {
         layout: {
-            w: 0,
-            h: 0,
+            w: 5,
+            h: 5,
             x: 0,
             y: 0,
         },

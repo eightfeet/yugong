@@ -15,6 +15,7 @@ import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
 import List from './List';
+import Modal from '~/components/Modal';
 
 export interface LuckyRecordProps extends AppDataElementsTypes {
 }
@@ -95,22 +96,17 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
 
     const show = useCallback(
         async (data, MId) => {
-            
-            try {
-                await createModal({
-                    header: modalTitle,
-                    article: `<div class="article ${s.articalinit}">列表内容</div>`,
-                    footer: '',
-                });
-            } catch (error) {
-                console.log(error);
+            // 创建一个弹窗
+            createModal();
+            const rootDom = document.getElementById(modal?.state.id || '');
+            if (rootDom) {
+                rootDom.className = `${s.modalinit} ${userClass.root}`;
             }
-            
+            // 内容dom
             const rootNode = modal?.state.contentDom;
             if (!rootNode) {
                 return;
             }
-
             // 内容挂载
             const contentWrap = rootNode.querySelector('.article');
             if (contentWrap) {
@@ -124,13 +120,9 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
             if (params.closable && closeIconNode) {
                 ReactDOM.render(<IconCancel />, closeIconNode);
             }
-            const rootDom = document.getElementById(MId);
             
-            if (rootDom) {
-                rootDom.className = `${s.modalinit} ${userClass.root}`;
-            }
         },
-        [createModal, modal, modalTitle, params.closable, userClass.root]
+        [createModal, modal, params.closable, userClass.root]
     );
 
     eventEmitterRef.current = useLifeCycle(
@@ -155,7 +147,63 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
         requester(apiArguments || {});
     }, [api]);
 
-    return <Wrapper {...props} maxHeight maxWidth />;
+    const [visible, setVisible] = useState<boolean>();
+    const [visible2, setVisible2] = useState<boolean>();
+    const ref = useRef<any>();
+
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.create();
+        }
+    }, [ref])
+
+    return <Wrapper {...props} maxHeight maxWidth >
+        <div onClick={() => setVisible(true)}>打开弹窗1</div>
+        <div onClick={() => setVisible2(true)}>打开弹窗2</div>
+        <Modal 
+            visible={visible}
+            onCancel={() => setVisible(false)}
+            animation={{
+                form:'fadeInRight'
+            }}
+            closeStyle={{
+                width: '5px',
+                height: '5px',
+                background: 'red'
+            }}
+            contentStyle={{
+                position: 'absolute',
+                right: 0
+            }}
+            modifyStyle={[
+                {
+                    width: '30px',
+                    height: '30px',
+                    left: '-10px',
+                    background: 'brown'
+                },
+                {
+                    width: '10px',
+                    height: '10px',
+                    left: '-15px',
+                    background: 'yellow'
+                }
+            ]}
+            innerRef={(modal) => {ref.current=modal}}
+            shouldCloseOnOverlayClick
+        >
+            <div>这是来自模块1</div>
+            <button onClick={() => setVisible(false)}>关闭模块</button>
+        </Modal>
+        <Modal 
+            visible={visible2}
+            onCancel={() => setVisible(false)}
+            overlayStyle={{background: 'rgba(0, 255, 0, 0.5)'}}
+        >
+            <div>这是来自模块2</div>
+            <button onClick={() => setVisible2(false)}>关闭模块</button>
+        </Modal>
+    </Wrapper>;
 };
 
 // bind static
