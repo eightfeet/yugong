@@ -135,12 +135,6 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
         { setTitle, setAnimation, createModal: show, hideModal }
     );
 
-    useEffect(() => {
-        if (editingId === moduleId) {
-            show({}, MId).catch()
-        }
-    }, [editingId, moduleId, show, currentEditorStylePath, MId])
-
     // API请求 注意依赖关系
     useEffect(() => {
         const apiArguments = api?.find((item) => item.apiId === '');
@@ -149,59 +143,31 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
 
     const [visible, setVisible] = useState<boolean>();
     const [visible2, setVisible2] = useState<boolean>();
-    const ref = useRef<any>();
+    const [count, setCount] = useState(0);
 
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.create();
-        }
-    }, [ref])
+    const ref = useRef<any>();
 
     return <Wrapper {...props} maxHeight maxWidth >
         <div onClick={() => setVisible(true)}>打开弹窗1</div>
-        <div onClick={() => setVisible2(true)}>打开弹窗2</div>
+        <div onClick={() => setVisible2(true)}>打开弹窗2 数值：{count}</div>
         <Modal 
             visible={visible}
             onCancel={() => setVisible(false)}
+            className={userClass.root}
+            id={MId}
             animation={{
                 form:'fadeInRight'
             }}
-            closeStyle={{
-                width: '5px',
-                height: '5px',
-                background: 'red'
-            }}
-            contentStyle={{
-                position: 'absolute',
-                right: 0
-            }}
-            modifyStyle={[
+            wrapStyle={
                 {
-                    width: '30px',
-                    height: '30px',
-                    left: '-10px',
-                    background: 'brown'
-                },
-                {
-                    width: '10px',
-                    height: '10px',
-                    left: '-15px',
-                    background: 'yellow'
+                    textAlign: 'left'
                 }
-            ]}
-            innerRef={(modal) => {ref.current=modal}}
+            }
+            getModal={(modal) => {ref.current=modal}}
             shouldCloseOnOverlayClick
         >
             <div>这是来自模块1</div>
             <button onClick={() => setVisible(false)}>关闭模块</button>
-        </Modal>
-        <Modal 
-            visible={visible2}
-            onCancel={() => setVisible(false)}
-            overlayStyle={{background: 'rgba(0, 255, 0, 0.5)'}}
-        >
-            <div>这是来自模块2</div>
-            <button onClick={() => setVisible2(false)}>关闭模块</button>
         </Modal>
     </Wrapper>;
 };
