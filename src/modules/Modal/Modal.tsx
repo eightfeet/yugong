@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import requester from "~/core/fetch";
 import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
 import { Modules } from "~/types/modules";
@@ -10,10 +10,13 @@ import config from "./Modal.config";
 import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
 import classNames from "classnames";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 export interface ModalProps extends AppDataElementsTypes {}
 
 const Modal: Modules<ModalProps> = (props) => {
+  const { editingId } = useSelector((state: RootState) => state.controller);
   const { api, moduleId, style } = props;
   const eventEmitterRef =
     useRef<
@@ -89,6 +92,13 @@ const Modal: Modules<ModalProps> = (props) => {
     await requester(apiArguments || {});
     eventEmitterRef.current?.[0].ok();
 }, [api]);
+
+useEffect(() => {
+  if (editingId === moduleId && !visible) {
+    show();
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [editingId, moduleId, show])
 
   return (
     <Wrapper {...props} maxHeight maxWidth>

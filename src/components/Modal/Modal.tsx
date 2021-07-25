@@ -68,8 +68,6 @@ const Modal: React.FC<Props> = ({
   useEffect(() => {
     checkVisible.current = !!visible;
   }, [visible]);
-
-  console.log(MDRef.current);
   
 
   // 弹窗是否创建窗口
