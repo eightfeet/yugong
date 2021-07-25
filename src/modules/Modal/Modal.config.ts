@@ -14,12 +14,14 @@ const config: ModulesStatic = {
                 describe: '设置标题',
                 name: '标题',
                 data: '',
+                html: true,
                 fieldName: 'title'
             },
             {
                 type: 'string',
                 describe: '设置内容',
                 name: '内容',
+                html: true,
                 data: '',
                 fieldName: 'content'
             },
@@ -27,6 +29,7 @@ const config: ModulesStatic = {
                 type: 'string',
                 describe: '设置确定按钮',
                 name: '确定按钮',
+                html: true,
                 data: '',
                 fieldName: 'ok'
             },
@@ -34,6 +37,7 @@ const config: ModulesStatic = {
                 type: 'string',
                 describe: '设置取消按钮',
                 name: '取消按钮',
+                html: true,
                 data: '',
                 fieldName: 'cancel'
             },
