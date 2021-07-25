@@ -6,18 +6,60 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "configModal",
-      description: "设置弹窗",
-      arguments: [],
-    },
+        name: "config",
+        description: "配置弹窗",
+        arguments: [
+            {
+                type: 'string',
+                describe: '设置标题',
+                name: '标题',
+                data: '',
+                fieldName: 'title'
+            },
+            {
+                type: 'string',
+                describe: '设置内容',
+                name: '内容',
+                data: '',
+                fieldName: 'content'
+            },
+            {
+                type: 'string',
+                describe: '设置确定按钮',
+                name: '确定按钮',
+                data: '',
+                fieldName: 'ok'
+            },
+            {
+                type: 'string',
+                describe: '设置取消按钮',
+                name: '取消按钮',
+                data: '',
+                fieldName: 'cancel'
+            },
+            {
+                type: 'boolean',
+                describe: '点击蒙层关闭弹窗,条件成立关闭弹窗',
+                name: '点击蒙层关闭弹窗',
+                data: {
+                    comparableAverageA: 'a',
+                    method: '===',
+                    comparableAverageB: 'b'
+                },
+                fieldName: 'shouldCloseOnOverlayClick'
+            },
+        ],
+      },
     {
       name: "show",
       description: "显示",
+      presettable: false,
       arguments: [],
     },
     {
       name: "hide",
       description: "隐藏",
+      presettable: false,
       arguments: [],
     },
   ],
@@ -35,13 +77,9 @@ const config: ModulesStatic = {
       description: "卸载",
     },
     {
-      name: "onShow",
-      description: "显示时",
-    },
-    {
-      name: "onHide",
-      description: "隐藏时",
-    },
+      name: "ok",
+      description: "点击确认按钮时",
+    }
   ],
 
   /**
@@ -142,12 +180,7 @@ const config: ModulesStatic = {
       apiId: "onOkApi",
       name: "确定",
       description: "确认弹窗时可以调用api",
-    },
-    {
-      apiId: "onCancelApi",
-      name: "取消",
-      description: "确认弹窗时可以调用api",
-    },
+    }
   ],
 };
 

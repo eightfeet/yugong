@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import requester from "~/core/fetch";
-import { AppDataElementsTypes } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import MD from "~/components/Modal";
@@ -9,6 +9,7 @@ import IconCancel from "./IconCancel";
 import config from "./Modal.config";
 import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
 import classNames from "classnames";
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 
 export interface ModalProps extends AppDataElementsTypes {}
 
@@ -17,7 +18,7 @@ const Modal: Modules<ModalProps> = (props) => {
   const eventEmitterRef =
     useRef<
       UseLifeCycleResult<
-        { [keys in "mount" | "unmount" | "onOk" | "onCancel"]: Function }
+        { [keys in "mount" | "unmount" | "ok" | "cancel"]: Function }
       >
     >();
 
@@ -36,14 +37,28 @@ const Modal: Modules<ModalProps> = (props) => {
   const [cancel, setCancel] = useState<string>();
 
   /**
+   * 配置弹窗
+   */
+  const config = useCallback(
+    (title: ArgumentsItem, content: ArgumentsItem, ok: ArgumentsItem, cancel: ArgumentsItem, coveclose: ArgumentsItem) => {
+      const orgTitle = getArgumentsItem(title) as string;
+      const orgContent = getArgumentsItem(content) as string;
+      const orgOk = getArgumentsItem(ok) as string;
+      const orgCancel = getArgumentsItem(cancel) as string;
+      const orgCoveclose = getArgumentsItem(coveclose) as boolean;
+      setTitle(orgTitle);
+      setContent(orgContent);
+      setOk(orgOk);
+      setCancel(orgCancel);
+      setShouldCloseOnOverlayClick(orgCoveclose);
+    },
+    [],
+  )
+
+  /**
    * 显示弹窗
    */
   const show = useCallback(() => {
-    setTitle("设置标题");
-    setContent("设置内容");
-    setOk("确定");
-    setCancel("取消");
-    setShouldCloseOnOverlayClick(true);
     setVisible(true);
   }, []);
 
@@ -52,6 +67,7 @@ const Modal: Modules<ModalProps> = (props) => {
    */
   const hide = useCallback(() => {
     setVisible(false);
+    eventEmitterRef.current?.[0].cancel();
   }, []);
 
   eventEmitterRef.current = useLifeCycle(
@@ -59,17 +75,20 @@ const Modal: Modules<ModalProps> = (props) => {
     {
       mount: "初始化",
       unmount: "卸载",
-      onOk: "确认",
-      onCancel: "取消/关闭",
+      ok: "确认",
+      cancel: "取消/关闭",
     },
-    { show, hide }
+    { config, show, hide }
   );
 
   // API请求 注意依赖关系
-  useEffect(() => {
-    const apiArguments = api?.find((item) => item.apiId === "");
-    requester(apiArguments || {});
-  }, [api]);
+  // 点击事件
+  const onClickOk = useCallback(async () => {
+    const apiArguments = api?.find((item) => item.apiId === 'onOkApi');
+    // api 参数交由requester自行处理
+    await requester(apiArguments || {});
+    eventEmitterRef.current?.[0].ok();
+}, [api]);
 
   return (
     <Wrapper {...props} maxHeight maxWidth>
@@ -89,8 +108,8 @@ const Modal: Modules<ModalProps> = (props) => {
             {title && <h3 className={userClass.header}>{title}</h3>}
             {content && <div className={userClass.article}>{content}</div>}
             <footer>
-              {ok?.length && <button className={classNames(userClass.button, userClass.okButton)}> {ok} </button>}{" "}
-              {cancel?.length && <button onClick={hide} className={classNames(userClass.button, userClass.cancelButton)}> {cancel} </button>}
+              {ok?.length ? <button className={classNames(userClass.button, userClass.okButton)} onClick={onClickOk}> {ok} </button> : null}{" "}
+              {cancel?.length ? <button onClick={hide} className={classNames(userClass.button, userClass.cancelButton)}> {cancel} </button> : null}
             </footer>
           </div>
         </div>
