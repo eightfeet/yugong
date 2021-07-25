@@ -1,53 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import requester from "~/core/fetch";
-import { AnyObjectType, AppDataElementsTypes } from "~/types/appData";
+import { AppDataElementsTypes } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import MD from "~/components/Modal";
-import { buildParams } from "./defaultParams";
-import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import useStyles from "./Module.useStyles";
 import IconCancel from "./IconCancel";
-import s from "./Modal.module.less";
-import ReactDOM from "react-dom";
 import config from "./Modal.config";
 import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
-import useModal from "~/hooks/useModal";
-import { ModalParameters } from "@eightfeet/modal";
 import classNames from "classnames";
 
 export interface ModalProps extends AppDataElementsTypes {}
 
-interface UseParams {
-  animationType?:
-    | "fadeInLeft"
-    | "fadeInRight"
-    | "fadeInDown"
-    | "fadeInUp"
-    | "zoomInLeft"
-    | "zoomInRight"
-    | "zoomInDown"
-    | "zoomInUp"
-    | "zoomIn"
-    | "flipInX"
-    | "flipInY";
-  animationDuration?: string;
-  closable?: boolean;
-  shouldCloseOnOverlayClick?: boolean;
-}
-
-interface Btnstate {
-  isOk: boolean;
-  okText: string;
-  isCancel: boolean;
-  cancelText: string;
-  isOkDisabled: boolean;
-  isCancelDisabled: boolean;
-}
-
 const Modal: Modules<ModalProps> = (props) => {
   const { api, moduleId, style } = props;
-  const [useParams, setUserParams] = useState<UseParams>();
   const eventEmitterRef =
     useRef<
       UseLifeCycleResult<
@@ -58,31 +24,9 @@ const Modal: Modules<ModalProps> = (props) => {
   const MId = `MD${moduleId}`;
   // 定义注册方法
   // ===================================================================================
-  const params = buildParams({
-    id: MId,
-    animationType: "zoomIn",
-    animationDuration: "0.2ms",
-    closable: true,
-    shouldCloseOnOverlayClick: true,
-    ...(useParams || {}),
-    onCancel: () => {
-      eventEmitterRef.current?.[0].onCancel();
-    },
-  });
-
-  const [btnstate, setbtnstate] = useState<Btnstate>({
-    isOk: true,
-    okText: "确定",
-    isCancel: true,
-    cancelText: "取消",
-    isOkDisabled: false,
-    isCancelDisabled: false,
-  });
 
   // 创建模块
   const userClass = useStyles(MId)(style);
-
-  const [animation, setAnimation] = useState<ModalParameters["animation"]>();
   const [visible, setVisible] = useState<boolean>(false);
   const [title, setTitle] = useState<string>();
   const [content, setContent] = useState<string>();
@@ -92,23 +36,14 @@ const Modal: Modules<ModalProps> = (props) => {
   const [cancel, setCancel] = useState<string>();
 
   /**
-   * 设置内容
-   */
-  const handleContent = useCallback(() => {
-    setTitle("设置标题");
-    setContent("设置内容");
-    setShouldCloseOnOverlayClick(true);
-  }, []);
-
-  const handleButton = useCallback(() => {
-    setOk("确定");
-    setCancel("取消");
-  }, []);
-
-  /**
    * 显示弹窗
    */
   const show = useCallback(() => {
+    setTitle("设置标题");
+    setContent("设置内容");
+    setOk("确定");
+    setCancel("取消");
+    setShouldCloseOnOverlayClick(true);
     setVisible(true);
   }, []);
 
@@ -142,7 +77,6 @@ const Modal: Modules<ModalProps> = (props) => {
         id={MId}
         visible={visible}
         shouldCloseOnOverlayClick={!!shouldCloseOnOverlayClick}
-        animation={animation}
         onCancel={hide}
         className={userClass.root}
       >
@@ -151,7 +85,7 @@ const Modal: Modules<ModalProps> = (props) => {
           <div className={userClass.close} onClick={hide}>
             <IconCancel />
           </div>
-          <div className={userClass.content}>
+          <div className={userClass.content} onClick={e => e.stopPropagation()}>
             {title && <h3 className={userClass.header}>{title}</h3>}
             {content && <div className={userClass.article}>{content}</div>}
             <footer>
@@ -161,8 +95,6 @@ const Modal: Modules<ModalProps> = (props) => {
           </div>
         </div>
       </MD>
-      <button onClick={handleContent}>设置标题</button>
-      <button onClick={handleButton}>设置按钮</button>
       <button onClick={show}>确定</button>
     </Wrapper>
   );
