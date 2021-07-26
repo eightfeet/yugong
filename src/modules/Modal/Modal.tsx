@@ -5,13 +5,13 @@ import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import MD from "~/components/Modal";
 import useStyles from "./Module.useStyles";
-import IconCancel from "./IconCancel";
 import config from "./Modal.config";
 import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
 import classNames from "classnames";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import Cancel from "~/components/Icon/Cancel";
 
 export interface ModalProps extends AppDataElementsTypes {}
 
@@ -112,7 +112,7 @@ useEffect(() => {
         <div className={userClass.modify} />
         <div className={userClass.container}>
           <div className={userClass.close} onClick={hide}>
-            <IconCancel />
+            <Cancel />
           </div>
           <div className={userClass.content} onClick={e => e.stopPropagation()}>
             {title && <h3 className={userClass.header}>{title}</h3>}
@@ -124,7 +124,6 @@ useEffect(() => {
           </div>
         </div>
       </MD>
-      <button onClick={show}>确定</button>
     </Wrapper>
   );
 };

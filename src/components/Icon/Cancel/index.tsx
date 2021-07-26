@@ -1,10 +1,13 @@
 import * as React from 'react';
-import s from './Modal.module.less'
-
-function IconCancel() {
+const style = {
+    display: 'block',
+    width: '100%',
+    height: '100%'
+}
+function Cancel() {
     return (
         <svg
-            className={s.closeicon}
+            style={style}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 492 492"
             fill="currentColor"
@@ -14,4 +17,4 @@ function IconCancel() {
     );
 }
 
-export default IconCancel;
+export default Cancel;

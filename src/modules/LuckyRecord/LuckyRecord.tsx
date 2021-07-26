@@ -1,182 +1,120 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import requester from '~/core/fetch';
-import { AnyObjectType, AppDataElementsTypes, ArgumentsItem } from '~/types/appData';
-import { Modules } from '~/types/modules';
-import Wrapper from '../Wrapper';
-import useModal from '~/hooks/useModal';
-import { buildParams } from './defaultParams';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
-import useStyles from './Module.useStyles';
-import IconCancel from './IconCancel';
-import s from './LuckyRecord.module.less';
-import ReactDOM from 'react-dom';
-import config from './LuckyRecord.config';
-import useLifeCycle, { UseLifeCycleResult } from '~/hooks/useLifeCycle';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
-import List from './List';
-import Modal from '~/components/Modal';
+import { useCallback, useEffect, useRef, useState } from "react";
+import requester from "~/core/fetch";
+import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
+import { Modules } from "~/types/modules";
+import Wrapper from "../Wrapper";
+import MD from "~/components/Modal";
+import useStyles from "./LuckyRecord.useStyles";
+import config from "./LuckyRecord.config";
+import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
+import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
+import Cancel from "~/components/Icon/Cancel";
 
-export interface LuckyRecordProps extends AppDataElementsTypes {
-}
-
-interface UseParams {
-    animationType?:
-        | 'fadeInLeft'
-        | 'fadeInRight'
-        | 'fadeInDown'
-        | 'fadeInUp'
-        | 'zoomInLeft'
-        | 'zoomInRight'
-        | 'zoomInDown'
-        | 'zoomInUp'
-        | 'zoomIn'
-        | 'flipInX'
-        | 'flipInY';
-    animationDuration?: string;
-    closable?: boolean;
-    shouldCloseOnOverlayClick?: boolean;
-}
+export interface LuckyRecordProps extends AppDataElementsTypes {}
 
 const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
-    const { api, moduleId, style } = props;
-    const { editingId,  currentEditorStylePath} = useSelector(
-        (state: RootState) => state.controller
-    );
+  const { editingId } = useSelector((state: RootState) => state.controller);
+  const { api, moduleId, style } = props;
+  const eventEmitterRef =
+    useRef<
+      UseLifeCycleResult<
+        { [keys in "mount" | "unmount" | "ok" | "cancel"]: Function }
+      >
+    >();
 
-    const [useParams, setUserParams] = useState<UseParams>();
-    const eventEmitterRef = useRef<UseLifeCycleResult<{ [keys in 'mount' | 'unmount' | 'onCancel' ]: Function }>>();
-    const [modalTitle, setModalTitle] = useState<string>();
-    const MId = `MD${moduleId}`;
-    // 定义注册方法
-    // ===================================================================================
-    const params = buildParams({
-        id: MId,
-        animationType: 'zoomIn',
-        animationDuration: '0.2ms',
-        closable: true,
-        shouldCloseOnOverlayClick: true,
-        ...(useParams || {}),
-        onCancel: () => {
-            eventEmitterRef.current?.[0].onCancel();
-        },
-    });
+  const MId = `MD${moduleId}`;
+  // 定义注册方法
+  // ===================================================================================
 
-    // 创建模块
-    const { createModal, hideModal, modal } = useModal(params);
-    const userClass = useStyles(MId)(style);
+  // 创建模块
+  const userClass = useStyles(MId)(style);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>();
 
-    const setTitle = useCallback(
-        (title: ArgumentsItem) => {
-            const argtitle = getArgumentsItem(title) as string;
-            setModalTitle(argtitle)
-        },
-        [],
-    )
+  /**
+   * 配置弹窗
+   */
+  const config = useCallback(
+    (title: ArgumentsItem, content: ArgumentsItem, ok: ArgumentsItem, cancel: ArgumentsItem, coveclose: ArgumentsItem) => {
+      const orgTitle = getArgumentsItem(title) as string;
+      setTitle(orgTitle);
+    },
+    [],
+  )
 
-    const setAnimation = useCallback(
-        (animationType, animationDuration) => {
-            const arganimationDuration = getArgumentsItem(animationDuration);
-            const arganimationType = getArgumentsItem(animationType);
-            setUserParams({
-                ...useParams,
-                animationDuration: arganimationDuration as string,
-                animationType: arganimationType as UseParams['animationType'],
-            });
-        },
-        [useParams]
-    );
-    
-    const renderList = useCallback(
-        () => {
-            
-        },
-        [],
-    )
+  /**
+   * 显示弹窗
+   */
+  const show = useCallback(() => {
+    setVisible(true);
+  }, []);
 
-    const show = useCallback(
-        async (data, MId) => {
-            // 创建一个弹窗
-            createModal();
-            const rootDom = document.getElementById(modal?.state.id || '');
-            if (rootDom) {
-                rootDom.className = `${s.modalinit} ${userClass.root}`;
-            }
-            // 内容dom
-            const rootNode = modal?.state.contentDom;
-            if (!rootNode) {
-                return;
-            }
-            // 内容挂载
-            const contentWrap = rootNode.querySelector('.article');
-            if (contentWrap) {
-                ReactDOM.render(<List />, contentWrap, () => {
-                    contentWrap?.classList.add(s.artical);
-                });
-            }
-            
-            // 关闭图标
-            const closeIconNode = rootNode.querySelector(`.${MId}_close`);
-            if (params.closable && closeIconNode) {
-                ReactDOM.render(<IconCancel />, closeIconNode);
-            }
-            
-        },
-        [createModal, modal, params.closable, userClass.root]
-    );
+  /**
+   * 隐藏弹窗
+   */
+  const hide = useCallback(() => {
+    setVisible(false);
+    eventEmitterRef.current?.[0].cancel();
+  }, []);
 
-    eventEmitterRef.current = useLifeCycle(
-        moduleId,
-        {
-            mount: '初始化',
-            unmount: '卸载',
-            onCancel: '取消/关闭',
-        },
-        { setTitle, setAnimation, createModal: show, hideModal }
-    );
+  eventEmitterRef.current = useLifeCycle(
+    moduleId,
+    {
+      mount: "初始化",
+      unmount: "卸载",
+      ok: "确认",
+      cancel: "取消/关闭",
+    },
+    { config, show, hide }
+  );
 
-    // API请求 注意依赖关系
-    useEffect(() => {
-        const apiArguments = api?.find((item) => item.apiId === '');
-        requester(apiArguments || {});
-    }, [api]);
+  // API请求 注意依赖关系
+  // 点击事件
+  const onClickOk = useCallback(async () => {
+    const apiArguments = api?.find((item) => item.apiId === 'onOkApi');
+    // api 参数交由requester自行处理
+    await requester(apiArguments || {});
+    eventEmitterRef.current?.[0].ok();
+}, [api]);
 
-    const [visible, setVisible] = useState<boolean>();
-    const [visible2, setVisible2] = useState<boolean>();
-    const [count, setCount] = useState(0);
+useEffect(() => {
+  if (editingId === moduleId && !visible) {
+    show();
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [editingId, moduleId, show])
 
-    const ref = useRef<any>();
-
-    return <Wrapper {...props} maxHeight maxWidth >
-        <div onClick={() => setVisible(true)}>打开弹窗1</div>
-        <div onClick={() => setVisible2(true)}>打开弹窗2 数值：{count}</div>
-        <Modal 
-            visible={visible}
-            onCancel={() => setVisible(false)}
-            className={userClass.root}
-            id={MId}
-            animation={{
-                form:'fadeInRight'
-            }}
-            wrapStyle={
-                {
-                    textAlign: 'left'
-                }
-            }
-            getModal={(modal) => {ref.current=modal}}
-            shouldCloseOnOverlayClick
-        >
-            <div>这是来自模块1</div>
-            <button onClick={() => setVisible(false)}>关闭模块</button>
-        </Modal>
-    </Wrapper>;
+  return (
+    <Wrapper {...props} maxHeight maxWidth>
+      <MD
+        id={MId}
+        visible={visible}
+        onCancel={hide}
+        className={userClass.root}
+      >
+        <div className={userClass.modify} />
+        <div className={userClass.container}>
+          <div className={userClass.close} onClick={hide}>
+            <Cancel />
+          </div>
+          <div className={userClass.content} onClick={e => e.stopPropagation()}>
+            {title && <h3 className={userClass.header}>{title}</h3>}
+            <div className={userClass.article}>列表区域</div>
+          </div>
+        </div>
+      </MD>
+      <button onClick={show}>确定</button>
+    </Wrapper>
+  );
 };
 
 // bind static
 for (const key in config) {
-    if (Object.prototype.hasOwnProperty.call(config, key)) {
-        LuckyRecord[key] = config[key];
-    }
+  if (Object.prototype.hasOwnProperty.call(config, key)) {
+    LuckyRecord[key] = config[key];
+  }
 }
 
 export default LuckyRecord;
