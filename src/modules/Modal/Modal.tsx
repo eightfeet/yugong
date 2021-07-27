@@ -16,7 +16,7 @@ import Cancel from "~/components/Icon/Cancel";
 export interface ModalProps extends AppDataElementsTypes {}
 
 const Modal: Modules<ModalProps> = (props) => {
-  const { editingId } = useSelector((state: RootState) => state.controller);
+  const { editingId, currentEditorStylePath } = useSelector((state: RootState) => state.controller);
   const { api, moduleId, style } = props;
   const eventEmitterRef =
     useRef<
@@ -98,7 +98,7 @@ useEffect(() => {
     show();
   }
 // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [editingId, moduleId, show])
+}, [editingId, moduleId, show, currentEditorStylePath])
 
   return (
     <Wrapper {...props} maxHeight maxWidth>

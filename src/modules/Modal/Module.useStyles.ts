@@ -6,6 +6,9 @@ const useStyles = (id: string) => createUseStyles<string, any>({
         return {
           ...(styleCompiler(style.normal).style || {}),
           [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
+          [`& .${id}_modules`]: {
+            backgroundColor: 'transparent'
+          },
         };
       },
       modify: (style) => (styleCompiler(style.modify).style || {}),
