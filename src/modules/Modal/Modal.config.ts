@@ -150,18 +150,24 @@ const config: ModulesStatic = {
                     value: "article",
                   },
                   {
-                    title: "按钮",
-                    value: "button",
+                    title: "脚部",
+                    value: "footer",
                     children: [
                       {
-                        title: "确定按钮",
-                        value: "okButton",
+                        title: "按钮",
+                        value: "button",
+                        children: [
+                          {
+                            title: "确定按钮",
+                            value: "okButton",
+                          },
+                          {
+                            title: "取消按钮",
+                            value: "cancelButton",
+                          },
+                        ],
                       },
-                      {
-                        title: "取消按钮",
-                        value: "cancelButton",
-                      },
-                    ],
+                    ]
                   },
                 ],
               },

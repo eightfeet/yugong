@@ -17,6 +17,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
       close: (style) => (styleCompiler(style.close).style || {}),
       header: (style) => (styleCompiler(style.header).style || {}),
       article: (style) => (styleCompiler(style.article).style || {}),
+      footer: (style) => (styleCompiler(style.footer).style || {}),
       button: (style) => (styleCompiler(style.button).style || {}),
       okButton: (style) => (styleCompiler(style.okButton).style || {}),
       cancelButton: (style) => (styleCompiler(style.cancelButton).style || {}),

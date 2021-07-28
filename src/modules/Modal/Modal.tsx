@@ -117,7 +117,7 @@ useEffect(() => {
           <div className={userClass.content} onClick={e => e.stopPropagation()}>
             {title && <h3 className={userClass.header}>{title}</h3>}
             {content && <div className={userClass.article}>{content}</div>}
-            <footer>
+            <footer className={userClass.footer}>
               {ok?.length ? <button className={classNames(userClass.button, userClass.okButton)} onClick={onClickOk}> {ok} </button> : null}{" "}
               {cancel?.length ? <button onClick={hide} className={classNames(userClass.button, userClass.cancelButton)}> {cancel} </button> : null}
             </footer>
