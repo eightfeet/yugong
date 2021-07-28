@@ -6,7 +6,7 @@
     "@ant-design/icons": "^4.4.0",
     "@byhealth/lottery": "^1.2.17",
     "@eightfeet/loading": "^2.0.4",
-    "@eightfeet/modal": "^2.2.20",
+    "@eightfeet/modal": "^2.2.21",
     "@hookform/resolvers": "^2.4.0",
     "@material-ui/core": "^4.11.3",
     "@rematch/core": "^2.0.0",

@@ -8,10 +8,9 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
           [`& .${id}_modules`]: {
             backgroundColor: 'transparent'
-          },
+          }
         };
       },
-      modify: (style) => (styleCompiler(style.modify).style || {}),
       container: (style) => (styleCompiler(style.container).style || {}),
       content: (style) => (styleCompiler(style.content).style || {}),
       close: (style) => (styleCompiler(style.close).style || {}),

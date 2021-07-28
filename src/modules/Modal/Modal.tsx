@@ -12,6 +12,7 @@ import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Cancel from "~/components/Icon/Cancel";
+import styleCompiler from "~/compiler";
 
 export interface ModalProps extends AppDataElementsTypes {}
 
@@ -108,8 +109,8 @@ useEffect(() => {
         shouldCloseOnOverlayClick={!!shouldCloseOnOverlayClick}
         onCancel={hide}
         className={userClass.root}
+        modifyStyle={[{fontSize: '0'}]}
       >
-        <div className={userClass.modify} />
         <div className={userClass.container}>
           <div className={userClass.close} onClick={hide}>
             <Cancel />
