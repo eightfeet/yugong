@@ -6,6 +6,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
         return {
           ...(styleCompiler(style.normal).style || {}),
           [`& .${id}_overlay`]: (styleCompiler(style.overlay).style || {}),
+          [`& .${id}_modify`]: (styleCompiler(style.modify).style || {}),
         };
       },
       modify: (style) => (styleCompiler(style.modify).style || {}),

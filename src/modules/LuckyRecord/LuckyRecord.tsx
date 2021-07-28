@@ -93,14 +93,14 @@ useEffect(() => {
         visible={visible}
         onCancel={hide}
         className={userClass.root}
+        modifyStyle={[{fontSize: '0'}]}
       >
-        <div className={userClass.modify} />
-        <div className={userClass.container}>
-          <div className={userClass.close} onClick={hide}>
-            <Cancel />
-          </div>
-          <div className={userClass.content} onClick={e => e.stopPropagation()}>
-            {title && <h3 className={userClass.header}>{title}</h3>}
+          <div className={userClass.container}>
+            <div className={userClass.close} onClick={hide}>
+              <Cancel />
+            </div>
+            <div className={userClass.content} onClick={e => e.stopPropagation()}>
+            {title && <header className={userClass.header}>{title}</header>}
             <div className={userClass.article}>列表区域</div>
           </div>
         </div>
