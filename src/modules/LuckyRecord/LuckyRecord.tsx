@@ -10,12 +10,13 @@ import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
+import s from "./LuckyRecord.module.less";
 import Cancel from "~/components/Icon/Cancel";
 
 export interface LuckyRecordProps extends AppDataElementsTypes {}
 
 const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
-  const { editingId } = useSelector((state: RootState) => state.controller);
+  const { editingId, currentEditorStylePath } = useSelector((state: RootState) => state.controller);
   const { api, moduleId, style } = props;
   const eventEmitterRef =
     useRef<
@@ -37,12 +38,18 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
    * 配置弹窗
    */
   const config = useCallback(
-    (title: ArgumentsItem, content: ArgumentsItem, ok: ArgumentsItem, cancel: ArgumentsItem, coveclose: ArgumentsItem) => {
+    (
+      title: ArgumentsItem,
+      content: ArgumentsItem,
+      ok: ArgumentsItem,
+      cancel: ArgumentsItem,
+      coveclose: ArgumentsItem
+    ) => {
       const orgTitle = getArgumentsItem(title) as string;
       setTitle(orgTitle);
     },
-    [],
-  )
+    []
+  );
 
   /**
    * 显示弹窗
@@ -73,18 +80,18 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
   // API请求 注意依赖关系
   // 点击事件
   const onClickOk = useCallback(async () => {
-    const apiArguments = api?.find((item) => item.apiId === 'onOkApi');
+    const apiArguments = api?.find((item) => item.apiId === "onOkApi");
     // api 参数交由requester自行处理
     await requester(apiArguments || {});
     eventEmitterRef.current?.[0].ok();
-}, [api]);
+  }, [api]);
 
-useEffect(() => {
-  if (editingId === moduleId && !visible) {
-    show();
-  }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [editingId, moduleId, show])
+  useEffect(() => {
+    if (editingId === moduleId && !visible) {
+      show();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingId, moduleId, show, currentEditorStylePath])
 
   return (
     <Wrapper {...props} maxHeight maxWidth>
@@ -93,15 +100,36 @@ useEffect(() => {
         visible={visible}
         onCancel={hide}
         className={userClass.root}
-        modifyStyle={[{fontSize: '0'}]}
+        modifyStyle={[{ fontSize: "0" }]}
       >
-          <div className={userClass.container}>
-            <div className={userClass.close} onClick={hide}>
-              <Cancel />
-            </div>
-            <div className={userClass.content} onClick={e => e.stopPropagation()}>
+        <div className={userClass.container}>
+          <div className={userClass.close} onClick={hide}>
+            <Cancel />
+          </div>
+          <div
+            className={userClass.content}
+            onClick={(e) => e.stopPropagation()}
+          >
             {title && <header className={userClass.header}>{title}</header>}
-            <div className={userClass.article}>列表区域</div>
+            <div className={userClass.article}>
+              <ul className={s.listwrap}>
+                <li>
+                  <div className={s.cover}></div>
+                  <div className={s.item}>
+                    <h3 className={s.itemtitle}>这是标题</h3>
+                    <h4 className={s.itemsubtitle}>
+                      1内容1内容1内容1内容1内容1内容1内容1内容
+                    </h4>
+                    <p className={s.iteminfo}>1内容1内容1内容1内容1内容1内容1内容1内容</p>
+                    <div className={s.buttons}>
+                      <button>按钮</button>
+                      <button>按钮</button>
+                      <button>按钮</button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </MD>
