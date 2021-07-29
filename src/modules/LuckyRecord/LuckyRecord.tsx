@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import s from "./LuckyRecord.module.less";
 import Cancel from "~/components/Icon/Cancel";
+import classNames from "classnames";
 
 export interface LuckyRecordProps extends AppDataElementsTypes {}
 
@@ -33,6 +34,7 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
   const userClass = useStyles(MId)(style);
   const [visible, setVisible] = useState<boolean>(false);
   const [title, setTitle] = useState<string>();
+  const [list, setList] = useState([1,2,3,4,5,6])
 
   /**
    * 配置弹窗
@@ -111,24 +113,26 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
             onClick={(e) => e.stopPropagation()}
           >
             {title && <header className={userClass.header}>{title}</header>}
-            <div className={userClass.article}>
-              <ul className={s.listwrap}>
-                <li>
-                  <div className={s.cover}></div>
-                  <div className={s.item}>
-                    <h3 className={s.itemtitle}>这是标题</h3>
-                    <h4 className={s.itemsubtitle}>
-                      1内容1内容1内容1内容1内容1内容1内容1内容
-                    </h4>
-                    <p className={s.iteminfo}>1内容1内容1内容1内容1内容1内容1内容1内容</p>
-                    <div className={s.buttons}>
-                      <button>按钮</button>
-                      <button>按钮</button>
-                      <button>按钮</button>
+            <div className={classNames(s.articlelistwrap, userClass.article)}>
+              <div>
+                <ul className={classNames(s.articlelist, s.listwrap)}>
+                  {list && list.map((item) => <li key={item}>
+                    <div className={s.cover}></div>
+                    <div className={s.item}>
+                      <h3 className={s.itemtitle}>这是标题</h3>
+                      <h4 className={s.itemsubtitle}>
+                        1内容1内容1内容1内容1内容1内容1内容1内容
+                      </h4>
+                      <p className={s.iteminfo}>1内容1内容1内容1内容1内容1内容1内容1内容</p>
+                      <div className={s.buttons}>
+                        <button>按钮</button>
+                        <button>按钮</button>
+                        <button>按钮</button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
+                  </li>)}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
