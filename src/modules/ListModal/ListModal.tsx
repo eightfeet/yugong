@@ -4,20 +4,20 @@ import { AnyObjectType, AppDataElementsTypes, ArgumentsItem } from "~/types/appD
 import { Modules } from "~/types/modules";
 import Wrapper from "../Wrapper";
 import MD from "~/components/Modal";
-import useStyles from "./LuckyRecord.useStyles";
-import config from "./LuckyRecord.config";
+import useStyles from "./ListModal.useStyles";
+import config from "./ListModal.config";
 import useLifeCycle, { UseLifeCycleResult } from "~/hooks/useLifeCycle";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
 import PullToRefresh from 'rmc-pull-updown-to-refresh';
-import s from "./LuckyRecord.module.less";
+import s from "./ListModal.module.less";
 import Cancel from "~/components/Icon/Cancel";
 import classNames from "classnames";
 
-export interface LuckyRecordProps extends AppDataElementsTypes {}
+export interface ListModalProps extends AppDataElementsTypes {}
 
-const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
+const ListModal: Modules<ListModalProps> = (props) => {
   const { editingId, currentEditorStylePath } = useSelector((state: RootState) => state.controller);
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
   const { api, moduleId, style } = props;
@@ -282,8 +282,8 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
 // bind static
 for (const key in config) {
   if (Object.prototype.hasOwnProperty.call(config, key)) {
-    LuckyRecord[key] = config[key];
+    ListModal[key] = config[key];
   }
 }
 
-export default LuckyRecord;
+export default ListModal;

@@ -8,6 +8,7 @@ import IconForm from "./icons/IconForm";
 import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
+import IconListModal from "./icons/IconListModal";
 
 export const BASEMODULES = [
   {
@@ -58,6 +59,13 @@ export const BASEMODULES = [
     title: "Broadcast",
     discribe: "滚动播报",
     icon: <Icon component={IconBroadcast} />,
+  },
+  {
+    moduleName: "ListModal",
+    title: "ListModal",
+    discribe: "弹窗列表",
+    tips: "弹窗列表属于隐形模块，请在设置面板中选择编辑",
+    icon: <Icon component={IconListModal} />,
   }
 ];
 
@@ -66,13 +74,6 @@ export const LOTTERY = [
     moduleName: "Roulette",
     title: "Roulette",
     discribe: "转盘抽奖",
-    icon: <Icon component={IconRoulette} />,
-  },
-  {
-    moduleName: "LuckyRecord",
-    title: "LuckyRecord",
-    discribe: "中奖记录",
-    tips: "中奖记录属于隐形模块，请在设置面板中选择编辑",
     icon: <Icon component={IconRoulette} />,
   }
 ]

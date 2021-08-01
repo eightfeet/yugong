@@ -21,7 +21,7 @@ const config: ModulesStatic = {
     },
     {
       name: "itemConfig",
-      description: "单项数据规则配置，数据源来自于获取数据Api的单项",
+      description: "单项数据规则配置(数据源来自于获取数据Api的单项)",
       arguments: [
         {
           type: "string",
@@ -102,6 +102,7 @@ const config: ModulesStatic = {
     {
       name: "publishActivatedToRuntime",
       description: "将激活选项发布到运行时",
+      presettable: false,
       arguments: [
         {
           type: "string",
@@ -109,7 +110,7 @@ const config: ModulesStatic = {
             "点击列表某项时将被点击项发布到运行时",
           name: "字段名(英文字母)",
           data: '',
-          fieldName: "tuntimeTag",
+          fieldName: "runtimeTag",
         },
       ],
     },
@@ -126,10 +127,7 @@ const config: ModulesStatic = {
       arguments: [],
     },
   ],
-
-  // publishActivatedToRuntime = useCallback(
-  //   (tag: ArgumentsItem)
-
+  
   /**
    * 发布事件的静态描述
    */
