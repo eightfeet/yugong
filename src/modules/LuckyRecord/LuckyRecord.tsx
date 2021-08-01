@@ -178,8 +178,14 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
   
 
   const handleClick = useCallback(
-    (index: number, tag: 'buttonA' | 'buttonB' | 'buttonC' | 'buttonItem') => () => {
+    (index: number, tag: 'buttonA' | 'buttonB' | 'buttonC' | 'buttonItem') => async () => {
       setActivite(index);
+      // 做数据延时等待
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          resolve()
+        });
+      })
       switch (tag) {
         case 'buttonA':
           eventEmitterRef.current?.[0].clickA();
