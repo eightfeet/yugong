@@ -6,19 +6,99 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-        name: "config",
-        description: "配置弹窗",
-        arguments: [
-            {
-                type: 'string',
-                describe: '设置标题',
-                name: '标题',
-                data: '',
-                html: true,
-                fieldName: 'title'
-            },
-        ],
-      },
+      name: "config",
+      description: "配置弹窗",
+      arguments: [
+        {
+          type: "string",
+          describe: "设置标题",
+          name: "标题",
+          data: "",
+          html: true,
+          fieldName: "title",
+        },
+      ],
+    },
+    {
+      name: "itemConfig",
+      description: "单项数据规则配置，数据源来自于获取数据Api的单项",
+      arguments: [
+        {
+          type: "string",
+          describe: "设置单项封面",
+          name: "单项封面",
+          data: "",
+          fieldName: "itemCover",
+        },
+        {
+          type: "string",
+          describe: "设置单项标题",
+          name: "单项标题",
+          data: "",
+          html: true,
+          fieldName: "itemTitle",
+        },
+        {
+          type: "string",
+          describe: "设置单项子标题",
+          name: "单项子标题",
+          data: "",
+          html: true,
+          fieldName: "itemSubTitle",
+        },
+        {
+          type: "string",
+          describe: "设置单项内容",
+          name: "单项内容",
+          data: "",
+          html: true,
+          fieldName: "itemContent",
+        },
+      ],
+    },
+    {
+      name: "buttonConfig",
+      description: "按钮配置",
+      arguments: [
+        {
+          type: "object",
+          describe:
+            "按钮A设置<br />name:按钮标题<br /> show: 是否显示，0隐藏1显示",
+          name: "按钮A",
+          data: {
+            name: "按钮A",
+            show: "0",
+          },
+          fieldName: "buttonA",
+        },
+        {
+          type: "object",
+          describe:
+            "按钮B设置<br />name:按钮标题<br /> show: 是否显示，0隐藏1显示",
+          name: "按钮B",
+          data: {
+            name: "按钮B",
+            show: "0",
+          },
+          fieldName: "buttonB",
+        },
+        {
+          type: "object",
+          describe:
+            "按钮C设置<br />name:按钮标题<br /> show: 是否显示，0隐藏1显示",
+          name: "按钮C",
+          data: {
+            name: "按钮C",
+            show: "0",
+          },
+          fieldName: "buttonC",
+        },
+      ],
+    },
+    {
+      name: "getList",
+      description: "获取数据",
+    },
     {
       name: "show",
       description: "显示",
@@ -46,9 +126,25 @@ const config: ModulesStatic = {
       description: "卸载",
     },
     {
-      name: "ok",
-      description: "点击确认按钮时",
-    }
+      name: "cancel",
+      description: "取消/关闭",
+    },
+    {
+      name: "clickItem",
+      description: "点击(文字部分)",
+    },
+    {
+      name: "clickA",
+      description: "点击(按钮A)",
+    },
+    {
+      name: "clickB",
+      description: "点击(按钮B)",
+    },
+    {
+      name: "clickC",
+      description: "点击(按钮C)",
+    },
   ],
 
   /**
@@ -77,7 +173,7 @@ const config: ModulesStatic = {
         },
       },
       container: {},
-      content:{},
+      content: {},
       header: {},
       article: {},
       modify: {},
@@ -128,6 +224,10 @@ const config: ModulesStatic = {
    * 发布默认Api
    */
   exposeApi: [
+    {
+      apiId: "getList",
+      name: "获取数据",
+    },
   ],
 };
 

@@ -38,7 +38,6 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
       try {
         // 将"this"字符转化为"data"
         key = key.replace(/this/g, 'data');
-        console.log(item, key);
         value = saferEval(key, {data, runningTimes})
       } catch (error) {
         console.log(error);

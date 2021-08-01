@@ -6,20 +6,19 @@
     > li {
         display: flex;
         .cover {
-            width: 100px;
-            height: 100px;
             background-color: #f00;
+            width: 200px;
             img {
                 width: 100%;
                 height: 100%;
             }
         }
         .item {
-            width: 200px;
             text-align: left;
             display: flex;
             flex-wrap: wrap;
             line-height: 1;
+            flex: auto;
         }
         .itemtitle {
             width: 100%;
@@ -45,19 +44,26 @@
             width: 100%;
         }
     }
+
+    .nodate {
+        justify-content: center;
+        padding-top: 20%;
+    }
 }
 
 .articlelist {
-    overflow: auto;
     height: 100%;
 }
 
 .articlelistwrap {
     display: flex;
     flex-direction: column;
-    height: 200px;
+    width: 80vw;
+    max-width: 400px;
+    height: 80vh;
     >div{
         flex: 1;
         height: 100%;
     }
 }
+
