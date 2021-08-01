@@ -150,13 +150,13 @@ const LuckyRecord: Modules<LuckyRecordProps> = (props) => {
   const publishActivatedToRuntime = useCallback(
     (tag: ArgumentsItem) => {
       const argTag = getArgumentsItem(tag) as string;
-      if (activite && argTag) {
+      if (activite !== undefined && argTag && list) {
         setRunningTimes({
-          [argTag]: activite
+          [argTag]: list[activite]
         })
       }
     },
-    [activite, setRunningTimes],
+    [activite, list, setRunningTimes],
   )
 
   eventEmitterRef.current = useLifeCycle(
