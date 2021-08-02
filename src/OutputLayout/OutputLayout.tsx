@@ -17,6 +17,7 @@ import usePostMessage from '~/hooks/usePostMessage';
 import { eventEmitter } from '~/core/EventEmitter';
 import { backgroundGroup } from '~/compiler/compiler';
 import { cloneDeep } from 'lodash';
+import Picker from '~/components/Picker';
 // 当前是否被ifream引用
 const visualSense = window.self === window.top;
 // const windowsHeight = window.innerHeight;
@@ -234,6 +235,13 @@ const OutputLayout: React.FC<LayoutProps> = ({
             ) : null}
             {renderNoDisplay()}
             <>{renderGridLayout()}</>
+            <Picker 
+                wheels={[
+                    { data: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'] },
+                    { data: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00'] }
+                ]}
+                title='demo'
+            />
         </div>
     );
 };
