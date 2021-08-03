@@ -40,12 +40,18 @@ const Picker:React.FC<Props> = ({
     )
 
     useEffect(() => {
-        if(triggerRef.current && !PicRef.current) {
-            PicRef.current = new Pic({
-                ...other,
-                onChange: handleOnConfirm,
-                trigger: `#${s.trigger}`
-            });
+        if(triggerRef.current) {
+            PicRef.current?.destroy();
+            setTimeout(() => {
+                const { id } = (PicRef.current as any) || {}
+                const Node = document.getElementById(id);
+                if(Node) document.body.removeChild(Node);
+                PicRef.current = new Pic({
+                    ...other,
+                    onChange: handleOnConfirm,
+                    trigger: `#${s.trigger}`
+                });
+            }, 20);
         }
     }, [handleOnConfirm, other])
 
