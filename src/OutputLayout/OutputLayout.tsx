@@ -241,7 +241,7 @@ const OutputLayout: React.FC<LayoutProps> = ({
                     { data: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00'] }
                 ]}
                 title='demo'
-            />
+            ><button>请选择</button></Picker>
         </div>
     );
 };
