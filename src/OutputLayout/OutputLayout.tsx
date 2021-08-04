@@ -237,9 +237,68 @@ const OutputLayout: React.FC<LayoutProps> = ({
             <>{renderGridLayout()}</>
             <Picker 
                 wheels={[
-                    { data: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'] },
-                    { data: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00'] }
+                    { 
+                        data: [
+                            {
+                                value: '7',
+                                display: '周日',
+                                childs: [
+                                    {
+                                        value: 'pm',
+                                        display: '上午'
+                                    },
+                                    {
+                                        value: 'am',
+                                        display: '下午'
+                                    }
+                                ]
+                            }, 
+                            {
+                                value: '1',
+                                display: '周一',
+                                childs: [
+                                    {
+                                        value: 'pm',
+                                        display: '上午'
+                                    },
+                                    {
+                                        value: 'am',
+                                        display: '下午'
+                                    }
+                                ]
+                            }, 
+                            {
+                                value: '2',
+                                display: '周二',
+                                childs: [
+                                    {
+                                        value: 'pm',
+                                        display: '上午'
+                                    },
+                                    {
+                                        value: 'am',
+                                        display: '下午'
+                                    }
+                                ]
+                            }, 
+                            {
+                                value: '3',
+                                display: '周三',
+                                childs: [
+                                    {
+                                        value: 'pm',
+                                        display: '上午'
+                                    },
+                                    {
+                                        value: 'am',
+                                        display: '下午'
+                                    }
+                                ]
+                            }, 
+                        ] 
+                    }
                 ]}
+                keyMap={{ display: 'display', value: 'value', childs: 'childs'}}
                 title='demo'
             ><button>请选择</button></Picker>
         </div>

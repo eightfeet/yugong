@@ -30,10 +30,14 @@ const Picker:React.FC<Props> = ({
     // 创建初始化
     const PicRef = useRef<Pic>();
 
+    const [selected, setSelected] = useState<any[]>();
+
     const handleOnConfirm = useCallback(
         (data) => {
+            console.log(data);
+            setSelected(data);
             if (onConfirm instanceof Function) {
-                onConfirm(data)
+                onConfirm(data);
             }
         },
         [onConfirm],
@@ -48,12 +52,13 @@ const Picker:React.FC<Props> = ({
                 if(Node) document.body.removeChild(Node);
                 PicRef.current = new Pic({
                     ...other,
-                    onChange: handleOnConfirm,
-                    trigger: `#${s.trigger}`
+                    onConfirm: handleOnConfirm,
+                    trigger: `#${s.trigger}`,
+                    defaultValue: selected
                 });
             }, 20);
         }
-    }, [handleOnConfirm, other])
+    }, [handleOnConfirm, other, selected])
 
     useEffect(() => {
         return () => {
@@ -61,7 +66,10 @@ const Picker:React.FC<Props> = ({
         }
     }, []);
 
-    return <div ref={triggerRef} id={s.trigger}>{children}</div>;
+    return <div ref={triggerRef} id={s.trigger}>
+        {children}
+        <div>{selected?.join()}</div>
+    </div>;
 }
 
 export default Picker
