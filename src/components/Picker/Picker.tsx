@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Pic, { Option } from '@eightfeet/picker';
+import classNames from 'classnames';
 import s from './Picker.module.less';
 
 interface Props {
@@ -19,14 +20,21 @@ interface Props {
     onHide?: Option["onHide"];
     onChange?: Option["onChange"];
     children?: React.ReactNode;
+    className?: string;
 }
 
 const Picker:React.FC<Props> = ({
     children,
     onConfirm,
+    className,
+    defaultValue,
+    keyMap,
     ...other
 }) => {
-    const triggerRef = useRef<HTMLDivElement>(null)
+    const triggerRef = useRef<HTMLDivElement>(null);
+    const triggerId = useRef(`picktrigger${new Date().getTime()}${window.Math.floor(
+        window.Math.random() * 100
+    )}`)
     // 创建初始化
     const PicRef = useRef<Pic>();
 
@@ -41,6 +49,25 @@ const Picker:React.FC<Props> = ({
             }
         },
         [onConfirm],
+
+
+    )
+
+    const getDefaultvalue = useCallback(
+        () => {
+            let value: any[] = [];
+            selected?.forEach((item) => {
+                if (typeof item === 'string') {
+                    value.push(item);
+                } else {
+                    let key = 'value';
+                    if (keyMap) key = keyMap[key];
+                    value.push(item[key])
+                }
+            });
+            return value;
+        },
+        [keyMap, selected],
     )
 
     useEffect(() => {
@@ -51,14 +78,15 @@ const Picker:React.FC<Props> = ({
                 const Node = document.getElementById(id);
                 if(Node) document.body.removeChild(Node);
                 PicRef.current = new Pic({
+                    keyMap,
                     ...other,
                     onConfirm: handleOnConfirm,
-                    trigger: `#${s.trigger}`,
-                    defaultValue: selected
+                    trigger: `#${triggerId.current}`,
+                    defaultValue: getDefaultvalue() || defaultValue || [],
                 });
             }, 20);
         }
-    }, [handleOnConfirm, other, selected])
+    }, [defaultValue, getDefaultvalue, handleOnConfirm, keyMap, other, selected])
 
     useEffect(() => {
         return () => {
@@ -66,9 +94,25 @@ const Picker:React.FC<Props> = ({
         }
     }, []);
 
-    return <div ref={triggerRef} id={s.trigger}>
-        {children}
-        <div>{selected?.join()}</div>
+    const renderSelected = useCallback(
+        () => {
+            let str: string[] = [];
+            selected?.forEach((item) => {
+                if (typeof item === 'string') {
+                    str.push(item);
+                } else {
+                    let key = 'display';
+                    if (keyMap) key = keyMap[key];
+                    str.push(item[key])
+                }
+            });
+            return str.join(' ')
+        },
+        [keyMap, selected],
+    )
+
+    return <div ref={triggerRef} className={classNames(s.wrap, className)} id={triggerId.current}>
+        {selected?.length ? renderSelected() : children}
     </div>;
 }
 
