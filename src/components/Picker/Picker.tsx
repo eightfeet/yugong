@@ -71,7 +71,7 @@ const Picker:React.FC<Props> = ({
     )
 
     useEffect(() => {
-        if(triggerRef.current) {
+        if(triggerRef.current && other.wheels.length) {
             PicRef.current?.destroy();
             setTimeout(() => {
                 const { id } = (PicRef.current as any) || {}
