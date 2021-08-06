@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import Pic, { Option } from '@eightfeet/picker';
+import Pic, { Option, Wheels } from '@eightfeet/picker';
 import classNames from 'classnames';
 import s from './Picker.module.less';
 
@@ -7,7 +7,7 @@ interface Props {
     id?: Option["id"];
     parentId?: Option["parentId"];
     title?: Option["title"];
-    wheels: Option["wheels"];
+    wheels: Wheels;
     keyMap?: Option["keyMap"];
     defaultValue?: Option["defaultValue"];
     style?: Option["style"];
@@ -21,12 +21,14 @@ interface Props {
     onChange?: Option["onChange"];
     children?: React.ReactNode;
     className?: string;
+    delimiter?: string;
 }
 
 const Picker:React.FC<Props> = ({
     children,
     onConfirm,
     className,
+    delimiter,
     defaultValue,
     keyMap,
     ...other
@@ -106,9 +108,9 @@ const Picker:React.FC<Props> = ({
                     str.push(item[key])
                 }
             });
-            return str.join(' ')
+            return str.join(delimiter || '')
         },
-        [keyMap, selected],
+        [delimiter, keyMap, selected],
     )
 
     return <div ref={triggerRef} className={classNames(s.wrap, className)} id={triggerId.current}>
