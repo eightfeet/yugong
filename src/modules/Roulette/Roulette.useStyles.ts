@@ -1,6 +1,5 @@
 import { createUseStyles } from "react-jss";
 import styleCompiler from "~/compiler";
-
 // overlay: "覆盖层",
 // content: "内容区",
 // header: "头部",
@@ -13,7 +12,6 @@ import styleCompiler from "~/compiler";
 const useStyles = (id: string) => createUseStyles<string, any>({
   
     wrap: (style) => {
-
         return {
           ...(styleCompiler(style.wrap).style || {}),
           [`& .${id}_light`]: (styleCompiler(style.light).style || {}),
@@ -70,7 +68,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_addressmodal_modules`]: (styleCompiler(style.addressmodalcontent).style || {}),
           [`& .${id}_addressmodal_formbox`]: (styleCompiler(style.addressmodalformbox).style || {}),
           [`& .address__content h3.${id}_addressmodal_header`]: (styleCompiler(style.addressmodalheader).style || {}),
-          [`& .${id}_addressmodal_article`]: (styleCompiler(style.addressmodalarticle).style || {}),
+          [`& .${id}_addressmodal_player`]: (styleCompiler(style.addressmodalplayer).style || {}),
           [`& .${id}_addressmodal_row`]: (styleCompiler(style.addressmodalrow).style || {}),
           [`& .${id}_addressmodal_label`]: (styleCompiler(style.addressmodallabel).style || {}),
           [`& .${id}_addressmodal_subtitle`]: (styleCompiler(style.addressmodalsubtitle).style || {}),

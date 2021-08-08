@@ -952,12 +952,12 @@ const config: {
                                         value: 'addressmodalformbox',
                                     },
                                     {
-                                        title: '内容',
-                                        value: 'addressmodalarticle',
-                                    },
-                                    {
                                         title: '头部',
                                         value: 'addressmodalheader',
+                                    },
+                                    {
+                                        title: 'player',
+                                        value: 'addressmodalplayer',
                                     },
                                     {
                                         title: '二级标题',

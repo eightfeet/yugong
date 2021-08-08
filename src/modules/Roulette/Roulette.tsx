@@ -193,46 +193,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
         },
         []
     );
-
-    /**
-     * 设置默认实物奖品邮寄地址，用于地址填写时回填信息
-     * @param receiverPhone 收货电话
-     * @param regionName 收货姓名
-     * @param region 收货人省市区
-     * @param address 收货人详细地址
-     * @param idCard 人身份证id
-     */
-    const setDefaultReceiveInfo = useCallback(
-        (
-            receiverPhone: ArgumentsString,
-            regionName: ArgumentsString,
-            region: ArgumentsString,
-            address: ArgumentsString,
-            idCard: ArgumentsString
-        ) => {
-            const argReceiverPhone = getArgumentsItem(receiverPhone);
-            let argRegionName: any = getArgumentsItem(regionName);
-            let argRegion: any = getArgumentsItem(region);
-            const argAddress = getArgumentsItem(address);
-            const argIdCard = getArgumentsItem(idCard);
-            argRegionName = argRegionName?.replace(/，/g, ',')?.split(',')?.filter(Boolean);
-            argRegion = argRegion?.replace(/，/g, ',')?.split(',');
-            const parames = {
-                receiverPhone: argReceiverPhone,
-                address: argAddress,
-                region: argRegion,
-                idCard: argIdCard,
-            }
-
-            if (!!argRegionName.length) {
-                (parames as any).regionName = argRegionName
-            }
-            
-            setReceiverInfo(parames);
-        },
-        []
-    );
-
     
     /**
      * 设置中奖弹窗
@@ -299,11 +259,11 @@ const Roulette: Modules<RouletteProps> = (props) => {
         // step5、执行结束事件，可用于重置数据
         dispatchEventRef.current?.onEnd();
         if (settedApi?.response?.prizeId !== undefined) {
-            let currentPrise = settedApi.response;
+            let currentPrize = settedApi.response;
             prizes.some(prize => {
-                if (prize.prizeId === currentPrise.prizeId) {
-                    currentPrise = {
-                        ...currentPrise,
+                if (prize.prizeId === currentPrize.prizeId) {
+                    currentPrize = {
+                        ...currentPrize,
                         ...(prize||{})
                     }
                     return true;
@@ -311,7 +271,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
                 return false;
             });
             
-            return currentPrise;
+            return currentPrize;
         }
         
         // 没有设置Api时启用mock数据
@@ -378,11 +338,64 @@ const Roulette: Modules<RouletteProps> = (props) => {
     const [game, nodes] = useGame(gamePrames);
 
     /**
+     * 设置默认实物奖品邮寄地址，用于地址填写时回填信息
+     * @param receiverPhone 收货电话
+     * @param regionName 收货姓名
+     * @param region 收货人省市区
+     * @param address 收货人详细地址
+     * @param idCard 人身份证id
+     */
+     const setDefaultReceiveInfo = useCallback(
+        (
+            receiverPhone: ArgumentsString,
+            regionName: ArgumentsString,
+            region: ArgumentsString,
+            address: ArgumentsString,
+            idCard: ArgumentsString
+        ) => {
+            const argReceiverPhone = getArgumentsItem(receiverPhone);
+            let argRegionName: any = getArgumentsItem(regionName);
+            let argRegion: any = getArgumentsItem(region);
+            const argAddress = getArgumentsItem(address);
+            const argIdCard = getArgumentsItem(idCard);
+            argRegionName = argRegionName?.replace(/，/g, ',')?.split(',')?.filter(Boolean);
+            argRegion = argRegion?.replace(/，/g, ',')?.split(',');
+            const parames = {
+                receiverPhone: argReceiverPhone,
+                address: argAddress,
+                region: argRegion,
+                idCard: argIdCard,
+            }
+            
+            if (!!argRegionName.length) {
+                (parames as any).regionName = argRegionName
+            }
+            console.log(game.core.AddressModal);
+            
+            game.core.AddressModal.updateParams(parames);
+            setReceiverInfo(parames);
+        },
+        [game]
+    );
+
+    /**
      * 抽奖方法
      */
     const lottery = useCallback(() => {
         game?.core.lottery();
     }, [game]);
+
+    const showRecord = useCallback(
+        () => {
+            game?.core.handleSaveAddress((res: any) => {
+                console.log('地址数据及', res);
+                
+            }, () => {})
+            setClass(`${MId}_addressmodal`, userClass.addressModal);
+
+        },
+        [MId, game?.core, userClass.addressModal],
+    )
 
     /**
      * 编辑弹窗样式时可视化弹窗
@@ -445,7 +458,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
     dispatchEventRef.current = dispatchEvent;
 
     return (
-        <Wrapper {...props}>
+        <><Wrapper {...props}>
             <div
                 className={classNames(s.root, s.bag, userClass.wrap)}
                 id={`game${props.moduleId}`}
@@ -456,7 +469,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
                     <Backgrounp />
                 </div>
             </div>
-        </Wrapper>
+        </Wrapper><div style={{width: '200px'}} onClick={showRecord}>中奖记录</div></>
     );
 };
 
