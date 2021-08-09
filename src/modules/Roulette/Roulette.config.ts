@@ -212,6 +212,8 @@ const config: {
     exposeDefaultProps: {
         layout: { w: 10, h: 10 },
         style: {
+            // 抽奖基本样式
+            //#region  
             basic: {},
             wrap: {
                 backgroundGroup: {},
@@ -284,7 +286,9 @@ const config: {
                     position: 'relative',
                 },
             },
-
+            //#endregion
+            // 抽奖中奖弹窗样式
+            //#region 
             successoverlay: {},
             successcontainer: {},
             successclose: {
@@ -455,8 +459,9 @@ const config: {
                 ],
             },
             successmodify: {},
-            // 失败弹窗
-
+            //#endregion
+            // 未中奖弹窗
+            //#region 
             failedoverlay: {},
             failedcontainer: {},
             failedclose: {
@@ -603,7 +608,9 @@ const config: {
                 ],
             },
             failedmodify: {},
+            //#endregion
             // 地址弹窗
+            //#region 
             addressmodalcontainer: {},
             addressmodaloverlay: {},
             addressmodalcontent: {
@@ -791,6 +798,126 @@ const config: {
                 ],
             },
             addressmodify1: {},
+            //#endregion 
+            // 中奖记录弹窗
+            //#region 
+            recordmodalcontainer: {},
+            recordmodaloverlay: {},
+            recordmodalcontent: {
+                display: {
+                    width: [280, ''],
+                    padding: [
+                        [0, ''],
+                        [0, ''],
+                        [0, ''],
+                        [0, ''],
+                    ],
+                },
+                border: {
+                    radiusTopLeft: [10, ''],
+                    radiusTopRight: [10, ''],
+                    radiusBottomLeft: [10, ''],
+                    radiusBottomRight: [10, ''],
+                },
+            },
+            recordmodalheader: {
+                border: {
+                    radiusTopLeft: [10, ''],
+                    radiusTopRight: [10, ''],
+                    borderStyle: 'none',
+                    borderWidth: [0, ''],
+                    borderPosition: {
+                        borderTop: false,
+                        borderRight: false,
+                        borderBottom: true,
+                        borderLeft: false,
+                        border: false,
+                    },
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                },
+                display: {
+                    height: [40, ''],
+                    padding: [
+                        ['0', '-'],
+                        ['0', '-'],
+                        ['0', '-'],
+                        ['0', '-'],
+                    ],
+                    margin: [
+                        ['0', '-'],
+                        ['0', '-'],
+                        ['0', '-'],
+                        ['0', '-'],
+                    ],
+                },
+                font: {
+                    fontWeight: 'bold',
+                    lineHeight: [40, ''],
+                    align: 'center',
+                    color: 'rgba(255, 255, 255, 1)',
+                },
+                backgroundGroup: {
+                    backgroundList: [
+                        {
+                            gradient: [
+                                {
+                                    color: 'rgba(63, 81, 181, 0.53)',
+                                    transition: 51,
+                                },
+                                {
+                                    color: 'rgba(174, 93, 206, 0.73)',
+                                    transition: 54,
+                                },
+                            ],
+                            gradientDirections: '45deg',
+                            repeat: 'repeat',
+                            sizeX: [4, ''],
+                            sizeY: [4, ''],
+                        },
+                        {
+                            gradient: [
+                                {
+                                    color: 'rgba(139, 104, 206, 1)',
+                                    transition: 1,
+                                },
+                                {
+                                    color: 'rgba(174, 93, 206, 1)',
+                                    transition: 81,
+                                },
+                            ],
+                            gradientDirections: 'top',
+                        },
+                    ],
+                },
+                boxShadow: [],
+                textShadow: [
+                    {
+                        color: 'rgba(74, 25, 161, 1 )',
+                        shiftRight: [null, ''],
+                        shiftDown: [3, ''],
+                    },
+                ],
+            },
+            recordmodalarticle: {},
+            recordmodalclose: {
+                display: {
+                    width: [40, ''],
+                    height: [40, ''],
+                },
+                backgroundGroup: {
+                    backgroundList: [
+                        {
+                            imageUrl: cancel,
+                            sizeY: [70, '%'],
+                            sizeX: [70, '%'],
+                            positionX: [50, '%'],
+                            positionY: [50, '%'],
+                            repeat: 'no-repeat',
+                        },
+                    ],
+                },
+            },
+            //#endregion
         },
         styleDescription: [
             {
@@ -999,6 +1126,24 @@ const config: {
                             },
                         ],
                     },
+                    {
+                        title: '中奖记录',
+                        value: 'recordmodalcontainer',
+                        children: [
+                            {
+                                title: '遮罩层',
+                                value: 'recordmodaloverlay',
+                            },
+                            {
+                                title: '弹窗',
+                                value: 'addressmodalcontent',
+                                children: [
+                                    {
+                                        title: '关闭按钮',
+                                        value: 'recordmodalclose'
+                                    }
+                                ]
+                    }
                 ],
             },
         ],

@@ -125,7 +125,7 @@ const Modal: React.FC<Props> = ({
       setTimeout(() => setCreated(true), 10);
     } else {
       dialogBox.state.display && dialogBox.hide(false);
-      setTimeout(() => setCreated(false), 10);
+      setTimeout(() => setCreated(false), 300);
     }
   }, [className, visible, shouldCloseOnOverlayClick]);
 
