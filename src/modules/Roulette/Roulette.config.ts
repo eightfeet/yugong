@@ -918,6 +918,8 @@ const config: {
                 },
             },
             //#endregion
+            // 弹窗样式
+            
         },
         styleDescription: [
             {
@@ -1136,13 +1138,23 @@ const config: {
                             },
                             {
                                 title: '弹窗',
-                                value: 'addressmodalcontent',
+                                value: 'recordmodalcontent',
                                 children: [
                                     {
-                                        title: '关闭按钮',
-                                        value: 'recordmodalclose'
+                                        title: '弹窗关闭按钮',
+                                        value: 'recordmodalclose',
+                                    },
+                                    {
+                                        title: '弹窗头部',
+                                        value: 'recordmodalheader',
+                                    },
+                                    {
+                                        title: '弹窗内容',
+                                        value: 'recordmodalcontent',
                                     }
                                 ]
+                            }
+                        ]
                     }
                 ],
             },

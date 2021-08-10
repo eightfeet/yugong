@@ -8,7 +8,7 @@ import classNames from 'classnames';
 interface Props {
     visible: boolean;
     onClose: () => any;
-    classNameGroup: {
+    classNameGroup?: {
         content: string;
         close: string;
     }
@@ -22,11 +22,11 @@ const Record:React.FC<Props> = ({
     return (
         <Modal visible={visible}>
             <div className={s.modalmain}>
-                <div className={classNames(s.close, classNameGroup.close)} onClick={onClose}>
+                <div className={classNames(s.close)} onClick={onClose}>
                     <Cancel />
                 </div>
                 <h3>标题</h3>
-                <div className={classNameGroup.content} >
+                <div className={classNameGroup?.content} >
                     <PullToRefresh>
                         <ul>
                             <li>1</li>

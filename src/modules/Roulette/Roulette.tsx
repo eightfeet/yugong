@@ -468,7 +468,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
             <Backgrounp />
           </div>
         </div>
-        <Record 
+        <Record
             visible={visibleRecord} 
             classNameGroup={{
                 content: userClass.recordModalContent,
