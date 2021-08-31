@@ -31,7 +31,7 @@ export interface RouletteProps extends AppDataElementsTypes {
   eventEmitter: EventEmitter;
 }
 
-interface PrizeTypes {
+export interface PrizeTypes {
   prizeId: number; // 奖品id
   prizeType: number; // 奖品类型 0 未中奖, 1 实物, 2 虚拟
   receiveType?: number; // 领取方式 1：默认；2：填写地址；3：链接类；4：虚拟卡
@@ -372,7 +372,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
       }
       console.log(game.core.AddressModal);
 
-      game.core.AddressModal.updateParams(parames);
+      game.core.AddressModal.updateParams(parames as any);
       setReceiverInfo(parames);
     },
     [game]
@@ -469,6 +469,7 @@ const Roulette: Modules<RouletteProps> = (props) => {
           </div>
         </div>
         <Record
+            id={MId}
             visible={visibleRecord} 
             classNameGroup={{
                 content: userClass.recordModalContent,

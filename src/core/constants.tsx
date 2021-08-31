@@ -75,6 +75,12 @@ export const LOTTERY = [
     title: "Roulette",
     discribe: "转盘抽奖",
     icon: <Icon component={IconRoulette} />,
+  },
+  {
+    moduleName: "Lottery",
+    title: "Lottery",
+    discribe: "转盘抽奖",
+    icon: <Icon component={IconRoulette} />,
   }
 ]
 

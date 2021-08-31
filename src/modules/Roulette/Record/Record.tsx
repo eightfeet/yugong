@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '~/components/Modal';
 import Cancel from "~/components/Icon/Cancel";
 import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import s from './Record.module.less';
 import classNames from 'classnames';
+import { PrizeTypes } from '../Roulette';
 
 interface Props {
+    id?: string;
     visible: boolean;
     onClose: () => any;
+    onSaveAddress?: (item: (PrizeTypes | any)) => void;
     classNameGroup?: {
         content: string;
         close: string;
@@ -15,12 +18,16 @@ interface Props {
 }
 
 const Record:React.FC<Props> = ({
+    id,
     visible, 
     onClose = () => {},
     classNameGroup
 }) => {
+    
+    const [list, setList] = useState<(PrizeTypes | any)[]>([1,2,3,4,5,6,7])
+    
     return (
-        <Modal visible={visible}>
+        <Modal id={`${id}_record`} visible={visible}>
             <div className={s.modalmain}>
                 <div className={classNames(s.close)} onClick={onClose}>
                     <Cancel />
@@ -29,10 +36,9 @@ const Record:React.FC<Props> = ({
                 <div className={classNameGroup?.content} >
                     <PullToRefresh>
                         <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
+                            {list.map(item => (
+                                <li>{item}</li>
+                            ))}
                         </ul>
                     </PullToRefresh>
                 </div>

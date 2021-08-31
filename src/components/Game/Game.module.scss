@@ -1,0 +1,30 @@
+.root {
+    width: 60vw;
+    height: 60vw;
+}
+
+.recordlist {
+    margin: 0;
+    padding: 0 1rem;
+    overflow: auto;
+    list-style: none;
+    li {
+        display: flex;
+        align-items: center;
+        img {
+            width: 30%;
+        }
+        >div {
+            display: flex;
+            flex: auto;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            text-align: left;
+            >div:first-child {
+                width: 100%;
+                flex-shrink: 0;
+            }
+        }
+    }
+}

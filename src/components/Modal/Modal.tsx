@@ -120,7 +120,6 @@ const Modal: React.FC<Props> = ({
               dialogBox.hide(false);
             }
           }
-          
         }
       setTimeout(() => setCreated(true), 10);
     } else {
