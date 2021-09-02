@@ -24,11 +24,20 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
   let gameHandle: GameHandle<typeof Game> | undefined = undefined;
   const setGameHandle = useCallback((ref) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     gameHandle = ref!;
   }, []);
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
-  const [showRecord, setShowRecord] = useState(false);
+  const [displayRecord, setDisplayRecord] = useState(false);
+
+  /**显示中奖记录 */
+  const showRecord = useCallback(
+    () => {
+      setDisplayRecord(true);
+    },
+    [],
+  )
 
   /**通过其他事件关联抽奖 */
   const lottery = useCallback(() => {
@@ -49,6 +58,24 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const onChangeType = useCallback((e) => {
     setType(e.target.value);
   }, []);
+
+  /**确定中奖结果 */
+  const onEnsure = useCallback(
+    (data) => console.log("确定中奖结果", data.prizeName),
+    [],
+  )
+
+  /**取消/关闭中奖结果 */
+  const onCancel = useCallback(
+    () => console.log("取消/关闭中奖结果"),
+    [],
+  )
+  
+  /**显示中奖记录 */
+  const saveAddress = useCallback(
+    async (data) => console.log('保存地址'),
+    [],
+  )
 
   // Register events and publish functions
   const [eventsDispatch] = useLifeCycle(
@@ -73,15 +100,15 @@ const Lottery: Modules<LotteryProps> = (props) => {
         ref={setGameHandle}
         start={start}
         prizes={prizes}
-        saveAddress={async (data) => console.log(data)}
-        onCancel={() => console.log("取消/关闭中奖结果")}
+        saveAddress={saveAddress}
+        onCancel={onCancel}
         receiverInfo={receiverInfo}
         submitAddressText="填写地址"
-        onEnsure={(data) => console.log("22222", data.prizeName)}
+        onEnsure={onEnsure}
       />
       <GameRecords
-            visible={showRecord}
-            onCancel={() => setShowRecord(false)}
+            visible={displayRecord}
+            onCancel={() => setDisplayRecord(false)}
             okText="确定"
             title="幸运记录"
             disablePullUp={true}
@@ -89,9 +116,11 @@ const Lottery: Modules<LotteryProps> = (props) => {
             onPullDown={async () => console.log()}
             onPullUp={async () => console.log()}
         >
-            这里是中奖记录
+            这里是中奖记录<br/>
+            <button onClick={handleSaveAddress}>保存中奖记录</button>
         </GameRecords>
-        <button onClick={() => setShowRecord(true)}>中奖记录</button>
+        <button onClick={showRecord}>中奖记录</button>
+        <button onClick={lottery}>外置抽奖</button>
     </Wrapper>
   );
 };
