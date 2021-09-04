@@ -60,4 +60,8 @@
     zoomInLeft: 左边放大进入
     zoomInRight: 右边放大进入
   ```
+### 逻辑流程
 <img src="./images/flow/lottery.svg" style="width: 100%" />
+
+### 抽奖流程
+<img src="./images/flow/startlottery.svg" style="width: 100%" />
