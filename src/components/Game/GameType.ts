@@ -74,11 +74,11 @@ export interface GameProps {
     /**开始抽奖方法 */
     start?: () => Promise<PrizeType>;
     /**保存地址方法 */
-    saveAddress?: (data: saveAddressParames) => Promise<void>;
+    saveAddress?: (data: saveAddressParames) => Promise<any>;
     /**参与抽奖人的电话号码，有则显示 */
     playerPhone?: string;
     /**获取短信验证码接口,用于短信验证参与人电话号码，有电话号码且有此方法时开启短信验证*/
-    checkVerificationCode?: () => Promise<any>;
+    checkVerificationCode?: (data?: any) => Promise<any>;
     /**默认收货人信息 中奖时此信息将自动填写到收货地址表单*/
     receiverInfo?: receiverInfoType;
     /**
@@ -98,11 +98,33 @@ export interface GameProps {
     submitFailedText?: string;
     /**中奖弹窗标题 */
     successModalTitle?: string;
+    /*
+     *  成功弹窗动画
+     *  form形式
+     *  duration 持续时间
+     */
+    successModalAnimation?: {
+        form?:
+            | 'fadeInLeft'
+            | 'fadeInRight'
+            | 'fadeInDown'
+            | 'fadeInUp'
+            | 'zoomInLeft'
+            | 'zoomInRight'
+            | 'zoomInDown'
+            | 'zoomInUp'
+            | 'zoomIn'
+            | 'flipInX'
+            | 'flipInY';
+        duration?: string | number;
+    };
     /**中奖按钮文字 */
     submitSuccessText?: string;
     /**中奖去填写地址按钮文字 */
     submitAddressText?: string;
     /**样式名 */
     className?: string;
-    /**中奖记录 */
+    onShowSuccess?: () => void;
+    onShowFailed?: () => void;
+    onShowAddress?: () => void;
 }
