@@ -176,6 +176,12 @@ const config: {
               data: ""
           }],
       },
+      {
+          name: 'showRecord',
+          description: '显示中奖记录',
+          presettable: false,
+      },
+      
   ],
 
   /**

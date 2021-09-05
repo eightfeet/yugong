@@ -397,6 +397,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
       useConfig,
       setDefaultReceiveInfo,
       setSuccessModal,
+      showRecord
     },
     api?.find((item) => item.apiId === "init")
   );
