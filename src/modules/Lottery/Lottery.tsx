@@ -160,6 +160,17 @@ const Lottery: Modules<LotteryProps> = (props) => {
     [api]
   );
 
+  const apiGetRecord = useCallback(
+    async () => {
+      const apiArguments = api?.find((item) => item.apiId === "getRecord");
+      // 获取抽奖结果数据， 将结果数据中转到全局数据中
+      if (apiArguments && apiArguments.url && apiArguments.method) {
+        return requester(apiArguments || {});
+      }
+    },
+    [api],
+  )
+
   // ===========================================组件方法============================================ // 
   /**
    * 修改抽奖类型 
@@ -452,8 +463,6 @@ const Lottery: Modules<LotteryProps> = (props) => {
         <br />
         <button onClick={handleSaveAddress}>保存中奖记录</button>
       </GameRecords>
-      <button onClick={showRecord}>中奖记录</button>
-      <button onClick={lottery}>外置抽奖</button>
     </Wrapper>
   );
 };

@@ -302,6 +302,11 @@ const config: {
           name: '获取验证码',
           enterDescription: `获取验证码`
       },
+      {
+          apiId: 'getRecord',
+          name: '中奖记录',
+          enterDescription: `获取中奖记录`
+      }
   ],
 };
 
