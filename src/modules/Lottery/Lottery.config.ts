@@ -65,6 +65,21 @@ const config: {
           ],
       },
       {
+        name: 'setRunningRecords',
+        description: '设置中奖记录数据',
+        arguments: [
+            {
+                type: 'runningTime',
+                describe: `从全局数据中设置中奖记录数据
+                            <br/>
+                            数据要求：<br />`,
+                name: '奖品数据',
+                fieldName: 'prizes',
+                data: '',
+            }
+        ],
+    },
+      {
           name: 'lottery',
           description: '抽奖',
           presettable: false,

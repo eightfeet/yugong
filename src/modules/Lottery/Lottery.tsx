@@ -44,6 +44,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>(
     {}
   );
+  const [records, setRecords] = useState<any[]>([]);
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
   const [displayRecord, setDisplayRecord] = useState(false);
@@ -91,7 +92,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   }, [gameHandle]);
 
   // ===========================================组件Api============================================
-
+  //#region 
   /**
    * 抽奖前置Api, 用于检查是否满足抽奖条件
    * */
@@ -170,8 +171,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
     },
     [api],
   )
-
+  //#endregion
   // ===========================================组件方法============================================ // 
+  //#region 
   /**
    * 修改抽奖类型 
    */
@@ -196,6 +198,19 @@ const Lottery: Modules<LotteryProps> = (props) => {
       setPrizes(mock.prizes);
     }
   }, []);
+
+  /**
+   * 设置中奖记录
+   */
+  const setRunningRecords = useCallback(
+    (records) => {
+      const recordArg = getArgumentsItem(records) as any[];
+      if (Array.isArray(recordArg) && recordArg.length) {
+        setRecords(recordArg);
+      }
+    },
+    [],
+  )
 
   /**
    * 设置玩家基本信息
@@ -244,8 +259,6 @@ const Lottery: Modules<LotteryProps> = (props) => {
     },
     []
   );
-
-  // ==============================================end=============================================
   // hank 等待
   const setDelayStart = useCallback(
     () =>
@@ -354,7 +367,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const showRecord = useCallback(() => {
     setDisplayRecord(true);
   }, []);
-
+  //#endregion
+  //=========================================end=================================================//
   /**
    * 编辑弹窗样式时可视化弹窗
    * 做高频编辑防抖处理
@@ -403,6 +417,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
     {
       setGameType,
       setRunningPrizes,
+      setRunningRecords,
       lottery,
       checkedLottery,
       useConfig,
