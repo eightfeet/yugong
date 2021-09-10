@@ -74,8 +74,15 @@ const config: {
                             <br/>
                             数据要求：<br />`,
                 name: '奖品数据',
-                fieldName: 'prizes',
+                fieldName: 'records',
                 data: '',
+            },
+            {
+                type: 'array',
+                describe: '',
+                name: '显示字段',
+                fieldName: 'recordsMap',
+                data: []
             }
         ],
     },

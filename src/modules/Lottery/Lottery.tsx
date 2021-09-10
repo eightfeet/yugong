@@ -47,7 +47,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const [records, setRecords] = useState<any[]>([]);
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
-  const [displayRecord, setDisplayRecord] = useState(false);
+  const [displayRecord, setDisplayRecord] = useState(true);
 
   // 禁用抽奖
   const checked = useRef<{
@@ -171,6 +171,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
     },
     [api],
   )
+
+  console.log(records);
+  
   //#endregion
   // ===========================================组件方法============================================ // 
   //#region 
@@ -477,6 +480,11 @@ const Lottery: Modules<LotteryProps> = (props) => {
         这里是中奖记录
         <br />
         <button onClick={handleSaveAddress}>保存中奖记录</button>
+        {
+          records.map((item) => (
+            <div>sss</div>
+          ))
+        }
       </GameRecords>
     </Wrapper>
   );
