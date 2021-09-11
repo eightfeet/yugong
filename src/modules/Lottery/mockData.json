@@ -17,7 +17,8 @@
         "addrValidity": 3,
         "addrAvailability": null,
         "receiverExpireTime": 1612496816000,
-        "code": null
+        "code": null,
+        "saveAddress": "1"
     },
     {
         "detailId": 2578104,
@@ -77,7 +78,8 @@
         "addrValidity": 3,
         "addrAvailability": null,
         "receiverExpireTime": 1612496434000,
-        "code": null
+        "code": null,
+        "saveAddress": "1"
     },
     {
         "detailId": 2578101,
@@ -97,6 +99,7 @@
         "addrValidity": 3,
         "addrAvailability": null,
         "receiverExpireTime": 1612495476000,
-        "code": null
+        "code": null,
+        "saveAddress": "1"
     }
 ]

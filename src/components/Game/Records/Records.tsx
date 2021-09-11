@@ -43,6 +43,7 @@ const Records: React.FC<RecordsProps> = ({
             okText={okText || `返回抽奖`}
             onOk={onCancel}
             title={title || `<h3>中奖记录</h3>`}
+            zIndex={50}
         >
             <div className={classNames(s.recordswrap, className)}>
                 <PullToRefresh

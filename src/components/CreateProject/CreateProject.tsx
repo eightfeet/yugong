@@ -7,8 +7,7 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
-import request from "~/core/request";
-import { AnyObjectType, AppDataListTypes } from "~/types/appData";
+import { AppDataListTypes } from "~/types/appData";
 import { queryTemplateById } from "~/api";
 import { PageData } from "~/types/pageData";
 

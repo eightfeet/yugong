@@ -8,3 +8,13 @@
     }
 };
 
+/**
+ * 是否图片
+ * @param str string
+ * @returns boolean
+ */
+export const isImg = (str: string) => {
+    console.log(typeof str, str);
+    if (typeof str !== 'string') return false;
+    return /\.(png|jpe?g|gif|svg)(\?.*)?$/.test(str?.toLocaleLowerCase())
+};

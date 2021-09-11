@@ -11,7 +11,7 @@ interface Props {
     
 }
 
-const PageLogin:React.FC<Props> = ({}) => {
+const PageLogin:React.FC<Props> = () => {
     const { setAuth } = useDispatch<Dispatch>().controller;
     const history = useHistory();
     const onLogin = useCallback(

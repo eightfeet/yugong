@@ -1,5 +1,5 @@
 import EventEmitter from "~/core/EventEmitter";
-import { AnyObjectType, AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import config from "./Broadcast.config";
 import Wrapper from "../Wrapper";

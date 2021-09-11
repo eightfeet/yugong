@@ -4,7 +4,7 @@ interface Props {
     
 }
 
-const Home:React.FC<Props> = ({}) => {
+const Home:React.FC<Props> = () => {
     return (
         <div>
             homePage
