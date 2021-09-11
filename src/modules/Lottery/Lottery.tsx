@@ -29,10 +29,11 @@ import requester from "~/core/fetch";
 import { Prize } from "@byhealth/lottery/dist/types/core";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import { isImg, setClass } from "./helper";
+import { getPrizeById, isImg, setClass } from "./helper";
 import { debounce } from "lodash";
 import { gametypes } from "~/components/Game/Game";
 import s from "./Lottery.module.less";
+import { saveAddressParames } from "~/components/Game/GameType";
 
 export interface LotteryProps extends AppDataElementsTypes {
   id: string;
@@ -56,6 +57,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
   const [displayRecord, setDisplayRecord] = useState<boolean>();
+  const winInfo = useRef<Prize>();
 
   // 禁用抽奖
   const checked = useRef<{
@@ -132,7 +134,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
    * 保存地址Api, 用于实物奖品保存地址信息
    */
   const apiSaveAddress = useCallback(
-    async (data) => {
+    async (data: saveAddressParames) => {
+      console.log('??????', winInfo.current, data);
+      
       // 这里不需要api设置参数
       const apiArguments = api?.find((item) => item.apiId === "saveAddress");
       // 获取抽奖结果数据， 将结果数据中转到全局数据中
@@ -376,26 +380,20 @@ const Lottery: Modules<LotteryProps> = (props) => {
     // step5、执行结束事件，可用于重置数据
     dispatchEventRef.current?.onEnd();
     if (settedApi?.response?.prizeId !== undefined) {
-      let currentPrize = settedApi.response;
-      prizes.some((prize) => {
-        if (prize.prizeId === currentPrize.prizeId) {
-          currentPrize = {
-            ...currentPrize,
-            ...(prize || {}),
-          };
-          return true;
-        }
-        return false;
-      });
-
+      let currentPrize = getPrizeById(settedApi.response.prizeId, prizes);
+      // 回填当前操作奖品
+      console.log(111, currentPrize);
+      winInfo.current = currentPrize;
       return currentPrize;
     }
 
     // 没有设置Api时启用mock数据
     if (!settedApi) {
       message.warning("活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！");
-      const winnerInfo = prizes[Math.floor(Math.random() * prizes.length - 1)];
-      return winnerInfo;
+      const winData = prizes[Math.floor(Math.random() * prizes.length - 1)];
+      // 回填当前操作奖品
+      winInfo.current = winData;
+      return winData;
     }
   }, [apiBeforeStart, apiStart, checked, prizes, setDelayStart]);
 
@@ -512,7 +510,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   );
   // ref存储
   dispatchEventRef.current = dispatchEvent;
-
+  
   return (
     <Wrapper {...props}>
       <Game

@@ -72,7 +72,7 @@ export interface GameProps {
     /**抽奖奖品 */
     prizes?: PrizeType[];
     /**开始抽奖方法 */
-    start?: () => Promise<PrizeType>;
+    start?: () => Promise<PrizeType | undefined>;
     /**保存地址方法 */
     saveAddress?: (data: saveAddressParames) => Promise<any>;
     /**参与抽奖人的电话号码，有则显示 */
