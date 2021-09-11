@@ -274,7 +274,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
                     </div>
                   );
                 } else if (el === 'saveAddress' && recordsItem === '1') {
-                  saveAddressItem = <button onClick={onSaveAddress(item)}>保存地址</button>
+                  saveAddressItem = <button onClick={onSaveAddress(item)}>保存收货地址</button>
                 } else {
                   content.push(<div key={i}>{recordsItem}</div>);
                 }
@@ -285,7 +285,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
                 {imgItem}
                 <div className={s.recordstr}>
                   { content }
-                  { saveAddressItem ? <div>{saveAddressItem}</div> : null }
+                  { saveAddressItem ? <div>{saveAddressItem}</div> : <div /> }
                 </div>
               </li>
             );
@@ -555,7 +555,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
         onPullDown={async () => console.log()}
         onPullUp={async () => console.log()}
       >
-        {renderRecords()}
+        <ul className={s.recordwrap}>
+          {renderRecords()}
+        </ul>
       </GameRecords>
     </Wrapper>
   );
