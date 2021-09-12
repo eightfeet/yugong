@@ -178,7 +178,7 @@ const Repository: React.FC = () => {
           addedModal?.moduleName || ""
         })组件`}
         visible={!!addedModal}
-        width={700}
+        width={900}
         footer={null}
         onCancel={() => setAddedModal(undefined)}
         bodyStyle={{ padding: "20px 10px 30px 10px" }}

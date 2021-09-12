@@ -38,7 +38,7 @@ const MarkdownModalDoc: React.FC<Props> = ({ visible, moduleName, onCancel }) =>
     <>
       <Modal
         visible={visible}
-        width={700}
+        width={900}
         footer={null}
         onCancel={onCancel}
         bodyStyle={{ padding: "20px 10px 30px 10px" }}

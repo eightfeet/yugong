@@ -63,5 +63,8 @@
 ### 逻辑流程
 <img src="./images/flow/lottery.svg" style="width: 100%" />
 
+### Game核心模块
+<img src="./images/flow/game.svg" style="width: 100%" />
+
 ### 抽奖流程
 <img src="./images/flow/startlottery.svg" style="width: 100%" />

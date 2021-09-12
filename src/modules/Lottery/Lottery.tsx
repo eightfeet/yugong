@@ -14,14 +14,7 @@ import useLifeCycle from "~/hooks/useLifeCycle";
 import useStyles from "./Lottery.useStyles";
 import Game, { GameRecords } from "~/components/Game";
 import { GameHandle, GameMap } from "~/components/Game/useGame";
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as mock from "./mockData";
 import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import message from "~/components/Message";
@@ -34,6 +27,17 @@ import { debounce } from "lodash";
 import { gametypes } from "~/components/Game/Game";
 import s from "./Lottery.module.less";
 import { saveAddressParames } from "~/components/Game/GameType";
+
+export interface RecordsType extends Prize {
+  /**中奖id */
+  id?: number |  string;
+  /**收货地址 */
+  receiverAddress?: string;
+  /**收货姓名 */
+  receiverName?: string;
+  /**收货电话 */
+  receiverPhone?: string;
+}
 
 export interface LotteryProps extends AppDataElementsTypes {
   id: string;
@@ -135,14 +139,16 @@ const Lottery: Modules<LotteryProps> = (props) => {
    */
   const apiSaveAddress = useCallback(
     async (data: saveAddressParames) => {
-      console.log('??????', winInfo.current, data);
-      
+      const oprationData = {
+        winId: "winInfo.current.id",
+        ...data,
+      };
       // 这里不需要api设置参数
       const apiArguments = api?.find((item) => item.apiId === "saveAddress");
       // 获取抽奖结果数据， 将结果数据中转到全局数据中
       if (apiArguments) {
         apiArguments.body = [
-          { type: "object", fieldName: "addressData", data },
+          { type: "object", fieldName: "addressData", data: oprationData },
         ];
         return requester(apiArguments || {});
       }
@@ -214,90 +220,39 @@ const Lottery: Modules<LotteryProps> = (props) => {
    * 设置中奖记录
    */
   const [records, setRecords] = useState<any[]>([]);
-  const [recordsMap, setRecordsMap] = useState<string[]>();
-  const [disablePullDown, setDisablePullDown] = useState<boolean>();
-  const [disablePullUp, setDisablePullUp] = useState<boolean>();
   const onSaveAddress = useCallback(
     (item) => () => {
-      console.log(item)
+      console.log(item);
       return handleSaveAddress();
     },
-    [handleSaveAddress],
-  )
-  const setRunningRecords = useCallback(
-    (
-      records: ArgumentsArray,
-      recordsMap: ArgumentsArray,
-      disablePullDown: ArgumentsString,
-      disablePullUp: ArgumentsString
-    ) => {
-      // 中奖记录
-      const recordArg = getArgumentsItem(records) as any[];
-      if (Array.isArray(recordArg) && recordArg.length) {
-        setRecords(recordArg);
-      }
-      // 中奖记录显示映射
-      const recordsMapArg = getArgumentsItem(recordsMap) as string[];
-      if (Array.isArray(recordsMapArg) && recordsMapArg.length) {
-        setRecordsMap(recordsMapArg);
-      }
-      // 禁用下拉
-      const disablePullDownArg = getArgumentsItem(disablePullDown) as string;
-      if (disablePullDownArg === "0") {
-        setDisablePullDown(true);
-      } else {
-        setDisablePullDown(false);
-      }
-      // 禁用上拉
-      const disablePullUpArg = getArgumentsItem(disablePullUp) as string;
-      if (disablePullUpArg === "0") {
-        setDisablePullUp(true);
-      } else {
-        setDisablePullUp(false);
-      }
-    },
-    []
+    [handleSaveAddress]
   );
-  const renderRecords = useCallback(() => {
-    if (records?.length && recordsMap?.length) {
-      return (
-        <>
-          {records.map((item, index) => {
-            const content: ReactElement[] = [];
-            let imgItem: ReactElement | undefined = undefined;
-            let saveAddressItem: ReactElement | undefined = undefined;
-
-            recordsMap.forEach((el, i) => {
-              const recordsItem = item[el];
-              if (recordsItem) {
-                console.log("recordsItem", recordsItem);
-                if (isImg(recordsItem)) {
-                  imgItem = (
-                    <div key={i}>
-                      <img src={recordsItem} alt="" />
-                    </div>
-                  );
-                } else if (el === 'saveAddress' && recordsItem === '1') {
-                  saveAddressItem = <button onClick={onSaveAddress(item)}>保存收货地址</button>
-                } else {
-                  content.push(<div key={i}>{recordsItem}</div>);
-                }
-              }
-            });
-            return (
-              <li className={s.recorditem} key={index}>
-                {imgItem}
-                <div className={s.recordstr}>
-                  { content }
-                  { saveAddressItem ? <div>{saveAddressItem}</div> : <div /> }
-                </div>
-              </li>
-            );
-          })}
-        </>
-      );
+  /**
+   * 设置运行时中奖记录
+   */
+  const setRunningRecords = useCallback((records: ArgumentsArray) => {
+    // 中奖记录
+    const recordArg = getArgumentsItem(records) as any[];
+    if (Array.isArray(recordArg) && recordArg.length) {
+      setRecords(recordArg);
     }
-  }, [records, recordsMap, onSaveAddress]);
+  }, []);
+  /**
+   * 渲染中奖记录
+   */
+  const renderRecords = useCallback(
+    () =>
+      records?.length ? (
+        <ul className={s.recordwrap}>
+          {records.map((item, index) => {
+            return <li>中奖记录</li>;
+          })}
+        </ul>
+      ) : (
+        <div>暂无数据</div>
+      ),
+    [records]
+  );
 
   /**
    * 设置玩家基本信息
@@ -382,7 +337,6 @@ const Lottery: Modules<LotteryProps> = (props) => {
     if (settedApi?.response?.prizeId !== undefined) {
       let currentPrize = getPrizeById(settedApi.response.prizeId, prizes);
       // 回填当前操作奖品
-      console.log(111, currentPrize);
       winInfo.current = currentPrize;
       return currentPrize;
     }
@@ -510,7 +464,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   );
   // ref存储
   dispatchEventRef.current = dispatchEvent;
-  
+
   return (
     <Wrapper {...props}>
       <Game
@@ -548,14 +502,12 @@ const Lottery: Modules<LotteryProps> = (props) => {
       <GameRecords
         visible={displayRecord}
         onCancel={() => setDisplayRecord(false)}
-        disablePullUp={disablePullUp}
-        disablePullDown={disablePullDown}
+        disablePullUp={false}
+        disablePullDown={false}
         onPullDown={async () => console.log()}
         onPullUp={async () => console.log()}
       >
-        <ul className={s.recordwrap}>
-          {renderRecords()}
-        </ul>
+        {renderRecords()}
       </GameRecords>
     </Wrapper>
   );
