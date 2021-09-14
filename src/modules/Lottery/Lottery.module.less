@@ -1,25 +1,55 @@
-.recorditem, .recordstr {
+.recordstr {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    text-align: left;
 }
 
 .recorditem {
-    img {
-        max-width: 50px;
-        margin-right: 10px;
-    }
+    display: flex;
+    margin-bottom: 1rem;
+    text-align: left;
+    align-items: center;
 }
 
 .recordstr {
     flex-wrap: wrap;
     text-align: left;
     flex:auto;
-    div:first-child {
+    >div:first-child {
         width: 100%;
     }
 }
 
 .recordwrap {
     margin: 0;
-    padding-left: 0;
+    padding: 5%;
+}
+
+.prizeimg {
+    width: 4rem;
+    height: 4rem;
+    background-color: #fff;
+    border-radius: 8rem;
+    text-align: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+    overflow: hidden;
+    margin-right: 0.5rem;
+    img {
+        width: 100%;
+    }
+}
+
+.prizename {
+    font-size: 1rem;
+}
+
+.receiveraddress, .wintime {
+    font-size: 0.8rem;
+}
+
+
+.timeandbutton {
+    display: flex;
+    justify-content: space-between;
 }

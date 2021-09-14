@@ -1,10 +1,12 @@
+import { RecordsType } from "./Lottery";
+
 export const prizes = [
     {
         prizeId: 1,
         prizeType: 1,
         receiveType: 2,
         prizeAlias: '一等奖',
-        prizeName: '一等奖',
+        prizeName: '奖品',
         status: 1,
         awardMsg: '亲！恭喜您获得一等奖！',
         prizeImg:
@@ -87,10 +89,10 @@ export const prizes = [
         prizeId: 1,
         prizeType: 1,
         receiveType: 2,
-        prizeAlias: '一等奖',
-        prizeName: '一等奖',
+        prizeAlias: '七等奖',
+        prizeName: '七等奖',
         status: 1,
-        awardMsg: '亲！恭喜您获得一等奖！',
+        awardMsg: '亲！恭喜您获得七等奖！',
         prizeImg:
             'https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0601163031117.png',
         gameImg:
@@ -98,6 +100,20 @@ export const prizes = [
         memo: '该奖品由xxxx公司统一提供！',
     },
 ];
+
+export const records = prizes.map((item: RecordsType, index: number) => {
+    item.id = 2578100 + index;
+    item.winTime = `2021-10-${index+1}`
+    if (index === 2) {
+        item.receiverAddress = '广东省 广州市 天河区 体育西路352号';
+        item.receiverPhone = '13622809422';
+        item.receiverName = '王蒙';
+    }
+    if (index === 3) {
+        item.extra = '领取方式'
+    }
+    return item;
+})
 
 /**收货人信息 */
 export const receiverInfo = {

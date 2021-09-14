@@ -20,7 +20,7 @@
         "saveAddress": "1"
     },
     {
-        "detailId": 2578104,
+        "id": 2578104,
         "prizeName": "不需要填写地址",
         "status": 2,
         "winTime": 1612237287000,
@@ -40,7 +40,7 @@
         "code": null
     },
     {
-        "detailId": 2578103,
+        "id": 2578103,
         "prizeName": "不需要填写地址",
         "status": 2,
         "winTime": 1612237262000,
@@ -60,7 +60,7 @@
         "code": null
     },
     {
-        "detailId": 2578102,
+        "id": 2578102,
         "prizeName": "不需要填写地址",
         "status": 2,
         "winTime": 1612237234000,
@@ -81,7 +81,7 @@
         "saveAddress": "1"
     },
     {
-        "detailId": 2578101,
+        "id": 2578101,
         "prizeName": "不需要填写地址",
         "status": 2,
         "winTime": 1612236276000,
