@@ -37,6 +37,7 @@ export interface RecordsType extends Prize {
   receiverName?: string;
   /**收货电话 */
   receiverPhone?: string;
+  [keys: string]: any;
 }
 
 export interface LotteryProps extends AppDataElementsTypes {
@@ -60,7 +61,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   );
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
-  const [displayRecord, setDisplayRecord] = useState<boolean>();
+  const [displayRecord, setDisplayRecord] = useState<boolean>(true);
   const winInfo = useRef<Prize>();
 
   // 禁用抽奖
@@ -219,7 +220,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   /**
    * 设置中奖记录
    */
-  const [records, setRecords] = useState<any[]>([]);
+  const [records, setRecords] = useState<RecordsType[]>(mock.records);
   const onSaveAddress = useCallback(
     (item) => () => {
       console.log(item);
@@ -245,11 +246,25 @@ const Lottery: Modules<LotteryProps> = (props) => {
       records?.length ? (
         <ul className={s.recordwrap}>
           {records.map((item, index) => {
-            return <li>中奖记录</li>;
+            return <li key={index} className={s.recorditem}>
+              <div><img src={item.prizeImg} alt={item.prizeName} /></div>
+              <div className={s.recordstr}>
+                <div>
+                  {
+                    item.prizeName
+                  }
+                </div>
+                {item.receiverAddress ? <div>
+                  {
+                    item.receiverAddress
+                  }
+                </div> : null}
+              </div>
+            </li>;
           })}
         </ul>
       ) : (
-        <div>暂无数据</div>
+        <div>暂无中奖记录</div>
       ),
     [records]
   );
