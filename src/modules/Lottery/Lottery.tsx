@@ -219,7 +219,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
   /**
    * 设置中奖记录
    */
-  const [records, setRecords] = useState<any[]>([]);
+  const [records, setRecords] = useState<RecordsType[]>([]);
   const onSaveAddress = useCallback(
     (item) => () => {
       console.log(item);
