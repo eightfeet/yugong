@@ -39,7 +39,7 @@ const BorderCheckbox: React.FC<Props> = ({
     border: false,
   });
 
-  const forceUpdate = useDispatch<Dispatch>().controller.forceUpdateByStateTag;
+  // const forceUpdate = useDispatch<Dispatch>().controller.forceUpdateByStateTag;
 
   useEffect(() => {
     if (defaultData.border === true) {
@@ -90,11 +90,11 @@ const BorderCheckbox: React.FC<Props> = ({
       const result = { ...borderPosition };
       if (onChange instanceof Function) {
         onChange(result);
-        forceUpdate();
+        // forceUpdate(); // 用于强制刷新页面
       }
       setBorderPosition(result);
     },
-    [borderPosition, forceUpdate, onChange]
+    [borderPosition, onChange]
   );
 
   return (
