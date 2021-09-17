@@ -8,8 +8,6 @@ import {
   BorderRightOutlined,
   BorderTopOutlined,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "~/redux/store";
 
 interface Data {
   borderTop?: boolean;
