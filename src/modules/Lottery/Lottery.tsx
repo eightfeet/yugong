@@ -4,6 +4,7 @@ import {
   AppDataElementsTypes,
   ArgumentsArray,
   ArgumentsBoolean,
+  ArgumentsItem,
   ArgumentsNumber,
   ArgumentsString,
 } from "~/types/appData";
@@ -12,7 +13,7 @@ import config from "./Lottery.config";
 import Wrapper from "../Wrapper";
 import useLifeCycle from "~/hooks/useLifeCycle";
 import useStyles from "./Lottery.useStyles";
-import Game, { GameRecords } from "~/components/Game";
+import Game, { GameRecords, GameModal } from "~/components/Game";
 import { GameHandle, GameMap } from "~/components/Game/useGame";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as mock from "./mockData";
@@ -63,7 +64,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
   );
 
   const [type, setType] = useState<keyof GameMap>("redenvelope");
-  const [displayRecord, setDisplayRecord] = useState<boolean>(true);
+  const [displayRecord, setDisplayRecord] = useState<boolean>(false);
+  const [displayRule, setDisplayRule] = useState<boolean>(false);
+  const [ruleText, setRuleText] = useState<any[]>([]);
   const winInfo = useRef<Prize>();
 
   // 禁用抽奖
@@ -204,6 +207,13 @@ const Lottery: Modules<LotteryProps> = (props) => {
       setType(argOptType);
     }
   }, []);
+
+  // 设置文本
+  const setRules = useCallback((rules: ArgumentsItem) => {
+      const rulesTexts = getArgumentsItem(rules) as any[];
+      setRuleText(rulesTexts)
+  }, []);
+
 
   /**
    * 设置奖品数据, 无数据时使用mock
@@ -481,6 +491,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
     {
       setGameType,
       setRunningPrizes,
+      setRules,
       setRunningRecords,
       lottery,
       checkedLottery,
@@ -538,6 +549,20 @@ const Lottery: Modules<LotteryProps> = (props) => {
       >
         {renderRecords()}
       </GameRecords>
+      <GameModal
+        visible={displayRule}
+        title="活动规则"
+        okText="返回抽奖"
+        onOk={() => setDisplayRule(false)}
+      >
+        <ol className={s.rule}>
+          {
+            ruleText.map(item => (<li>
+              {item}
+            </li>))
+          }
+        </ol>
+      </GameModal>
     </Wrapper>
   );
 };
