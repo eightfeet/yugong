@@ -11,7 +11,7 @@ import isType from "~/core/helper/isType";
 
 interface Props {}
 
-const Beforeoutput: React.FC<Props> = () => {
+const BeforeOutput: React.FC<Props> = () => {
   const { updateAppData } = useDispatch<Dispatch>().appData;
   const { updatePage } = useDispatch<Dispatch>().pageData;
   const { setCurrentEditorStylePath } = useDispatch<Dispatch>().controller;
@@ -25,7 +25,6 @@ const Beforeoutput: React.FC<Props> = () => {
   // 获取缓存的页面数据与模块数据
   const [appDataLocalStoreData] = useLocalStorage("appData", null);
   const [pageDataLocalStoreData] = useLocalStorage("pageData", null);
-
 
   // 用于编辑模式下，观察编辑器通知，设置当前编辑路径
   const sendMessage = usePostMessage((data) => {
@@ -74,11 +73,12 @@ const Beforeoutput: React.FC<Props> = () => {
   // 初始化App
   const setApp = useCallback(
     async () => {
+      
       const { tpl } = parse(window.location.search);
       let appDataRes, pageDataRes;
       if (!tpl) {
-        appDataRes = appDataLocalStoreData;
-        pageDataRes = pageDataLocalStoreData;
+        appDataRes = appDataLocalStoreData || [];
+        pageDataRes = pageDataLocalStoreData || {};
       } else {
         const result = await queryTemplateById(tpl as string);
         if (!isType(result, 'Object')) return;
@@ -104,4 +104,4 @@ const Beforeoutput: React.FC<Props> = () => {
   return <Output pageData={pageData} />;
 };
 
-export default Beforeoutput;
+export default BeforeOutput;

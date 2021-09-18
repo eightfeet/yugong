@@ -33,6 +33,7 @@ import TemplateInfoModal from "../TemplateInfoModal";
 import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
 import { Template } from "~/types/pageData";
 import { useHistory } from "react-router-dom";
+import LoadingAnimate from "./LoadingAnimate";
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -78,6 +79,7 @@ const Responsive: React.FC<Props> = () => {
   const [showPageDrawer, setShowPageDrawer] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [hideIframe, sethideIframe] = useState(true);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -124,14 +126,17 @@ const Responsive: React.FC<Props> = () => {
   const win: Window | null = ref.current
     ? (ref.current as any).contentWindow
     : null;
+
   useEffect(() => {
-    if (win) {
-      win.onload = () => {
-        sendMessage({ tag: "setIsEditing", value: true }, win);
+    const windows = (document.getElementById('wrapiframe') as any)?.contentWindow;
+    if (windows && !isCreate) {
+      windows.onload = () => {
+        sendMessage({ tag: "setIsEditing", value: true }, windows);
         setIsEditing(true);
+        sethideIframe(false);
       };
     }
-  }, [isEditing, sendMessage, setIsEditing, win]);
+  }, [sendMessage, setIsEditing, isCreate]);
 
   useEffect(() => {
     sendMessage({ tag: "setIsEditing", value: true }, win);
@@ -379,25 +384,24 @@ const Responsive: React.FC<Props> = () => {
               })}
               style={{ transition: "all 0.5s" }}
             />
-            {!stateTag ? (
-              <div
+            {!stateTag ? <div
                 className={s.iframebox}
                 style={{ width: pageData.windowWidth === -1 ? `100%` : `${pageData.windowWidth}px`, height: `${pageData.windowHeight}px` }}
               >
+                <LoadingAnimate />
                 <iframe
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
                   src={`/${window.location.search}`}
                   style={{
-                    width: "1px",
                     border: "none",
+                    opacity: hideIframe ? 0 : 1,
                     minWidth: "100%",
                     minHeight: `${pageData.windowHeight}px`,
                   }}
                 />
-              </div>
-            ) : null}
+              </div> : null}
           </div>
         </div>
       }
