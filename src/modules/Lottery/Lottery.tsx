@@ -31,7 +31,7 @@ import { saveAddressParames } from "~/components/Game/GameType";
 
 export interface RecordsType extends Prize {
   /**中奖id */
-  id?: number |  string;
+  id?: number | string;
   /**收货地址 */
   receiverAddress?: string;
   /**收货姓名 */
@@ -181,7 +181,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
         return requester(apiArguments || {});
       }
       // 处理收货地址
-      
+
       message.warning("没有设置获取验证码Api！");
     },
     [api]
@@ -210,10 +210,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
   // 设置文本
   const setRules = useCallback((rules: ArgumentsItem) => {
-      const rulesTexts = getArgumentsItem(rules) as any[];
-      setRuleText(rulesTexts)
+    const rulesTexts = getArgumentsItem(rules) as any[];
+    setRuleText(rulesTexts);
   }, []);
-
 
   /**
    * 设置奖品数据, 无数据时使用mock
@@ -233,7 +232,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
   /**
    * 设置中奖记录
    */
-   const [records, setRecords] = useState<RecordsType[]>(mock.records);
+  const [records, setRecords] = useState<RecordsType[]>(mock.records);
+  const [disablePullDown, setDisablePullDown] = useState(false);
+  const [disablePullUp, setDisablePullUp] = useState(false);
   const onSaveAddress = useCallback(
     (item) => () => {
       console.log(item);
@@ -244,13 +245,27 @@ const Lottery: Modules<LotteryProps> = (props) => {
   /**
    * 设置运行时中奖记录
    */
-  const setRunningRecords = useCallback((records: ArgumentsArray) => {
-    // 中奖记录
-    const recordArg = getArgumentsItem(records) as any[];
-    if (Array.isArray(recordArg) && recordArg.length) {
-      setRecords(recordArg);
-    }
-  }, []);
+  const setRunningRecords = useCallback(
+    (
+      records: ArgumentsArray,
+      disablePullDown: ArgumentsString,
+      disablePullUp: ArgumentsString
+    ) => {
+      // 中奖记录
+      const recordArg = getArgumentsItem(records) as any[];
+      const disablePullDownArg = getArgumentsItem(disablePullDown) as string;
+      const disablePullUpArg = getArgumentsItem(disablePullUp) as string;
+
+      if (Array.isArray(recordArg) && recordArg.length) {
+        setRecords(recordArg);
+      }
+      console.log('disablePullDownArg', disablePullDownArg);
+      console.log('disablePullUpArg', disablePullUpArg);
+      setDisablePullDown(disablePullDownArg === '0') ;
+      setDisablePullUp(disablePullUpArg === '0');
+    },
+    []
+  );
   /**
    * 渲染中奖记录
    */
@@ -259,38 +274,33 @@ const Lottery: Modules<LotteryProps> = (props) => {
       records?.length ? (
         <ul className={s.recordwrap}>
           {records.map((item, index) => {
-            return <li key={index} className={s.recorditem}>
-              <div className={s.prizeimg}><img src={item.prizeImg} alt={item.prizeName} /></div>
-              <div className={s.recordstr}>
-                <div className={s.prizename}>
-                  {
-                    item.prizeName
-                  }
+            return (
+              <li key={index} className={s.recorditem}>
+                <div className={s.prizeimg}>
+                  <img src={item.prizeImg} alt={item.prizeName} />
                 </div>
-                <div className={s.timeandbutton}>
-                  <div className={s.wintime}>
-                    {
-                      item.winTime
-                    }
+                <div className={s.recordstr}>
+                  <div className={s.prizename}>{item.prizeName}</div>
+                  <div className={s.timeandbutton}>
+                    <div className={s.wintime}>{item.winTime}</div>
+                    {item.receiveType === 2 && !item.receiverAddress ? (
+                      <button onClick={onSaveAddress(item)}>填写地址</button>
+                    ) : null}
                   </div>
-                  {
-                    item.receiveType === 2 && !item.receiverAddress ?
-                    <button onClick={onSaveAddress(item)}>填写地址</button> : null
-                  }
+                  {item.receiverAddress ? (
+                    <div className={s.receiveraddress}>
+                      收货地址:{item.receiverAddress}
+                    </div>
+                  ) : null}
                 </div>
-                {item.receiverAddress ? <div className={s.receiveraddress}>
-                  收货地址:{
-                    item.receiverAddress
-                  }
-                </div> : null}
-              </div>
-            </li>;
+              </li>
+            );
           })}
         </ul>
       ) : (
         <div>暂无中奖记录</div>
       ),
-    [records]
+    [onSaveAddress, records]
   );
 
   /**
@@ -441,6 +451,12 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const showRecord = useCallback(() => {
     setDisplayRecord(true);
   }, []);
+
+  /**显示活动规则 */
+  const showRules = useCallback(() => {
+    setDisplayRule(true);
+  }, []);
+
   //#endregion
   //=========================================end=================================================//
   /**
@@ -499,6 +515,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
       setDefaultReceiveInfo,
       setSuccessModal,
       showRecord,
+      showRules,
     },
     api?.find((item) => item.apiId === "init")
   );
@@ -542,8 +559,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
       <GameRecords
         visible={displayRecord}
         onCancel={() => setDisplayRecord(false)}
-        disablePullUp={false}
-        disablePullDown={false}
+        disablePullUp={disablePullUp}
+        disablePullDown={disablePullDown}
         onPullDown={async () => console.log()}
         onPullUp={async () => console.log()}
       >
@@ -551,16 +568,15 @@ const Lottery: Modules<LotteryProps> = (props) => {
       </GameRecords>
       <GameModal
         visible={displayRule}
-        title="活动规则"
+        title="<h3>活动规则</h3>"
         okText="返回抽奖"
         onOk={() => setDisplayRule(false)}
+        onCancel={() => setDisplayRule(false)}
       >
         <ol className={s.rule}>
-          {
-            ruleText.map(item => (<li>
-              {item}
-            </li>))
-          }
+          {ruleText.map((item) => (
+            <li>{item}</li>
+          ))}
         </ol>
       </GameModal>
     </Wrapper>

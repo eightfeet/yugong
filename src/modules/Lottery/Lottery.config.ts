@@ -78,20 +78,12 @@ const config: {
                     data: '',
                 },
                 {
-                    type: 'array',
-                    describe:
-                        '请添加要显示的字段,字段名与中奖记录数据的属性值保持一致, saveAddress="1" 时开启填写地址',
-                    name: '显示字段',
-                    fieldName: 'recordsMap',
-                    data: [],
-                },
-                {
                     type: 'string',
                     describe:
                         '0禁止,1开启;下拉时请求中奖记录Api,并将更新中奖数据,常用于刷新数据.',
                     name: '下拉刷新',
                     fieldName: 'disablePullDown',
-                    data: '0',
+                    data: '',
                 },
                 {
                     type: 'string',
@@ -99,7 +91,7 @@ const config: {
                         '0禁止,1开启;上拉时请求中奖记录Api,并将更新中奖数据,常用于查看更多数据.',
                     name: '上拉更新',
                     fieldName: 'disablePullUp',
-                    data: '0',
+                    data: '',
                 },
             ],
         },
@@ -235,6 +227,11 @@ const config: {
         {
             name: 'showRecord',
             description: '显示中奖记录',
+            presettable: false,
+        },
+        {
+            name: 'showRules',
+            description: '显示游戏规则',
             presettable: false,
         },
     ],
