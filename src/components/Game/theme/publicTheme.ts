@@ -9,7 +9,7 @@ export interface ThemeItem {
     [keys: string]: React.CSSProperties | (React.CSSProperties | string)[];
 }
 /**弹窗蒙层*/
-export const overlay: React.CSSProperties = { backgroundColor: 'rgba(225,0,0,0.5)' };
+export const overlay: React.CSSProperties = {  };
 /**弹窗内容 */
 export const content: React.CSSProperties = {
     borderRadius: rem(30),
@@ -62,7 +62,7 @@ export const footer: React.CSSProperties = {
 }
 /**地址弹窗 */
 export const AddressModalTheme: ThemeItem = {
-    overlay: overlay,
+    overlay,
     article: {padding: `0 ${rem(49)}`},
     content,
     close,
@@ -147,7 +147,7 @@ export const MessageTheme: ThemeItem = {
 }
 /**未中奖弹窗 */
 export const FailedModalTheme: ThemeItem = {
-    // overlay,
+    overlay,
     modalTitle: {
         fontSize: '1em',
         fontWeight: 'bolder',

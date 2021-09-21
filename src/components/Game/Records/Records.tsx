@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import s from './Records.module.scss';
 
 export interface RecordsProps {
+    id?: string;
     className?: string;
     /**显示中奖记录弹窗 */
     visible?: boolean;
@@ -35,9 +36,11 @@ const Records: React.FC<RecordsProps> = ({
     onPullUp,
     disablePullDown,
     disablePullUp,
+    id,
 }) => {
     return (
         <Modal
+            id={id}
             visible={visible}
             onCancel={onCancel}
             okText={okText || `返回抽奖`}

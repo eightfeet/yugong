@@ -557,6 +557,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
         }}
       />
       <GameRecords
+        id={`${MId}_records`}
         visible={displayRecord}
         onCancel={() => setDisplayRecord(false)}
         disablePullUp={disablePullUp}
@@ -567,6 +568,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
         {renderRecords()}
       </GameRecords>
       <GameModal
+        id={`${MId}_rules`}
         visible={displayRule}
         title="<h3>活动规则</h3>"
         okText="返回抽奖"
