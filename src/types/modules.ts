@@ -94,7 +94,7 @@ export interface ExposeDefaultProps {
     } | StyleDescItem[]
 }
 
-interface StyleDescItem {
+export interface StyleDescItem {
   title: string,
   value: string,
   children?: StyleDescItem[] 

@@ -4,6 +4,7 @@ import {
     ExposeDefaultProps,
     ExposeApi,
 } from '~/types/modules';
+import { style, styleDescription } from './style';
 
 const config: {
     exposeFunctions: ExposeFunctions[];
@@ -280,32 +281,10 @@ const config: {
     /**
      * 发布默认porps
      */
-    // 半透明遮罩层_overlay
-    //     弹窗外框_content
-    //         弹窗_modules
-    //             容器外框_article
-    //                 容器_contentwrap
-    //                     头部_header
-    //                         标题_modaltitle
-    //                     内容_article_content
-    //                         奖品名称_prizename
-    //                         获奖信息_awardmsg
-    //                         奖品图片_prizeimg
-    //                         备注_memo
-    //                     脚部_footer
-    //                         确定按钮_submit
-    //         关闭按钮_close
     exposeDefaultProps: {
         layout: { w: 10, h: 10 },
-        style: {
-            basic: {},
-        },
-        styleDescription: [
-            {
-                title: '基础',
-                value: 'basic',
-            },
-        ],
+        style,
+        styleDescription,
     },
 
     /**

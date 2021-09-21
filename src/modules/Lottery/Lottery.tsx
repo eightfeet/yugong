@@ -102,7 +102,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const { api } = props;
 
   // 皮肤设置样式
-  const MId = `gametarget${moduleId}`;
+  const MId = `gametarget${moduleId}_${type}`;
+  
   const userClass = useStyles(MId)(style);
 
   /**保存地址 */
@@ -526,8 +527,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
     <Wrapper {...props}>
       <Game
         className={userClass.wrap}
-        parentId={`game${props.moduleId}wrap`}
-        targetId={`game${props.moduleId}`}
+        parentId={`${MId}_wrap`}
+        targetId={MId}
         playerPhone={phoneAndRCardId?.phone}
         successModalTitle={successmodalParams.title || "恭喜您，获得"}
         successModalAnimation={{
