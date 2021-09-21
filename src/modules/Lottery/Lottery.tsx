@@ -23,7 +23,7 @@ import requester from "~/core/fetch";
 import { Prize } from "@byhealth/lottery/dist/types/core";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
-import { getPrizeById, isImg, setClass } from "./helper";
+import { getPrizeById, setClass } from "./helper";
 import { debounce } from "lodash";
 import { gametypes } from "~/components/Game/Game";
 import s from "./Lottery.module.less";
@@ -259,8 +259,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
       if (Array.isArray(recordArg) && recordArg.length) {
         setRecords(recordArg);
       }
-      console.log('disablePullDownArg', disablePullDownArg);
-      console.log('disablePullUpArg', disablePullUpArg);
+
       setDisablePullDown(disablePullDownArg === '0') ;
       setDisablePullUp(disablePullUpArg === '0');
     },
@@ -448,9 +447,10 @@ const Lottery: Modules<LotteryProps> = (props) => {
   }, [gameHandle]);
 
   /**显示中奖记录 */
-  const showRecord = useCallback(() => {
+  const showRecord = useCallback(async () => {
+    await apiGetRecord()
     setDisplayRecord(true);
-  }, []);
+  }, [apiGetRecord]);
 
   /**显示活动规则 */
   const showRules = useCallback(() => {
@@ -574,8 +574,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
         onCancel={() => setDisplayRule(false)}
       >
         <ol className={s.rule}>
-          {ruleText.map((item) => (
-            <li>{item}</li>
+          {ruleText.map((item, key) => (
+            <li key={key}>{item}</li>
           ))}
         </ol>
       </GameModal>
