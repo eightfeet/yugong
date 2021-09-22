@@ -37,54 +37,6 @@ export const style: AppDataElementsStyleTypes = {
     dialog_close: {},
 };
 
-//
-/* 
-// 地址
-`${MID}_addressmodal_wrap`
-`${MID}_addressmodal_overlay`
-`${MID}_addressmodal_content_wrap`
-`${MID}_addressmodal_content`
-`${MID}_addressmodal_modules`
-`${MID}_addressmodal_article`
-`${MID}_addressmodal_close`
-
-// 中奖
-`${MID}_successmodal_wrap`
-`${MID}_successmodal_overlay`
-`${MID}_successmodal_content_wrap`
-`${MID}_successmodal_content`
-`${MID}_successmodal_modules`
-`${MID}_successmodal_article`
-`${MID}_successmodal_close`
-
-// 未中奖
-`${MID}_failedmodal_wrap`
-`${MID}_failedmodal_overlay`
-`${MID}_failedmodal_content_wrap`
-`${MID}_failedmodal_content`
-`${MID}_failedmodal_modules`
-`${MID}_failedmodal_article`
-`${MID}_failedmodal_close`
-
-// 中奖规则
-`${MID}_rules_wrap`
-`${MID}_rules_overlay`
-`${MID}_rules_content_wrap`
-`${MID}_rules_content`
-`${MID}_rules_modules`
-`${MID}_rules_article`
-`${MID}_rules_close`
-
-// 中奖记录
-`${MID}_records_wrap`
-`${MID}_records_overlay`
-`${MID}_records_content_wrap`
-`${MID}_records_content`
-`${MID}_records_modules`
-`${MID}_records_article`
-`${MID}_records_close`
-
-*/
 
 // 半透明遮罩层_overlay
     //     弹窗外框_content
@@ -110,9 +62,29 @@ export const styleDescription: {
         value: 'basic',
         children: [
             {
-                title: '抽奖器',
-                value: 'wrap',
+                title: '半透明遮罩层',
+                value: 'dialog_overlay',
                 children: [
+                    {
+                        title: '弹窗外框',
+                        value: 'dialog_content'
+                    },
+                    {
+                        title: '弹窗',
+                        value: 'dialog_modules'
+                    },
+                    {
+                        title: '容器外框',
+                        value: 'dialog_article'
+                    },
+                    {
+                        title: '容器',
+                        value: 'dialog_contentwrap'
+                    },
+                    {
+                        title: '头部',
+                        value: 'dialog_header'
+                    },
                 ]
             }
         ]
