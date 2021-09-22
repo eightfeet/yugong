@@ -6,9 +6,7 @@ theme.GameTheme = {
     // 封面
     cover: {},
     // 封底
-    backCover: {
-        backgroundColor: '#48aff0'
-    },
+    backCover: {},
     // 封面文字
     coverTexts: {},
     // 封面标题
