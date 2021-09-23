@@ -108,8 +108,6 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
   /**保存地址 */
   const handleSaveAddress = useCallback(() => {
-    console.log(95588, gameHandle?.game.current?.core.AddressModal);
-    
     gameHandle?.game.current?.core.AddressModal.showModal((address) => {
       console.log(address);
     });
@@ -557,6 +555,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
           dispatchEventRef.current?.onShowFailed();
         }}
         onShowAddress={() => {
+          setClass(`${MId}_addressmodal`, userClass.addressModal);
           setTimeout(() => setClass(`${MId}_addressmodal`, userClass.recordsModal), 100);
           dispatchEventRef.current?.onShowAddress();
         }}
