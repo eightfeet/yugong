@@ -108,6 +108,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
   /**保存地址 */
   const handleSaveAddress = useCallback(() => {
+    console.log(95588, gameHandle?.game.current?.core.AddressModal);
+    
     gameHandle?.game.current?.core.AddressModal.showModal((address) => {
       console.log(address);
     });
@@ -451,12 +453,14 @@ const Lottery: Modules<LotteryProps> = (props) => {
   const showRecord = useCallback(async () => {
     await apiGetRecord()
     setDisplayRecord(true);
-  }, [apiGetRecord]);
+    setTimeout(() => setClass(`${MId}_records`, userClass.recordsModal), 100);
+  }, [MId, apiGetRecord, userClass.recordsModal]);
 
   /**显示活动规则 */
   const showRules = useCallback(() => {
     setDisplayRule(true);
-  }, []);
+    setTimeout(() => setClass(`${MId}_rules`, userClass.rulesModal));
+  }, [MId, userClass.rulesModal]);
 
   //#endregion
   //=========================================end=================================================//
@@ -553,7 +557,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
           dispatchEventRef.current?.onShowFailed();
         }}
         onShowAddress={() => {
-          setClass(`${MId}_addressmodal`, userClass.addressModal);
+          setTimeout(() => setClass(`${MId}_addressmodal`, userClass.recordsModal), 100);
           dispatchEventRef.current?.onShowAddress();
         }}
       />

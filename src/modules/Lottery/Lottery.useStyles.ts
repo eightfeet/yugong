@@ -20,7 +20,7 @@ const handlePublicModal = (MID: string, modal: string, style: any) => ({
 
 const WH = window.innerHeight;
 const useStyles = (id: string) => createUseStyles<string, any>({
-    wrap: (style) => {
+      wrap: (style) => {
         return {
         };
       },
@@ -51,7 +51,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
       recordsModal: (style) => {
         return {
           /**中奖记录弹窗 */
-          ...(handlePublicModal(id, 'addressmodal', style)),
+          ...(handlePublicModal(id, 'records', style)),
         }
       },
 

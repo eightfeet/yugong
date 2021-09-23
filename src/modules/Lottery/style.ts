@@ -1,3 +1,4 @@
+import { title } from "process";
 import { AppDataElementsStyleTypes } from "~/types/appData";
 import { StyleDescItem } from "~/types/modules";
 
@@ -19,6 +20,8 @@ export const style: AppDataElementsStyleTypes = {
     /** -----------弹窗-------------- */
     // 半透明遮罩层_overlay
     dialog_overlay: {},
+    // 弹窗包裹器_content_wrap
+    dialog_content_wrap: {},
     // 弹窗外框_content
     dialog_content: {},
     // 弹窗_modules
@@ -27,32 +30,9 @@ export const style: AppDataElementsStyleTypes = {
     dialog_article: {},
     // 容器_contentwrap
     dialog_contentwrap: {},
-    // 头部_header
-    dialog_header: {},
-    // 标题_modaltitle
-    dialog_modaltitle: {},
-    // 内容_article_content
-    dialog_article_content: {},
     // 关闭按钮_close
     dialog_close: {},
 };
-
-
-// 半透明遮罩层_overlay
-    //     弹窗外框_content
-    //         弹窗_modules
-    //             容器外框_article
-    //                 容器_contentwrap
-    //                     头部_header
-    //                         标题_modaltitle
-    //                     内容_article_content
-    //                         奖品名称_prizename
-    //                         获奖信息_awardmsg
-    //                         奖品图片_prizeimg
-    //                         备注_memo
-    //                     脚部_footer
-    //                         确定按钮_submit
-    //         关闭按钮_close
 
 export const styleDescription: {
     [keys: string]: string;
@@ -62,28 +42,38 @@ export const styleDescription: {
         value: 'basic',
         children: [
             {
-                title: '半透明遮罩层',
+                title: '弹窗(遮罩层)',
                 value: 'dialog_overlay',
                 children: [
                     {
-                        title: '弹窗外框',
-                        value: 'dialog_content'
-                    },
-                    {
-                        title: '弹窗',
-                        value: 'dialog_modules'
-                    },
-                    {
-                        title: '容器外框',
-                        value: 'dialog_article'
-                    },
-                    {
-                        title: '容器',
-                        value: 'dialog_contentwrap'
-                    },
-                    {
-                        title: '头部',
-                        value: 'dialog_header'
+                        title: '包裹器',
+                        value: 'dialog_content_wrap',
+                        children: [
+                            {
+                                title: '外框',
+                                value: 'dialog_content',
+                                children: [
+                                    {
+                                        title: '弹窗',
+                                        value: 'dialog_modules',
+                                        children: [
+                                            {
+                                                title: '内容外框',
+                                                value: 'dialog_article'
+                                            },
+                                            {
+                                                title: '内容',
+                                                value: 'dialog_contentwrap'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        title: '关闭按钮/图标',
+                                        value: 'dialog_close'
+                                    }
+                                ]
+                            }
+                        ]
                     },
                 ]
             }
