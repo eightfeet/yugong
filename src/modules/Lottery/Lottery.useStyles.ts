@@ -15,10 +15,28 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
 
     switch (modal) {
       case 'successmodal':
-        break;
       case 'failedmodal':
+        publicModal[`${prefix}contenttop`] = styleCompiler(style.successmodal_contenttop).style || {};
+        publicModal[`${prefix}article_content`] = styleCompiler(style.successmodal_article_content).style || {};
+        publicModal[`${prefix}header`] = styleCompiler(style.successmodal_header).style || {};
+        publicModal[`${prefix}modaltitle`] = styleCompiler(style.successmodal_modaltitle).style || {};
+        publicModal[`${prefix}prizename`] = styleCompiler(style.successmodal_prizename).style || {};
+        publicModal[`${prefix}awardmsg`] = styleCompiler(style.successmodal_awardmsg).style || {};
+        publicModal[`${prefix}prizeimg`] = styleCompiler(style.successmodal_prizeimg).style || {};
+        publicModal[`${prefix}memo`] = styleCompiler(style.successmodal_memo).style || {};
+        publicModal[`${prefix}contentbottom`] = styleCompiler(style.successmodal_contentbottom).style || {};
         break;
       case 'addressmodal':
+        publicModal[`${prefix}addressbox`] = styleCompiler(style.successmodal_addressbox).style || {};
+        publicModal[`${prefix}formbox`] = styleCompiler(style.successmodal_formbox).style || {};
+        publicModal[`${prefix}header`] = styleCompiler(style.successmodal_header).style || {};
+        publicModal[`${prefix}main`] = styleCompiler(style.successmodal_main).style || {};
+        publicModal[`${prefix}player`] = styleCompiler(style.successmodal_player).style || {};
+        publicModal[`${prefix}subtitle`] = styleCompiler(style.successmodal_subtitle).style || {};
+        publicModal[`${prefix}row`] = styleCompiler(style.successmodal_row).style || {};
+        publicModal[`${prefix}label`] = styleCompiler(style.successmodal_label).style || {};
+        publicModal[`${prefix}input`] = styleCompiler(style.successmodal_input).style || {};
+        publicModal[`${prefix}textarea`] = styleCompiler(style.successmodal_textarea).style || {};
         break;
       case 'records':
         break;
