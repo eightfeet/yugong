@@ -1,13 +1,5 @@
 import { createUseStyles } from "react-jss";
 import styleCompiler from "~/compiler";
-// overlay: "覆盖层",
-// content: "内容区",
-// header: "头部",
-// article: "内容区",
-// close: "关闭按钮",
-// modify1: "修饰器1",
-// modify2: "修饰器2",
-// modify3: "修饰器3"
 
 const handlePublicModal = (MID: string, modal: string, style: any) => ({
   [`& .${MID}_${modal}_wrap .${MID}_${modal}_overlay`]: (styleCompiler(style.dialog_overlay).style || {}),
@@ -19,49 +11,21 @@ const handlePublicModal = (MID: string, modal: string, style: any) => ({
 })
 
 const WH = window.innerHeight;
+
 const useStyles = (id: string) => createUseStyles<string, any>({
+      lotteryPublicModal: (style) => ({
+        ...(handlePublicModal(id, 'successmodal', style)),
+        ...(handlePublicModal(id, 'failedmodal', style)),
+        ...(handlePublicModal(id, 'addressmodal', style)),
+        ...(handlePublicModal(id, 'records', style)),
+        ...(handlePublicModal(id, 'rules', style)),
+      }),
+
       wrap: (style) => {
         return {
         };
       },
 
-      successModal: (style) => {
-        return {
-          /**中奖弹窗 */
-          // successmodal_content_wrap
-          ...(handlePublicModal(id, 'successmodal', style)),
-        }
-      },
-
-      failedModal: (style) => {
-        return {
-          /**中奖弹窗 */
-          // failedmodal_content_wrap
-          ...(handlePublicModal(id, 'failedmodal', style)),
-        }
-      },
-
-      addressModal: (style) => {
-        return {
-          /**地址弹窗 */
-          ...(handlePublicModal(id, 'addressmodal', style)),
-        }
-      },
-
-      recordsModal: (style) => {
-        return {
-          /**中奖记录弹窗 */
-          ...(handlePublicModal(id, 'records', style)),
-        }
-      },
-
-      rulesModal: (style) => {
-        return {
-          /**中奖记录弹窗 */
-          ...(handlePublicModal(id, 'rules', style)),
-        }
-      },
-      
 });
 
 export default useStyles;
