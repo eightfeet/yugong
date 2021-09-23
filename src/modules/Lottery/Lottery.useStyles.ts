@@ -10,6 +10,7 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
         [`${prefix}modules`]: styleCompiler(style.dialog_modules).style || {},
         [`${prefix}article`]: styleCompiler(style.dialog_article).style || {},
         [`${prefix}close`]: styleCompiler(style.dialog_close).style || {},
+        [`${prefix}footer button`]: styleCompiler(style.dialog_submit).style || {},
     };
 
     switch (modal) {

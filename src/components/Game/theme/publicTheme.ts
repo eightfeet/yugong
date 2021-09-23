@@ -11,15 +11,7 @@ export interface ThemeItem {
 /**弹窗蒙层*/
 export const overlay: React.CSSProperties = {  };
 /**弹窗内容 */
-export const content: React.CSSProperties = {
-    borderRadius: rem(30),
-    backgroundColor: '#fbead3',
-    width: rem(613),
-    backgroundSize: `100% auto`,
-    backgroundRepeat: 'no-repeat',
-    border: `${rem(5)} solid #f4c070`,
-    boxShadow: `inset 0px 0px 0px ${rem(13)} #fbead3, inset 0px 0px 0px ${rem(14)} rgba(268, 205, 182, 0.8)`,
-}
+export const content: React.CSSProperties = { }
 /**关闭按钮 */
 export const close: React.CSSProperties = {
     backgroundRepeat: 'no-repeat',
@@ -44,15 +36,6 @@ export const header: React.CSSProperties = {
 }
 /**提交按钮 */
 export const submit: React.CSSProperties = {
-    backgroundColor: '#ff5050',
-    backgroundSize: '100% 100%',
-    fontSize: rem(32),
-    fontWeight: 'bold',
-    width: rem(362),
-    height: rem(102),
-    border: `${rem(5)} solid #fff`,
-    borderRadius: rem(60),
-    color: '#ffffff'
 }
 /**弹窗底部 */
 export const footer: React.CSSProperties = {

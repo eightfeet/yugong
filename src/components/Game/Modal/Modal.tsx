@@ -8,6 +8,7 @@ import MD, { ModalParameters } from '@eightfeet/modal';
 import ReactDOM from 'react-dom';
 import { content, close, submit } from './../theme/publicTheme';
 import s from './Modal.module.scss';
+import classNames from 'classnames';
 
 interface Props {
     id?: ModalParameters['id'];
@@ -155,7 +156,7 @@ const Modal: React.FC<Props> = ({
         ? ReactDOM.createPortal(
               <>
                   <div className={s.content}>{children}</div>
-                  <div className={s.footer}>
+                  <div className={classNames(s.footer, `${other.id}_footer`)}>
                       <button
                           style={submit}
                           onClick={onOk instanceof Function ? onOk : () => {}}
