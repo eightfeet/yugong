@@ -77,7 +77,7 @@ export const style: AppDataElementsStyleTypes = {
       radiusBottomLeft: [1, "rem"],
       radiusBottomRight: [1, "rem"],
       borderStyle: "none",
-      borderWidth: [0, 'px'],
+      borderWidth: [0, "px"],
     },
     font: {
       color: "rgba(255, 255, 255, 1)",
@@ -93,6 +93,36 @@ export const style: AppDataElementsStyleTypes = {
     },
   },
   /**------------中奖弹窗------------- */
+  successmodal_contenttop: {},
+  successmodal_article_content: {},
+  successmodal_header: {},
+  successmodal_modaltitle: {},
+  successmodal_prizename: {},
+  successmodal_awardmsg: {},
+  successmodal_prizeimg: {},
+  successmodal_memo: {},
+  successmodal_contentbottom: {},
+  /**------------未中奖弹窗------------- */
+  failedmodal_contenttop: {},
+  failedmodal_article_content: {},
+  failedmodal_header: {},
+  failedmodal_modaltitle: {},
+  failedmodal_prizename: {},
+  failedmodal_awardmsg: {},
+  failedmodal_prizeimg: {},
+  failedmodal_memo: {},
+  failedmodal_contentbottom: {},
+  /**------------地址弹窗--------------- */
+  addressmodal_addressbox: {},
+  addressmodal_formbox: {},
+  addressmodal_header: {},
+  addressmodal_main: {},
+  addressmodal_player: {},
+  addressmodal_subtitle: {},
+  addressmodal_row: {},
+  addressmodal_label: {},
+  addressmodal_input: {},
+  addressmodal_textarea: {},
 };
 
 export const styleDescription:
@@ -144,6 +174,135 @@ export const styleDescription:
           },
         ],
       },
+      {
+        title: "中奖弹窗",
+        value: "successmodal_article_content",
+        children: [
+          {
+            title: "顶部",
+            value: "successmodal_contenttop",
+          },
+          {
+            title: "头部",
+            value: "successmodal_header",
+            children: [
+              {
+                title: "标题",
+                value: "successmodal_modaltitle",
+              },
+            ],
+          },
+          {
+            title: "奖品名",
+            value: "successmodal_prizename",
+          },
+          {
+            title: "获奖信息",
+            value: "successmodal_awardmsg",
+          },
+          {
+            title: "奖品图片",
+            value: "successmodal_prizeimg",
+          },
+          {
+            title: "奖品备注",
+            value: "successmodal_memo",
+          },
+          {
+            title: "底部",
+            value: "successmodal_contentbottom",
+          },
+        ],
+      },
+      {
+        title: "未中奖弹窗",
+        value: "failedmodal_article_content",
+        children: [
+          {
+            title: "顶部",
+            value: "failedmodal_contenttop",
+          },
+          {
+            title: "头部",
+            value: "failedmodal_header",
+            children: [
+              {
+                title: "标题",
+                value: "failedmodal_modaltitle",
+              },
+            ],
+          },
+          {
+            title: "奖品名",
+            value: "failedmodal_prizename",
+          },
+          {
+            title: "获奖信息",
+            value: "failedmodal_awardmsg",
+          },
+          {
+            title: "奖品图片",
+            value: "failedmodal_prizeimg",
+          },
+          {
+            title: "奖品备注",
+            value: "failedmodal_memo",
+          },
+          {
+            title: "底部",
+            value: "failedmodal_contentbottom",
+          },
+        ],
+      },
+      {
+        title: "地址弹窗",
+        value: "addressmodal_addressbox",
+        children: [
+          {
+            title: "外框",
+            value: "addressmodal_formbox",
+            children: [
+              {
+                title: "标题",
+                value: "addressmodal_header",
+              },
+              {
+                title: "内容",
+                value: "addressmodal_main",
+                children: [
+                  {
+                    title: "玩家信息",
+                    value: "addressmodal_player",
+                  },
+                  {
+                    title: "子标题",
+                    value: "addressmodal_subtitle",
+                  },
+                  {
+                    title: "表单项",
+                    value: "addressmodal_row",
+                    children: [
+                      {
+                        title: "标签",
+                        value: "addressmodal_label",
+                      },
+                      {
+                        title: "输入框",
+                        value: "addressmodal_input",
+                      },
+                      {
+                        title: "文本框",
+                        value: "addressmodal_textarea",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
+

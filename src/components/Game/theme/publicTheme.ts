@@ -84,6 +84,25 @@ export const AddressModalTheme: ThemeItem = {
 export const SuccessModalTheme: ThemeItem = {
     overlay,
     content,
+    contentTop: {
+        top: 0,
+        height: '5em',
+        width: '100%',
+        backgroundImage:
+            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152440501.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% auto',
+    },
+    contentBottom: {
+        bottom: 0,
+        height: '5em',
+        width: '100%',
+        backgroundImage:
+            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152556010.png)',
+        backgroundPosition: 'left bottom',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% auto',
+    },
     close,
     submit,
     article: {
