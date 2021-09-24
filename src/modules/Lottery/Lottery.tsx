@@ -332,7 +332,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
             ) : (
                 <div>暂无中奖记录</div>
             ),
-        [onSaveAddress, records]
+        [MId, onSaveAddress, records]
     );
 
     /**
