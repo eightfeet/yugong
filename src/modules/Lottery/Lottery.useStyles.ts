@@ -3,49 +3,71 @@ import styleCompiler from '~/compiler';
 
 const handlePublicModal = (MID: string, modal: string, style: any) => {
     const prefix = `& .${MID}_${modal}_wrap .${MID}_${modal}_`;
-    const publicModal = {
-        [`${prefix}overlay`]: styleCompiler(style.dialog_overlay).style || {},
-        [`${prefix}content_wrap`]: styleCompiler(style.dialog_content_wrap).style || {},
-        [`${prefix}content`]: styleCompiler(style.dialog_content).style || {},
-        [`${prefix}modules`]: styleCompiler(style.dialog_modules).style || {},
-        [`${prefix}article`]: styleCompiler(style.dialog_article).style || {},
-        [`${prefix}close`]: styleCompiler(style.dialog_close).style || {},
-        [`${prefix}footer button`]: styleCompiler(style.dialog_submit).style || {},
+    const compiler = (modal: string, name: string) =>
+        styleCompiler(style[`${modal}_${name}`]).style || {};
+    const modalStyle = (name: string, style: { [keys: string]: any }) => {
+        style[`${prefix}${name}`] = compiler(modal, name);
     };
-
+    const publicModal = {
+        [`${prefix}overlay`]: compiler('dialog', 'overlay'),
+        [`${prefix}content_wrap`]: compiler('dialog', 'content_wrap'),
+        [`${prefix}content`]: compiler('dialog', 'content'),
+        [`${prefix}modules`]: compiler('dialog', 'modules'),
+        [`${prefix}article`]: compiler('dialog', 'article'),
+        [`${prefix}close`]: compiler('dialog', 'close'),
+        [`${prefix}footer button`]: compiler('dialog', 'submit'),
+    };
+    let nameArray: string[] = [];
     switch (modal) {
-      case 'successmodal':
-      case 'failedmodal':
-        publicModal[`${prefix}contenttop`] = styleCompiler(style.successmodal_contenttop).style || {};
-        publicModal[`${prefix}article_content`] = styleCompiler(style.successmodal_article_content).style || {};
-        publicModal[`${prefix}header`] = styleCompiler(style.successmodal_header).style || {};
-        publicModal[`${prefix}modaltitle`] = styleCompiler(style.successmodal_modaltitle).style || {};
-        publicModal[`${prefix}prizename`] = styleCompiler(style.successmodal_prizename).style || {};
-        publicModal[`${prefix}awardmsg`] = styleCompiler(style.successmodal_awardmsg).style || {};
-        publicModal[`${prefix}prizeimg`] = styleCompiler(style.successmodal_prizeimg).style || {};
-        publicModal[`${prefix}memo`] = styleCompiler(style.successmodal_memo).style || {};
-        publicModal[`${prefix}contentbottom`] = styleCompiler(style.successmodal_contentbottom).style || {};
-        break;
-      case 'addressmodal':
-        publicModal[`${prefix}addressbox`] = styleCompiler(style.successmodal_addressbox).style || {};
-        publicModal[`${prefix}formbox`] = styleCompiler(style.successmodal_formbox).style || {};
-        publicModal[`${prefix}header`] = styleCompiler(style.successmodal_header).style || {};
-        publicModal[`${prefix}main`] = styleCompiler(style.successmodal_main).style || {};
-        publicModal[`${prefix}player`] = styleCompiler(style.successmodal_player).style || {};
-        publicModal[`${prefix}subtitle`] = styleCompiler(style.successmodal_subtitle).style || {};
-        publicModal[`${prefix}row`] = styleCompiler(style.successmodal_row).style || {};
-        publicModal[`${prefix}label`] = styleCompiler(style.successmodal_label).style || {};
-        publicModal[`${prefix}input`] = styleCompiler(style.successmodal_input).style || {};
-        publicModal[`${prefix}textarea`] = styleCompiler(style.successmodal_textarea).style || {};
-        break;
-      case 'records':
-        break;
-      case 'rules':
-        break;
-      default:
-        break;
-    }
+        case 'successmodal':
+        case 'failedmodal':
+            nameArray = [
+                'contenttop',
+                'article_content',
+                'header',
+                'modaltitle',
+                'prizename',
+                'awardmsg',
+                'prizeimg',
+                'memo',
+                'contentbottom',
+            ];
+            break;
+        case 'addressmodal':
+            nameArray = [
+                'addressbox',
+                'formbox',
+                'header',
+                'main',
+                'player',
+                'subtitle',
+                'row',
+                'label',
+                'input',
+                'textarea',
+            ];
 
+            break;
+        case 'records':
+            nameArray = [
+                'list',
+                'list_item',
+                'list_item_prizeimg_wrap',
+                'list_item_prizeimg',
+                'list_item_text',
+                'list_item_prizename',
+                'list_item_wintime',
+                'list_item_saveaddress',
+                'list_item_address',
+            ];
+            break;
+        case 'rules':
+            nameArray = ['list', 'list_item'];
+            break;
+        default:
+            break;
+    }
+    nameArray.forEach((name: string) => modalStyle(name, publicModal));
     return publicModal;
 };
 

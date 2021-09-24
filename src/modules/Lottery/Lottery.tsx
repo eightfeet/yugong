@@ -28,6 +28,7 @@ import { debounce } from 'lodash';
 import { gametypes } from '~/components/Game/Game';
 import s from './Lottery.module.less';
 import { saveAddressParames } from '~/components/Game/GameType';
+import classNames from 'classnames';
 
 export interface RecordsType extends Prize {
     /**中奖id */
@@ -289,35 +290,37 @@ const Lottery: Modules<LotteryProps> = (props) => {
     const renderRecords = useCallback(
         () =>
             records?.length ? (
-                <ul className={s.recordwrap}>
+                <ul className={classNames(s.recordwrap, `${MId}_records_list`)}>
                     {records.map((item, index) => {
                         return (
-                            <li key={index} className={s.recorditem}>
-                                <div className={s.prizeimg}>
+                            <li key={index} className={ classNames(s.recorditem, `${MId}_records_list_item`)}>
+                                <div className={classNames(s.prizeimg, `${MId}_records_list_item_prizeimg_wrap`)}>
                                     <img
+                                        className={`${MId}_records_list_item_prizeimg`}
                                         src={item.prizeImg}
                                         alt={item.prizeName}
                                     />
                                 </div>
-                                <div className={s.recordstr}>
-                                    <div className={s.prizename}>
+                                <div className={classNames(s.recordstr, `${MId}_records_list_item_text`)}>
+                                    <div className={classNames(s.prizename, `${MId}_records_list_item_prizename`)}>
                                         {item.prizeName}
                                     </div>
                                     <div className={s.timeandbutton}>
-                                        <div className={s.wintime}>
+                                        <div className={classNames(s.wintime, `${MId}_records_list_item_wintime`)}>
                                             {item.winTime}
                                         </div>
                                         {item.receiveType === 2 &&
                                         !item.receiverAddress ? (
                                             <button
                                                 onClick={onSaveAddress(item)}
+                                                className={`${MId}_records_list_item_saveaddress`}
                                             >
                                                 填写地址
                                             </button>
                                         ) : null}
                                     </div>
                                     {item.receiverAddress ? (
-                                        <div className={s.receiveraddress}>
+                                        <div className={classNames(s.receiveraddress, `${MId}_records_list_item_address`)}>
                                             收货地址:{item.receiverAddress}
                                         </div>
                                     ) : null}
@@ -630,9 +633,9 @@ const Lottery: Modules<LotteryProps> = (props) => {
                 onOk={() => setDisplayRule(false)}
                 onCancel={() => setDisplayRule(false)}
             >
-                <ol className={s.rule}>
+                <ol className={classNames(s.rule, `${MId}_rules_list`)}>
                     {ruleText.map((item, key) => (
-                        <li key={key}>{item}</li>
+                        <li className={`${MId}_rules_list_item`} key={key}>{item}</li>
                     ))}
                 </ol>
             </GameModal>

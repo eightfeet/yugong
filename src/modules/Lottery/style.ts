@@ -123,6 +123,19 @@ export const style: AppDataElementsStyleTypes = {
   addressmodal_label: {},
   addressmodal_input: {},
   addressmodal_textarea: {},
+  /**------------规则弹窗--------------- */
+  rules_list: {},
+  rules_list_item: {},
+  /**------------中奖记录--------------- */
+  records_list: {},
+  records_list_item: {},
+  records_list_item_prizeimg_wrap: {},
+  records_list_item_prizeimg: {},
+  records_list_item_text: {},
+  records_list_item_prizename: {},
+  records_list_item_wintime: {},
+  records_list_item_saveaddress: {},
+  records_list_item_address: {}
 };
 
 export const styleDescription:
@@ -302,6 +315,60 @@ export const styleDescription:
           },
         ],
       },
+      {
+        title: "规则弹窗",
+        value: "rules_list",
+        children: [
+          {
+            title: "规则项",
+            value: "rules_list_item"
+          }
+        ]
+      },
+      {
+        title: "中奖记录",
+        value: "records_list",
+        children: [
+          {
+            title: "记录项",
+            value: "records_list_item",
+            children: [
+              {
+                title: "奖品图片外框",
+                value: "records_list_item_prizeimg_wrap",
+                children: [
+                  {
+                    title: "奖品图片",
+                    value: "records_list_item_prizeimg"
+                  }
+                ]
+              },
+              {
+                title: "内容",
+                value: "records_list_item_text",
+                children: [
+                  {
+                    title: "奖品名称",
+                    value: "records_list_item_prizename"
+                  },
+                  {
+                    title: "时间",
+                    value: "records_list_item_wintime"
+                  },
+                  {
+                    title: "填写地址",
+                    value: "records_list_item_saveaddress"
+                  },
+                  {
+                    title: "地址信息",
+                    value: "records_list_item_address"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     ],
   },
 ];
