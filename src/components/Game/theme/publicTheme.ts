@@ -1,5 +1,4 @@
 import React from 'react';
-import closeIcon from './icon-close.png';
 
 const rem = (px: number) => {
     return `${px / 31.25}rem`;
@@ -13,127 +12,42 @@ export const overlay: React.CSSProperties = {  };
 /**弹窗内容 */
 export const content: React.CSSProperties = { }
 /**关闭按钮 */
-export const close: React.CSSProperties = {
-    backgroundRepeat: 'no-repeat',
-    backgroundImage: `url(${closeIcon})`,
-    backgroundSize: '100% 100%',
-    height: rem(55),
-    width: rem(55),
-    zIndex: 101,
-    position: 'absolute',
-    left: '50%',
-    marginLeft: rem(-28),
-    top: 'auto',
-    bottom: rem(-99),
-}
+export const close: React.CSSProperties = {}
 /**弹窗头部 */
-export const header: React.CSSProperties = {
-    fontSize: rem(32),
-    fontWeight: 'bold',
-    paddingTop: rem(40),
-    border: 0,
-    margin: 0,
-}
+export const header: React.CSSProperties = {}
 /**提交按钮 */
 export const submit: React.CSSProperties = {
 }
 /**弹窗底部 */
-export const footer: React.CSSProperties = {
-    position: 'relative',
-    padding: `0 0 ${rem(38)} 0`,
-    zIndex: 120,
-}
+export const footer: React.CSSProperties = {}
 /**地址弹窗 */
 export const AddressModalTheme: ThemeItem = {
     overlay,
-    article: {padding: `0 ${rem(49)}`},
+    article: {},
     content,
     close,
     header,
     submit,
     footer,
-    row: {
-        justifyContent: 'center',
-        marginBottom: rem(19),
-    },
-    label: {
-        color: '#666666',
-        display: 'none !important'
-    },
-    input: {
-        borderRadius: rem(12),
-        border: 'none',
-        height: rem(87),
-        backgroundColor: '#fff',
-        color: '#666666',
-        boxSizing: 'border-box',
-        padding: rem(20),
-    },
-    textarea: {
-        borderRadius: rem(12),
-        border: 'none',
-        backgroundColor: '#fff',
-        color: '#666666',
-        boxSizing: 'border-box',
-        padding: rem(25),
-        minHeight: rem(150),
-        marginBottom: rem(21),
-    },
+    row: {},
+    label: {},
+    input: {},
+    textarea: {},
 };
 /**成功弹窗 */
 export const SuccessModalTheme: ThemeItem = {
     overlay,
+    modalTitle: {},
     content,
-    contentTop: {
-        top: 0,
-        height: '5em',
-        width: '100%',
-        backgroundImage:
-            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152440501.png)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100% auto',
-    },
-    contentBottom: {
-        bottom: 0,
-        height: '5em',
-        width: '100%',
-        backgroundImage:
-            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152556010.png)',
-        backgroundPosition: 'left bottom',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100% auto',
-    },
+    contentTop: { fontStyle: 'normal' },
+    contentBottom: { fontStyle: 'normal' },
     close,
     submit,
-    article: {
-        paddingTop: rem(350),
-        position: 'relative',
-    },
+    article: {},
     prizeAlias: {},
-    prizeName: {
-        textAlign: 'center',
-        padding: `0 ${rem(20)}`,
-        marginBottom: rem(20),
-    },
-    prizeImg: {
-        top: 0,
-        marginTop: rem(55),
-        position: 'absolute',
-        width: rem(225),
-        marginLeft: rem(-245/2),
-        left: '50%',
-        boxSizing: 'content-box',
-        padding: rem(10),
-        backgroundSize: '100% 100%',
-        backgroundColor: '#fff',
-        borderRadius: rem(20)
-    },
-    memo: {
-        marginBottom: rem(30),
-        fontSize: '.9em',
-        width: '100%',
-        color: '#999999',
-    },
+    prizeName: {},
+    prizeImg: {maxWidth: '100%'},
+    memo: {},
     footer
 }
 /**弱提示信息 */
@@ -150,62 +64,18 @@ export const MessageTheme: ThemeItem = {
 /**未中奖弹窗 */
 export const FailedModalTheme: ThemeItem = {
     overlay,
-    modalTitle: {
-        fontSize: '1em',
-        fontWeight: 'bolder',
-    },
-    content: content,
-    contentTop: {
-        top: 0,
-        height: '5em',
-        width: '100%',
-        backgroundImage:
-            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152440501.png)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100% auto',
-    },
-    contentBottom: {
-        bottom: 0,
-        height: '5em',
-        width: '100%',
-        backgroundImage:
-            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415152556010.png)',
-        backgroundPosition: 'left bottom',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100% auto',
-    },
+    modalTitle: {},
+    content,
+    contentTop: { fontStyle: 'normal' },
+    contentBottom: { fontStyle: 'normal' },
     close,
     submit,
-    article: {
-        paddingTop: '12em',
-        position: 'relative',
-    },
+    article: {},
     footer,
     prizeAlias: {},
-    prizeName: {
-        textAlign: 'center',
-        padding: '0 1em',
-        marginBottom: '0.3em',
-    },
-    prizeImg: {
-        top: 0,
-        position: 'absolute',
-        marginTop: '1em',
-        width: '8em',
-        marginLeft: '-5.2em',
-        left: '50%',
-        boxSizing: 'content-box',
-        padding: '1.2em',
-        backgroundImage:
-            'url(http://by-health-portal2.oss-cn-beijing.aliyuncs.com/images/20190415154500464.png)',
-        backgroundSize: '100% 100%',
-    },
-    memo: {
-        marginBottom: '1.2em',
-        fontSize: '.8em',
-        width: '100%',
-        color: '#999',
-    },
+    prizeName: {},
+    prizeImg: {},
+    memo: {},
     modify: [],
 }
 /**loading */
@@ -228,11 +98,7 @@ export const NoticeModalTheme: ThemeItem = {
     overlay,
     content,
     close,
-    header: {
-        fontSize: rem(32),
-        fontWeight: 'bold',
-        paddingTop: rem(60),
-    },
+    header: {},
     submit,
 }
 

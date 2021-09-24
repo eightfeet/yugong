@@ -514,7 +514,10 @@ const Lottery: Modules<LotteryProps> = (props) => {
                     const path = currentEditorStylePath?.map(
                         (item) => item.value
                     );
-                    if (path.includes('successcontainer')) {
+                    if (path.includes('dialog_overlay')) {
+                        showRules();
+                    }
+                    if (path.includes('successcontainers')) {
                         gameHandle?.game.current?.core.showSuccessModal(
                             prizes[0]
                         );
@@ -529,8 +532,10 @@ const Lottery: Modules<LotteryProps> = (props) => {
                     }
                 }
             }, 1000),
-        [currentEditorStylePath, gameHandle, prizes]
+        [currentEditorStylePath, gameHandle, prizes, showRules]
     );
+
+    console.log(currentEditorStylePath);
 
     const editorShow = useCallback(() => {
         onChangeDebounce();
