@@ -1,10 +1,48 @@
 import { createUseStyles } from 'react-jss';
 import styleCompiler from '~/compiler';
 
+const games = (MID: string, style: any) => {
+    const type = MID.split('_')[1];
+    const prefix = `& #${MID} .${MID}_`;
+
+    const compiler = (name: string) =>
+        styleCompiler(style[`${MID}_${name}`]).style || {};
+
+    const buildStyle = (name: string, style: { [keys: string]: any }) => {
+        style[`${prefix}${name}`] = compiler(name);
+    };
+
+    const groupStyle = {
+        
+    }
+
+    let nameArray: string[] = [];
+    switch (type) {
+        case 'boxroulette':
+            nameArray = [
+                'items_wrap',
+                'items_lottery',
+                'items_prizeItem',
+                'items_selected',
+                'prize',
+                'items_gameimg',
+                'items_prizealias',
+                'items_lotterybuttonwrap',
+                'items_lotterybutton'
+            ]
+            break;
+    
+        default:
+            break;
+    }
+
+    return groupStyle;
+}
+
 const handlePublicModal = (MID: string, modal: string, style: any) => {
     const prefix = `& .${MID}_${modal}_wrap .${MID}_${modal}_`;
-    const compiler = (modal: string, name: string) =>
-        styleCompiler(style[`${modal}_${name}`]).style || {};
+    const compiler = (block: string, name: string) =>
+        styleCompiler(style[`${block}_${name}`]).style || {};
     const modalStyle = (name: string, style: { [keys: string]: any }) => {
         style[`${prefix}${name}`] = compiler(modal, name);
     };
@@ -79,11 +117,8 @@ const useStyles = (id: string) =>
             ...handlePublicModal(id, 'addressmodal', style),
             ...handlePublicModal(id, 'records', style),
             ...handlePublicModal(id, 'rules', style),
-        }),
-
-        wrap: (style) => {
-            return {};
-        },
+            ...games(id, style)
+        })
     });
 
 export default useStyles;

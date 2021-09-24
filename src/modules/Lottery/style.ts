@@ -1,23 +1,31 @@
-import { title } from 'process';
 import { AppDataElementsStyleTypes } from '~/types/appData';
 import { StyleDescItem } from '~/types/modules';
 
 export const style: AppDataElementsStyleTypes = {
     basic: {},
     /** -----------九宫格----------- */
+    //#region
+    // 游戏
+    boxroulette_items_wrap: {},
     // 游戏外框
-    boxroulette_wrap: {},
+    boxroulette_items_lottery: {},
+    // 奖品外框
+    boxroulette_items_prizeItem: {},
+    // 奖品激活/选中
+    boxroulette_items_selected: {},
     // 奖品
     boxroulette_prize: {},
-    // 游戏图片
-    boxroulette_gameImg: {},
-    // 奖品别名
-    boxroulette_prizeAlias: {},
+    // 奖品图片
+    boxroulette_items_gameimg: {},
+    // 奖品名称
+    boxroulette_items_prizealias: {},
+    // 抽奖按钮外框
+    boxroulette_items_lotterybuttonwrap: {},
     // 抽奖按钮
-    boxroulette_lotteryButton: {},
-    // 抽奖激活框
-    boxroulette_activated: {},
+    boxroulette_items_lotterybutton: {},
+    //#endregion
     /** -----------弹窗-------------- */
+    //#region
     // 半透明遮罩层_overlay
     dialog_overlay: {},
     // 弹窗包裹器_content_wrap
@@ -114,7 +122,9 @@ export const style: AppDataElementsStyleTypes = {
             ],
         },
     },
+    //#endregion
     /**------------中奖弹窗------------- */
+    //#region
     successmodal_contenttop: {},
     successmodal_article_content: {},
     successmodal_header: {},
@@ -158,6 +168,7 @@ export const style: AppDataElementsStyleTypes = {
     records_list_item_wintime: {},
     records_list_item_saveaddress: {},
     records_list_item_address: {},
+    //#endregion
 };
 
 export const styleDescription:
@@ -169,6 +180,50 @@ export const styleDescription:
         title: '基础',
         value: 'basic',
         children: [
+            {
+                title: '九宫格',
+                value: 'boxroulette_items_wrap',
+                children: [
+                    {
+                        title: '游戏外框',
+                        value: 'boxroulette_items_lottery',
+                        children: [
+                            {
+                                title: '奖品外框',
+                                value: 'boxroulette_items_prizeItem',
+                                children: [
+                                    {
+                                        title: '奖品激活/选中',
+                                        value: 'boxroulette_items_selected',
+                                    },
+                                    {
+                                        title: '奖品',
+                                        value: 'boxroulette_prize',
+                                    },
+                                    {
+                                        title: '奖品图片',
+                                        value: 'boxroulette_items_gameimg',
+                                    },
+                                    {
+                                        title: '奖品名称',
+                                        value: 'boxroulette_items_prizealias',
+                                    },
+                                ],
+                            },
+                            {
+                                title: '抽奖按钮外框',
+                                value: 'boxroulette_items_lotterybuttonwrap',
+                                children: [
+                                    {
+                                        title: '抽奖按钮',
+                                        value: 'boxroulette_items_lotterybutton',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
             {
                 title: '弹窗(遮罩层)',
                 value: 'dialog_overlay',
