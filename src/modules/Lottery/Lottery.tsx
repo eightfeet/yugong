@@ -93,11 +93,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
         onShowAddress: () => void;
     }>();
 
-    let gameHandle: GameHandle<typeof Game> | undefined = undefined;
-    const setGameHandle = useCallback((ref) => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        gameHandle = ref!;
-    }, []);
+    const gameHandle = useRef<GameHandle<typeof Game>>(null);
+
 
     // 页面api
     const { api } = props;
@@ -118,7 +115,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
     /**保存地址 */
     const handleSaveAddress = useCallback(() => {
-        gameHandle?.game.current?.core.AddressModal.showModal((address) => {
+        const handlers = gameHandle.current;
+        handlers?.game.current?.core.AddressModal.showModal((address) => {
             console.log(address);
         });
     }, [gameHandle]);
@@ -449,6 +447,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
             address: ArgumentsString,
             idCard: ArgumentsString
         ) => {
+            const handlers = gameHandle.current!;
+
             const argReceiverPhone = getArgumentsItem(receiverPhone);
             let argRegionName: any = getArgumentsItem(regionName);
             let argRegion: any = getArgumentsItem(region);
@@ -469,7 +469,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
             if (!!argRegionName.length) {
                 (parames as any).regionName = argRegionName;
             }
-            gameHandle?.game.current?.core.AddressModal.updateParams(
+            handlers.game.current?.core.AddressModal.updateParams(
                 parames as any
             );
             setReceiverInfo(parames);
@@ -479,7 +479,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
     /**通过其他事件关联抽奖 */
     const lottery = useCallback(() => {
-        gameHandle?.game.current?.core.lottery();
+        const handlers = gameHandle.current!;
+        handlers.game.current?.core.lottery();
     }, [gameHandle]);
 
     /**显示中奖记录 */
@@ -508,34 +509,40 @@ const Lottery: Modules<LotteryProps> = (props) => {
         () =>
             debounce(() => {
                 if (
-                    gameHandle?.game.current &&
                     currentEditorStylePath?.length
                 ) {
+                    const { game } = gameHandle.current!;
                     const path = currentEditorStylePath?.map(
                         (item) => item.value
                     );
-                    if (path.includes('dialog_overlay')) {
+                    // 显示通用弹窗
+                    if (path.includes('dialog_overlay') || path.includes('rules_list')) {
                         showRules();
                     }
-                    if (path.includes('successcontainers')) {
-                        gameHandle?.game.current?.core.showSuccessModal(
+                    // 显示中奖弹窗
+                    if (path.includes('successmodal_article_content')) {
+                        game.current?.core.showSuccessModal(
                             prizes[0]
                         );
                     }
-                    if (path.includes('failedcontainer')) {
-                        gameHandle?.game.current?.core.showFailedModal(
+                    // 显示未中奖弹窗
+                    if (path.includes('failedmodal_article_content')) {
+                        game.current?.core.showFailedModal(
                             prizes[1]
                         );
                     }
-                    if (path.includes('addressmodalcontainer')) {
-                        gameHandle?.game.current?.core.showAddressModal();
+                    // 显示地址弹窗
+                    if (path.includes('addressmodal_addressbox')) {
+                        game.current?.core.showAddressModal();
+                    }
+                    // 显示中奖记录
+                    if (path.includes('records_list')) {
+                        showRecord();
                     }
                 }
             }, 1000),
-        [currentEditorStylePath, gameHandle, prizes, showRules]
+        [currentEditorStylePath, prizes, showRecord, showRules]
     );
-
-    console.log(currentEditorStylePath);
 
     const editorShow = useCallback(() => {
         onChangeDebounce();
@@ -543,7 +550,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
     useEffect(() => {
         editorShow();
-    }, [editorShow]);
+    }, [editorShow, gameHandle]);
 
     // lifeCycle
     const [dispatchEvent] = useLifeCycle(
@@ -590,7 +597,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
                 }}
                 type={type}
                 cardIdRequest={phoneAndRCardId?.cardIdRequest}
-                ref={setGameHandle}
+                ref={gameHandle}
                 start={startLottery}
                 prizes={prizes}
                 saveAddress={apiSaveAddress}
