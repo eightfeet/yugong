@@ -23,7 +23,7 @@ import requester from '~/core/fetch';
 import { Prize } from '@byhealth/lottery/dist/types/core';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
-import { getPrizeById, setClass } from './helper';
+import { getPrizeById } from './helper';
 import { debounce } from 'lodash';
 import { gametypes } from '~/components/Game/Game';
 import s from './Lottery.module.less';
@@ -101,18 +101,8 @@ const Lottery: Modules<LotteryProps> = (props) => {
 
     // 皮肤设置样式
     const MId = `gametarget${moduleId}_${type}`;
-    const userClass = useStyles(MId)(style);
-
-    // 将弹窗处理为全局样式
-    useEffect(() => {
-        const { className } = document.body;
-        if (className.indexOf(userClass.lotteryPublicModal) === -1) {
-            document.body.className = className?.length
-                ? `${className} ${userClass.lotteryPublicModal}`
-                : userClass.lotteryPublicModal;
-        }
-    }, [userClass]);
-
+    useStyles(MId, style, type);
+    
     /**保存地址 */
     const handleSaveAddress = useCallback(() => {
         const handlers = gameHandle.current;
@@ -487,17 +477,12 @@ const Lottery: Modules<LotteryProps> = (props) => {
     const showRecord = useCallback(async () => {
         await apiGetRecord();
         setDisplayRecord(true);
-        setTimeout(
-            () => setClass(`${MId}_records`, userClass.recordsModal),
-            100
-        );
-    }, [MId, apiGetRecord, userClass.recordsModal]);
+    }, [apiGetRecord]);
 
     /**显示活动规则 */
     const showRules = useCallback(() => {
         setDisplayRule(true);
-        setTimeout(() => setClass(`${MId}_rules`, userClass.rulesModal));
-    }, [MId, userClass.rulesModal]);
+    }, []);
 
     //#endregion
     //=========================================end=================================================//
@@ -587,7 +572,6 @@ const Lottery: Modules<LotteryProps> = (props) => {
     return (
         <Wrapper {...props}>
             <Game
-                className={userClass.wrap}
                 parentId={`${MId}_wrap`}
                 targetId={MId}
                 playerPhone={phoneAndRCardId?.phone}
@@ -606,23 +590,12 @@ const Lottery: Modules<LotteryProps> = (props) => {
                 onEnsure={dispatchEventRef.current?.onEnsure}
                 checkVerificationCode={checkVerificationCode}
                 onShowSuccess={() => {
-                    setClass(`${MId}_successmodal`, userClass.successModal);
                     dispatchEventRef.current?.onShowSuccess();
                 }}
                 onShowFailed={() => {
-                    setClass(`${MId}_failedmodal`, userClass.failedModal);
                     dispatchEventRef.current?.onShowFailed();
                 }}
                 onShowAddress={() => {
-                    setClass(`${MId}_addressmodal`, userClass.addressModal);
-                    setTimeout(
-                        () =>
-                            setClass(
-                                `${MId}_addressmodal`,
-                                userClass.recordsModal
-                            ),
-                        100
-                    );
                     dispatchEventRef.current?.onShowAddress();
                 }}
             />
