@@ -131,6 +131,47 @@ export const style: AppDataElementsStyleTypes = {
     },
   },
   boxroulette_items_lotterybutton: {},
+
+  flipcard_item: {
+    backgroundGroup: {},
+    display: {
+      padding: [
+        [0.2, "rem"],
+        [0.2, "rem"],
+        [0.2, "rem"],
+        [0.2, "rem"],
+      ],
+    },
+  },
+  flipcard_flipper: {
+    backgroundGroup: {
+      backgroundColor: "rgba(255, 193, 7, 1)",
+    },
+  },
+  flipcard_front: {
+    backgroundGroup: {
+      backgroundColor: "rgba(193, 159, 255, 1)",
+    },
+  },
+  flipcard_back: {
+    backgroundGroup: {
+      backgroundColor: "rgba(156, 39, 176, 1)",
+    },
+  },
+  flipcard_prizeAlias: {
+    font: {
+      color: "rgba(255, 255, 255, 1)",
+    },
+  },
+  flipcard_prizeImg: {
+    border: {
+      radiusTopLeft: [2, "rem"],
+      radiusTopRight: [2, "rem"],
+      radiusBottomLeft: [2, "rem"],
+      radiusBottomRight: [2, "rem"],
+    },
+  },
+
   dialog_overlay: {},
   dialog_content_wrap: {},
   dialog_content: {},
@@ -362,6 +403,36 @@ export const styleDescription:
                   {
                     title: "抽奖按钮",
                     value: "boxroulette_items_lotterybutton",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "翻牌",
+        value: "flipcard_wrap",
+        children: [
+          {
+            title: "牌",
+            value: "flipcard_item",
+            children: [
+              {
+                title: "牌面",
+                value: "flipcard_front",
+              },
+              {
+                title: "牌底",
+                value: "flipcard_back",
+                children: [
+                  {
+                    title: "奖品图片",
+                    value: "flipcard_prizeImg",
+                  },
+                  {
+                    title: "奖品名称",
+                    value: "flipcard_prizeAlias",
                   },
                 ],
               },

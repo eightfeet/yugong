@@ -47,6 +47,16 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
         "lotterybutton",
       ];
       break;
+    case "flipcard":
+      nameArray = [
+        "wrap",
+        "item",
+        "front",
+        "back",
+        "prizeImg",
+        "prizeAlias",
+      ];
+      break;
     default:
       break;
   }
