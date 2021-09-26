@@ -57,6 +57,46 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
         "prizeAlias",
       ];
       break;
+    case "redenvelope":
+      nameArray = [
+        "wrap",
+        "redpack",
+        "redpackopen",
+        "topcontent",
+        "info",
+        "subtitle",
+        "title",
+        "result",
+        "gameprizename",
+        "gameawardmsg",
+        "actionbox",
+        "startbutton",
+        "resultcontent",
+        "gameprize",
+        "memo",
+      ]
+      break;
+      case "dice":
+        nameArray = [
+          "wrap",
+          "dice",
+          "side",
+          "dot",
+        ];
+        break;
+      case "slotmachine":
+        nameArray = [
+          "wrap",
+          "game",
+          "gamewrap",
+          "gameitem_wrap",
+          "gameitem",
+          "gameimg",
+          "prizealias",
+          "startbtn",
+        ];
+        break;
+    
     default:
       break;
   }
