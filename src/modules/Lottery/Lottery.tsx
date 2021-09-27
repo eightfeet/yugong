@@ -501,7 +501,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
                         (item) => item.value
                     );
                     // 显示通用弹窗
-                    if (path.includes('dialog_overlay') || path.includes('rules_list')) {
+                    if (path.includes('dialog_overlay') || path.includes('rules_content')) {
                         showRules();
                     }
                     // 显示中奖弹窗
@@ -521,7 +521,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
                         game.current?.core.showAddressModal();
                     }
                     // 显示中奖记录
-                    if (path.includes('records_list')) {
+                    if (path.includes('records_content')) {
                         showRecord();
                     }
                 }
@@ -613,7 +613,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
             <GameModal
                 id={`${MId}_rules`}
                 visible={displayRule}
-                title="<h3>活动规则</h3>"
+                title="活动规则"
                 okText="返回抽奖"
                 onOk={() => setDisplayRule(false)}
                 onCancel={() => setDisplayRule(false)}

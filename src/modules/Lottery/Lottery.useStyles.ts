@@ -133,6 +133,7 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
         "awardmsg",
         "prizeimg",
         "memo",
+        "footer",
         "contentbottom",
       ];
       break;
@@ -148,11 +149,14 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
         "label",
         "input",
         "textarea",
+        "footer",
       ];
 
       break;
     case "records":
       nameArray = [
+        "content",
+        "header",
         "list",
         "list_item",
         "list_item_prizeimg_wrap",
@@ -162,10 +166,11 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
         "list_item_wintime",
         "list_item_saveaddress",
         "list_item_address",
+        "footer",
       ];
       break;
     case "rules":
-      nameArray = ["list", "list_item"];
+      nameArray = ["content", "header", "list", "list_item", "footer"];
       break;
     default:
       break;
