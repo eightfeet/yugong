@@ -374,6 +374,39 @@ export const style: AppDataElementsStyleTypes = {
     ],
   },
   //#endregion
+  //#region 按钮抽奖
+  case_button: {
+    backgroundGroup: {
+      backgroundColor: "rgba(103, 58, 183, 1)",
+    },
+    font: {
+      color: "rgba(255, 255, 255, 1)",
+    },
+    display: {
+      padding: [
+        [0.5, "rem"],
+        [1.5, "rem"],
+        [0.5, "rem"],
+        [1.5, "rem"],
+      ],
+    },
+    border: {
+      radiusTopLeft: [1, "rem"],
+      radiusTopRight: [1, "rem"],
+      radiusBottomLeft: [1, "rem"],
+      radiusBottomRight: [1, "rem"],
+      borderStyle: "none",
+      borderWidth: [1, ""],
+      borderPosition: {
+        border: true,
+        borderTop: false,
+        borderRight: false,
+        borderLeft: false,
+        borderBottom: false,
+      },
+    },
+  },
+  //#endregion
   //#region 通用弹窗
   dialog_overlay: {},
   dialog_content_wrap: {},
@@ -783,6 +816,10 @@ export const styleDescription:
             ],
           },
         ],
+      },
+      {
+        title: "按钮抽奖",
+        value: "case_button",
       },
       {
         title: "弹窗(遮罩层)",

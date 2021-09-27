@@ -96,6 +96,11 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
           "startbtn",
         ];
         break;
+      case "case":
+          nameArray = [
+            "button"
+          ];
+          break;
     
     default:
       break;
