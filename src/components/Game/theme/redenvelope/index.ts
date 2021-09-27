@@ -27,7 +27,7 @@ theme.GameTheme = {
     startButton: {},
     // 显示活动信息按钮
     showGameInfoButton: {
-        display: 'none'
+        display: 'none !important'
     },
     // 活动信息布局
     gameInfoLayout: {},
