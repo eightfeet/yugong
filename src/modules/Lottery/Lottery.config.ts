@@ -22,8 +22,7 @@ const config: {
             arguments: [
                 {
                     type: 'string',
-                    describe:
-                        'boxroulette,roulette,flipcard,slotmachine,treasurebox,dice,case,redenvelope',
+                    describe: '游戏类型redenvelope,boxroulette,roulette,flipcard,slotmachine,dice,case',
                     data: '',
                     fieldName: 'gametype',
                     name: '游戏类型',

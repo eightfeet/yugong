@@ -77,6 +77,11 @@ const Modal: React.FC<Props> = ({
     );
 
     (window as any).MD = MDRef.current;
+    
+    // 变更弹窗ID
+    useEffect(() => {
+        MDRef.current.state.id = other.id
+    }, [other.id])
 
     const checkVisible = useRef<boolean>();
     useEffect(() => {
