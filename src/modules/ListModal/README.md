@@ -11,4 +11,4 @@
   - name：按钮的显示名称
   - show：是否显示按钮，0隐藏，1显示
 
-<img src="./images/flow/ListModal.svg" />
+<img src="/images/flow/ListModal.svg" />

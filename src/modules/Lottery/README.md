@@ -115,14 +115,14 @@
   - 抽奖: 调用此方法启动抽奖
 
 ## 抽奖逻辑流程
-<img src="./images/flow/lottery.svg" style="width: 100%" />
+<img src="/images/flow/lottery.svg" style="width: 100%" />
 <hr />
 <br />
 
 ## 抽奖核心模块
-<img src="./images/flow/game.svg" style="width: 100%" />
+<img src="/images/flow/game.svg" style="width: 100%" />
 <hr />
 <br />
 
 ## 抽奖流程
-<img src="./images/flow/startlottery.svg" style="width: 100%" />
+<img src="/images/flow/startlottery.svg" style="width: 100%" />

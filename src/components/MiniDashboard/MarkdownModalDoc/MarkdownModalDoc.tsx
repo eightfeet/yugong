@@ -27,9 +27,11 @@ const MarkdownModalDoc: React.FC<Props> = ({
         const file = await import(`~/modules/${name}/README.md`);
         const response = await fetch(file.default);
         text = await response.text();
+        text = text.replace(/\/images\/flow\//g, `${process.env.REACT_APP_PUBLIC_PATH || '/'}images/flow/`)
       } catch (error) {
         console.warn(error);
       }
+      console.log('text', text)
       setHelper(text);
     },
     [moduleName, setHelper]
