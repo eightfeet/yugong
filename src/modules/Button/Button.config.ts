@@ -59,9 +59,8 @@ exposeFunctions: [
         type: "string",
           name: "初始显示状态",
           fieldName: "setButtonDisplay",
-          select: {normal: '正常', disabled: '禁用', focus: '获取焦点', active: '激活', hover: '经过'},
-          describe: "",
-          data: "normal",
+          describe: "按钮显状态，disabled(禁用), focus: (获取焦点), active: (激活), hover: (经过)",
+          data: "",
       }]
     }
   ],
