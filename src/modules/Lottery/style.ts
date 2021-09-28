@@ -3,6 +3,7 @@ import { StyleDescItem } from "~/types/modules";
 
 export const style: AppDataElementsStyleTypes = {
   basic: {},
+  gameroot: {},
   //#region 转盘
   roulette_wrap: {},
   roulette_lottery: {},
@@ -382,7 +383,7 @@ export const style: AppDataElementsStyleTypes = {
       radiusBottomLeft: [1, "rem"],
       radiusBottomRight: [1, "rem"],
       borderStyle: "none",
-      borderWidth: [1, 'px'],
+      borderWidth: [1, "px"],
       borderPosition: {
         border: true,
         borderTop: false,
@@ -614,194 +615,122 @@ export const styleDescription:
     value: "basic",
     children: [
       {
-        title: "大转盘",
-        value: "roulette_wrap",
+        title: "游戏",
+        value: "gameroot",
         children: [
           {
-            title: "转盘",
-            value: "roulette_wheel",
+            title: "大转盘",
+            value: "roulette_wrap",
             children: [
               {
-                title: "奖品",
-                value: "roulette_award",
+                title: "转盘",
+                value: "roulette_wheel",
                 children: [
                   {
-                    title: "奖品图片",
-                    value: "roulette_gameImg",
+                    title: "奖品",
+                    value: "roulette_award",
+                    children: [
+                      {
+                        title: "奖品图片",
+                        value: "roulette_gameImg",
+                      },
+                      {
+                        title: "奖品别名/名称",
+                        value: "roulette_prizealias",
+                      },
+                    ],
                   },
                   {
-                    title: "奖品别名/名称",
-                    value: "roulette_prizealias",
+                    title: "分割线",
+                    value: "roulette_divide",
                   },
                 ],
               },
               {
-                title: "分割线",
-                value: "roulette_divide",
+                title: "指针",
+                value: "roulette_needle",
+              },
+              {
+                title: "抽奖按钮",
+                value: "roulette_lotterybutton",
               },
             ],
           },
           {
-            title: "指针",
-            value: "roulette_needle",
-          },
-          {
-            title: "抽奖按钮",
-            value: "roulette_lotterybutton",
-          },
-        ],
-      },
-      {
-        title: "九宫格",
-        value: "boxroulette_items_wrap",
-        children: [
-          {
-            title: "游戏外框",
-            value: "boxroulette_items_lottery",
+            title: "九宫格",
+            value: "boxroulette_items_wrap",
             children: [
               {
-                title: "奖品外框",
-                value: "boxroulette_items_prizeItem_wrap",
+                title: "游戏外框",
+                value: "boxroulette_items_lottery",
                 children: [
                   {
-                    title: "奖品",
-                    value: "boxroulette_items_prizeItem",
+                    title: "奖品外框",
+                    value: "boxroulette_items_prizeItem_wrap",
                     children: [
                       {
-                        title: "奖品激活/选中外框",
-                        value: "boxroulette_items_selected_wrap",
+                        title: "奖品",
+                        value: "boxroulette_items_prizeItem",
                         children: [
                           {
-                            title: "奖品激活/选中",
-                            value: "boxroulette_items_selected",
+                            title: "奖品激活/选中外框",
+                            value: "boxroulette_items_selected_wrap",
+                            children: [
+                              {
+                                title: "奖品激活/选中",
+                                value: "boxroulette_items_selected",
+                              },
+                            ],
+                          },
+                          {
+                            title: "奖品图片",
+                            value: "boxroulette_items_gameimg",
+                          },
+                          {
+                            title: "奖品名称",
+                            value: "boxroulette_items_prizealias",
                           },
                         ],
                       },
+                    ],
+                  },
+                  {
+                    title: "抽奖按钮外框",
+                    value: "boxroulette_items_lotterybuttonwrap",
+                    children: [
+                      {
+                        title: "抽奖按钮",
+                        value: "boxroulette_items_lotterybutton",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: "翻牌",
+            value: "flipcard_wrap",
+            children: [
+              {
+                title: "牌",
+                value: "flipcard_item",
+                children: [
+                  {
+                    title: "牌面",
+                    value: "flipcard_front",
+                  },
+                  {
+                    title: "牌底",
+                    value: "flipcard_back",
+                    children: [
                       {
                         title: "奖品图片",
-                        value: "boxroulette_items_gameimg",
+                        value: "flipcard_prizeImg",
                       },
                       {
                         title: "奖品名称",
-                        value: "boxroulette_items_prizealias",
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                title: "抽奖按钮外框",
-                value: "boxroulette_items_lotterybuttonwrap",
-                children: [
-                  {
-                    title: "抽奖按钮",
-                    value: "boxroulette_items_lotterybutton",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "翻牌",
-        value: "flipcard_wrap",
-        children: [
-          {
-            title: "牌",
-            value: "flipcard_item",
-            children: [
-              {
-                title: "牌面",
-                value: "flipcard_front",
-              },
-              {
-                title: "牌底",
-                value: "flipcard_back",
-                children: [
-                  {
-                    title: "奖品图片",
-                    value: "flipcard_prizeImg",
-                  },
-                  {
-                    title: "奖品名称",
-                    value: "flipcard_prizeAlias",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "红包",
-        value: "redenvelope_wrap",
-        children: [
-          {
-            title: "红包外框",
-            value: "redenvelope_redpack",
-            children: [
-              {
-                title: "红包底",
-                value: "redenvelope_redpackopen",
-              },
-              {
-                title: "红包封面",
-                value: "redenvelope_topcontent",
-                children: [
-                  {
-                    title: "提示文",
-                    value: "redenvelope_info",
-                    children: [
-                      {
-                        title: "标题",
-                        value: "redenvelope_title",
-                      },
-                      {
-                        title: "副标题",
-                        value: "redenvelope_subtitle",
-                      },
-                    ],
-                  },
-                  {
-                    title: "打开提示文",
-                    value: "redenvelope_result",
-                    children: [
-                      {
-                        title: "奖品名",
-                        value: "redenvelope_gameprizename",
-                      },
-                      {
-                        title: "奖品信息",
-                        value: "redenvelope_gameawardmsg",
-                      },
-                    ],
-                  },
-                  {
-                    title: "按钮外框",
-                    value: "redenvelope_actionbox",
-                    children: [
-                      {
-                        title: "按钮",
-                        value: "redenvelope_startbutton",
-                      },
-                    ],
-                  },
-                  {
-                    title: "中奖内容",
-                    value: "redenvelope_resultcontent",
-                    children: [
-                      {
-                        title: "奖品图片",
-                        value: "redenvelope_gameprize",
-                      },
-                      {
-                        title: "奖品备注",
-                        value: "redenvelope_memo",
-                      },
-                      {
-                        title: "操作按钮",
-                        value: "redenvelope_ensure",
+                        value: "flipcard_prizeAlias",
                       },
                     ],
                   },
@@ -809,55 +738,75 @@ export const styleDescription:
               },
             ],
           },
-        ],
-      },
-      {
-        title: "骰子",
-        value: "dice_wrap",
-        children: [
           {
-            title: "骰子外框",
-            value: "dice_dice",
+            title: "红包",
+            value: "redenvelope_wrap",
             children: [
               {
-                title: "面",
-                value: "dice_side",
-              },
-              {
-                title: "点",
-                value: "dice_dot",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "老虎机",
-        value: "slotmachine_wrap",
-        children: [
-          {
-            title: "游戏",
-            value: "slotmachine_game",
-            children: [
-              {
-                title: "奖品外框",
-                value: "slotmachine_gamewrap",
+                title: "红包外框",
+                value: "redenvelope_redpack",
                 children: [
                   {
-                    title: "奖品",
-                    value: "slotmachine_gameitem_wrap",
+                    title: "红包底",
+                    value: "redenvelope_redpackopen",
+                  },
+                  {
+                    title: "红包封面",
+                    value: "redenvelope_topcontent",
                     children: [
                       {
-                        title: "单项奖品",
-                        value: "slotmachine_gameitem",
+                        title: "提示文",
+                        value: "redenvelope_info",
+                        children: [
+                          {
+                            title: "标题",
+                            value: "redenvelope_title",
+                          },
+                          {
+                            title: "副标题",
+                            value: "redenvelope_subtitle",
+                          },
+                        ],
+                      },
+                      {
+                        title: "打开提示文",
+                        value: "redenvelope_result",
+                        children: [
+                          {
+                            title: "奖品名",
+                            value: "redenvelope_gameprizename",
+                          },
+                          {
+                            title: "奖品信息",
+                            value: "redenvelope_gameawardmsg",
+                          },
+                        ],
+                      },
+                      {
+                        title: "按钮外框",
+                        value: "redenvelope_actionbox",
+                        children: [
+                          {
+                            title: "按钮",
+                            value: "redenvelope_startbutton",
+                          },
+                        ],
+                      },
+                      {
+                        title: "中奖内容",
+                        value: "redenvelope_resultcontent",
                         children: [
                           {
                             title: "奖品图片",
-                            value: "slotmachine_gameimg",
+                            value: "redenvelope_gameprize",
                           },
                           {
-                            title: "奖品别名",
-                            value: "slotmachine_prizealias",
+                            title: "奖品备注",
+                            value: "redenvelope_memo",
+                          },
+                          {
+                            title: "操作按钮",
+                            value: "redenvelope_ensure",
                           },
                         ],
                       },
@@ -865,17 +814,75 @@ export const styleDescription:
                   },
                 ],
               },
+            ],
+          },
+          {
+            title: "骰子",
+            value: "dice_wrap",
+            children: [
               {
-                title: "游戏按钮",
-                value: "slotmachine_startbtn",
+                title: "骰子外框",
+                value: "dice_dice",
+                children: [
+                  {
+                    title: "面",
+                    value: "dice_side",
+                  },
+                  {
+                    title: "点",
+                    value: "dice_dot",
+                  },
+                ],
               },
             ],
           },
+          {
+            title: "老虎机",
+            value: "slotmachine_wrap",
+            children: [
+              {
+                title: "游戏",
+                value: "slotmachine_game",
+                children: [
+                  {
+                    title: "奖品外框",
+                    value: "slotmachine_gamewrap",
+                    children: [
+                      {
+                        title: "奖品",
+                        value: "slotmachine_gameitem_wrap",
+                        children: [
+                          {
+                            title: "单项奖品",
+                            value: "slotmachine_gameitem",
+                            children: [
+                              {
+                                title: "奖品图片",
+                                value: "slotmachine_gameimg",
+                              },
+                              {
+                                title: "奖品别名",
+                                value: "slotmachine_prizealias",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    title: "游戏按钮",
+                    value: "slotmachine_startbtn",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: "纯按钮抽奖",
+            value: "case_button",
+          },
         ],
-      },
-      {
-        title: "纯按钮抽奖",
-        value: "case_button",
       },
       {
         title: "弹窗(遮罩层)",

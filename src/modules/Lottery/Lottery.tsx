@@ -573,6 +573,7 @@ const Lottery: Modules<LotteryProps> = (props) => {
         <Wrapper {...props}>
             <Game
                 parentId={`${MId}_wrap`}
+                className={`gametarget${moduleId}_gameroot`}
                 targetId={MId}
                 playerPhone={phoneAndRCardId?.phone}
                 successModalTitle={successmodalParams.title || '恭喜您，获得'}

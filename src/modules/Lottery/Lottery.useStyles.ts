@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import jss from "jss";
 import styleCompiler from "~/compiler";
 import { createUseStyles } from "react-jss";
@@ -15,12 +15,12 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
   };
 
   const groupStyle = {};
-  //   gametarget7ee86e35-08ea-408d-918a-e1e9a96f6f60_boxroulette_items_prizealias
 
   let nameArray: string[] = [];
   switch (type) {
     case "boxroulette":
       nameArray = [
+        'root',
         "items_wrap",
         "items_lottery",
         "items_prizeItem_wrap",
@@ -36,6 +36,7 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
       break;
     case "roulette":
       nameArray = [
+        'root',
         "wrap",
         "lottery",
         "wheel",
@@ -49,6 +50,7 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
       break;
     case "flipcard":
       nameArray = [
+        'root',
         "wrap",
         "item",
         "front",
@@ -59,6 +61,7 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
       break;
     case "redenvelope":
       nameArray = [
+        'root',
         "wrap",
         "redpack",
         "redpackopen",
@@ -78,6 +81,7 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
       break;
       case "dice":
         nameArray = [
+          'root',
           "wrap",
           "dice",
           "side",
@@ -86,6 +90,7 @@ const games = (MID: string, style: any, type: keyof GameMap) => {
         break;
       case "slotmachine":
         nameArray = [
+          'root',
           "wrap",
           "game",
           "gamewrap",
@@ -185,18 +190,24 @@ const handlePublicModal = (MID: string, modal: string, style: any) => {
 };
 
 const getParames = (id: string, style: any, type: keyof GameMap) => ({
+  [`& .${id.split('_')[0]}_gameroot`]: styleCompiler(style.gameroot).style || {},
   ...handlePublicModal(id, "successmodal", style),
   ...handlePublicModal(id, "failedmodal", style),
   ...handlePublicModal(id, "addressmodal", style),
   ...handlePublicModal(id, "records", style),
   ...handlePublicModal(id, "rules", style),
   ...games(id, style, type),
+  
 });
+
+
 
 const headDom = document.head;
 
 const useStyles = (id: string, style: any, type: keyof GameMap) => {
   const createStyleParames = useCallback(() => {
+    console.log(getParames(id, style, type));
+    
     return {
       [id]: getParames(id, style, type),
     };
