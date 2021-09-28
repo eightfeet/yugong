@@ -59,4 +59,4 @@
     zoomInLeft: 左边放大进入
     zoomInRight: 右边放大进入
   ```
-<img src="./images/flow/lottery.svg" style="width: 100%" />
+<img src="/images/flow/lottery.svg" style="width: 100%" />
