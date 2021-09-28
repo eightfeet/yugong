@@ -23,6 +23,15 @@ const config: {
                 {
                     type: 'string',
                     describe: '游戏类型redenvelope,boxroulette,roulette,flipcard,slotmachine,dice,case',
+                    select: {
+                        redenvelope: '红包',
+                        boxroulette: '九宫格',
+                        roulette: '大转盘',
+                        flipcard: '翻牌',
+                        slotmachine: '老虎机',
+                        dice: '骰子',
+                        case: '简约按钮',
+                    },
                     data: '',
                     fieldName: 'gametype',
                     name: '游戏类型',

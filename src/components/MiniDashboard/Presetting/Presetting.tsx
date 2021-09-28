@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
 import { Dispatch, RootState } from '~/redux/store';
-import { AppDataLayoutItemTypes } from '~/types/appData';
+import { AppDataLayoutItemTypes, ArgumentsNumber, ArgumentsString } from '~/types/appData';
 import { EventsTypeItem, ExposeFunctions, Modules } from '~/types/modules';
 import ArrayArguments from '../ArgumentsSetting/ArrayArguments';
 import BooleanArguments from '../ArgumentsSetting/BooleanArguments';
@@ -220,6 +220,65 @@ const Presetting: React.FC<Props> = () => {
         return null;
     }
 
+    const renderNumberString = (
+        index: number,
+        argItem: ArgumentsString | ArgumentsNumber,
+        argIndex: number,
+    ) => {
+        // 下拉选择形式
+        if (argItem?.select) {
+          const { select } = argItem;
+          const keys = Object.keys(select);
+          return <Select 
+            onChange={
+                (e) =>
+                onChange({
+                    index, // 数据索引值
+                    argIndex, // 参数索引
+                    value: {
+                        // 参数索引对应的参数值
+                        ...argItem,
+                        data: e,
+                    },
+                })
+            }
+            value={argItem.data}
+            className={s.select}
+            placeholder={`请输入值,${argItem.describe || ''}`}
+          >
+            {
+              keys.map((value) => <Select.Option key={value} value={value}>{
+                  select[value]
+                }</Select.Option>)
+            }
+          </Select>
+        }
+        // 输入框形式
+        return <Input
+            onChange={(e) =>
+                onChange({
+                    index, // 数据索引值
+                    argIndex, // 参数索引
+                    value: {
+                        // 参数索引对应的参数值
+                        ...argItem,
+                        data: e.target.value,
+                    },
+                })
+            }
+            placeholder={`请输入值,${
+                argItem.describe || ''
+            }`}
+            value={argItem.data}
+            type="text"
+            suffix={
+                !!argItem.html ? (
+                    <HtmlSuffix />
+                ) : null
+            }
+        />
+    };
+
     return (
         <div>
             {runningData.map((item, index) =>
@@ -238,31 +297,7 @@ const Presetting: React.FC<Props> = () => {
                                 </Col>
                                 <Col span={19}>
                                     {argItem.type === 'number' ||
-                                    argItem.type === 'string' ? (
-                                        <Input
-                                            onChange={(e) =>
-                                                onChange({
-                                                    index, // 数据索引值
-                                                    argIndex, // 参数索引
-                                                    value: {
-                                                        // 参数索引对应的参数值
-                                                        ...argItem,
-                                                        data: e.target.value,
-                                                    },
-                                                })
-                                            }
-                                            placeholder={`请输入值,${
-                                                argItem.describe || ''
-                                            }`}
-                                            value={argItem.data}
-                                            type="text"
-                                            suffix={
-                                                !!argItem.html ? (
-                                                    <HtmlSuffix />
-                                                ) : null
-                                            }
-                                        />
-                                    ) : null}
+                                    argItem.type === 'string' ? renderNumberString(index, argItem, argIndex) : null}
 
                                     {argItem.type === 'runningTime' ? (
                                         <Select

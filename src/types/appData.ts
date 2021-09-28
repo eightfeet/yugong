@@ -82,9 +82,8 @@ export interface ArgumentsString extends ArgumentBase<"string"> {
   // 为了方便数据录入，这里允许通过配置select来设置字段值
   // 常用于约定值的录入，默认设置值
   // 通过下拉来选择值, 如果有select，按照下拉选择来展示
-  select?: {
-    [key: string]: string
-  }[];
+  // key为值,value为展示字段
+  select?: {[keys: string]: string};
   data: string;
 }
 
@@ -92,6 +91,11 @@ export interface ArgumentsString extends ArgumentBase<"string"> {
  * 数字参数
  */
 export interface ArgumentsNumber extends ArgumentBase<"number"> {
+  // 为了方便数据录入，这里允许通过配置select来设置字段值
+  // 常用于约定值的录入，默认设置值
+  // 通过下拉来选择值, 如果有select，按照下拉选择来展示
+  // key为值,value为展示字段
+  select?: {[keys: string]: string};
   data: string;
 }
 
