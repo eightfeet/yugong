@@ -393,7 +393,7 @@ const Responsive: React.FC<Props> = () => {
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`/${window.location.search}`}
+                  src={`${process.env.REACT_APP_PUBLIC_PATH}${window.location.search}`}
                   style={{
                     border: "none",
                     opacity: hideIframe ? 0 : 1,

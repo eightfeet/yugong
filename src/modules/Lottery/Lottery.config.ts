@@ -22,7 +22,7 @@ const config: {
             arguments: [
                 {
                     type: 'string',
-                    describe: '游戏类型redenvelope,boxroulette,roulette,flipcard,slotmachine,dice,case',
+                    describe: '',
                     select: {
                         redenvelope: '红包',
                         boxroulette: '九宫格',
@@ -88,6 +88,7 @@ const config: {
                 },
                 {
                     type: 'string',
+                    select: {0: '禁止', 1: '开启'},
                     describe:
                         '0禁止,1开启;下拉时请求中奖记录Api,并将更新中奖数据,常用于刷新数据.',
                     name: '下拉刷新',
@@ -96,6 +97,7 @@ const config: {
                 },
                 {
                     type: 'string',
+                    select: {0: '禁止', 1: '开启'},
                     describe:
                         '0禁止,1开启;上拉时请求中奖记录Api,并将更新中奖数据,常用于查看更多数据.',
                     name: '上拉更新',

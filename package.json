@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
-    "@byhealth/lottery": "^1.2.34",
+    "@byhealth/lottery": "^1.2.35",
     "@eightfeet/loading": "^2.0.4",
     "@eightfeet/message": "^2.0.21",
     "@eightfeet/modal": "^2.2.23",
@@ -26,6 +26,7 @@
     "dayjs": "^1.10.4",
     "deep-equal": "^2.0.5",
     "extend": "^3.0.2",
+    "gh-pages": "^3.2.3",
     "highlight.js": "^11.1.0",
     "html-react-parser": "^1.2.4",
     "iframe-resizer-react": "^1.1.0",
@@ -64,6 +65,8 @@
     "build:uat": "env-cmd -f .env.uat react-app-rewired build",
     "build:prod": "env-cmd -f .env.prod react-app-rewired build",
     "build:git": "env-cmd -f .env.git react-app-rewired build",
+    "demo:publish": "gh-pages -m \"[ci skip] Updates\" -d build",
+    "demo": "npm run build:git && npm run demo:publish",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
