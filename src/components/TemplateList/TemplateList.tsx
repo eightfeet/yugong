@@ -49,6 +49,11 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     getTags();
   }, [getTags]);
 
+  useEffect(() => {
+    if (process.env.REACT_APP_DEMO !== 'true') {
+    }
+  }, [])
+
   const renderTags = useCallback(
     (tag: string) => {
       const tagTsx = tag
@@ -83,7 +88,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
       if (params.isPublic === 0) {
         params.userId = auth?.session?.id
       }
-
+      
       const { rows = [], limit, offset, count } = await queryTemplate(params);
           setTemplateList(rows);
           setTotal(Math.ceil(count / limit) * limit);

@@ -14,7 +14,7 @@ import { Dispatch } from '~/redux/store';
 
 interface Props {}
 
-const Dashboardapp: React.FC<Props> = () => {
+const DashboardApp: React.FC<Props> = () => {
   const { userSync } = useDispatch<Dispatch>().controller;
   useEffect(() => {
     userSync()
@@ -34,6 +34,6 @@ const Dashboardapp: React.FC<Props> = () => {
     );
 };
 
-export default Dashboardapp;
+export default DashboardApp;
 
 
