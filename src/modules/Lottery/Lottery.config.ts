@@ -141,6 +141,12 @@ const config: {
                     type: 'number',
                     name: '填写身份证',
                     fieldName: 'cardIdRequest',
+                    select: {
+                        1: '隐藏',
+                        2: '验证',
+                        3: '为空时不验证有填写时验证',
+                        4: '不验证'
+                    },
                     describe:
                         ' 1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证',
                     data: '1',
