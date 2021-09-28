@@ -30,7 +30,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
   const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
     isPublic: 1,
-    limit: 2,
+    limit: 5,
     offset: 0,
   });
   // 总条数决定页数
@@ -48,11 +48,6 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   useEffect(() => {
     getTags();
   }, [getTags]);
-
-  useEffect(() => {
-    if (process.env.REACT_APP_DEMO !== 'true') {
-    }
-  }, [])
 
   const renderTags = useCallback(
     (tag: string) => {

@@ -1,6 +1,8 @@
 import request from "~/core/request";
 import { stringify } from "query-string";
 
+const isDemo = process.env.REACT_APP_DEMO === 'true';
+
 /**
  * 创建模板入参
  *
@@ -96,6 +98,9 @@ export function queryTemplate(params: queryTemplateParams): Promise<{
   offset: number;
   count: number;
 }> {
+  if (isDemo) {
+    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demoRow.json`);
+  }
   const query = stringify(params);
   return request.get(`/api/template?${query}`);
 }
@@ -120,7 +125,10 @@ export interface queryTemplateByIdResult extends queryTemplateParams{
  * @return {*}  {Promise<boolean>}
  */
 export function queryTemplateById(id:(number | string)): Promise<queryTemplateByIdResult> {
-  return request.get(`/api/template/${id}`)
+  if (isDemo) {
+    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo.json`);
+  }
+  return request.get(`/api/template/${id}`);
 }
 
 
