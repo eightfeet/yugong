@@ -3,7 +3,7 @@
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
 import React, { useCallback, useEffect, useRef } from "react";
-import GridLayout, { Layout as LayoutDataType } from "react-grid-layout";
+import RGL, { Layout as LayoutDataType, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import s from "./OutputLayout.module.scss";
@@ -20,6 +20,8 @@ import { cloneDeep } from "lodash";
 // 当前是否被ifream引用
 const visualSense = window.self === window.top;
 // const windowsHeight = window.innerHeight;
+
+const GridLayout = WidthProvider(RGL);
 
 interface LayoutProps {
   /**
@@ -203,6 +205,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
   };
 
   const renderGridLayout = () => (
+    // allowOverlap={true}
     <GridLayout
       onLayoutChange={onLayoutChange}
       compactType={null}
