@@ -34,10 +34,14 @@ import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
 import { Template } from "~/types/pageData";
 import { useHistory } from "react-router-dom";
 import LoadingAnimate from "./LoadingAnimate";
+import { trackPageView } from "~/core/tracking";
 // import loading from "~/core/loading";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
+  useEffect(() => {
+      trackPageView('/首页')
+  }, [])
   /**
    * ----------
    * 定义编辑模式

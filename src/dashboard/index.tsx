@@ -12,6 +12,8 @@ import reportWebVitals from "~/reportWebVitals";
 import DashboardApp from "~/components/DashboardApp";
 import { Provider } from "react-redux";
 import { store } from "~/redux/store";
+import { initTrack } from "~/core/tracking";
+initTrack('41bc6795c62818a687a9292080177eed');
 
 ReactDOM.render(
   <Provider store={store}>
