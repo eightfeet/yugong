@@ -10,6 +10,7 @@ import TemplateList from "../TemplateList";
 import { AppDataListTypes } from "~/types/appData";
 import { queryTemplateById } from "~/api";
 import { PageData } from "~/types/pageData";
+import { trackEvent } from "~/core/tracking";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -39,6 +40,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData, onCreating]);
 
   const createBlank = useCallback(() => {
+    trackEvent('点击', '创建空白');
     /**初始化 */
     initData();
     goBack();
