@@ -9,6 +9,7 @@ import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
 import IconListModal from "./icons/IconListModal";
+import IconChart from "./icons/IconChart";
 
 export const BASEMODULES = [
   {
@@ -78,6 +79,15 @@ export const LOTTERY = [
   }
 ]
 
+export const CHART = [
+  {
+    moduleName: "Chart",
+    title: "Chart",
+    discribe: "数据展示",
+    icon: <Icon component={IconChart} />,
+  }
+]
+
 export const MODULES = [
   {
     name: "base",
@@ -88,6 +98,11 @@ export const MODULES = [
     name: "lottery",
     describe: "抽奖组件",
     modules: LOTTERY,
+  },
+  {
+    name: "chart",
+    describe: "数据展示组件",
+    modules: CHART,
   },
 ];
 
