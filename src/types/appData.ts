@@ -145,6 +145,7 @@ export interface Api {
   mode?: RequestInit["mode"];
   successPublic?: ArgumentsItem[];
   errorPublic?: ArgumentsItem[];
+  hideLoading?: boolean;
   /**
    * 映射关系
    */

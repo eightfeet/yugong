@@ -206,8 +206,6 @@ const headDom = document.head;
 
 const useStyles = (id: string, style: any, type: keyof GameMap) => {
   const createStyleParames = useCallback(() => {
-    console.log(getParames(id, style, type));
-    
     return {
       [id]: getParames(id, style, type),
     };
