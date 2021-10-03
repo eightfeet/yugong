@@ -1,0 +1,23 @@
+{
+  "title": {
+    "text": "数据可视化常见思维方式, \n推荐按照ECharts的数据集管理数据",
+    "fontSize": 14,
+    "link": "https://echarts.apache.org/handbook/zh/concepts/dataset"
+  },
+  "legend": {
+    "bottom": 0
+  },
+  "tooltip": {},
+  "xAxis": { "type": "category" },
+  "yAxis": {},
+  "series": [{ "type": "line" }, { "type": "line" }, { "type": "line" }],
+  "dataset": {
+    "source": [
+      ["item", "ItemA", "ItemB", "ItemC"],
+      ["A", 35.3, 60.8, 80.2],
+      ["B", 75.1, 60.2, 33.1],
+      ["C", 58.4, 60.2, 55.4],
+      ["D", 32.4, 45.9, 35.8]
+    ]
+  }
+}
