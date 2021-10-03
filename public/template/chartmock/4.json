@@ -1,0 +1,22 @@
+{
+  "title": {
+    "text": "这是一份mock数据",
+    "fontSize": 14
+  },
+  "legend": {
+    "bottom": 0
+  },
+  "tooltip": {},
+  "xAxis": { "type": "category" },
+  "yAxis": {},
+  "series": [{ "type": "bar" }, { "type": "bar" }, { "type": "bar" }],
+  "dataset": {
+    "source": [
+      ["item", "ItemA", "ItemB", "ItemC"],
+      ["A", 43.3, 85.8, 71.2],
+      ["B", 83.1, 21.2, 55.1],
+      ["C", 86.4, 65.2, 63.4],
+      ["D", 72.4, 53.9, 43.8]
+    ]
+  }
+}

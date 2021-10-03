@@ -69,6 +69,7 @@
     "build:git": "env-cmd -f .env.git react-app-rewired build",
     "demo:publish": "gh-pages -m \"publish demo\" -d build",
     "demo": "npm run build:git && npm run demo:publish",
+    "createModule": "sh ./createModule.sh",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },

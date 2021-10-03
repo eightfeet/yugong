@@ -1,0 +1,48 @@
+{
+  "title": {
+    "text": "图表属性可以通过参数配置设置\n但Api的值优先会覆盖参数配置的属性",
+    "fontSize": 14
+  },
+
+  "legend": {
+    "top": "bottom"
+  },
+  "series": [
+    {
+      "name": "ItemA",
+      "type": "pie",
+      "radius": ["20%", "40%"],
+      "avoidLabelOverlap": false,
+      "itemStyle": {
+        "borderRadius": 3
+      },
+      "label": {
+        "show": false,
+        "position": "center"
+      },
+      "emphasis": {
+        "label": {
+          "show": true,
+          "fontSize": "40",
+          "fontWeight": "bold"
+        }
+      },
+      "labelLine": {
+        "show": false
+      }
+    }
+  ],
+
+  "dataset": {
+    "source": [
+      { "value": 40, "name": "rose 1" },
+      { "value": 38, "name": "rose 2" },
+      { "value": 32, "name": "rose 3" },
+      { "value": 30, "name": "rose 4" },
+      { "value": 28, "name": "rose 5" },
+      { "value": 26, "name": "rose 6" },
+      { "value": 22, "name": "rose 7" },
+      { "value": 18, "name": "rose 8" }
+    ]
+  }
+}
