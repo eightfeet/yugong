@@ -52,8 +52,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   useRem();
 
   // 设置页面标题
-  useEffect(() => {
-    document.title = pageData.pageTitle || "\u200E";
+  useEffect(() => {    
+    document.title = getResult(pageData.pageTitle || "\u200E");
   }, [pageData.pageTitle]);
 
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
