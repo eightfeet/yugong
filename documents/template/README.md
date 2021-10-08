@@ -6,16 +6,17 @@ yugong主要功能在客户端，所以并不过多的关注服务端，服务�
 ![Minion](./template.drawio.svg)
 
 模板数据包含两个部分, `pageData`页面信息[详情](./../page/README.md)；`appData`组件数据[详情](./../component/README.md)；yugong通过解析这两份数据来渲染项目
-```json
+
+```javascript
 project = {
   "pageData": {
-      页面数据...
+      // 页面数据...
   },
   "appData": [
     {
-      组件数据...
+      // 组件数据...
     }
-    ...
+    // ...
   ]
 }
 ```
