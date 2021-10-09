@@ -35,7 +35,7 @@ const { Panel } = Collapse;
 
 interface Props {}
 
-const units = ["px", "rem", "vw", "vh"];
+const units = ["px", "rem"];
 
 const Pagesetting: React.FC<Props> = () => {
   const appData = useSelector((state: RootState) => state.appData);
@@ -309,9 +309,9 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
           <Row gutter={4} className={s.row}>
             <Col className={s.label} span={4}>
-              页面单位：
+              基准单位：
             </Col>
-            <Col span={7}>
+            <Col span={19}>
               <Select
                 placeholder="请选择"
                 className={s.select}
@@ -326,29 +326,7 @@ const Pagesetting: React.FC<Props> = () => {
               </Select>
             </Col>
             <Col className={s.info} span={1}>
-              <Tooltip title={<div>终端页面显示单位</div>}>
-                <InfoCircleOutlined />
-              </Tooltip>
-            </Col>
-            <Col className={s.label} span={4}>
-              编辑单位：
-            </Col>
-            <Col span={7}>
-              <Select
-                placeholder="请选择"
-                className={s.select}
-                value={pageData.unit}
-                onChange={onChangeUnit("unit")}
-              >
-                {units.map((item) => (
-                  <Option key={item} value={item}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </Col>
-            <Col className={s.info} span={1}>
-              <Tooltip title={<div>编辑面板使用单位</div>}>
+              <Tooltip title={<div>页面的基准单位，用于单位换算；设置为rem时需要设置UI宽度和基准像素</div>}>
                 <InfoCircleOutlined />
               </Tooltip>
             </Col>
@@ -373,7 +351,7 @@ const Pagesetting: React.FC<Props> = () => {
                 </Tooltip>
               </Col>
               <Col className={s.label} span={4}>
-                基准字体：
+                基准像素：
               </Col>
               <Col span={7}>
                 <InputNumber
@@ -384,7 +362,7 @@ const Pagesetting: React.FC<Props> = () => {
                 />
               </Col>
               <Col className={s.info} span={1}>
-                <Tooltip title={<div>UI设计下1rem的字体大小(px)</div>}>
+                <Tooltip title={<div>UI设计下，1rem=1基准像素</div>}>
                   <InfoCircleOutlined />
                 </Tooltip>
               </Col>
