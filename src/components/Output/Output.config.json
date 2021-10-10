@@ -59,15 +59,15 @@
                 "data": ""
              },
              {
-                "type": "boolean",
+                "type": "string",
+                "select": {
+                   "push": "前进(push)",
+                   "replace": "替换当前(replace)"
+                },
                 "name": "跳转方法",
                 "fieldName": "isReplace",
-                "describe": "默认false，true时使用replace重定向，浏览器将无法回退到当前页面",
-                "data": {
-                   "comparableAverageA": "0",
-                   "method": "===",
-                   "comparableAverageB": "1"
-                }
+                "describe": "是否使用replace重定向，浏览器将无法回退到当前页面",
+                "data": ""
              }
           ]
        },

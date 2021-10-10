@@ -93,7 +93,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     if (argUrl === "-1") {
       window.history.back();
     } else if (isUrl(argUrl as string)) {
-      if (argIsReplace) {
+      if (argIsReplace === 'replace') {
         window.location.replace(argUrl as string);
       } else {
         window.location.href = argUrl as string;
