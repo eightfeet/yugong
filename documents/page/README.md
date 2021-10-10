@@ -20,6 +20,7 @@
 进入编辑器从顶部菜单中点击“页面”按钮即可打开页面编辑面板
 
 ![Minion](./page.png)
+<br />
 ![Minion](./pageset.png)
 
 + 基本信息
