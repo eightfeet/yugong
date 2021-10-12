@@ -81,9 +81,9 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
         ];
 ```
   
-  ### 定义方法，明确方法执行时机。
+### 定义方法，明确方法执行时机。
     
-上面我们定义了事件包含mount(挂载)、click(点击)、doubleClick(双击)、longPress(长按)、unmount(卸载)。那么我们根据module的生命周期来定义将要发布的方法。      
+上面我们定义了事件包含`mount`(挂载)、`click`(点击)、`doubleClick`(双击)、`longPress`(长按)、`unmount`(卸载)。那么我们根据module的生命周期来定义将要发布的方法。      
 
 **设置按钮**
 我们需要定义一个方法来初始化按钮比如修改按钮的文本(buttonText)、定义按钮的当前状态(enable、disable) 是否隐藏按钮。   
