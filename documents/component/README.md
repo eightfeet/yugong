@@ -34,7 +34,33 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
     
 
 ---
-## 组件的开发(设计一个按钮module)
+## 组件的开发
+组件包含配置信息、帮助文档为了统一规范组件的开发,建议按照下面结构来组织组件
+```
+    Compontent
+    |--index.ts
+    |--Compontent.tsx
+    |--Compontent.module.less
+    |--Compontent.useStyle.ts
+    |--Compontent.config.ts
+    |--README.md
+```
+看起来是一个比较复杂的结构,所以建议通过命令` npm run createModule [CompontentName] `来初始化一个yugong组件
+
+- 组件的静态属性
+  
+    一个组件除了包含组件的功能部分外还需要静态导出一份配置文件,供编辑器读取;
+    ```typescript
+    {
+        exposeFunctions: [...], // 组件的方法
+        exposeEvents: {...}, // 组件的事件
+        exposeDefaultProps: {...}, // 组件的默认参数(栅格布局参数与样式参数)
+        exposeApi: [...] // Api参数
+    }
+    ```
+- 组件的帮助文档
+
+## 设计一个按钮组件
 
 根据上述module结构我们来创建一个按钮组件;
 
@@ -54,7 +80,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
  **发布事件是为了通过当前module事件来执行任何module发布的方法或获取自身定义的Api数据**
  
-首先从事件上说按钮包含点击、双击、长按等其他事件(这里我们可以关注最常用的这三个事件)。
+首先从事件上说按钮包含点击、双击、长按等其他事件(这里我们可以关注最常用的这三个事件,下面`mount` `unmount`是每个模块必须包含的生命周期)。
 
 ```typescript
         Button.exposeEvents = [
