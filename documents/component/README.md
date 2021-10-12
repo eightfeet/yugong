@@ -4,13 +4,13 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
 - ### module结构
   首先需要注意，一个独立module包含四大属性，其分别是
-  1. Api：(接口) 负责数据准备与共享
+  + Api：(接口) 负责数据准备与共享
 
-  2. style：(样式) 用于处理module的UI视觉。
+  + style：(样式) 用于处理module的UI视觉。
 
-  3. functions：(方法) 用于处理module内部工作流。
+  + functions：(方法) 用于处理module内部工作流。
 
-  4. events：事件 用于执行方法(functions)的事件，每个module至少必须包括mount(挂载)与unmount(卸载)两个生命周期必要事件，用于初始或卸载module。   
+  + events：事件 用于执行方法(functions)的事件，每个module至少必须包括mount(挂载)与unmount(卸载)两个生命周期必要事件，用于初始或卸载module。   
     ```typescript
         Button.exposeEvents = [
             {
@@ -28,17 +28,27 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
   
     ![图片](./module.png)
 
-    在编辑器左上角的菜单上点击 ` +组件 `弹出组件模块面板
+    在编辑器左上角的菜单上点击 ` +组件 `弹出组件模块面板,在面板中将组件拖入到页面中即可引入组件,
 
     ![图片](./display.png)
     
 
 ---
-## 设计一个按钮module
+## 组件的开发(设计一个按钮module)
 
-根据按钮的应用场景与上述规则我们来分析一个按钮的结构。
+根据上述module结构我们来创建一个按钮组件;
 
-![图片](./design.png)
+按钮是基于`<button></button>`定义的一个基础组件,我们来分析一个按钮应该包含哪些必要的内容:
+
+1. 当我们触发一个按钮组件时,首先需期望这个组件能提供一些回调事件供应用调用,比如`click`点击 `doubleClick`双击 `longPress`长按事件等;
+
+2. 有了事件我们期望事件回调之前可以有数据请求,这里我们定义了Api:点击前`beforeClick`(点击前) `beforeDoubleClick`(双击前) `beforeLongPress`(长按前); 对应事件我们都提供了api与后台交互,当用户配置了对应Api后,按钮在触发相应操作时都回调用Api实现与后台交互;
+
+3. 按钮同时通过eventEmitter向外界提供一些方法来操作自身,比如`setButton`(设置按钮文字、禁用按钮、隐藏按钮) `setButtonDisplay`(设置按钮的状态,`normal`: '正常', `disabled`: '禁用', `focus`: '获取焦点', `active`: '激活', `hover`: '经过');
+
+4. 最后我们应该提供编辑按钮样式的能力,我们需要对按钮的`normal`(常态样式) `active`(激活样式) `disabled`(禁用样式) `focus`(获取焦点样式) `hover`(经过样式) 定义
+
+    ![图片](./design.drawio.svg)
 
  - 发布事件
  **发布事件是为了通过当前module事件来执行任何module发布的方法或获取自身定义的Api数据**
