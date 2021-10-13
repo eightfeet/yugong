@@ -45,7 +45,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
     |--Compontent.config.ts
     |--README.md
 ```
-看起来是一个比较复杂的结构,所以建议通过命令` npm run createModule [CompontentName] `来初始化一个yugong组件
+看起来是一个比较复杂的结构,所以建议通过命令` npm run createModule [CompontentName]`来初始化一个yugong组件,脚本会在`src/module`路径下创建一个名为`[CompontentName]`的组件
 
 - 组件的静态属性
   
@@ -58,8 +58,12 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
         exposeApi: [...] // Api参数
     }
     ```
-- 组件的帮助文档
+- 原则上每个组件应该有一个组件的帮助文档,方便用户使用组建;
+  
+  组件目录下创建一个`README.md`文件,yugong会在编辑面板中点击`帮助`按钮弹出markdown帮助文档.
 
+  ![图片](./configboard.png)
+---
 ## 设计一个按钮组件
 
 根据上述module结构我们来创建一个按钮组件;
@@ -186,5 +190,49 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
     ];
 ```
 ### style样式定义
+
+yugong通过[jss](https://cssinjs.org/?v=v10.8.0)来实现样式编辑的所见即所得,具体实现原理请查看相应文档;我们这里主要讲一讲组件样式的配置部分`Compontent.useStyle.ts`;
+
+```javascript
+    import { createUseStyles } from "react-jss";
+
+    const useStyles = createUseStyles<string, any>({
+        button: {
+            "&:disabled": {...},
+            "&:focus": {...},
+            "&:active": {
+                "&:before": {...},
+                "&:after": {...},
+            },
+            "&:hover": {...},
+            "&:before": {...},
+            "&:after": {...},
+        }
+    });
+
+    export default useStyles;
+```
+
+在组件中通过应用,页面就会添加我们定义的样式了
+
+```jsx
+    import useStyles from './Compontent.useStyles';
+    const userClass = useStyles(style);
+    return <button className={userClass.button}>...</button>
+```
+
+其实本质上yugong就是通过jss在html页面中写入动态的样式
+```html
+    <style>
+        button {...}
+        button:focus {...}
+        button:active {...}
+        /*...*/
+    </style>
+```
+
+当然这里是简单说明原理,具体实现起来yugong还做了许多样式的组织和编译工作,具体在[组件编辑面板](./../moduleBoard/README.md)中详细谈到
+
+
 
 
