@@ -161,7 +161,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
 关于module的事件与方法，都会通过顶层EventEmitter（事件流的处理器）来处理，工作流程如下图
 
-![事件流处理器](./eventEmitter.png)
+![事件流处理器](./eventEmitter.drawio.svg)
 
 对于按钮来说setButton方法就够用了。接下来我们定义Api。
 
