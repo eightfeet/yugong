@@ -218,7 +218,7 @@ yugong通过[jss](https://cssinjs.org/?v=v10.8.0)来实现样式编辑的所见�
 ```jsx
     import useStyles from './Compontent.useStyles';
 
-    return const Button = (props) => {
+    export default const Button = (props) => {
         const userClass = useStyles(style);
         ...
         return <button className={userClass.button}>...</button>
