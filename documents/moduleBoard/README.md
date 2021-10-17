@@ -10,6 +10,7 @@
   - [组件名称](#组件名称)
   - [设置](#设置)
   - [事件面板](#事件面板)
+  - [参数面板](#参数面板)
   - [样式](#样式)
   - [code(组件数据视图)](#code组件数据视图)
   - [其他工具(查看运行时变量,复制,删除)](#其他工具查看运行时变量复制删除)
@@ -85,9 +86,142 @@
 
     **到此我们已经完成通过一个模块事件调用其他任何一个或多个模块并配置方法与参数了**
 
+
+### 参数面板
+
+在页面事件和组件事件中我们都会要对定义的方法设置参数,Api也会对他设置参数.点击参数按钮即可打开参数面板;
+
+![Minion](./parames/setboard.png)
+
+我们以yugong的Api入参设置为例,打开面板如上图所示,点击左上角`增加`按钮即可添加参数.添加的参数都可以通过移除按钮将其移除;
+yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`runningtime`;
+
+- **string**
+  
+  ![Minion](./parames/string.png)
+
+  当类型选择为字符类型时,参数将被定义为字符类型,yugong有一套自身的数据描述来配置参数,其中字符串是这样描述的
+
+  ```javascript
+    {
+        name: "名称",
+        fieldName: "fieldNameA",
+        describe: "字段描述",
+        type: "string",
+        data: "value",
+    }
+  ```
+
+- **number**
+  
+  ![Minion](./parames/number.png)
+
+  数字类型与字符类似
+
+  ```javascript
+    {
+        name: "名称",
+        fieldName: "fieldNameB",
+        describe: "字段描述",
+        type: "number",
+        data: "100",
+    }
+  ```
+
+- **boolean**
+  
+  ![Minion](./parames/boolean.png)
+
+  boolean类型的描述类似下面,这里的描述将会返回`{{windowSize.ww}} > 375`的表达式;
+
+  > `{{windowSize.ww}} > 375`这里的"`{{}}`"用的是yugong的[表达式规则](./../script/README.md)
+
+  ```javascript
+    {
+        type: "boolean",
+        name: "名称",
+        fieldName: "fieldNameC",
+        describe: "字段描述",
+        data: {
+            comparableAverageA: "{{windowSize.ww}}",
+            comparableAverageB: 375,
+            method: ">",
+        },
+    },
+  ```
+
+- **object**
+  
+  ![Minion](./parames/object.png)
+
+  对象类型可以通过`+确定`来新增属性,描述内容如下
+
+  ```javascript
+    {
+        type: "object",
+        describe: "字段描述",
+        name: "名称",
+        data: {
+            optionA: "valueA",
+            optionB: "valueB",
+        },
+        fieldName: "fieldNameD",
+    },
+  ```
+
+  最终解析的结果将是 
+  
+  `{optionA: "valueA",optionB: "valueB"}`
+
+- **array**
+  
+  ![Minion](./parames/array.png)
+
+  数组类型将返回一个数组, 通过点击增加可以为数组添加子项
+
+  ```javascript
+    {
+        type: "array",
+        name: "名称",
+        describe: "字段描述",
+        data: [
+            'valueItemA',
+            'valueItemB'
+        ],
+        fieldName: "fieldNameE",
+    }
+  ```
+
+- **mixed**
+  
+  ![Minion](./parames/mixed.png)
+
+  混合类型允许自由编辑数据内容,但是不支持`{{}}`脚本规则,点击“编辑”按钮可以编辑数据,编辑完成后请点击“保存”按钮
+
+- **runningTime**
+  
+  ![Minion](./parames/runningtime.png)
+
+  运行时类型,允许将全局运行时的某一个数据作为参数,选择runningTime类型的时候runningTime的下一级数据将会以下拉菜单的形式展示在下面供选择;与mixed相同,runningTime也不支持`{{}}`脚本参数
+
 ---
 
 
 ### 样式
+
+![Minion](./parames/style.png)
+
+样式编辑面板可以对选择组件的Dom元素的`布局`,`文字`,`背景`,`圆角与描边`,`投影`,`变换`进行编辑,我们将在[样式](./../styles/README.md)介绍中详细描述;
+
+
 ### code(组件数据视图)
+
+![Minion](./parames/code.png)
+
+code面板是对当前组件配置数据的全部配置数据,可以在在这里做一些快捷编辑;
+
+> 可以在这里快捷编辑组件,当然不建议这么做除非你足够了解yugong,因为这样处理很容易出错;
+
+> **数据有复制按钮,但是要注意这里是对组件完整数据的复制,但不建议使用,因为每个组件都有自身的唯一的moduleId和引用关系是不可服用的,可以对单独可复用的内容节点复制**
+
 ### 其他工具(查看运行时变量,复制,删除)
