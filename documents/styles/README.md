@@ -56,5 +56,48 @@ yugong将样式抽象为`布局`,`文字`,`背景`,`圆角与秒变`,`投影`,`�
 
 ![图片](./filter.png)
 
-通过这里选择当前组建要编辑的Node元素,这里的样式排序层级是由组件的Component.config.ts的
+通过这里选择当前组建要编辑的Node元素,这里的样式排序层级是由组件的Component.config.ts的 styleDescription来定义的;
+
+```javascript
+  ...
+  styleDescription: [
+      {
+        title: "基础",
+        value: "basic",
+        children: [
+          {
+            title: "包裹器",
+            value: "sliderWrap",
+            children: [
+              {
+                title: "滑动页",
+                value: "slideItem",
+              },
+              {
+                title: "导航条",
+                value: "pagination",
+              },
+              {
+                title: "标记",
+                value: "paginationBullet",
+              },
+              {
+                title: "标记激活",
+                value: "paginationBulletActive",
+              },
+              {
+                title: "上一页",
+                value: "prev"
+              },
+              {
+                title: "下一页",
+                value: "next"
+              }
+            ],
+          },
+        ],
+      },
+  ]
+  ...
+```
 
