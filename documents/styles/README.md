@@ -52,14 +52,23 @@ yugong将样式抽象为`布局`,`文字`,`背景`,`圆角与秒变`,`投影`,`�
 
 编辑面板功能介绍
 
-### 选择编辑元素
+### 1.选择编辑元素
 
 ![图片](./filter.png)
 
-通过这里选择当前组建要编辑的Node元素,这里的样式排序层级是由组件的Component.config.ts的 styleDescription来定义的;
+通过这里选择当前组建要编辑的Node元素,这里的样式排序层级是由组件的`Component.config.ts`的 `styleDescription`来描述的,他与`style`样式的值一一对应;
 
 ```javascript
   ...
+  style: {
+      // 基础
+      basic: {},
+      // 滑动包裹器
+      sliderWrap: {},
+      // 导航
+      pagination: {},
+      ...
+  },
   styleDescription: [
       {
         title: "基础",
@@ -77,22 +86,7 @@ yugong将样式抽象为`布局`,`文字`,`背景`,`圆角与秒变`,`投影`,`�
                 title: "导航条",
                 value: "pagination",
               },
-              {
-                title: "标记",
-                value: "paginationBullet",
-              },
-              {
-                title: "标记激活",
-                value: "paginationBulletActive",
-              },
-              {
-                title: "上一页",
-                value: "prev"
-              },
-              {
-                title: "下一页",
-                value: "next"
-              }
+              ...
             ],
           },
         ],
@@ -101,3 +95,86 @@ yugong将样式抽象为`布局`,`文字`,`背景`,`圆角与秒变`,`投影`,`�
   ...
 ```
 
+### 2.布局
+
+对组件被选择Node元素的布局定义,包含`width`,`height`,`dispaly`,`overflow`,`boxSizing`,`padding`,`margin`,`zIndex`,`position`,`left`,`right`,`top`,`bottom`,`pointerEvents`等样式属性
+
+如下图我们定义一个文字组件的基础节点:
+
+![图片](./layout.png)
+
+解析成样式将会是:
+
+```
+  {
+    ...
+    width: 100px;
+    height: 80px;
+    box-sizing: border-box;
+    padding: 20px 0px 0px;
+    display: block;
+    overflow: visible;
+    z-index: 20;
+    position: absolute;
+    left: 30px;
+    pointer-events: none;
+    ...
+  }
+```
+
+### 3.文字
+
+对组件被选择Node元素的文字定义`textAlign`,`color`,`lineHeight`,`fontWeight`,`fontStyle`,`fontSize`,`letterSpacing`;
+
+![图片](./font.png)
+
+解析成样式将会是:
+
+```
+  {
+    ...
+    text-align: center;
+    color: rgb(0, 29, 205);
+    line-height: 1.5;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 1px;
+    ...
+  }
+```
+
+### 4.背景
+
+背景包含背景色,图片背景,渐变背景;css属性包含`background`的全部缩写功能;
+
+> 除了背景色,其他背景属性可以多个叠加,点击`+ 添加其他背景属性`来追加一条新的背景规则,拖动↕️上下滑块可以排序背景规则.
+
+![图片](./background.png)
+
+解析成样式将会是:
+
+```
+  {
+    ...
+    background: url(https://xxx.png) 50% 50% / auto no-repeat, -webkit-linear-gradient(left, rgb(159, 20, 112) 1%, rgb(75, 188, 41) 100%) 50% 50% / auto 70px no-repeat rgb(3, 169, 244);
+    ...
+  }
+```
+
+### 5.圆角与描边
+
+对组件被选择Node元素的边框和圆角的定义,css属性包含`border-radius`,`border`
+
+![图片](./border.png)
+
+解析成样式将会是:
+
+```
+  {
+    ...
+    background-color: rgb(3, 169, 244);
+    border-radius: 30px;
+    ...
+  }
+```
