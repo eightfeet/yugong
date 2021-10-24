@@ -34,4 +34,25 @@
 
 ### {{}}取数规则
 
+设置面板中`{{}}`用于在运行时中获取数据,当我们把故意设定的参数发布到运行时后,即可通过`{{}}`来获取运行时的数据;
+
+比如`runningTimes`中有默认`window`的`width`值.
+
+```javascript
+    {
+        "search": {...},
+        "window": {
+            "height": 736,
+            "width": 414
+        },
+        "unit": {...}
+    }
+```
+
+我们可以通过如下方式来获取:
+
+![图片](./getdata.png)
+
+> 这里要注意,`{{}}`的root数据之乡的是runningTimes,所以在写`屏幕宽度={{window.width}}`不用写成`{{runningTimes.window.width}}`,而且`{{}}`的取数规则也仅能取到runningTimes下的数据;如果需要取页面window的值可以通过洗面`js{{}}`来实现;
+
 ### js{{}}表达式规则 source.xxx
