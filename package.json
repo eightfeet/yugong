@@ -23,7 +23,7 @@
     "classnames": "^2.2.6",
     "color-parse": "^1.4.2",
     "compressorjs": "^1.0.7",
-    "dayjs": "^1.10.4",
+    "dayjs": "^1.10.7",
     "deep-equal": "^2.0.5",
     "echarts": "^5.2.1",
     "echarts-for-react": "^3.0.1",
