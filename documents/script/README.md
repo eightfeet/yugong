@@ -61,4 +61,10 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 ![图片](./js.png)
 
-`js{{runningTimes.}}`
+也可以`js{{runningTimes.window.width <= 767 ? '移动设备' : '非移动设备'}}`
+
+我们在`js{{}}`表达式中的运行上下文context包含数据`{runningTimes,dayjs,data}`,在Api设置中`data`是接口返回的上下文,我们可以通过`js{{data.response}}`或者`js{{this.response}}`来获取;
+
+> 这里的`this`指向的是`data`
+
+![图片](./api.png)
