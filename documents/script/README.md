@@ -1,4 +1,8 @@
 ## 语法与规则
+  - [运行时](#运行时)
+  - [html语法标签](#html语法标签)
+  - [{{}}取数规则](#取数规则)
+  - [js{{}}表达式规则](#js表达式规则)
 
 ### 运行时
 
@@ -53,7 +57,7 @@
 
 ![图片](./getdata.png)
 
-> 这里要注意,`{{}}`的root数据之乡的是runningTimes,所以在写`屏幕宽度={{window.width}}`不用写成`{{runningTimes.window.width}}`,而且`{{}}`的取数规则也仅能取到runningTimes下的数据;
+> 这里要注意,`{{}}`的root数据指向的是runningTimes,所以在写`屏幕宽度={{window.width}}`不用写成`{{runningTimes.window.width}}`,而且`{{}}`的取数规则也仅能取到runningTimes下的数据;
 
 ### js{{}}表达式规则 
 
