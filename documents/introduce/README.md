@@ -42,4 +42,4 @@ yugong 是一套web低代码解决方案,根据用户需求yugong可订制或简
 
 + 组件开发
   
-  [详情]()
+  [详情](./../component/README.md)
