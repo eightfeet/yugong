@@ -3,7 +3,7 @@
   - [html语法标签](#html语法标签)
   - [{{}}取数规则](#取数规则)
   - [js{{}}表达式规则](#js表达式规则)
-  - [***Api中的脚本规则应用***](#api中的脚本规则应用)
+  - [Api中的脚本规则应用](#api中的脚本规则应用)
   
 ### 运行时
 
@@ -81,7 +81,7 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 
 
-### ***Api中的脚本规则应用***
+### Api中的脚本规则应用
 
 在Api中`{{}}`取数规则取的不再是`runningTimes`,他的数据源指向的是`Api.response`
 
