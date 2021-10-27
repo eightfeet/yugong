@@ -117,7 +117,7 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
   ]
 ```
 
-但是Api返回的数据格式为
+而Api返回的数据格式为
 
 ```
   [
@@ -129,19 +129,95 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 ```
 
-那么如何得到这个数据:
+那么如何得到要求的数据:
 
-1. 假设我们需要组织如下数据结构
-
-```
-  [
-    {
-      "message": "恭喜[会员名]获得[奖品名]",
+  ```
+    [
+      {
+        "message": "恭喜[会员名]获得[奖品名]",
+        ...
+      }
       ...
+    ]
+  ```
+步骤
+
+1. 完成Api数据请求后在Api设置面板上点击`+结果转换/映射`新增一条映射规则，通过映射规则程序遍历数组，将数组的每一项按映射规则转换：
+   
+   ![图片](./map.png)
+
+   点击映射关系建立数据转换关系，输入新增属性`message`点击`+确定`,
+   
+   按照就近数据规则`{{}}`标签的数据源是数组的一个项`{memberName: 'xxx', prizeName: 'xxx'}`，`js{{}}`标签的数据源是`{runningTimes:{}, data:{memberName: 'xxx', prizeName: 'xxx'}, dayjs:{}}`
+   
+   在message栏输入我们的脚本规则
+
+   ```
+    恭喜会员js{{data.memberName.slice(0,1)}}** 抽中 {{prizeName}}
+   ```
+
+   上面规则翻译成脚本即是
+
+   ```javascript
+    '恭喜会员' + data.memberName.slice(0,1) + '** 抽中 ' + data.prizeName
+   ```
+
+   ![图片](./mapdetail.png)
+
+   点击确定后，上下文`data`的数据将从`data.responst`里map出一个`winnerInfo`出来
+
+   ```javascript
+    data = {
+      responst: {}, // Api返回的数据
+      winnerInfo: {} // 经过映射转换的数据
     }
-    ...
-  ]
-```
+   ```
+
+   `data`数据将会输送到下游;
+
+
+2. 将数据发布到运行时
+   
+   将Api返回数据发布到runningTimes
+
+   ![图片](./publish.png)
+
+   点击将结果发布到全局下的`success`按钮，
+
+   ![图片](./successpublish.png)
+
+   点击新增字段，将`winnerInfo`发布到`runningTimes`;
+
+   注意这里的脚本规则上下文就近原则data应该来自于Api与映射结果
+
+   ```javascript
+    data = {
+      responst: {}, // Api返回的数据
+      winnerInfo: {} // 经过映射转换的数据
+    }
+   ```
+
+   所以
+   
+   `{{}}`指向的数据是`{responst, winnerInfo}`,
+   
+   `js{{}}`的上下文是`{runningTimes,data,dayjs}`;
+
+   点击确定更新运行时这时在runningTimes里会有如下数据
+
+   ```javascript
+    runningTimes = {
+      search: {},
+      window: {},
+      unit: {},
+      winnerInfo: {}
+    }
+   ```
+
+3. 将数据应用到组件，在组件的设置中将`winnerInfo`应用到数据中，配置好样式即可：
+
+![图片](./record.gif)
+   
 
 
 
