@@ -31,7 +31,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
         collapsed={collapsed}
       >
         <div className={s.logo}>
-          <GroupOutlined /> {collapsed ? "" : "YUG"}
+          <GroupOutlined /> {collapsed ? "" : "YUGUN"}
         </div>
         <Menu
           theme="light"
