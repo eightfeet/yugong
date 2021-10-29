@@ -1,8 +1,7 @@
 <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={114.52}
-      height={80.87}
-      {...props}
+      width="114.52"
+      height="80.87"
     >
       <style>{".prefix__st0{fill:#080a04}.prefix__st1{fill:#fff}"}</style>
       <path
