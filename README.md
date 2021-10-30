@@ -16,7 +16,22 @@
   [编辑器](https://www.eightfeet.cn/yugong/dashboard/#/project) 
   
   [预览地址](https://www.eightfeet.cn/yugong/)
-  
+
+## Documents
+
+[概要](./documents/introduce/README.md)
+
++ [模版](./documents/template/README.md)
+
++ [页面](./documents/page/README.md)
+
++ [组件](./documents/component/README.md)
+
++ [组件编辑器](./documents/moduleBoard/README.md)
+
++ [运行脚本](./documents/script/README.md)
+
++ [组件开发](./documents/component/README.md)
 
 ## 编辑器
 
@@ -24,6 +39,21 @@
 
 ## 事件处理(EventEmitter)与运行时(runningTimes)
 
+1. 通过自定义或者Api收集服务端数据同步到runningTimes统一管理;
+2. 每个模块组件在EventEmitter注册需要暴露出来的方法;
+3. 组件通过事件向EventEmitter调度任何模块组件注册的方法,实现模块组件的相互作用;
+
+![Minion](./public/images/flow/core.drawio.svg)
+
 ## Api配置化
 
+yugong是一套赠倾向于前端项目,但允许通过api配置化去对接中台或者项目
+
 ## 模板化管理
+
+低代码意味着要么就是把业务逻辑定义到业务组建中去,要么就是定义一系列复杂的配置;
+
+为了复用一些列复杂性的配置,yugong主要功能在客户端，所以并不过多的关注服务端，服务端仅保存了最基本的用户信息、模板信息，以及用户对应的模板关系。每个用户都可以创建自己的项目/模板，当然每个用户可以把个人模板发布为公共模板，以共享烦杂的模板配置信息；
+
+![Minion](./public/images/flow/template.drawio.svg)
+
