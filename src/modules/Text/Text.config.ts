@@ -22,14 +22,14 @@ const config: {
                 "fieldName": "textArray"
              },
              {
-                "type": "boolean",
-                "name": "自动序号",
-                "describe": "自动生成1开始的序号",
-                "data": {
-                   "comparableAverageA": "a",
-                   "comparableAverageB": "b",
-                   "method": "==="
+                "type": "number",
+                "name": "序号",
+                "select": {
+                   1: "排序",
+                   2: "不排序"
                 },
+                "describe": "",
+                "data": "",
                 "fieldName": "autoNumber"
              }
           ]

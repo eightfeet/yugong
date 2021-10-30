@@ -24,7 +24,8 @@ const Text: Modules<TextProps> = (props) => {
     const setText = useCallback((args: ArgumentsItem, autoNumber: ArgumentsItem) => {
         const text = getArgumentsItem(args);
         const isAutoNum = getArgumentsItem(autoNumber);
-        setAutoNumber(isAutoNum as boolean);
+        if (isAutoNum === 1) setAutoNumber(true);
+        if (isAutoNum === 2) setAutoNumber(false);
         setTextArea(text);
     }, []);
 

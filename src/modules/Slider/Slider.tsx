@@ -80,23 +80,14 @@ const Slider: Modules<SliderProps> = (props) => {
         setDelay(0);
       }
 
-      if (data.disableOnInteraction) {
-        setBreakInterface(true);
-      } else {
-        setBreakInterface(false);
-      }
+      if (data.disableOnInteraction === 1) setBreakInterface(true);
+      if (data.disableOnInteraction === 2) setBreakInterface(false);
 
-      if (data.navigation) {
-        setHideNav(true);
-      } else {
-        setHideNav(false);
-      }
+      if (data.navigation === 1) setHideNav(true);
+      if (data.navigation === 2) setHideNav(false);
 
-      if (data.pagination) {
-        setHidePage(true);
-      } else {
-        setHidePage(false);
-      }
+      if (data.pagination === 1) setHidePage(true);
+      if (data.pagination === 2) setHidePage(false);
     },
     [setDelay]
   );
