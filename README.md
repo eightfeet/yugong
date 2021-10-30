@@ -11,9 +11,9 @@
 - Api配置 与数据建立连接
 - 模板化管理,按需加载
 
-演示说明:
+演示:
 
-  [编辑器](https://www.eightfeet.cn/yugong/dashboard/#/project) 
+  [编辑器地址](https://www.eightfeet.cn/yugong/dashboard/#/project) 
   
   [预览地址](https://www.eightfeet.cn/yugong/)
 
