@@ -20,7 +20,9 @@
 
 ## 编辑器
 
-## 事件处理与运行时
+编辑器与被编辑页sandbox隔离,通过postMessage建立内外通信, 被编辑页与最终项目页面保持一致, 以实现真正意义上的所见即所得;
+
+## 事件处理(EventEmitter)与运行时(runningTimes)
 
 ## Api配置化
 
