@@ -15,7 +15,7 @@ const Home:React.FC<Props> = () => {
     return (
         <div className={s.root}>
             <div>
-                <Logo fill="#2626bc" />
+                <Logo />
             </div>
         </div>
     )

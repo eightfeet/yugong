@@ -11,7 +11,10 @@ import s from "./Layout.module.less";
 import menus from "./../minu";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
+import Logo from '~/components/Logo';
+
 const { Header, Sider, Content } = Layout;
+
 
 interface Props {}
 const MainLayout: React.FC<Props> = ({ children }) => {
@@ -31,7 +34,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
         collapsed={collapsed}
       >
         <div className={s.logo}>
-          <GroupOutlined /> {collapsed ? "" : "YUGUN"}
+          <GroupOutlined /> {collapsed ? "" : "YuGong"}
         </div>
         <Menu
           theme="light"
