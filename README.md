@@ -17,7 +17,7 @@
   
   [预览地址](https://www.eightfeet.cn/yugong/)
 
-  ![Minion](./documents/introduce/index.gif)
+  ![Minion](./documents/introduce/play.gif)
 
 ## Documents
 
