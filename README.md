@@ -19,8 +19,6 @@
   
   [预览地址](https://www.eightfeet.cn/yugong/)
 
-  ![Minion](./documents/introduce/dashboard.png)
-
 ## Documents
 
 [概要](./documents/introduce/README.md)
@@ -36,6 +34,8 @@
 + [运行脚本](./documents/script/README.md)
 
 + [组件开发](./documents/component/README.md)
+  
+  ![Minion](./documents/introduce/dashboard.png)
 
 ## 编辑器
 
