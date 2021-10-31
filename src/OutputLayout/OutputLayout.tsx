@@ -74,6 +74,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       topLocation?.pathname === "/dashboard"
     ) {
       setIsEditing(true);
+      document.documentElement.classList.add("iseditor");
     }
   }, [setIsEditing]);
 

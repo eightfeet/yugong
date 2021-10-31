@@ -8,7 +8,7 @@ import BeforeOutput from '~/components/BeforeOutput';
 import jss from 'jss'
 import preset from 'jss-preset-default'
 
-jss.setup(preset())
+jss.setup(preset());
 
 ReactDOM.render(
   <Provider store={store}>
