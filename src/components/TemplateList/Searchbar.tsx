@@ -1,27 +1,78 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Tooltip, Input, Select, Button } from "antd";
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { queryTagParams } from "~/api";
 
 const { Option } = Select;
 
-interface Props {}
+interface queryParams {
+    title?: string,
+    terminal?: string,
+    tag?: number[]
+}
 
-const Searchbar: React.FC<Props> = () => {
-  const children: any[] = [];
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option key={i.toString(36) + i} value={i.toString(36) + i}>
-        {i.toString(36) + i}
-      </Option>
-    );
-  }
+interface Props {
+  onClick: (query: queryParams) => void;
+  tags: queryTagParams[];
+  onChange?: (data: queryParams) => void;
+}
+
+const Searchbar: React.FC<Props> = ({onClick, tags, onChange}) => {
+
+  const [query, setQuery] = useState<queryParams>({});
+
+  const onSearch = useCallback(
+    (e) => {
+      e.preventDefault();
+      const params = {};
+      Object.keys(query).forEach((key) => {
+        if (query[key]?.length) params[key] = key === 'tag' ? query[key]?.join(',') : query[key];
+      })
+      onClick(params)
+    },
+    [onClick, query],
+  )
+
+  const onChangTag = useCallback(
+    (tag) => {
+      const data = {...query, tag};
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
+      setQuery(data)
+    },
+    [onChange, query],
+  )
+
+  const onChangeTitle = useCallback(
+    (e) => {
+      const data = {...query, title: e.target.value};
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
+      setQuery(data)
+    },
+    [onChange, query],
+  )
+
+  const onChangeType = useCallback(
+    (terminal) => {
+      const data = {...query, terminal};
+      if (onChange instanceof Function) {
+        onChange(data);
+      }
+      setQuery(data)
+    },
+    [onChange, query],
+  )
+
 
   return (
     <>
       <Row gutter={[5, 24]}>
         <Col span={4}>
           <Tooltip title="请输入模板名称">
-            <Input type="text" placeholder="模版名称" />
+            <Input type="text" placeholder="模版名称" onChange={onChangeTitle} />
           </Tooltip>
         </Col>
         <Col span={4}>
@@ -30,8 +81,8 @@ const Searchbar: React.FC<Props> = () => {
               allowClear
               style={{ width: "100%" }}
               placeholder="终端类型"
-              defaultValue={"pc"}
-              onChange={() => {}}
+              value={query.terminal}
+              onChange={onChangeType}
             >
               <Option value="mobile">移动端</Option>
               <Option value="pc">PC端</Option>
@@ -39,21 +90,21 @@ const Searchbar: React.FC<Props> = () => {
           </Tooltip>
         </Col>
         <Col span={8}>
-          <Tooltip title="按模板类型查找">
+          <Tooltip title="按模板标签查找">
             <Select
               mode="multiple"
               allowClear
               style={{ width: "100%" }}
-              placeholder="模板类型"
-              defaultValue={["a10", "c12"]}
-              onChange={() => {}}
+              placeholder="标签"
+              value={query.tag}
+              onChange={onChangTag}
             >
-              {children}
+              {tags.map(item => (<Option key={item.id} value={`${item.id}`}>{item.name}</Option>))}
             </Select>
           </Tooltip>
         </Col>
         <Col span={2}>
-          <Button type="default" icon={<SearchOutlined />}>
+          <Button type="default" icon={<SearchOutlined />} onClick={onSearch}>
             查找模板
           </Button>
         </Col>

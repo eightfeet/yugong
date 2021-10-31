@@ -1,6 +1,5 @@
 import {
     EditOutlined,
-    InfoCircleOutlined,
     MinusOutlined,
 } from '@ant-design/icons';
 import { Select, Row, Col, Input, Divider, Tooltip, Button } from 'antd';

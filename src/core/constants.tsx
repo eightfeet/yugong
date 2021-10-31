@@ -7,6 +7,9 @@ import IconTable from "./icons/IconTable";
 import IconForm from "./icons/IconForm";
 import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
+import IconBroadcast from "./icons/IconBroadcast";
+import IconListModal from "./icons/IconListModal";
+import IconChart from "./icons/IconChart";
 
 export const BASEMODULES = [
   {
@@ -52,23 +55,36 @@ export const BASEMODULES = [
     tips: "对话框属于隐形模块，请在设置面板中选择编辑",
     icon: <Icon component={IconModal} />,
   },
-];
-
-export const LOTTERY = [
-  {
-    moduleName: "Roulette",
-    title: "Roulette",
-    discribe: "转盘抽奖",
-    icon: <Icon component={IconRoulette} />,
-  }
-]
-
-export const MSGBROADCAST = [
   {
     moduleName: "Broadcast",
     title: "Broadcast",
     discribe: "滚动播报",
+    icon: <Icon component={IconBroadcast} />,
+  },
+  {
+    moduleName: "ListModal",
+    title: "ListModal",
+    discribe: "弹窗列表",
+    tips: "弹窗列表属于隐形模块，请在设置面板中选择编辑",
+    icon: <Icon component={IconListModal} />,
+  }
+];
+
+export const LOTTERY = [
+  {
+    moduleName: "Lottery",
+    title: "Lottery",
+    discribe: "抽奖",
     icon: <Icon component={IconRoulette} />,
+  }
+]
+
+export const CHART = [
+  {
+    moduleName: "Chart",
+    title: "Chart",
+    discribe: "数据展示",
+    icon: <Icon component={IconChart} />,
   }
 ]
 
@@ -84,9 +100,9 @@ export const MODULES = [
     modules: LOTTERY,
   },
   {
-    name: "message",
-    describe: "消息广播",
-    modules: MSGBROADCAST,
+    name: "chart",
+    describe: "数据展示组件",
+    modules: CHART,
   },
 ];
 
@@ -108,5 +124,6 @@ export const GRID_DEFAULT_SPACE = 0;
 export const GRID_DEFAULT_ROWHEIGHT = 20;
 // 栅格默认列数
 export const GRID_DEFAULT_COLS = 12;
-
+// TagColor
+export const TAG_TYPE = ["purple", "magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"];
 // export default {}

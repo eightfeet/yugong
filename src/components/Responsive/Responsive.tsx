@@ -10,8 +10,9 @@ import {
   FileAddOutlined,
   PlusOutlined,
   SettingOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, message } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import usePostMessage from "~/hooks/usePostMessage";
@@ -26,18 +27,31 @@ import CreateProject from '../CreateProject';
 import classNames from "classnames";
 import { AppDataListTypes } from "~/types/appData";
 import useLocalStorage from "~/hooks/useLocalStorage";
+import { createTemplate, updateTemplate } from "~/api";
+import { cloneDeep } from "lodash";
+import TemplateInfoModal from "../TemplateInfoModal";
+import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
+import { Template } from "~/types/pageData";
+import { useHistory } from "react-router-dom";
+import LoadingAnimate from "./LoadingAnimate";
+import { trackPageView } from "~/core/tracking";
 // import loading from "~/core/loading";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
+  useEffect(() => {
+      trackPageView('/首页')
+  }, [])
   /**
    * ----------
    * 定义编辑模式
    * ----------
    */
-  const isEditing = useSelector(
-    (state: RootState) => state.controller.isEditing
+  const {isEditing, auth} = useSelector(
+    (state: RootState) => state.controller
   );
+
+  const history = useHistory();
 
   const appData = useSelector((state: RootState) => state.appData);
   const activationItem = useSelector(
@@ -68,6 +82,8 @@ const Responsive: React.FC<Props> = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [hideIframe, sethideIframe] = useState(true);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -114,14 +130,17 @@ const Responsive: React.FC<Props> = () => {
   const win: Window | null = ref.current
     ? (ref.current as any).contentWindow
     : null;
+
   useEffect(() => {
-    if (win) {
-      win.onload = () => {
-        sendMessage({ tag: "setIsEditing", value: true }, win);
+    const windows = (document.getElementById('wrapiframe') as any)?.contentWindow;
+    if (windows && !isCreate) {
+      windows.onload = () => {
+        sendMessage({ tag: "setIsEditing", value: true }, windows);
         setIsEditing(true);
+        sethideIframe(false);
       };
     }
-  }, [isEditing, sendMessage, setIsEditing, win]);
+  }, [sendMessage, setIsEditing, isCreate]);
 
   useEffect(() => {
     sendMessage({ tag: "setIsEditing", value: true }, win);
@@ -180,6 +199,90 @@ const Responsive: React.FC<Props> = () => {
       sendMessage({ tag: "removeActivationItem", value: undefined }, win);
     }
   }, [removeActivationItem, sendMessage, win]);
+
+  // const saveProjects = useCallback(
+  //   async (data: Template) => {
+      
+  //     const id: number = await createTemplate(data);
+  //     if (id) {
+  //       const copyPageData = cloneDeep(pageData);
+  //       copyPageData.template = {...copyPageData.template || {}, id};
+  //       return updatePageData(copyPageData)
+  //     }
+      
+  //   },
+  //   [pageData, updatePageData],
+  // )
+
+  const updateProject = useCallback(
+    (data: Template) => {
+      data.id = pageData.template?.id;
+      return updateTemplate(data)
+    },
+    [pageData.template?.id],
+  )
+
+  interface TemplateAll extends Template {
+    pageData: string;
+    appData: string
+  }
+  
+  // 保存或更新项目
+  const onSaveProject = useCallback(
+    async ({cove=[], terminal, isPublic, describe, tag, title, id}:TemplateInfo) => {
+      if (!auth?.isLogin) {
+        history.push('/login');
+        return;
+      }
+      // copy
+      const pageDataCopy = cloneDeep(pageData);
+      // template数据
+      const templateData: Template = {
+        title: title || pageData.pageTitle,
+        terminal,
+        cove: cove[0]?.thumbUrl,
+        describe,
+        tag: tag?.join(','),
+        isPublic: isPublic === true ? 1 : 0
+      }
+      // 存入模板信息到pageData
+      pageDataCopy.template = templateData || {};
+
+      // 完整数据
+      const params: TemplateAll = {
+        pageData: JSON.stringify(pageData),
+        appData: JSON.stringify(appData),
+        id,
+        userId: auth.session?.id,
+        ...templateData
+      }
+      
+      // 更新
+      if (!!pageData.template?.id) {
+        await updateProject(params);
+      } else {
+        // 新增
+        const newId = await createTemplate(params);
+        pageDataCopy.template.id = newId;
+      }
+      message.success('已发布');
+      // 更新
+      updatePageData(pageDataCopy)
+      // 关闭弹窗
+      setShowTemplateModal(false);
+    },
+    [appData, auth?.isLogin, auth?.session?.id, history, pageData, updatePageData, updateProject],
+  )
+
+  const showPublishModal = useCallback(
+    () => {
+      if (!auth?.isLogin) {
+        history.push('/login');
+      }
+      setShowTemplateModal(true);
+    },
+    [auth?.isLogin, history],
+  )
   
   return (
     <>
@@ -202,45 +305,56 @@ const Responsive: React.FC<Props> = () => {
               </div>
             </Draggable>
           ) : null}
-          <div>
-            <Button
-              type="primary"
-              onClick={toggleCreate}
-              icon={<FileAddOutlined />}
-            />
-            &nbsp;
-            {!isEditing ? (
+          <div className={s.topmenu}>
+            <div className={s.create}>
               <Button
                 type="primary"
-                className={s.toggle}
-                onClick={toggleEdit}
-                icon={<EditOutlined />}
+                onClick={toggleCreate}
+                icon={<FileAddOutlined />}
               />
-            ) : null}
-            {isEditing ? (
+              &nbsp;
+              {!isEditing ? (
+                <Button
+                  type="default"
+                  className={s.toggle}
+                  onClick={toggleEdit}
+                  icon={<EditOutlined />}
+                />
+              ) : null}
+              {isEditing ? (
+                <Button
+                  type="default"
+                  className={s.toggle}
+                  onClick={toggleEdit}
+                  icon={<EyeOutlined />}
+                />
+              ) : null}
+              &nbsp;
+              <Button
+                type="default"
+                icon={<SettingOutlined />}
+                onClick={() => setShowPageDrawer(true)}
+              >
+                页面
+              </Button>
+              &nbsp;
+              <Button
+                type="default"
+                icon={<PlusOutlined />}
+                onClick={() => setShowDrawer(true)}
+              >
+                组件
+              </Button>
+            </div>
+            <div className={s.save}>
               <Button
                 type="primary"
-                className={s.toggle}
-                onClick={toggleEdit}
-                icon={<EyeOutlined />}
-              />
-            ) : null}
-            &nbsp;
-            <Button
-              type="primary"
-              icon={<SettingOutlined />}
-              onClick={() => setShowPageDrawer(true)}
-            >
-              页面
-            </Button>
-            &nbsp;
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setShowDrawer(true)}
-            >
-              组件
-            </Button>
+                icon={<UploadOutlined />}
+                onClick={showPublishModal}
+              >
+                {pageData.template?.id ? '修改' : '发布'}
+              </Button>
+            </div>
           </div>
           <Ruler onChange={onChangeRule} />
           <Drawer
@@ -274,28 +388,28 @@ const Responsive: React.FC<Props> = () => {
               })}
               style={{ transition: "all 0.5s" }}
             />
-            {!stateTag ? (
-              <div
+            {!stateTag ? <div
                 className={s.iframebox}
                 style={{ width: pageData.windowWidth === -1 ? `100%` : `${pageData.windowWidth}px`, height: `${pageData.windowHeight}px` }}
               >
+                <LoadingAnimate />
                 <iframe
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`/${window.location.search}`}
+                  src={`${process.env.REACT_APP_PUBLIC_PATH}${window.location.search || ''}`}
                   style={{
-                    width: "1px",
                     border: "none",
+                    opacity: hideIframe ? 0 : 1,
                     minWidth: "100%",
                     minHeight: `${pageData.windowHeight}px`,
                   }}
                 />
-              </div>
-            ) : null}
+              </div> : null}
           </div>
         </div>
       }
+      <TemplateInfoModal visible={showTemplateModal} onOk={onSaveProject} onCancel={() => setShowTemplateModal(false)} />
     </>
   );
 };

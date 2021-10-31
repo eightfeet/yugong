@@ -42,25 +42,25 @@ const config: Config = {
       description: "设置",
       arguments: [
         {
-          type: "boolean",
+          type: "number",
           name: "隐藏翻页箭头",
           describe: "是否隐藏左右翻页箭头",
-          data: {
-            comparableAverageA: "",
-            comparableAverageB: "",
-            method: "<",
+          select: {
+            1: "隐藏",
+            2: "不隐藏"
           },
+          data: "",
           fieldName: "navigation",
         },
         {
-          type: "boolean",
+          type: "number",
           name: "隐藏底部导航",
           describe: "是否隐藏隐藏底部导航圆点",
-          data: {
-            comparableAverageA: "",
-            comparableAverageB: "",
-            method: "<",
+          select: {
+            1: "隐藏",
+            2: "不隐藏"
           },
+          data: "",
           fieldName: "pagination",
         },
         {
@@ -71,14 +71,14 @@ const config: Config = {
           fieldName: "delay",
         },
         {
-          type: "boolean",
+          type: "number",
           name: "交互阻止播放",
           describe: "交互时打断自动播放",
-          data: {
-            comparableAverageA: "",
-            comparableAverageB: "",
-            method: "<",
+          select: {
+            1: "阻止",
+            2: "不阻止"
           },
+          data: "",
           fieldName: "disableOnInteraction",
         },
       ],

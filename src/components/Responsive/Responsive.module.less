@@ -1,6 +1,11 @@
 .iframebox {
     position: relative;
-    z-index: 5;
+    iframe {
+        position: relative;
+        z-index: 5;
+        opacity: 0;
+        transition: all 0.6s;
+    }
 }
 
 .box {
@@ -80,4 +85,16 @@
     right: 0;
     bottom: 0;
     opacity: 1;
+}
+
+.topmenu {
+    display: flex;
+    padding-bottom: 5px;
+    .create {
+        flex: auto;
+    }
+    .save {
+        width: 200px;
+        text-align: right;
+    }
 }

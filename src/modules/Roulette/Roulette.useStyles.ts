@@ -1,6 +1,5 @@
 import { createUseStyles } from "react-jss";
 import styleCompiler from "~/compiler";
-
 // overlay: "覆盖层",
 // content: "内容区",
 // header: "头部",
@@ -9,11 +8,10 @@ import styleCompiler from "~/compiler";
 // modify1: "修饰器1",
 // modify2: "修饰器2",
 // modify3: "修饰器3"
-
+const WH = window.innerHeight;
 const useStyles = (id: string) => createUseStyles<string, any>({
-  
+    
     wrap: (style) => {
-
         return {
           ...(styleCompiler(style.wrap).style || {}),
           [`& .${id}_light`]: (styleCompiler(style.light).style || {}),
@@ -70,7 +68,7 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_addressmodal_modules`]: (styleCompiler(style.addressmodalcontent).style || {}),
           [`& .${id}_addressmodal_formbox`]: (styleCompiler(style.addressmodalformbox).style || {}),
           [`& .address__content h3.${id}_addressmodal_header`]: (styleCompiler(style.addressmodalheader).style || {}),
-          [`& .${id}_addressmodal_article`]: (styleCompiler(style.addressmodalarticle).style || {}),
+          [`& .${id}_addressmodal_player`]: (styleCompiler(style.addressmodalplayer).style || {}),
           [`& .${id}_addressmodal_row`]: (styleCompiler(style.addressmodalrow).style || {}),
           [`& .${id}_addressmodal_label`]: (styleCompiler(style.addressmodallabel).style || {}),
           [`& .${id}_addressmodal_subtitle`]: (styleCompiler(style.addressmodalsubtitle).style || {}),
@@ -81,7 +79,10 @@ const useStyles = (id: string) => createUseStyles<string, any>({
           [`& .${id}_addressmodal_modify`]: (styleCompiler(style.addressmodify1).style || {}),
           [`& .${id}_addressmodal_footer button.${id}_addressmodal_submit`]: (styleCompiler(style.addressmodalok).style || {}),
         }
-      }
+      },
+
+      recordModalContent: (style) => ({height:  `${WH - 100}px`, ...(styleCompiler(style.recordmodalcontent).style || {})}),
+      recordModalClose: (style) => (styleCompiler(style.recordmodalclose).style || {}),
 });
 
 export default useStyles;

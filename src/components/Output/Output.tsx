@@ -52,8 +52,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   useRem();
 
   // 设置页面标题
-  useEffect(() => {
-    document.title = pageData.pageTitle || "\u200E";
+  useEffect(() => {    
+    document.title = getResult(pageData.pageTitle || "\u200E");
   }, [pageData.pageTitle]);
 
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
@@ -93,7 +93,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     if (argUrl === "-1") {
       window.history.back();
     } else if (isUrl(argUrl as string)) {
-      if (argIsReplace) {
+      if (argIsReplace === 'replace') {
         window.location.replace(argUrl as string);
       } else {
         window.location.href = argUrl as string;

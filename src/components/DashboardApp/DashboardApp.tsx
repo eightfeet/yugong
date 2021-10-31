@@ -1,24 +1,40 @@
 import React, { useEffect } from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {
+    HashRouter as Router,
+    Route,
+    Switch,
+} from 'react-router-dom';
 import Layout from '~/components/DashboardApp/Layout';
 import Responsive from '~/components/Responsive';
-import request from '~/core/request';
-
-const Home = () => {
-   return <div>home</div>
-};
+import Home from '~/dashboardRouter/Home';
+import PageLogin from '~/dashboardRouter/PageLogin';
+import PageRegister from '~/dashboardRouter/PageRegister';
+import { Dispatch } from '~/redux/store';
 
 interface Props {}
 
-const Dashboardapp: React.FC<Props> = () => {
+const DashboardApp: React.FC<Props> = () => {
+  const { userSync } = useDispatch<Dispatch>().controller;
+  useEffect(() => {
+    userSync()
+  }, [userSync])
+
     return (
         <Router>
             <Layout>
-                <Route path="/" exact component={Home} />
-                <Route path="/project" component={Responsive} />
+                <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/login" component={PageLogin} />
+                    <Route path="/register" component={PageRegister} />
+                    <Route path="/project" component={Responsive} />
+                    <Route path="*" component={() => <div>404找不到页面</div>} />
+                </Switch>
             </Layout>
         </Router>
     );
 };
 
-export default Dashboardapp;
+export default DashboardApp;
+
+

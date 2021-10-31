@@ -1,6 +1,7 @@
 ## 表单
 
-- ### setFormData 设置表单数据，当表单初始化时需要给表单一份初始化数据，这份数据来源于运行时，可以通过global的注入方法活着api请求，将数据返回到运行时
+### 设置表单数据，
+- 当表单初始化时需要给表单一份初始化数据，这份数据来源于运行时，可以通过global的注入方法活着api请求，将数据返回到运行时
   - 数据结构：
   ```json
       [
@@ -68,38 +69,38 @@
     ```
 
     使用 yup Schema规则 https://github.com/jquense/yup#numberminlimit-number--ref-message-string--function-schema ；
-
-
-    支持yup方法    
+    
+    支持yup方法
+    ```typescript    
     YupMethodNameType =
-    | "required"
-    | "typeError"
-    | "oneOf"
-    | "notOneOf"
-    | "length"
-    | "min"
-    | "max"
-    | "matches"
-    | "email"
-    | "url"
-    | "uuid"
-    | "ensure"
-    | "trim"
-    | "lowercase"
-    | "uppercase"
-    | "lessThan"
-    | "moreThan"
-    | "positive"
-    | "negative"
-    | "integer"
-    | "noUnknown";
-   
+        | "required"
+        | "typeError"
+        | "oneOf"
+        | "notOneOf"
+        | "length"
+        | "min"
+        | "max"
+        | "matches"
+        | "email"
+        | "url"
+        | "uuid"
+        | "ensure"
+        | "trim"
+        | "lowercase"
+        | "uppercase"
+        | "lessThan"
+        | "moreThan"
+        | "positive"
+        | "negative"
+        | "integer"
+        | "noUnknown";
+   ```
 
-- ### setFormConfig 
-    - forminput 表单显示类型 standard,outlined或filled默认standard
-    - formtitle 设置表单标题文字
-    - formsubmittext 设置表单提交按钮文字
-    - formresettext 设置表单重置按钮文字
+- ### 设置表单功能 setFormConfig 
+    - **输入框**forminput 表单显示类型 standard,outlined或filled默认standard
+    - **表单标题**formtitle 设置表单标题文字
+    - **提交按钮**formsubmittext 设置表单提交按钮文字
+    - **重置按钮**formresettext 设置表单重置按钮文字
 
 - ### setFormItem 设置表单项
     - fieldName 字段名

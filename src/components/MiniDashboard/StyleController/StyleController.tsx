@@ -17,21 +17,45 @@ const StyleController: React.FC<Props> = () => {
         (state: RootState) => state.activationItem
     );
     const sendMsg = usePostMessage(() => {});
-    const moduleId = activationItem.moduleId;
+    const { moduleId, type } = activationItem;
+
+    // 获取模块样式描述清单
     const moduleType: { [keys: string]: string }[] = useMemo(() => {
-        if (activationItem.moduleId) {
+        if (moduleId) {
             return (
-                require(`~/modules/${activationItem.type}`)?.default
+                require(`~/modules/${type}`)?.default
                     ?.exposeDefaultProps?.styleDescription || []
             );
         }
         return [];
-    }, [activationItem.moduleId, activationItem.type]);
+    }, [moduleId, type]);
 
     // 当前编辑路径
     const [stylePath, setStylePath] = useState('');
-
-    const [path, setPath] = useState<AnyObjectType[]>([{ title: '基础' }]);
+    const [path, setPath] = useState<AnyObjectType[]>();
+    const resetPath = useCallback(
+        () => {
+            const pathData = [{ title: '基础' }];
+            setPath(pathData);
+            const win = (
+                document.getElementById('wrapiframe') as HTMLIFrameElement
+            ).contentWindow;
+            sendMsg(
+                {
+                    tag: 'setCurrentEditorStylePath',
+                    value: pathData,
+                },
+                win
+            );
+            setStylePath('basic');
+        },
+        [sendMsg],
+    )
+    
+    // 重置路径
+    useEffect(() => {
+        resetPath()
+    }, [activationItem.moduleId, resetPath])
 
     // 设置当前编辑路径
     const onSelectStylePath = useCallback(
@@ -52,15 +76,6 @@ const StyleController: React.FC<Props> = () => {
         },
         [moduleType, sendMsg]
     );
-
-    // 更换模板时初始化选择
-    useEffect(() => {
-        setStylePath('basic');
-        sendMsg({
-            tag: 'setCurrentEditorStylePath',
-            value: undefined,
-        });
-    }, [moduleId, sendMsg]);
 
     const height = useMemo(() => window.innerHeight - 200, []);
     return (

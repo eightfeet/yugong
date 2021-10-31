@@ -1,5 +1,11 @@
 import { createModel } from '@rematch/core';
+import { loginOut, userSync } from '~/api';
 import { RootModel } from './models';
+
+interface Auth {
+    isLogin?: boolean,
+    session?: {id?: number, username?: string}
+}
 
 const defaultData: {
     stateTag?: boolean;
@@ -7,6 +13,7 @@ const defaultData: {
     editingId?: string;
     bestFont?: number;
     currentEditorStylePath?: any[];
+    auth?: Auth
 } = {
     stateTag: false,
     isEditing: false,
@@ -31,8 +38,12 @@ export const controller = createModel<RootModel>()({
         setCurrentEditorStylePath(state, payload: any[]) {
             return { ...state, currentEditorStylePath: payload };
         },
-        initController(){
-            return defaultData;
+        initController(state){
+            // 保留用户信息
+            return { ...defaultData, auth: state.auth};
+        },
+        setAuth(state, payload: Auth){
+            return { ...state, auth: payload}
         }
     },
     effects: (dispatch) => {
@@ -43,7 +54,25 @@ export const controller = createModel<RootModel>()({
                     resolve();
                 }))
                 dispatch.controller.setStateTag(false);
-            }
+            },
+
+            loginOut: async () => {
+                await loginOut();
+                dispatch.controller.setAuth({
+                    isLogin: false,
+                    session: {}
+                })
+            },
+
+            userSync: async () => {
+                const res = await userSync();
+                if (res.username) {
+                    dispatch.controller.setAuth({
+                        isLogin: true,
+                        session: res
+                    })
+                }
+            },
         }
     }
 });

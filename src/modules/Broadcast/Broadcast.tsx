@@ -1,5 +1,5 @@
 import EventEmitter from "~/core/EventEmitter";
-import { AnyObjectType, AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
+import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
 import { Modules } from "~/types/modules";
 import config from "./Broadcast.config";
 import Wrapper from "../Wrapper";
@@ -168,7 +168,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       >
         <div className={s.listwrap} style={listWrapStyle}>
           <ul ref={listWrapRef}>
-            {list.map((item, index) => (
+            {Array.isArray(list) && list?.map((item, index) => (
               <li key={`top${index}`} style={{ opacity: setItemAlph(index) }}>
                 <div>
                   <div
@@ -182,7 +182,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
             ))}
           </ul>
           <ul>
-            {list.map((item, index) => (
+            {Array.isArray(list) && list?.map((item, index) => (
               <li
                 key={`buttom${index}`}
                 style={{ opacity: setItemAlph(index) }}

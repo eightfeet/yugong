@@ -13,6 +13,7 @@ const inst = new Request(
         middlewares.json,
         middlewares.baseUrl,
         middlewares.params,
+        middlewares.csrfToken,
         middlewares.type,
     ],
 );

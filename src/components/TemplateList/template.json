@@ -2,7 +2,7 @@
     {
         "id": "1",
         "title": "活动报名",
-        "discript": "活动报名",
+        "describe": "活动报名",
         "cove": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0520105344382.jpg",
         "terminal": "mobile",
         "tag": [
@@ -12,7 +12,7 @@
     {
         "id": "2",
         "title": "排行榜",
-        "discript": "比赛排行榜",
+        "describe": "比赛排行榜",
         "cove": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0505185338312.jpg",
         "terminal": "mobile",
         "tag": [
@@ -24,7 +24,7 @@
     {
         "id": "3",
         "title": "天天抽奖",
-        "discript": "天天抽奖",
+        "describe": "天天抽奖",
         "cove": "",
         "terminal": "mobile",
         "tag": [
@@ -35,7 +35,7 @@
     {
         "id": "4",
         "title": "排行榜",
-        "discript": "比赛排行榜",
+        "describe": "比赛排行榜",
         "cove": "",
         "terminal": "mobile",
         "tag": [
@@ -46,7 +46,7 @@
     {
         "id": "5",
         "title": "排行榜",
-        "discript": "比赛排行榜",
+        "describe": "比赛排行榜",
         "cove": "",
         "terminal": "mobile",
         "tag": [
@@ -57,7 +57,7 @@
     {
         "id": "6",
         "title": "排行榜",
-        "discript": "比赛排行榜",
+        "describe": "比赛排行榜",
         "cove": "",
         "terminal": "mobile",
         "tag": [
@@ -68,7 +68,7 @@
     {
         "id": "7",
         "title": "排行榜",
-        "discript": "比赛排行榜",
+        "describe": "比赛排行榜",
         "cove": "",
         "terminal": "mobile",
         "tag": [

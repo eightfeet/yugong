@@ -1,0 +1,69 @@
+.listwrap {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    > li {
+        display: flex;
+        .cover {
+            background-color: #f00;
+            width: 200px;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .item {
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            line-height: 1;
+            flex: auto;
+        }
+        .itemtitle {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .itemsubtitle {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0;
+            margin: 0;
+        }
+        .iteminfo {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0;
+            margin: 0;
+        }
+        .buttons {
+            text-align: right;
+            width: 100%;
+        }
+    }
+
+    .nodate {
+        justify-content: center;
+        padding-top: 20%;
+    }
+}
+
+.articlelist {
+    height: 100%;
+}
+
+.articlelistwrap {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    max-width: 400px;
+    height: 80vh;
+    >div{
+        flex: 1;
+        height: 100%;
+    }
+}
+

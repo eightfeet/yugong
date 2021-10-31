@@ -146,6 +146,9 @@ const Apiconfig: React.FC<Props> = ({
             fieldName: "mode",
             describe:
               "包含请求的模式 (例如： cors, no-cors, same-origin, navigate).",
+            select: {
+              cors: 'cors', 'no-cors': 'no-cors', 'same-origin': 'same-origin', navigate: 'navigate'
+            },
             type: "string",
             data: operateApi[index]?.mode || "",
           };
@@ -155,6 +158,9 @@ const Apiconfig: React.FC<Props> = ({
             name: "credentials",
             fieldName: "credentials",
             describe: "包含请求的证书(例如： omit, same-origin).",
+            select: {
+              omit: 'omit', 'same-origin': 'same-origin'
+            },
             type: "string",
             data: operateApi[index]?.credentials || "",
           };

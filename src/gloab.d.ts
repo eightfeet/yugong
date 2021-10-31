@@ -54,4 +54,9 @@ declare module '*.svg' {
   export default exports;
 }
 
+declare module '*.md' {
+  const exports: string;
+  export default exports;
+}
+
 declare module 'react-awesome-button' {}

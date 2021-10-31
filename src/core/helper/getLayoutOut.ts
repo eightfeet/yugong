@@ -1,6 +1,6 @@
 import { Layout } from "react-grid-layout";
 import { runningTimeToResult } from "~/core/getDataFromSource";
-import { PageData } from "~/redux/pageData";
+import { PageData } from "~/types/pageData";
 import {
   GRID_DEFAULT_COLS,
   GRID_DEFAULT_ROWHEIGHT,

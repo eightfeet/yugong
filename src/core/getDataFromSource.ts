@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import dayjs from 'dayjs';
 import { store } from '~/redux/store';
 import { AnyObjectType } from "~/types/appData";
 const saferEval = require('safer-eval');
@@ -38,8 +39,7 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
       try {
         // 将"this"字符转化为"data"
         key = key.replace(/this/g, 'data');
-        console.log(item, key);
-        value = saferEval(key, {data, runningTimes})
+        value = saferEval(key, {data, runningTimes, dayjs})
       } catch (error) {
         console.log(error);
         // 无法输入时直接使用key

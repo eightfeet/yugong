@@ -7,7 +7,10 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "~/redux/store";
 import TemplateList from "../TemplateList";
-import request from "~/core/request";
+import { AppDataListTypes } from "~/types/appData";
+import { queryTemplateById } from "~/api";
+import { PageData } from "~/types/pageData";
+import { trackEvent } from "~/core/tracking";
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -37,6 +40,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   }, [dispatch.activationItem, dispatch.appData, dispatch.controller, dispatch.pageData, onCreating]);
 
   const createBlank = useCallback(() => {
+    trackEvent('点击', '创建空白');
     /**初始化 */
     initData();
     goBack();
@@ -56,17 +60,34 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     });
   }, [createBlank, localAppData?.length, localPageData]);
 
-  const onSelectedTemplate = useCallback(
-    async (id) => {
-      const { appData, pageData } = await request.get(`/template/${id}.json`);
+  const getTemplate = useCallback(
+    (id) => {
+      return queryTemplateById(id)
+    },
+    [],
+  )
 
-      const fn = () => {
+  const onSelectedTemplate = useCallback(
+    (id, type: 'edit' | 'create') => {
+      const fn = async () => {
+        const data = await getTemplate(id);
+        const { appData, pageData, ...templateArg } = data;
+        
         /**初始化 */
         initData();
-        setLocalAppData(appData);
-        setLocalPageData(pageData);
-        dispatch.appData.updateAppData(appData);
-        dispatch.pageData.updatePage(pageData);
+        
+        const parseAppData: AppDataListTypes = JSON.parse(appData || '"[]"');
+        const parsePageData: PageData = JSON.parse(pageData || '"{}"');
+
+        if (type === 'create') {
+          delete templateArg.id
+        }
+
+        parsePageData.template = templateArg;
+        setLocalAppData(parseAppData);
+        setLocalPageData(parsePageData);
+        dispatch.appData.updateAppData(parseAppData);
+        dispatch.pageData.updatePage(parsePageData);
         goBack();
       };
 
@@ -77,7 +98,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
       confirm({
         content: (
-          <div>当前有历史页面正在编辑，创建新模板将清除历史数据！</div>
+          <div>当前有历史页面正在编辑，{type === 'create' ? '创建新': '编辑'}模板将清除历史数据！</div>
         ),
         okText: "确定",
         cancelText: "取消",
@@ -85,16 +106,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         onOk: fn,
       });
     },
-    [
-      dispatch.appData,
-      dispatch.pageData,
-      goBack,
-      initData,
-      localAppData?.length,
-      localPageData,
-      setLocalAppData,
-      setLocalPageData,
-    ]
+    [dispatch.appData, dispatch.pageData, getTemplate, goBack, initData, localAppData?.length, localPageData, setLocalAppData, setLocalPageData]
   );
 
   return (

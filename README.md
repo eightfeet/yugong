@@ -1,135 +1,63 @@
-## to do list
-- 移除已删除模块事件
-- 优化编辑器
-- 配置活动
-- 模板层设计！！！
+![Minion](./public/images/flow/logo.svg)
 
-## hygen
+## CodingFarmes
+愚公码农😄
 
-## 代码片段
-```json
-{
-    ...
-    "Typescript YuGong Function": {
-        "prefix": "ygrm",
-        "body": [
-            "import { useEffect } from 'react';",
-            "import requester from '~/core/fetch';",
-            "import EventEmitter from '~/core/EventEmitter';",
-            "import { AppDataElementsTypes } from '~/types/appData';",
-            "import { Modules } from '~/types/modules';",
-            "import Wrapper from '../Wrapper';",
-            "",
-            "export interface ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}Props extends AppDataElementsTypes {",
-                "\tid: string;",
-                "\teventEmitter: EventEmitter;",
-            "}",
-            "",
-            "const ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}:Modules<${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}Props> = (props) => {",
-                "\tconst { eventEmitter, events = {}, api} = props;",
-                "\t// API请求 注意依赖关系",
-                "\tuseEffect(() => {",
-                    "\t\tconst apiArguments = api?.find(item => item.apiId === '');",
-                    "\t\trequester(apiArguments || {});",
-                "\t}, [api])",
-                "\t// 基本事件",
-                "\tuseEffect(() => {",
-                    "\t\t// 执行挂载事件",
-                    "\t\teventEmitter.emit(events.mount);",
-                    "\t\treturn () => {",
-                        "\t\t\t// 执行卸载事件",
-                        "\t\t\teventEmitter.emit(events.unmount);",
-                    "\t\t}",
-                "\t// eslint-disable-next-line react-hooks/exhaustive-deps",
-                "\t}, [])",
-                "\treturn (",
-                    "\t\t<Wrapper {...props}>",
-                       "\t\t\t ",
-                    "\t\t</Wrapper>",
-                "\t)",
-            "}",
-            "",
-            "/**",
-            "* 注册方法的静态描述与默认参数定义",
-            "*/",
-            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeFunctions = [];",
-            "",
-            "/**",
-            "* 发布事件的静态描述",
-            "*/",
-            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeEvents = [",
-                "\t{",
-                    "\t\tname: 'mount',",
-                    "\t\tdescription: "初始化",",
-                "\t},",
-                "\t{",
-                    "\t\tname: 'unmount',",
-                    "\t\tdescription: '卸载',",
-                "\t}",
-            "];",
-            "",
-            "/**",
-            "* 发布默认porps",
-            "*/",
-            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeDefaultProps = {};",
-            "",
-            "/**",
-            "* 发布默认Api",
-            "*/",
-            "${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}}.exposeApi = [];",
-            "",
-            "export default ${1:${TM_FILENAME_BASE/(.*)$/${1:/pascalcase}/}};",
-        ],
-        "description": "创建愚公项目模块代码片段"
-    }
-    ...
-}
+这是一个纯前端的低代码解决方案;
 
-```
+功能:
 
-# Getting Started with Create React App
+- 可视化编辑器高度可订制(页面、组件)
+- EventEmitter 事件触发与事件监机制,用于统一管理业务组件与全局的事件
+- runningTimes 业务组件之间共享数据
+- Api配置 与数据建立连接
+- 模板化管理,按需加载
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+演示:
 
-## Available Scripts
+  [编辑器地址](https://www.eightfeet.cn/yugong/dashboard/#/project) 
+  
+  [预览地址](https://www.eightfeet.cn/yugong/)
 
-In the project directory, you can run:
+  ![Minion](./documents/introduce/dashboard.png)
 
-### `yarn start`
+## Documents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[概要](./documents/introduce/README.md)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
++ [模版](./documents/template/README.md)
 
-### `yarn test`
++ [页面](./documents/page/README.md)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
++ [组件](./documents/component/README.md)
 
-### `yarn build`
++ [组件编辑器](./documents/moduleBoard/README.md)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
++ [运行脚本](./documents/script/README.md)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
++ [组件开发](./documents/component/README.md)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 编辑器
 
-### `yarn eject`
+编辑器与被编辑页sandbox隔离,通过postMessage建立内外通信, 被编辑页与最终项目页面保持一致, 以实现真正意义上的所见即所得;
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 事件处理(EventEmitter)与运行时(runningTimes)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. 通过自定义或者Api收集服务端数据同步到runningTimes统一管理;
+2. 每个模块组件在EventEmitter注册需要暴露出来的方法;
+3. 组件通过事件向EventEmitter调度任何模块组件注册的方法,实现模块组件的相互作用;
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Minion](./public/images/flow/core.drawio.svg)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Api配置化
 
-## Learn More
+yugong是一套赠倾向于前端项目,但允许通过api配置化去对接中台或者项目
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 模板化管理
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+低代码意味着要么就是把业务逻辑定义到业务组建中去,要么就是定义一系列复杂的配置;
+
+为了复用一些列复杂性的配置,yugong主要功能在客户端，所以并不过多的关注服务端，服务端仅保存了最基本的用户信息、模板信息，以及用户对应的模板关系。每个用户都可以创建自己的项目/模板，当然每个用户可以把个人模板发布为公共模板，以共享烦杂的模板配置信息；
+
+![Minion](./public/images/flow/template.drawio.svg)
+

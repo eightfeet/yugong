@@ -81,6 +81,7 @@ function useLifeCycle<TEvent> (moduleId: string, registersEvents: RegistersEvent
         mount();
         return () => {
             // 执行卸载事件
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             eventEmitter.current.emit(events?.unmount);
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps

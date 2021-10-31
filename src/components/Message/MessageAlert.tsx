@@ -8,7 +8,6 @@ function MyApp({ innerRef }: any) {
 
     const show = (message: string, options: OptionsObject) => {
         if (isType(message, 'String') && message.length) {
-            console.log('options', options)
             enqueueSnackbar(message, {
                 ...options,
                 anchorOrigin: {

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Collapse, Tooltip } from "antd";
 import ApiSetting from "../ApiSetting";
 import EventsSetting from "../EventsSetting";
@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import { Modules } from "~/types/modules";
 import Presetting from "../Presetting";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { ExceptionOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import MarkdownModalDoc from "../MarkdownModalDoc";
 const { Panel } = Collapse;
 
 const ConfigurationController = () => {
@@ -18,7 +19,7 @@ const ConfigurationController = () => {
   );
 
   const { type } = activationItem;
-
+    
   /**
    * 获取当前被选组件导出的（自定义）默认Api数据
    */
@@ -28,14 +29,25 @@ const ConfigurationController = () => {
     [type]
   );
 
+  const [showHelp, setShowHelp] = useState(false);
+
+  const handlerHelp = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setShowHelp(true);
+    },
+    [],
+  )
+
   return (
+    <>
     <Collapse
       accordion
       bordered={false}
       defaultActiveKey={module.exposeFunctions?.length ? ["0"] : ["1"]}
     >
       {module.exposeFunctions?.length ? (
-        <Panel header="预设" key="0">
+        <Panel header="预设" key="0" extra={<div onClick={handlerHelp}><ExceptionOutlined /> 帮助</div>}>
           <Presetting />
         </Panel>
       ) : null}
@@ -72,6 +84,8 @@ const ConfigurationController = () => {
         </Panel>
       ) : null}
     </Collapse>
+    <MarkdownModalDoc visible={showHelp} moduleName={type} onCancel={() => setShowHelp(false)} />
+    </>
   );
 };
 

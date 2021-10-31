@@ -242,18 +242,17 @@ export const fetchApi = async (
  * @return {*}
  */
 const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
-    const { successPublic, errorPublic } = apiArguments;
+    const { successPublic, errorPublic, hideLoading } = apiArguments;
     const setRunningTimes = store.dispatch.runningTimes.setRunningTimes;
     try {
-        loading.show();
+        !hideLoading && loading.show();
         const result = await requester(apiArguments, isDestructuring);
-        loading.hide();
+        !hideLoading && loading.hide();
         
         // 当前Api未设置则返回空：api的url或方法未定义时定义为空
         if (result.api_unset) {
             return {};
         }
-        console.log('result', result);
         
         // 处理请求结果
         // 成功发布（注意这是映射过的结果）
@@ -263,7 +262,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
         }
         return result;
     } catch (error: any) {
-        loading.hide();
+        !hideLoading && loading.hide();
         // 失败发布
         if (errorPublic?.length) {
             const errorPublicPublicResult = getArguments(errorPublic, error);

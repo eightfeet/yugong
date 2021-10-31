@@ -46,7 +46,7 @@ const Image: Modules<ImageProps> = (props) => {
         src={imgurl?.url}
         onClick={onClick}
         className={userClass.image}
-        style={{ maxWidth: "100%", maxHeight: "100%", pointerEvents:'auto'}}
+        style={{ maxWidth: "100%", maxHeight: "100%", pointerEvents: isEditing ? 'none' : 'auto'}}
         alt={imgurl?.alt || "设置图片url"}
       />
     </Wrapper>
