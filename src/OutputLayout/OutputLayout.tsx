@@ -71,7 +71,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     const topLocation = window.top?.location;
     if (
       topLocation?.origin === window.origin &&
-      topLocation?.pathname === "/dashboard"
+      topLocation?.pathname.indexOf("/dashboard") !== -1
     ) {
       setIsEditing(true);
       document.documentElement.classList.add("iseditor");
