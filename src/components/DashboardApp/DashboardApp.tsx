@@ -19,6 +19,7 @@ const DashboardApp: React.FC<Props> = () => {
   useEffect(() => {
     userSync()
   }, [userSync])
+
     return (
         <Router>
             <Layout>
