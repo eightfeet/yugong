@@ -207,6 +207,12 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
 
   const renderGridLayout = () => (
     // allowOverlap={true}
+    // 目前不触发onLayoutChange
+    // https://github.com/react-grid-layout/react-grid-layout/issues/1218
+    // here's a workaround for now:
+    // https://github.com/react-grid-layout/react-grid-layout/issues/1587
+    // onDragStop={ (newLayout) => { if (!isEqual(oldLayout, newLayout)) updateLayout(newLayout) }}
+    // 
     <GridLayout
       onLayoutChange={onLayoutChange}
       compactType={null}
