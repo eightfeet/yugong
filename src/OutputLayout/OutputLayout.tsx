@@ -3,7 +3,10 @@
  * 在编辑模式下是需要通信appData到Dashboard，确保编辑端与应用端数据保持一致
  */
 import React, { useCallback, useEffect, useRef } from "react";
-import RGL, { Layout as LayoutDataType, WidthProvider } from "react-grid-layout";
+import RGL, {
+  Layout as LayoutDataType,
+  WidthProvider,
+} from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import s from "./OutputLayout.module.scss";
@@ -16,12 +19,9 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 import { eventEmitter } from "~/core/EventEmitter";
 import { backgroundGroup } from "~/compiler/compiler";
-import { cloneDeep } from "lodash";
-// 当前是否被ifream引用
-const visualSense = window.self === window.top;
-// const windowsHeight = window.innerHeight;
+import { cloneDeep, isEqual } from "lodash";
 
-const GridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL) as any;
 
 interface LayoutProps {
   /**
@@ -104,21 +104,24 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     }
   });
 
-  /**
-   * 更新GridLine布局数据到appData
-   * 这里不要忽略被选择项（activationItem）的数据更新, 在编辑端修改
-   */
-  const onLayoutChange = useCallback(
+  const updateLayout = useCallback(
     (layout: LayoutDataType[]) => {
       // 更新appData
       const optAppdata = cloneDeep(appData);
+      // 检查是否需要更新
+      let updates = false;
       optAppdata.forEach((item) => {
-        layout.forEach((element) => {
-          if (item.moduleId === element.i) {
+        layout.some((element) => {
+          if (item.moduleId === element.i && !isEqual(element, item.layout)) {
             item.layout = element;
+            updates = true;
+            return updates;
           }
+          return false;
         });
       });
+      // 无变更时不更新数据
+      if(!updates) return;
 
       // 通知父级窗口变更数据
       sendMessage(
@@ -132,6 +135,24 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       setAppdataLocalStorage(optAppdata);
     },
     [appData, sendMessage, setAppdataLocalStorage, updateAppData]
+  );
+
+  /**
+   * 更新GridLine布局数据到appData
+   * 这里不要忽略被选择项（activationItem）的数据更新, 在编辑端修改
+   */
+  const onLayoutChange = useCallback(
+    (layout: LayoutDataType[]) => {
+      updateLayout(layout);
+    },
+    [updateLayout]
+  );
+
+  const onDragStop = useCallback(
+    (layout: LayoutDataType[]) => {
+      updateLayout(layout);
+    },
+    [updateLayout]
   );
 
   const generateStyle = useCallback(() => {
@@ -182,7 +203,13 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       if (item.layout && item.layout.w > cols) {
         item.layout.w = cols;
       }
-      // 事件处理器的bind方法将事件处理器绑定到各个组件
+      // 老处理方法
+      // data-grid={{
+      //   ...item.layout,
+      //   // 编辑模式或预览模式定义为不可编辑
+      //   // GridLayout data-grid未能热更新，这里用visualSense来确定当前是否在编辑模式下
+      //   static: visualSense,
+      // }}
 
       return (
         <div
@@ -192,12 +219,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
             isEditing === false ? s.view : s.modify
           )}
           key={item.layout?.i || index}
-          data-grid={{
-            ...item.layout,
-            // 编辑模式或预览模式定义为不可编辑
-            // GridLayout data-grid未能热更新，这里用visualSense来确定当前是否在编辑模式下
-            static: visualSense,
-          }}
+          data-grid={item.layout}
         >
           <Elements {...item} />
         </div>
@@ -212,10 +234,12 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     // here's a workaround for now:
     // https://github.com/react-grid-layout/react-grid-layout/issues/1587
     // onDragStop={ (newLayout) => { if (!isEqual(oldLayout, newLayout)) updateLayout(newLayout) }}
-    // 
+    //
     <GridLayout
       onLayoutChange={onLayoutChange}
       compactType={null}
+      onDragStop={onDragStop}
+      allowOverlap={true}
       cols={cols}
       rowHeight={rowHeight}
       width={document.body.offsetWidth}
