@@ -62,6 +62,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
+    "analyzer":"npm run build:prod -- --stats && npx webpack-bundle-analyzer ./build/bundle-stats.json",
     "start": "react-app-rewired start",
     "build:uat": "env-cmd -f .env.uat react-app-rewired build",
     "build:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.prod react-app-rewired build",
