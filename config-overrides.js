@@ -2,7 +2,7 @@ const path = require('path');
 
 const lessVariables = require('./config.themeVariable');
 
-const { override, fixBabelImports, addLessLoader, setWebpackPublicPath, addWebpackAlias } = require('customize-cra');
+const { override, setWebpackOptimizationSplitChunks, fixBabelImports, addLessLoader, setWebpackPublicPath, addWebpackAlias } = require('customize-cra');
 
 const multipleEntry = require('react-app-rewire-multiple-entry')([
   {
@@ -31,6 +31,26 @@ const config = override(
     setWebpackPublicPath(process.env.REACT_APP_PUBLIC_PATH),
     addWebpackAlias({
       "~": path.resolve(__dirname, "./src"),
+    }),
+    setWebpackOptimizationSplitChunks({
+      "chunks": "all",
+      "name": false,
+      "maxSize": 307200,
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          // cacheGroupKey here is `commons` as the key of the cacheGroup
+          name(module, chunks, cacheGroupKey) {
+            const moduleFileName = module
+              .identifier()
+              .split('/')
+              .reduceRight((item) => item);
+            const allChunksNames = chunks.map((item) => item.name).join('~');
+            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+          },
+          chunks: 'all',
+        },
+      },
     }),
     multipleEntry.addMultiEntry
 );
