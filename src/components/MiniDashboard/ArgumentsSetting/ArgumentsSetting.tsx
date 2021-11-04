@@ -2,7 +2,7 @@ import { ClusterOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
 import { Button, Card, Input, Select, Tooltip } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, lazy } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
@@ -17,8 +17,8 @@ import BooleanArguments from './BooleanArguments';
 import ObjectArguments from './ObjectArguments';
 import RunningTimesModal from '~/components/MiniDashboard/RunningTimesModal';
 import HtmlSuffix from './HtmlSuffix';
-import MixedArguments from './MixedArguments';
 import classNames from 'classnames';
+
 
 interface Props {
     /**
@@ -235,6 +235,8 @@ const ArgumentsSetting: React.FC<Props> = ({
             suffix={!!item.html ? <HtmlSuffix /> : null}
         />
     };
+
+    const MixedArguments = useMemo(() => lazy(() => import(`./MixedArguments`)), []);
 
     return (
         <>
