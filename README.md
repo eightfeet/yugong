@@ -17,7 +17,9 @@
 
   [编辑器地址](https://www.eightfeet.cn/yugong/dashboard/#/project) 
   
-  [预览地址](https://www.eightfeet.cn/yugong/)
+  [本地预览地址](https://www.eightfeet.cn/yugong/)
+
+  [模拟项目访问地址](https://www.eightfeet.cn/yugong/?tpl=82)
 
 ## Documents
 
