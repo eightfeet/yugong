@@ -12,6 +12,18 @@
       "userId": 16,
       "createdAt": null,
       "updatedAt": "Fri Jul 16 2021 22:32:43 GMT+0800 (GMT+08:00)"
+    },
+    {
+      "id": 90,
+      "title": "幸运奖品等你拿",
+      "tag": "抽奖",
+      "terminal": "mobile",
+      "cove": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/1106183840675.png",
+      "describe": "签到抽奖,幸运奖品等你拿!",
+      "isPublic": 1,
+      "userId": 16,
+      "createdAt": null,
+      "updatedAt": "Fri Jul 16 2021 22:32:43 GMT+0800 (GMT+08:00)"
     }
   ],
   "limit": 1,
