@@ -19,7 +19,11 @@
   
   [本地预览地址](https://www.eightfeet.cn/yugong/)
 
-  [模拟项目访问地址](https://www.eightfeet.cn/yugong/?tpl=82)
+模拟项目:
+
+  [报名](https://www.eightfeet.cn/yugong/?tpl=82)
+
+  [抽奖](https://www.eightfeet.cn/yugong/?tpl=90)
 
 ## Documents
 

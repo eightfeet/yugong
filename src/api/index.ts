@@ -126,7 +126,7 @@ export interface queryTemplateByIdResult extends queryTemplateParams{
  */
 export function queryTemplateById(id:(number | string)): Promise<queryTemplateByIdResult> {
   if (isDemo) {
-    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo.json`);
+    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo/${id}.json`);
   }
   return request.get(`/api/template/${id}`);
 }
