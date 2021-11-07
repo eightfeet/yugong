@@ -19,9 +19,10 @@
   
   [本地预览地址](https://www.eightfeet.cn/yugong/)
 
-模拟项目:
+模拟项目(请手机扫描访问):
 
-  [报名](https://www.eightfeet.cn/yugong/?tpl=82)
+  ![Minion](./documents/template/baoming.png)
+  ![Minion](./documents/template/choujiang.png)
 
   [抽奖](https://www.eightfeet.cn/yugong/?tpl=90)
 
