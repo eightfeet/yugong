@@ -22,7 +22,7 @@
 模拟项目(请手机扫描访问):
 
   ![Minion](./documents/template/baoming.png)
-  ![Minion](./documents/template/choujiang.png)
+  ![Minion](./documents/template/choujiaNg.png)
 
   [抽奖](https://www.eightfeet.cn/yugong/?tpl=90)
 
