@@ -24,8 +24,6 @@
   ![Minion](./documents/template/baoming.png)
   ![Minion](./documents/template/choujiang.png)
 
-  [抽奖](https://www.eightfeet.cn/yugong/?tpl=90)
-
 ## Documents
 
 [概要](./documents/introduce/README.md)
