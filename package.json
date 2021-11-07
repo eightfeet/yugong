@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
-    "@byhealth/lottery": "^1.2.36",
+    "@byhealth/lottery": "^1.2.37",
     "@eightfeet/loading": "^2.0.4",
     "@eightfeet/message": "^2.0.21",
     "@eightfeet/modal": "^2.2.23",
@@ -62,7 +62,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "analyzer":"npm run build:prod -- --stats && npx webpack-bundle-analyzer ./build/bundle-stats.json",
+    "analyzer": "npm run build:prod -- --stats && npx webpack-bundle-analyzer ./build/bundle-stats.json",
     "start": "react-app-rewired start",
     "build:uat": "env-cmd -f .env.uat react-app-rewired build",
     "build:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.prod react-app-rewired build",

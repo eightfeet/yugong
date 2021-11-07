@@ -8,9 +8,11 @@ theme.GameTheme = {
     },
     cardInside: {
         borderRadius: '0.2em',
+        backgroundColor: 'none',
     },
     cardCover: {
         borderRadius: '0.2em',
+        backgroundColor: 'none',
     },
     cardSelected: {
         width: '108%',

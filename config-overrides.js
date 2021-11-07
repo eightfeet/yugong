@@ -14,7 +14,7 @@ const {
 const multipleEntry = require('react-app-rewire-multiple-entry')([
     {
         entry: 'src/dashboard/index.tsx',
-        outPath: '/dashboard/index.html',
+        outPath: '/dashboard/yugong.html',
     },
     {
         entry: 'src/index.tsx',
