@@ -17,9 +17,12 @@
 
   [编辑器地址](https://www.eightfeet.cn/yugong/dashboard/#/project) 
   
-  [预览地址](https://www.eightfeet.cn/yugong/)
+  [本地预览地址](https://www.eightfeet.cn/yugong/)
 
-  ![Minion](./documents/introduce/dashboard.png)
+模拟项目(请手机扫描访问):
+
+  ![Minion](./documents/template/baoming.png)
+  ![Minion](./documents/template/choujiang.png)
 
 ## Documents
 
@@ -36,6 +39,8 @@
 + [运行脚本](./documents/script/README.md)
 
 + [组件开发](./documents/component/README.md)
+  
+  ![Minion](./documents/introduce/dashboard.png)
 
 ## 编辑器
 

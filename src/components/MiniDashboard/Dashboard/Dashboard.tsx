@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo, lazy } from 'react';
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from './Dashboard.module.less';
 import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, Dispatch } from '~/redux/store';
 import StyleController from '../StyleController';
 import usePostMessage from '~/hooks/usePostMessage';
-import CodeEditor from '../CodeEditor';
+
 import { v4 as uuidv4 } from 'uuid';
 import cloneDeep from 'lodash/cloneDeep';
 import useKeyDown from '~/hooks/useKeyDown';
@@ -203,6 +203,8 @@ const Dashboard: React.FC<Props> = () => {
             copyModule();
         }
     }, 'Enter');
+
+    const CodeEditor = useMemo(() => lazy(() => import(`../CodeEditor`)), []);
 
     return (
         <>
