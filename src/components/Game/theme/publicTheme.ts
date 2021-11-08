@@ -31,7 +31,9 @@ export const AddressModalTheme: ThemeItem = {
     footer,
     row: {},
     label: {},
-    input: {},
+    input: {
+        WebkitAppearance: 'none'
+    },
     textarea: {},
 };
 /**成功弹窗 */
