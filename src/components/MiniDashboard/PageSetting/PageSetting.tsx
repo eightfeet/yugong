@@ -29,6 +29,7 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import RunningTimesModal from "../RunningTimesModal";
 import BackgroundGroup from "../BackgroundGroup";
 import ReactJson from "react-json-view";
+import { StyleContext, StyleType } from "~/context/StyleContext";
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -93,13 +94,18 @@ const Pagesetting: React.FC<Props> = () => {
     [handleUpdatePage, pageData]
   );
 
-  const onChangeBg = useCallback(
-    (data: any) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.style = {
-        backgroundGroup: data
-      };
-      handleUpdatePage(optPageData);
+  const onChange = useCallback(
+    (
+      result: any,
+      type: StyleType
+    ) => {
+      if (type === 'backgroundGroup') {
+        const optPageData = cloneDeep(pageData);
+        optPageData.style = {
+          backgroundGroup: result
+        };
+        handleUpdatePage(optPageData);
+      }
     },
     [handleUpdatePage, pageData]
   );
@@ -223,6 +229,11 @@ const Pagesetting: React.FC<Props> = () => {
     e.stopPropagation();
     setShowRunningTimes(true);
   }, []);
+
+  const getDefaultData = useCallback(
+    (type: StyleType) => pageData.style?.backgroundGroup || {},
+    [pageData.style?.backgroundGroup]
+  );
 
   return (
     <>
@@ -368,18 +379,21 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
             </Row>
           ) : null}
+          <StyleContext.Provider
+            value={{
+              onChange,
+              getDefaultData
+            }}
+          >
           <Row gutter={4} className={s.row}>
             <Col span={24}>
               <div className={s.bg}>
-                <BackgroundGroup
-                    updateKey={"api"}
-                    onChange={onChangeBg}
-                    defaultData={pageData.style?.backgroundGroup || {}}
-                />
+                <BackgroundGroup />
               </div>
             </Col>
             <Col span={1} />
           </Row>
+          </StyleContext.Provider>
         </Panel>
         <Panel header="初始化Api" key="pagemount">
           <div className={s.apiwrap}>

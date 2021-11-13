@@ -1,10 +1,11 @@
 import { Row, Col } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import { UnitType } from "~/types/appData";
 import NumberInput from "../NumberInput";
 import UnitInput from "../UnitInput";
+import { StyleContext } from "~/context/StyleContext";
 import s from "./Transfrom.module.scss";
 
 interface DefautData {
@@ -16,32 +17,37 @@ interface DefautData {
   skewY?: number;
 }
 
-interface Props {
-  unit?: string;
-  onChange?: (result: DefautData) => void;
-  defaultDate?: DefautData;
-}
+interface Props {}
 
-const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
-  const [transfrom, setTransfrom] = useState<DefautData>({});
-  const moduleId = useSelector((state: RootState) => state.activationItem.moduleId)
+const Transfrom: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
+  const [transform, setTransform] = useState<DefautData>({});
+  const moduleId = useSelector(
+    (state: RootState) => state.activationItem.moduleId
+  );
 
   useEffect(() => {
-    setTransfrom({...(defaultDate || {})})
-  }, [defaultDate, moduleId])
+    setTransform({ ...(context.getDefaultData?.("transform") || {}) });
+  }, [context, moduleId]);
 
   const onChangeTransFrom = useCallback(
     (
-      type: "scale" | "rotate" | "translateX" | "translateY" | "skewX" | "skewY"
-    ) => (value: any) => {
-      console.log(type, value)
-      transfrom[type] = value;
-      setTransfrom({...transfrom});
-      if (onChange instanceof Function) {
-        onChange({...transfrom})
-      }
-    },
-    [onChange, transfrom]
+        type:
+          | "scale"
+          | "rotate"
+          | "translateX"
+          | "translateY"
+          | "skewX"
+          | "skewY"
+      ) =>
+      (value: any) => {
+        transform[type] = value;
+        setTransform({ ...transform });
+        if (context.onChange instanceof Function) {
+          context.onChange({ ...transform }, "transform");
+        }
+      },
+    [context, transform]
   );
   return (
     <>
@@ -53,8 +59,8 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="倍"
             min={0}
             max={100}
-            defaultValue={defaultDate?.scale}
-            onChange={onChangeTransFrom('scale')}
+            defaultValue={transform?.scale}
+            onChange={onChangeTransFrom("scale")}
           />
         </Col>
         <Col span={12}>
@@ -64,28 +70,28 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            defaultValue={defaultDate?.rotate}
-            onChange={onChangeTransFrom('rotate')}
+            defaultValue={transform?.rotate}
+            onChange={onChangeTransFrom("rotate")}
           />
         </Col>
       </Row>
       <Row className={s.row}>
         <Col span={12}>
-          <UnitInput 
+          <UnitInput
             label="平移X"
             min={-1000}
             max={1000}
-            defaultValue={(defaultDate?.translateX)}
-            onChange={onChangeTransFrom('translateX')}
+            defaultValue={transform?.translateX}
+            onChange={onChangeTransFrom("translateX")}
           />
         </Col>
         <Col span={12}>
-          <UnitInput 
+          <UnitInput
             label="平移Y"
             min={-1000}
             max={1000}
-            defaultValue={defaultDate?.translateY}
-            onChange={onChangeTransFrom('translateY')}
+            defaultValue={transform?.translateY}
+            onChange={onChangeTransFrom("translateY")}
           />
         </Col>
       </Row>
@@ -97,8 +103,8 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            defaultValue={defaultDate?.skewX}
-            onChange={onChangeTransFrom('skewX')}
+            defaultValue={transform?.skewX}
+            onChange={onChangeTransFrom("skewX")}
           />
         </Col>
         <Col span={12}>
@@ -108,8 +114,8 @@ const Transfrom: React.FC<Props> = ({ unit, defaultDate, onChange }) => {
             unit="deg"
             min={-360}
             max={360}
-            defaultValue={defaultDate?.skewY}
-            onChange={onChangeTransFrom('skewY')}
+            defaultValue={transform?.skewY}
+            onChange={onChangeTransFrom("skewY")}
           />
         </Col>
       </Row>

@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import Color from "../Color";
 import Select from "./Select";
 import s from "./Border.module.less";
@@ -8,21 +8,19 @@ import BorderRadius from "./BorderRadius";
 import { BorderTypesOfStyleItems } from "types/appData";
 import { RootState } from "~/redux/store";
 import { useSelector } from "react-redux";
+import { StyleContext } from "~/context/StyleContext";
 import UnitInput from "../UnitInput";
 
-interface Props {
-  onChange: (result: BorderTypesOfStyleItems) => void;
-  defaultDate?: BorderTypesOfStyleItems;
-  unit?: string;
-}
+interface Props {}
 
-const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
+const Border: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
   const [border, setBorder] = useState<BorderTypesOfStyleItems>({});
   const moduleId = useSelector((state:RootState) => state.activationItem.moduleId);
   useEffect(() => {
-    const data = defaultDate || {};
-    setBorder({...data});
-  }, [defaultDate, moduleId]);
+    const data = context.getDefaultData?.("border") || {};
+    data && setBorder(data);
+  }, [context, moduleId]);
 
   const onChangeBorder = useCallback(
     (type: string) => (value: any) => {
@@ -53,11 +51,11 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
       }
       const data = { ...border };
       setBorder(data);
-      if (onChange instanceof Function) {
-        onChange(data);
+      if (context.onChange instanceof Function) {
+        context.onChange(data, "border");
       }
     },
-    [border, onChange]
+    [border, context]
   );
 
   return (
@@ -124,7 +122,7 @@ const Border: React.FC<Props> = ({ unit, onChange, defaultDate }) => {
               border.radiusBottomRight,
               border.radiusBottomLeft,
             ]}
-            unit={unit}
+            unit={context.unit}
           />
         </Col>
         <Col span={2}></Col>

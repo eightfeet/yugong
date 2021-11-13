@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Row, Col } from "antd";
 import { Radio, Checkbox } from "antd";
 
@@ -11,6 +11,7 @@ import {
   ItalicOutlined,
   StrikethroughOutlined,
 } from "@ant-design/icons";
+import { StyleContext } from "~/context/StyleContext";
 import s from "./Font.module.scss";
 import Color from "../Color";
 import { FontTypesOfStyleItems } from "types/appData";
@@ -18,11 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import UnitInput from "../UnitInput";
 
-interface Props {
-  onChange: (result: FontTypesOfStyleItems) => void;
-  defaultData?: FontTypesOfStyleItems;
-  unit?: string;
-}
+interface Props {}
 
 type ChangeType =
   | "color"
@@ -35,7 +32,8 @@ type ChangeType =
   | "fontStyle"
   | "align";
 
-const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
+const Font: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
   const [fontData, setFontData] = useState<FontTypesOfStyleItems>({});
   const {
     fontSize,
@@ -52,9 +50,8 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
   );
 
   useEffect(() => {
-    const data: FontTypesOfStyleItems = { ...(defaultData || {}) };
-    setFontData(data);
-  }, [defaultData, moduleId]);
+    setFontData(context.getDefaultData?.("font") || {});
+  }, [context, moduleId]);
 
   const onChangeFont = useCallback(
     (type: ChangeType) => (data: any) => {
@@ -77,15 +74,17 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         }
       }
       if (type === "color") {
-        value = (value.value && `rgba(${data.value.rgb.r}, ${data.value.rgb.g}, ${data.value.rgb.b}, ${data.value.rgb.a})`);
+        value =
+          value.value &&
+          `rgba(${data.value.rgb.r}, ${data.value.rgb.g}, ${data.value.rgb.b}, ${data.value.rgb.a})`;
       }
       fontData[type] = value;
       setFontData({ ...fontData });
-      if (onChange instanceof Function) {
-        onChange(fontData);
+      if (context.onChange instanceof Function) {
+        context.onChange(fontData, "font");
       }
     },
-    [fontData, onChange]
+    [context, fontData]
   );
 
   return (
@@ -141,7 +140,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
         <Col span={12}>
-          <UnitInput 
+          <UnitInput
             label="字体大小"
             min={0}
             max={100000}
@@ -152,7 +151,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       </Row>
       <Row className={s.row}>
         <Col span={12}>
-          <UnitInput 
+          <UnitInput
             label="行间距"
             min={0}
             max={100000}
@@ -161,7 +160,7 @@ const Font: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           />
         </Col>
         <Col span={12}>
-          <UnitInput 
+          <UnitInput
             label="字间距"
             min={0}
             max={100000}
