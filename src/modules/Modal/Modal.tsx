@@ -12,7 +12,6 @@ import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Cancel from "~/components/Icon/Cancel";
-import styleCompiler from "~/compiler";
 
 export interface ModalProps extends AppDataElementsTypes {}
 

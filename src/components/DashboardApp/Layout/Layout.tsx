@@ -11,7 +11,6 @@ import s from "./Layout.module.less";
 import menus from "./../minu";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "~/redux/store";
-import Logo from '~/components/Logo';
 
 const { Header, Sider, Content } = Layout;
 

@@ -1,27 +1,27 @@
-import * as compiler from "./compiler";
-import { StyleItemsTypes } from "~/types/appData";
-import React from "react";
+import * as compiler from './compiler';
+import { StyleItemsTypes } from '~/types/appData';
+import React from 'react';
 
 function handler(styleGroup: StyleItemsTypes): {
   style: React.CSSProperties;
   strStyle: string;
 } {
-  if (Object.prototype.toString.call(styleGroup) !== "[object Object]")
-    return { style: {}, strStyle: "" };
+  if (Object.prototype.toString.call(styleGroup) !== '[object Object]')
+    return { style: {}, strStyle: '' };
   const descriptionKeys = [
-    "display",
-    "backgroundGroup",
-    "backgroundCommon",
-    "backgroundGradient",
-    "border",
-    "boxShadow",
-    "textShadow",
-    "font",
-    "transform",
+    'display',
+    'backgroundGroup',
+    'backgroundCommon',
+    'backgroundGradient',
+    'border',
+    'boxShadow',
+    'textShadow',
+    'font',
+    'transform',
   ];
   const compiledResult = {
     style: {},
-    strStyle: "",
+    strStyle: '',
   };
 
   const stringResult: any[] = [];
@@ -30,9 +30,9 @@ function handler(styleGroup: StyleItemsTypes): {
     const descriptionKey = descriptionKeys[index];
     const styleObj = styleGroup[descriptionKey];
     if (
-      (Object.prototype.toString.call(styleObj) !== "[object Object]" ||
+      (Object.prototype.toString.call(styleObj) !== '[object Object]' ||
         Object.keys(styleObj).length < 1) &&
-      Object.prototype.toString.call(styleObj) !== "[object Array]"
+      Object.prototype.toString.call(styleObj) !== '[object Array]'
     ) {
       continue;
     }
@@ -42,13 +42,13 @@ function handler(styleGroup: StyleItemsTypes): {
       string: string;
     } = {
       result: {},
-      string: "",
+      string: '',
     };
     switch (descriptionKey) {
-      case "display":
+      case 'display':
         generateStyle = compiler.display(styleObj);
         break;
-      case "backgroundGroup":
+      case 'backgroundGroup':
         generateStyle = compiler.backgroundGroup(styleObj);
         break;
       // case "backgroundGradient":
@@ -57,19 +57,19 @@ function handler(styleGroup: StyleItemsTypes): {
       // case "backgroundCommon":
       //   generateStyle = compiler.backgroundCommon(styleObj);
       //   break;
-      case "border":
+      case 'border':
         generateStyle = compiler.border(styleObj);
         break;
-      case "boxShadow":
+      case 'boxShadow':
         generateStyle = compiler.boxShadow(styleObj);
         break;
-      case "textShadow":
+      case 'textShadow':
         generateStyle = compiler.textShadow(styleObj);
         break;
-      case "font":
+      case 'font':
         generateStyle = compiler.font(styleObj);
         break;
-      case "transform":
+      case 'transform':
         generateStyle = compiler.transform(styleObj);
         break;
       default:
@@ -78,7 +78,7 @@ function handler(styleGroup: StyleItemsTypes): {
     compiledResult.style = { ...compiledResult.style, ...generateStyle.result };
     stringResult.push(generateStyle.string);
   }
-  compiledResult.strStyle = stringResult.join(" ");
+  compiledResult.strStyle = stringResult.join(' ');
   return compiledResult;
 }
 

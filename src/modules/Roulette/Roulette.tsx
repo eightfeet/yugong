@@ -385,16 +385,6 @@ const Roulette: Modules<RouletteProps> = (props) => {
     game?.core.lottery();
   }, [game]);
 
-  const showRecord = useCallback(() => {
-    game?.core.handleSaveAddress(
-      (res: any) => {
-        console.log("地址数据及", res);
-      },
-      () => {}
-    );
-    setClass(`${MId}_addressmodal`, userClass.addressModal);
-  }, [MId, game?.core, userClass.addressModal]);
-
   /**
    * 编辑弹窗样式时可视化弹窗
    * 做高频编辑防抖处理

@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { parse } from 'query-string';
 
-import Output from "~/components/Output";
-import useLocalStorage from "~/hooks/useLocalStorage";
-import usePostMessage from "~/hooks/usePostMessage";
-import { Dispatch, RootState } from "~/redux/store";
-import { queryTemplateById } from "~/api";
-import isType from "~/core/helper/isType";
+import Output from '~/components/Output';
+import useLocalStorage from '~/hooks/useLocalStorage';
+import usePostMessage from '~/hooks/usePostMessage';
+import { Dispatch, RootState } from '~/redux/store';
+import { queryTemplateById } from '~/api';
+import isType from '~/core/helper/isType';
 
 interface Props {}
 
@@ -23,13 +23,13 @@ const BeforeOutput: React.FC<Props> = () => {
   const [isPagedataReady, setIsPagedataReady] = useState(false);
 
   // 获取缓存的页面数据与模块数据
-  const [appDataLocalStoreData] = useLocalStorage("appData", null);
-  const [pageDataLocalStoreData] = useLocalStorage("pageData", null);
+  const [appDataLocalStoreData] = useLocalStorage('appData', null);
+  const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
 
   // 用于编辑模式下，观察编辑器通知，设置当前编辑路径
   const sendMessage = usePostMessage((data) => {
     const { tag, value } = data;
-    if (tag === "setCurrentEditorStylePath") {
+    if (tag === 'setCurrentEditorStylePath') {
       setCurrentEditorStylePath(value);
     }
   });
@@ -42,15 +42,15 @@ const BeforeOutput: React.FC<Props> = () => {
         setIsAppdataReady(true);
         sendMessage(
           {
-            tag: "updateAppData",
+            tag: 'updateAppData',
             value: appData,
           },
-          window.top
+          window.top,
         );
       }
     },
     [sendMessage, updateAppData],
-  )
+  );
 
   // 同步page数据
   const asyncPageData = useCallback(
@@ -60,42 +60,42 @@ const BeforeOutput: React.FC<Props> = () => {
         setIsPagedataReady(true);
         sendMessage(
           {
-            tag: "updatePage",
+            tag: 'updatePage',
             value: pageData,
           },
-          window.top
+          window.top,
         );
       }
     },
     [sendMessage, updatePage],
-  )
-  
+  );
+
   // 初始化App
-  const setApp = useCallback(
-    async () => {
-      
-      const { tpl } = parse(window.location.search);
-      let appDataRes, pageDataRes;
-      if (!tpl) {
-        appDataRes = appDataLocalStoreData || [];
-        pageDataRes = pageDataLocalStoreData || {};
-      } else {
-        const result = await queryTemplateById(tpl as string);
-        if (!isType(result, 'Object')) return;
-        const { appData='"[]"', pageData='"{}"' } = result;
-        appDataRes = JSON.parse(appData);
-        pageDataRes = JSON.parse(pageData);
-      }
-      asyncAppData(appDataRes);
-      asyncPageData(pageDataRes);
-    },
-    [appDataLocalStoreData, asyncAppData, asyncPageData, pageDataLocalStoreData],
-  )
+  const setApp = useCallback(async () => {
+    const { tpl } = parse(window.location.search);
+    let appDataRes, pageDataRes;
+    if (!tpl) {
+      appDataRes = appDataLocalStoreData || [];
+      pageDataRes = pageDataLocalStoreData || {};
+    } else {
+      const result = await queryTemplateById(tpl as string);
+      if (!isType(result, 'Object')) return;
+      const { appData = '"[]"', pageData = '"{}"' } = result;
+      appDataRes = JSON.parse(appData);
+      pageDataRes = JSON.parse(pageData);
+    }
+    asyncAppData(appDataRes);
+    asyncPageData(pageDataRes);
+  }, [
+    appDataLocalStoreData,
+    asyncAppData,
+    asyncPageData,
+    pageDataLocalStoreData,
+  ]);
 
   useEffect(() => {
     setApp();
-  }, [setApp])
-  
+  }, [setApp]);
 
   // 底层数据将完全准备就绪，再放行App！
   if (!isAppdataReady || !isPagedataReady || !pageData) {

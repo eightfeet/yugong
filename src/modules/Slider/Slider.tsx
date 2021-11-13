@@ -1,23 +1,30 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppDataElementsTypes, ArgumentsArray, ArgumentsBoolean, ArgumentsNumber } from "~/types/appData";
-import Swiper, { Autoplay } from "swiper";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  AppDataElementsTypes,
+  ArgumentsArray,
+  ArgumentsBoolean,
+  ArgumentsNumber,
+} from '~/types/appData';
+import Swiper, { Autoplay } from 'swiper';
 import SwiperCore, {
   Navigation,
   Pagination,
   Scrollbar,
   Lazy,
-} from "swiper/core";
-import "swiper/swiper-bundle.min.css";
-import { Modules } from "~/types/modules";
-import Wrapper from "../Wrapper";
-import isUrl from "~/core/helper/isUrl";
-import s from "./Slider.module.less";
-import useStyles from "./Slider.useStyles";
-import config from "./Slider.config";
-import classNames from "classnames";
-import requester from "~/core/fetch";
-import { getArguments, getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
-import useLifeCycle from "~/hooks/useLifeCycle";
+} from 'swiper/core';
+import 'swiper/swiper-bundle.min.css';
+import { Modules } from '~/types/modules';
+import Wrapper from '../Wrapper';
+import isUrl from '~/core/helper/isUrl';
+import s from './Slider.module.less';
+import useStyles from './Slider.useStyles';
+import config from './Slider.config';
+import classNames from 'classnames';
+import {
+  getArguments,
+  getArgumentsItem,
+} from '~/core/getArgumentsTypeDataFromDataSource';
+import useLifeCycle from '~/hooks/useLifeCycle';
 
 export interface SliderProps extends AppDataElementsTypes {}
 
@@ -50,30 +57,38 @@ const Slider: Modules<SliderProps> = (props) => {
   const [hidePage, setHidePage] = useState(false);
   const [breakInterface, setBreakInterface] = useState(false);
   // ===================================eventEmitter事件定义=================================== //
-  const setData = useCallback((imageUrls: ArgumentsArray, imageLinks: ArgumentsArray) => {
-    const data: ImagesType[] = [];
-    const imageUrlsData = getArgumentsItem(imageUrls);
-    const imageLinksData = getArgumentsItem(imageLinks);
-    (imageUrlsData as any[])?.forEach((element: any, index: number) => {
-      data.push({
-        imageUrl: element,
-        imageLink: imageLinksData[index],
+  const setData = useCallback(
+    (imageUrls: ArgumentsArray, imageLinks: ArgumentsArray) => {
+      const data: ImagesType[] = [];
+      const imageUrlsData = getArgumentsItem(imageUrls);
+      const imageLinksData = getArgumentsItem(imageLinks);
+      (imageUrlsData as any[])?.forEach((element: any, index: number) => {
+        data.push({
+          imageUrl: element,
+          imageLink: imageLinksData[index],
+        });
       });
-    });
 
-    const result = data.filter((item) => isUrl(item.imageUrl || "")) || [];
-    setImages(result);
-  }, []);
+      const result = data.filter((item) => isUrl(item.imageUrl || '')) || [];
+      setImages(result);
+    },
+    [],
+  );
 
   const setSlider = useCallback(
     (
       navigation: ArgumentsBoolean,
       pagination: ArgumentsBoolean,
       delay: ArgumentsNumber,
-      disableOnInteraction: ArgumentsBoolean
+      disableOnInteraction: ArgumentsBoolean,
     ) => {
-      const data = getArguments([navigation, pagination, delay, disableOnInteraction]);
-  
+      const data = getArguments([
+        navigation,
+        pagination,
+        delay,
+        disableOnInteraction,
+      ]);
+
       if (data.delay && data.delay > 0) {
         setDelay(data.delay);
       } else {
@@ -89,16 +104,21 @@ const Slider: Modules<SliderProps> = (props) => {
       if (data.pagination === 1) setHidePage(true);
       if (data.pagination === 2) setHidePage(false);
     },
-    [setDelay]
+    [setDelay],
   );
 
-  const [,eventEmitter] = useLifeCycle(moduleId, {mount: '初始化', unmount: '卸载'}, {setData, setSlider}, api?.find((item) => item.apiId === "init"))
+  const [, eventEmitter] = useLifeCycle(
+    moduleId,
+    { mount: '初始化', unmount: '卸载' },
+    { setData, setSlider },
+    api?.find((item) => item.apiId === 'init'),
+  );
 
   // ===================================定义组件方法=================================== //
   //向eventEmitter注册事件，向外公布
   useMemo(() => {
-    eventEmitter.addEventListener("setData", setData);
-    eventEmitter.addEventListener("setSlider", setSlider);
+    eventEmitter.addEventListener('setData', setData);
+    eventEmitter.addEventListener('setSlider', setSlider);
   }, [eventEmitter, setData, setSlider]);
 
   const onClickImg = useCallback(
@@ -107,7 +127,7 @@ const Slider: Modules<SliderProps> = (props) => {
         window.location.href = item.imageLink;
       }
     },
-    []
+    [],
   );
 
   // 初始化组件参数
@@ -129,7 +149,7 @@ const Slider: Modules<SliderProps> = (props) => {
 
     if (hidePage === false) {
       params.pagination = {
-        el: ".swiper-pagination",
+        el: '.swiper-pagination',
         clickable: true,
       };
     }
@@ -168,23 +188,23 @@ const Slider: Modules<SliderProps> = (props) => {
     <Wrapper {...props} maxWidth maxHeight>
       <div
         className={classNames(
-          "swiper-container",
+          'swiper-container',
           s.swipercontainer,
-          `${prefix}container`
+          `${prefix}container`,
         )}
       >
         <div className="swiper-wrapper">
           {images?.map((item, index) => (
             <div
               className={classNames(
-                "swiper-slide",
+                'swiper-slide',
                 s.swiperslide,
-                useClass.slideItem
+                useClass.slideItem,
               )}
               key={`${moduleId}-slideContent-${index}`}
               onClick={onClickImg(item)}
             >
-              <img src={item.imageUrl || ""} alt={`${index}`} />
+              <img src={item.imageUrl || ''} alt={`${index}`} />
             </div>
           ))}
         </div>
@@ -211,8 +231,8 @@ const Slider: Modules<SliderProps> = (props) => {
         {hidePage ? null : (
           <div
             className={classNames(
-              "swiper-pagination",
-              useClass.swiperPagination
+              'swiper-pagination',
+              useClass.swiperPagination,
             )}
           ></div>
         )}
