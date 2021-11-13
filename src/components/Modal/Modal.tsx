@@ -114,7 +114,7 @@ const Modal: React.FC<Props> = ({
         
         if (className && dom) dom.className = className;
         if (shouldCloseOnOverlayClick && dom) {
-          const overDom: any = dom.querySelector(`.${dialogBox.state.id}_overlay`);
+          const overDom: any = dom?.querySelector(`.${dialogBox.state.id}_overlay`);
           if (overDom) {
             overDom.onclick = () => {
               dialogBox.hide(false);
