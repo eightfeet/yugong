@@ -19,7 +19,7 @@
   
   [本地预览地址](https://www.eightfeet.cn/yugong/)
 
-模拟项目(请手机扫描访问):
+模拟项目(请手机扫描访问): 
 
   ![avatar][报名]
   ![avatar][抽奖]
