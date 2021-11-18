@@ -10,7 +10,7 @@
 5. 初始化[页面配置](#页面配置)
 6. 渲染页面与组件
 
-![Minion](./page.drawio.svg)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/page/page.drawio.svg)
 
 ---
 
@@ -19,9 +19,9 @@
 
 进入编辑器从顶部菜单中点击“页面”按钮即可打开页面编辑面板
 
-![Minion](./page.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/page/page.png)
 <br />
-![Minion](./pageset.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/page/pageset.png)
 
 + 基本信息
   > 基本信息包含页面标题、栅格数据、单位与背景样式
@@ -90,30 +90,30 @@
 
     延时等待,可设置等待时间
 
-    ![Minion](./xm.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/page/xm.png)
 
   + **页面重定向**
 
     使当前页面跳转到新的页面
 
-    ![Minion](./redirect.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/page/redirect.png)
 
   + **百度页面统计**
 
     增加百度页面统计
     > 此方法仅设置有百度统计代码才生效
 
-    ![Minion](./bdurl.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/page/bdurl.png)
 
   + **百度事件统计**
 
     增加百度事件统计
     > 此方法仅设置有百度统计代码才生效
 
-    ![Minion](./bdenv.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/page/bdenv.png)
 
   + **消息广播**
 
     条件成立时向全局发布一条提示消息
 
-    ![Minion](./msg.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/page/msg.png)

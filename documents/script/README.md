@@ -9,9 +9,9 @@
 
 运行时是app运行时的数据池,是一份全局数据,供运行环境任何可以引用的地方使用;
 
-在页面面板右上角、设置面版右上角的、参数面板的左上角都能看到图标 ![图片](./runicon.png) 点击即可以打开运行时面板:
+在页面面板右上角、设置面版右上角的、参数面板的左上角都能看到图标 ![图片](https://www.eightfeet.cn/yugong/images/documents/script/runicon.png) 点击即可以打开运行时面板:
 
-![图片](./runningtime.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/runningtime.png)
 
 运行时默认包含下面数据
 
@@ -35,7 +35,7 @@
 
 **编辑条目末尾有`html`标示时说明当前条目支持`html`标签:** 
 
-![图片](./html.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/html.png)
 
 ### {{}}取数规则
 
@@ -56,7 +56,7 @@
 
 我们可以通过如下方式来获取:
 
-![图片](./getdata.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/getdata.png)
 
 > 这里要注意,`{{}}`的root数据之乡的是runningTimes,所以在写`屏幕宽度={{window.width}}`不用写成`{{runningTimes.window.width}}`,而且`{{}}`的取数规则也仅能取到runningTimes下的数据,
 
@@ -64,7 +64,7 @@
 
 js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval#readme)来实现的，为了安全起见，运行上下文context仅仅包含了`{runningTimes, dayjs, data(Api提供的数据，仅在接口请求时存在)}`,用于处理简单的目运算，或其他数据的格式化等,比如用`dayjs`去格式化一个时间,也可以`js{{runningTimes.window.width <= 767 ? '移动设备' : '非移动设备'}}`
 
-![图片](./js.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/js.png)
 
 在`js{{}}`中,我们知道 
 ```javascript
@@ -102,11 +102,11 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 下面以滚动播报的例子进一步说明Api配置中的数据规则
 
-![图片](./ex.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/ex.png)
 
 我们在页面初始化时为滚动播报组件准备数据，页面>初始化Api面板中准备好接口与参数，
 
-![图片](./exapi.png)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/exapi.png)
 
 这样就获得了需要轮播的数据，但此时我们查看下滚动播报组件的帮助文档知道支持的数据格式为
 
@@ -145,7 +145,7 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 1. 完成Api数据请求后在Api设置面板上点击`+结果转换/映射`新增一条映射规则，通过映射规则程序遍历数组，将数组的每一项按映射规则转换：
    
-   ![图片](./map.png)
+   ![图片](https://www.eightfeet.cn/yugong/images/documents/script/map.png)
 
    点击映射关系建立数据转换关系，输入新增属性`message`点击`+确定`,
    
@@ -163,7 +163,7 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
     '恭喜会员' + data.memberName.slice(0,1) + '** 抽中 ' + data.prizeName
    ```
 
-   ![图片](./mapdetail.png)
+   ![图片](https://www.eightfeet.cn/yugong/images/documents/script/mapdetail.png)
 
    点击确定后，上下文`data`的数据将从`data.responst`里map出一个`winnerInfo`出来
 
@@ -181,11 +181,11 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
    
    将Api返回数据发布到runningTimes
 
-   ![图片](./publish.png)
+   ![图片](https://www.eightfeet.cn/yugong/images/documents/script/publish.png)
 
    点击将结果发布到全局下的`success`按钮，
 
-   ![图片](./successpublish.png)
+   ![图片](https://www.eightfeet.cn/yugong/images/documents/script/successpublish.png)
 
    点击新增字段，将`winnerInfo`发布到`runningTimes`;
 
@@ -217,7 +217,7 @@ js 表达式规则是通过[safer-eval](https://github.com/commenthol/safer-eval
 
 3. 将数据应用到组件，在组件的设置中将`winnerInfo`应用到数据中，配置好样式即可：
 
-![图片](./record.gif)
+![图片](https://www.eightfeet.cn/yugong/images/documents/script/record.gif)
    
 
 

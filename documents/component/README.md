@@ -26,11 +26,11 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
 - ### 在页面中引入组建
   
-    ![图片](./module.png)
+    ![图片](https://www.eightfeet.cn/yugong/images/documents/component/module.png)
 
     在编辑器左上角的菜单上点击 ` +组件 `弹出组件模块面板,在面板中将组件拖入到页面中即可引入组件,
 
-    ![图片](./display.png)
+    ![图片](https://www.eightfeet.cn/yugong/images/documents/component/display.png)
     
 
 ---
@@ -62,7 +62,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
   
   组件目录下创建一个`README.md`文件,yugong会在编辑面板中点击`帮助`按钮弹出markdown帮助文档.
 
-  ![图片](./configboard.png)
+  ![图片](https://www.eightfeet.cn/yugong/images/documents/component/configboard.png)
 ---
 ## 设计一个按钮组件
 
@@ -78,7 +78,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
 4. 最后我们应该提供编辑按钮样式的能力,我们需要对按钮的`normal`(常态样式) `active`(激活样式) `disabled`(禁用样式) `focus`(获取焦点样式) `hover`(经过样式) 定义
 
-    ![图片](./design.drawio.svg)
+    ![图片](https://www.eightfeet.cn/yugong/images/documents/component/design.drawio.svg)
 
  ### 发布事件
 
@@ -161,7 +161,7 @@ yugong组件,模块是组装页面的基本元素存放于`src/modules`目录下
 
 关于module的事件与方法，都会通过顶层EventEmitter（事件流的处理器）来处理，工作流程如下图
 
-![事件流处理器](./eventEmitter.drawio.svg)
+![事件流处理器](https://www.eightfeet.cn/yugong/images/documents/component/eventEmitter.drawio.svg)
 
 对于按钮来说setButton方法就够用了。接下来我们定义Api。
 
