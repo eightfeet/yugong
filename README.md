@@ -1,4 +1,4 @@
-![Minion](./public/images/flow/logo.svg)
+![Minion](https://www.eightfeet.cn/yugong/images/flow/logo.svg)
 
 ## CodingFarmes
 愚公码农😄
@@ -21,8 +21,9 @@
 
 模拟项目(请手机扫描访问): 
 
-  ![Minion](./documents/template/baoming.png)
-  ![Minion](./documents/template/choujiang.png)
+
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/baoming.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/choujiang.png)
 
 ## Documents
 
@@ -40,7 +41,7 @@
 
 + [组件开发](./documents/component/README.md)
   
-  ![Minion](./documents/introduce/dashboard.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/dashboard.png)
 
 ## 编辑器
 
@@ -52,7 +53,7 @@
 2. 每个模块组件在EventEmitter注册需要暴露出来的方法;
 3. 组件通过事件向EventEmitter调度任何模块组件注册的方法,实现模块组件的相互作用;
 
-![Minion](./public/images/flow/core.drawio.svg)
+![Minion](https://www.eightfeet.cn/yugong/images/flow/core.drawio.svg)
 
 ## Api配置化
 
@@ -64,4 +65,4 @@ yugong是一套赠倾向于前端项目,但允许通过api配置化去对接中�
 
 为了复用一些列复杂性的配置,yugong主要功能在客户端，所以并不过多的关注服务端，服务端仅保存了最基本的用户信息、模板信息，以及用户对应的模板关系。每个用户都可以创建自己的项目/模板，当然每个用户可以把个人模板发布为公共模板，以共享烦杂的模板配置信息；
 
-![Minion](./public/images/flow/template.drawio.svg)
+![Minion](https://www.eightfeet.cn/yugong/images/flow/template.drawio.svg)
