@@ -57,7 +57,7 @@ const Upload: React.FC<UploadProps> = ({
   // 获取文件宽高属性
   const getTempImgWH = useCallback(
     () => {
-      const image= (ref.current as any).querySelector('img');
+      const image= (ref.current as any)?.querySelector('img');
       if (image) {
         const str = `宽:${image.offsetWidth}px 高:${image.offsetHeight}px`;
         setWh(str);

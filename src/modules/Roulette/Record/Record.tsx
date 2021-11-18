@@ -24,7 +24,7 @@ const Record:React.FC<Props> = ({
     classNameGroup
 }) => {
     
-    const [list, setList] = useState<(PrizeTypes | any)[]>([1,2,3,4,5,6,7])
+    const [list] = useState<(PrizeTypes | any)[]>([1,2,3,4,5,6,7])
     
     return (
         <Modal id={`${id}_record`} visible={visible}>

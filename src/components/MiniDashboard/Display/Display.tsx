@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Row, Col } from "antd";
 import Select from "./../Select";
 import s from "./Display.module.scss";
@@ -8,11 +8,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
 import Spacing from "../Spacing";
 import UnitInput from "../UnitInput";
+import { StyleContext } from "~/context/StyleContext";
 
 interface Props {
-  onChange: (result: DisplayTypesOfStyleItems) => void;
-  defaultData?: DisplayTypesOfStyleItems;
-  unit?: string;
 }
 
 type ChangeType =
@@ -29,7 +27,9 @@ type ChangeType =
   | "overflow"
   | "pointerEvents";
 
-const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
+const Display: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
+
   const [displayData, setDisplayData] = useState<DisplayTypesOfStyleItems>({});
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId
@@ -48,12 +48,12 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
     display,
     overflow,
     boxSizing,
-    pointerEvents
+    pointerEvents,
   } = displayData;
 
   useEffect(() => {
-    setDisplayData({ ...defaultData });
-  }, [defaultData, moduleId]);
+    setDisplayData(context.getDefaultData?.("display") || {});
+  }, [context, moduleId]);
 
   const onChangeDisplay = useCallback(
     (type: ChangeType) => (data: any) => {
@@ -64,16 +64,16 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         delete displayData.top;
         delete displayData.bottom;
       }
-      
-      if (!displayData.width && !displayData.height  ) {
-        delete displayData.boxSizing
+
+      if (!displayData.width && !displayData.height) {
+        delete displayData.boxSizing;
       }
       setDisplayData({ ...displayData });
-      if (onChange instanceof Function) {
-        onChange(displayData);
+      if (context.onChange instanceof Function) {
+        context.onChange(displayData, 'display');
       }
     },
-    [displayData, onChange]
+    [context, displayData]
   );
 
   const onChangeSpace = useCallback(
@@ -81,11 +81,11 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       const data: DisplayTypesOfStyleItems = { ...displayData };
       data[type] = value;
       setDisplayData(data);
-      if (onChange instanceof Function) {
-        onChange(data);
+      if (context.onChange instanceof Function) {
+        context.onChange(data, 'display');
       }
     },
-    [displayData, onChange]
+    [context, displayData]
   );
 
   const onChangeOption = useCallback(
@@ -93,11 +93,11 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
       const oprateData: DisplayTypesOfStyleItems = { ...displayData };
       oprateData[option] = value;
       setDisplayData(oprateData);
-      if (onChange instanceof Function) {
-        onChange(oprateData);
+      if (context.onChange instanceof Function) {
+        context.onChange(oprateData, 'display');
       }
     },
-    [displayData, onChange]
+    [context, displayData]
   );
 
   return (
@@ -156,7 +156,11 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
             placehold="请先设置宽高"
             label="尺寸限制"
             value={boxSizing}
-            optionsData={{ 'content-box': "自动扩展", 'border-box': "固定宽高", "": "无" }}
+            optionsData={{
+              "content-box": "自动扩展",
+              "border-box": "固定宽高",
+              "": "无",
+            }}
             onChange={onChangeDisplay("boxSizing")}
           />
         </Col>
@@ -183,7 +187,7 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           <Select
             label="事件响应"
             value={pointerEvents}
-            optionsData={{ auto: "自动", none: "不接受任何事件"}}
+            optionsData={{ auto: "自动", none: "不接受任何事件" }}
             onChange={onChangeDisplay("pointerEvents")}
           />
         </Col>
@@ -201,12 +205,12 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
           </Col>
           <Col span={12}>
             <UnitInput
-                defaultValue={right}
-                min={-100000}
-                max={100000}
-                onChange={onChangeOption("right")}
-                label="右定位"
-              />
+              defaultValue={right}
+              min={-100000}
+              max={100000}
+              onChange={onChangeOption("right")}
+              label="右定位"
+            />
           </Col>
         </Row>
       ) : null}
@@ -214,26 +218,26 @@ const Display: React.FC<Props> = ({ onChange, defaultData, unit }) => {
         <Row className={s.row}>
           <Col span={12}>
             <UnitInput
-                defaultValue={top}
-                min={-100000}
-                max={100000}
-                onChange={onChangeOption("top")}
-                label="上定位"
-              />
+              defaultValue={top}
+              min={-100000}
+              max={100000}
+              onChange={onChangeOption("top")}
+              label="上定位"
+            />
           </Col>
           <Col span={12}>
-          <UnitInput
-                defaultValue={bottom}
-                min={-100000}
-                max={100000}
-                onChange={onChangeOption("bottom")}
-                label="下定位"
-              />
+            <UnitInput
+              defaultValue={bottom}
+              min={-100000}
+              max={100000}
+              onChange={onChangeOption("bottom")}
+              label="下定位"
+            />
           </Col>
         </Row>
       ) : null}
       <Spacing
-        unit={unit}
+        unit={context.unit}
         onChange={onChangeSpace}
         margin={margin}
         padding={padding}

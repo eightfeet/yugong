@@ -212,7 +212,7 @@ const useStyles = (id: string, style: any, type: keyof GameMap) => {
   }, [id, style, type]);
 
   const setDom = useCallback(() => {
-    let style = headDom.querySelector(`#${id}_style`);
+    let style = headDom?.querySelector(`#${id}_style`);
     if (!style) {
       style = document.createElement("style");
       style.id = `${id}_style`;
@@ -224,7 +224,7 @@ const useStyles = (id: string, style: any, type: keyof GameMap) => {
   }, [createStyleParames, id]);
 
   const removeDom = useCallback(() => {
-    let style = headDom.querySelector(`#${id}_style`);
+    let style = headDom?.querySelector(`#${id}_style`);
     if (style) {
       headDom.removeChild(style);
     }

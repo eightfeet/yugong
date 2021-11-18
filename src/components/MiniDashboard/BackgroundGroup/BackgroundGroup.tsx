@@ -1,53 +1,56 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  BackgroundGroupListTypesOfStyleItems,
-  BackgroundGroupTypesOfStyleItems,
-} from "~/types/appData";
+import React, { useCallback, useEffect, useState, useContext } from "react";
+import { BackgroundGroupListTypesOfStyleItems } from "~/types/appData";
 import s from "./BackgroundGroup.module.less";
 import Color from "../Color";
 import BackgroundListHoc from "./BackgroundListHoc";
 import arrayMove from "array-move";
+import { StyleContext } from "~/context/StyleContext";
 
 interface Props {
-  updateKey: string;
-  onChange: (data: BackgroundGroupTypesOfStyleItems) => void;
-  defaultData: BackgroundGroupTypesOfStyleItems;
+  updateKey?: string;
 }
 
-const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
+const Backgroundgroup: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
+
   const [backgroundList, setBackgroundList] = useState<
     BackgroundGroupListTypesOfStyleItems[] | undefined
-  >(defaultData.backgroundList);
-  const [backgroundColor, setBackgroundColor] = useState<string | undefined>(
-    defaultData.backgroundColor
-  );
+  >();
+  const [backgroundColor, setBackgroundColor] = useState<string | undefined>();
 
   useEffect(() => {
+    const defaultData = context.getDefaultData?.("backgroundGroup") || {};
     setBackgroundList(defaultData.backgroundList);
     setBackgroundColor(defaultData.backgroundColor);
-  }, [defaultData])
+  }, [context]);
 
   const onPlus = useCallback(() => {
     const data = [...(backgroundList || []), {}];
     setBackgroundList(data);
-    onChange({
-      backgroundList: data,
-      backgroundColor: backgroundColor,
-    });
-  }, [backgroundColor, backgroundList, onChange]);
-
-  const onMinus = useCallback(
-    (index: number) =>  {
-      const data = backgroundList?.filter((_, i) => index !== i) || [];
-      setBackgroundList(data);
-      onChange({
+    context.onChange?.(
+      {
         backgroundList: data,
         backgroundColor: backgroundColor,
-      });
+      },
+      "backgroundGroup"
+    );
+  }, [backgroundColor, backgroundList, context]);
+
+  const onMinus = useCallback(
+    (index: number) => {
+      const data = backgroundList?.filter((_, i) => index !== i) || [];
+      setBackgroundList(data);
+      context.onChange?.(
+        {
+          backgroundList: data,
+          backgroundColor: backgroundColor,
+        },
+        "backgroundGroup"
+      );
     },
-    [backgroundColor, backgroundList, onChange]
+    [backgroundColor, backgroundList, context]
   );
 
   const onChangeItem = useCallback(
@@ -55,38 +58,51 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
       const oprateBackgroundList = [...(backgroundList || [])];
       oprateBackgroundList[index] = item;
       setBackgroundList(oprateBackgroundList);
-      onChange({
-        backgroundList: oprateBackgroundList,
-        backgroundColor: backgroundColor,
-      });
+      context.onChange?.(
+        {
+          backgroundList: oprateBackgroundList,
+          backgroundColor: backgroundColor,
+        },
+        "backgroundGroup"
+      );
     },
-    [backgroundColor, backgroundList, onChange]
+    [backgroundColor, backgroundList, context]
   );
 
-  const onChangeBackgroundColor = useCallback((result) => {
-    const color = result.value ? `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})` : undefined;
-    setBackgroundColor(color);
-    
-    onChange({
-        backgroundList: backgroundList,
-        backgroundColor: color,
-      });
-  }, [backgroundList, onChange]);
+  const onChangeBackgroundColor = useCallback(
+    (result) => {
+      const color = result.value
+        ? `rgba(${result.value.rgb.r}, ${result.value.rgb.g}, ${result.value.rgb.b}, ${result.value.rgb.a})`
+        : undefined;
+      setBackgroundColor(color);
+
+      context.onChange?.(
+        {
+          backgroundList: backgroundList,
+          backgroundColor: color,
+        },
+        "backgroundGroup"
+      );
+    },
+    [backgroundList, context]
+  );
 
   // 拖拽重新排序重置更新事件组数据
   const onSortEnd = useCallback(
-    ({oldIndex, newIndex}) => {
-      const items = [...(backgroundList || [])]
-       const result = arrayMove(items, oldIndex, newIndex);
-       console.log('result',result);
-       
-       onChange({
-        backgroundList: result,
-        backgroundColor: backgroundColor,
-      });
+    ({ oldIndex, newIndex }) => {
+      const items = [...(backgroundList || [])];
+      const result = arrayMove(items, oldIndex, newIndex);
+
+      context.onChange?.(
+        {
+          backgroundList: result,
+          backgroundColor: backgroundColor,
+        },
+        "backgroundGroup"
+      );
     },
-    [backgroundColor, backgroundList, onChange],
-  )
+    [backgroundColor, backgroundList, context]
+  );
   return (
     <>
       <Row className={s.row}>
@@ -103,7 +119,13 @@ const Backgroundgroup: React.FC<Props> = ({ defaultData, onChange }) => {
           </Button>
         </Col>
       </Row>
-      <BackgroundListHoc backgroundList={backgroundList} onChange={onChangeItem} onMinus={onMinus} onSortEnd={onSortEnd} useDragHandle  />
+      <BackgroundListHoc
+        backgroundList={backgroundList}
+        onChange={onChangeItem}
+        onMinus={onMinus}
+        onSortEnd={onSortEnd}
+        useDragHandle
+      />
     </>
   );
 };

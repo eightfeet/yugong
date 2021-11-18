@@ -3,8 +3,9 @@ import {
 } from "@ant-design/icons";
 import { Row, Col, Radio, Button } from "antd";
 import arrayMove from "array-move";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
+import { StyleContext, StyleType } from "~/context/StyleContext";
 import { RootState } from "~/redux/store";
 import { UnitType } from "~/types/appData";
 import s from "./Shadow.module.scss";
@@ -24,19 +25,10 @@ export interface BoxShadow extends TextShadow {
   inset?: boolean;
 }
 
-interface Props {
-  unit?: string;
-  onChange?: (data: {
-    type: "boxShadow" | "textShadow";
-    values: BoxShadow[];
-  }) => void;
-  defaultValue?: {
-    boxShadowList?: BoxShadow[];
-    textShadowList?: TextShadow[];
-  };
-}
+interface Props {}
 
-const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
+const Shadow: React.FC<Props> = () => {
+  const context = useContext(StyleContext);
   const [shadowType, setShadowType] = useState<"text" | "box">("box");
   const [textShadowList, setTextShadowList] = useState<TextShadow[]>([]);
   const [boxShadowList, setBoxShadowList] = useState<BoxShadow[]>([]);
@@ -46,8 +38,8 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
 
   // init DefaultData
   useEffect(() => {
-    let textShadowList = [...(defaultValue?.textShadowList || [])];
-    let boxShadowList = [...(defaultValue?.boxShadowList || [])];
+    let textShadowList: TextShadow[] = context.getDefaultData?.("textShadow") || [];
+    let boxShadowList: BoxShadow[] = context.getDefaultData?.("boxShadow") || [];
 
     textShadowList = textShadowList.map((item) => {
       item.hiddenItem = false;
@@ -61,7 +53,7 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
 
     setTextShadowList(textShadowList);
     setBoxShadowList(boxShadowList);
-  }, [defaultValue?.boxShadowList, defaultValue?.textShadowList, moduleId]);
+  }, [context, moduleId]);
 
   useEffect(() => {
     setShadowType("box");
@@ -73,16 +65,11 @@ const Shadow: React.FC<Props> = ({ unit, onChange, defaultValue }) => {
 
   const onChangeShadow = useCallback(
     (type: "box" | "text", values) => {
-      if (onChange instanceof Function) {
-        if (type === "text") {
-          onChange({ type: "textShadow", values });
-        }
-        if (type === "box") {
-          onChange({ type: "boxShadow", values });
-        }
+      if (context.onChange instanceof Function) {
+        context.onChange?.(values, `${type}Shadow` as StyleType)
       }
     },
-    [onChange]
+    [context]
   );
 
   const onPlus = useCallback(

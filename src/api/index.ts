@@ -1,5 +1,5 @@
-import request from "~/core/request";
-import { stringify } from "query-string";
+import request from '~/core/request';
+import { stringify } from 'query-string';
 
 const isDemo = process.env.REACT_APP_DEMO === 'true';
 
@@ -35,11 +35,9 @@ export interface createTemplateParams {
  * @param {createTemplateParams} params
  * @return {*}  {Promise<createTemplateResult>}
  */
-export function createTemplate(
-  params: createTemplateParams
-): Promise<number> {
+export function createTemplate(params: createTemplateParams): Promise<number> {
   const data: any = { ...params };
-  return request.post("/api/template", data);
+  return request.post('/api/template', data);
 }
 
 /**
@@ -49,9 +47,7 @@ export function createTemplate(
  * @param {createTemplateParams} params
  * @return {*}  {Promise<createTemplateResult>}
  */
- export function updateTemplate(
-  params: createTemplateParams
-): Promise<number> {
+export function updateTemplate(params: createTemplateParams): Promise<number> {
   const data: any = { ...params };
   return request.put(`/api/template/${data.id}`, data);
 }
@@ -99,7 +95,9 @@ export function queryTemplate(params: queryTemplateParams): Promise<{
   count: number;
 }> {
   if (isDemo) {
-    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demoRow.json`);
+    return request.get(
+      `${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demoRow.json`,
+    );
   }
   const query = stringify(params);
   return request.get(`/api/template?${query}`);
@@ -112,9 +110,9 @@ export function queryTemplate(params: queryTemplateParams): Promise<{
  * @interface queryTemplateByIdResult
  * @extends {queryTemplateParams}
  */
-export interface queryTemplateByIdResult extends queryTemplateParams{
-  pageData?: string,
-  appData?: string
+export interface queryTemplateByIdResult extends queryTemplateParams {
+  pageData?: string;
+  appData?: string;
 }
 
 /**
@@ -124,13 +122,16 @@ export interface queryTemplateByIdResult extends queryTemplateParams{
  * @param {((number | string))} id
  * @return {*}  {Promise<boolean>}
  */
-export function queryTemplateById(id:(number | string)): Promise<queryTemplateByIdResult> {
+export function queryTemplateById(
+  id: number | string,
+): Promise<queryTemplateByIdResult> {
   if (isDemo) {
-    return request.get(`${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo/${id}.json`);
+    return request.get(
+      `${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo/${id}.json`,
+    );
   }
   return request.get(`/api/template/${id}`);
 }
-
 
 /**
  * 删除模板
@@ -139,8 +140,8 @@ export function queryTemplateById(id:(number | string)): Promise<queryTemplateBy
  * @param {((number | string))} id 模板id
  * @return {*}  {Promise<boolean>}
  */
-export function deleteTemplate(id:(number | string)): Promise<boolean> {
-    return request.delete(`/api/template/${id}`)
+export function deleteTemplate(id: number | string): Promise<boolean> {
+  return request.delete(`/api/template/${id}`);
 }
 
 /**
@@ -150,8 +151,8 @@ export function deleteTemplate(id:(number | string)): Promise<boolean> {
  * @interface queryTagParams
  */
 export interface queryTagParams {
-  id?: number,
-  name?: string,
+  id?: number;
+  name?: string;
 }
 
 /**
@@ -163,7 +164,7 @@ export interface queryTagParams {
  */
 export function queryTag(params?: queryTagParams): Promise<queryTagParams[]> {
   const query = stringify(params || {});
-  return request.get(`/api/tag/${query}`)
+  return request.get(`/api/tag/${query}`);
 }
 
 export interface userResult {
@@ -178,10 +179,10 @@ export interface loginParams {
 /**
  * 用户登录
  * @param params username & password
- * @returns 
+ * @returns
  */
-export function login (params: loginParams): Promise<userResult> {
-  return request.post('/api/login', params)
+export function login(params: loginParams): Promise<userResult> {
+  return request.post('/api/login', params);
 }
 
 export interface registerParams {
@@ -192,23 +193,23 @@ export interface registerParams {
 /**
  * 用户注册
  * @param params 注册
- * @returns 
+ * @returns
  */
-export function register (params: registerParams): Promise<userResult> {
-  return request.post('/api/register', params)
+export function register(params: registerParams): Promise<userResult> {
+  return request.post('/api/register', params);
 }
 /**
- * 
+ *
  * @returns 退出
  */
-export function loginOut (): Promise<any> {
-  return request.post('/api/loginOut')
+export function loginOut(): Promise<any> {
+  return request.post('/api/loginOut');
 }
 
 /**
  * 同步用户信息
- * @returns 
+ * @returns
  */
-export function userSync (): Promise<userResult> {
-  return request.get('/api/userSync')
-} 
+export function userSync(): Promise<userResult> {
+  return request.get('/api/userSync');
+}

@@ -10,7 +10,7 @@ import useStyles from './Chart.useStyles';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import isType from '~/core/helper/isType';
-import { indexOf, isNumber } from 'lodash';
+import { isNumber } from 'lodash';
 
 export interface ChartProps extends AppDataElementsTypes {
     id: string;
@@ -47,7 +47,7 @@ const Chart:Modules<ChartProps> = (props) => {
     // inject class from jss
     const userClass = useStyles(style);
     // Register events and publish functions
-    const [eventsDispatch] = useLifeCycle(
+    useLifeCycle(
         moduleId,
         // register events
         {
