@@ -41,7 +41,7 @@
 
 + [组件开发](./documents/component/README.md)
   
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/dashboard.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/dashboard.png)
 
 ## 编辑器
 
