@@ -22,8 +22,8 @@
 模拟项目(请手机扫描访问): 
 
 
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/baoming.png)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/choujiang.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/baoming.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png)
 
 ## Documents
 
@@ -41,7 +41,7 @@
 
 + [组件开发](./documents/component/README.md)
   
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/dashboard.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/dashboard.png)
 
 ## 编辑器
 

@@ -18,7 +18,7 @@ yugong 是一套web低代码解决方案,根据用户需求yugong可订制或简
 
 ## 概要
 
-![Minion](./design.drawio.svg)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/design.drawio.svg)
 
 + 模版
 

@@ -1,0 +1,7 @@
+[0617/170656:ERROR:sandbox_policy_base.cc(379)] Failed to add sandbox rule. error = 2, subsystem = 0, semantics = 0, pattern = '\\wsl$\Ubuntu\home\eightfeet\works\2020\yugong\documents\apiConfig\debug.log'
+[0618/130855:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank
+[0618/130920:ERROR:sandbox_policy_base.cc(379)] Failed to add sandbox rule. error = 2, subsystem = 0, semantics = 0, pattern = '\\wsl$\Ubuntu\home\eightfeet\works\2020\yugong\documents\apiConfig\debug.log'
+[0618/130920:ERROR:child_process_launcher.cc(528)] Failed to launch child process
+[0618/130924:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank
+[0618/131001:ERROR:sandbox_policy_base.cc(379)] Failed to add sandbox rule. error = 2, subsystem = 0, semantics = 0, pattern = '\\wsl$\Ubuntu\home\eightfeet\works\2020\yugong\documents\apiConfig\debug.log'
+[0618/131001:ERROR:child_process_launcher.cc(528)] Failed to launch child process

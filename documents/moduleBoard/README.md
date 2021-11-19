@@ -15,7 +15,7 @@
   - [code(组件数据视图)](#code组件数据视图)
   - [其他工具(查看运行时变量,复制,删除)](#其他工具查看运行时变量复制删除)
 
-![Minion](./board.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/board.png)
 
 
 
@@ -25,14 +25,14 @@
 
 除了在编辑视图内选取要编辑的组件,也可以通过下拉快速切换要编辑的组件.
 
-![Minion](./select.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/select.png)
 
 ---
 ### 设置
 
 选择设置面板
 
-![Minion](./set.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/set.png)
 
 设置选项是对组件的事件方法与Api设置,面板包含了 "预设"、"事件"、"Api",其中
 - 预设
@@ -58,21 +58,21 @@
 
   事件配置就是用于建立起,组件之间相互通信的方法.比如A组件的某一事件要调用B组件的方法,那么就要在A组件的事件面板上配置好B组件的方法与参数.
 
-  ![Minion](./eventEmitter.drawio.svg)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/eventEmitter.drawio.svg)
 
 ### 事件面板
 
 展开事件面板,任何yugong组件至少包含有“初始化”和“卸载”两个事件,除此之外在组件的生命周期内还会暴露一些个性的事件
 
-![Minion](./event.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/event.png)
 
 - 点击`play`图标,即可手动执行已添加事件,编辑时有的事件(初始化)是不可逆的,点击此按钮可以手动执行当前事件下配置的模块方法,常用于检查事件配置是否正常;
 
-    ![Minion](./playadd.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/playadd.png)
 
 - 点击`+`图标即可为当前事件新增一项配置;
 
-    ![Minion](./rule.png)
+    ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/rule.png)
 
     配置项由左到右分别有”排序按钮↕️“、“模块选择”、“模块方法选择”、“参数设置按钮”、“移除按钮”;
 
@@ -91,14 +91,14 @@
 
 在页面事件和组件事件中我们都会要对定义的方法设置参数,Api也会对他设置参数.点击参数按钮即可打开参数面板;
 
-![Minion](./parames/setboard.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/setboard.png)
 
 我们以yugong的Api入参设置为例,打开面板如上图所示,点击左上角`增加`按钮即可添加参数.添加的参数都可以通过移除按钮将其移除;
 yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`runningtime`;
 
 - **string**
   
-  ![Minion](./parames/string.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/string.png)
 
   当类型选择为字符类型时,参数将被定义为字符类型,yugong有一套自身的数据描述来配置参数,其中字符串是这样描述的
 
@@ -114,7 +114,7 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 - **number**
   
-  ![Minion](./parames/number.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/number.png)
 
   数字类型与字符类似
 
@@ -130,7 +130,7 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 - **boolean**
   
-  ![Minion](./parames/boolean.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/boolean.png)
 
   boolean类型的描述类似下面,这里的描述将会返回`{{windowSize.ww}} > 375`的表达式;
 
@@ -152,7 +152,7 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 - **object**
   
-  ![Minion](./parames/object.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/object.png)
 
   对象类型可以通过`+确定`来新增属性,描述内容如下
 
@@ -175,7 +175,7 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 - **array**
   
-  ![Minion](./parames/array.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/array.png)
 
   数组类型将返回一个数组, 通过点击增加可以为数组添加子项
 
@@ -194,13 +194,13 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 - **mixed**
   
-  ![Minion](./parames/mixed.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/mixed.png)
 
   混合类型允许自由编辑数据内容,但是不支持`{{}}`脚本规则,点击“编辑”按钮可以编辑数据,编辑完成后请点击“保存”按钮
 
 - **runningTime**
   
-  ![Minion](./parames/runningtime.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/runningtime.png)
 
   运行时类型,允许将全局运行时的某一个数据作为参数,选择runningTime类型的时候runningTime的下一级数据将会以下拉菜单的形式展示在下面供选择;与mixed相同,runningTime也不支持`{{}}`脚本参数
 
@@ -209,14 +209,14 @@ yugong的参数包含有`string`,`number`,`boolean`,`object`,`array`,`mixed`,`ru
 
 ### 样式
 
-![Minion](./parames/style.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/style.png)
 
 样式编辑面板可以对选择组件的Dom元素的`布局`,`文字`,`背景`,`圆角与描边`,`投影`,`变换`进行编辑,我们将在[样式](./../styles/README.md)介绍中详细描述;
 
 
 ### code(组件数据视图)
 
-![Minion](./parames/code.png)
+![Minion](https://www.eightfeet.cn/yugong/images/documents/moduleBoard/parames/code.png)
 
 code面板主要是用于快捷查看当前组件数据配置情况,他能反应当前组件的全部数据配置情况,当然也可以在在这里做一些快捷编辑;
 
