@@ -827,3 +827,56 @@ export const transform = function (styleObj: objType): resultType {
     string: prefixResult.join(' '),
   };
 };
+
+
+const animatedata = [{
+  //动画名称
+  name: 'flip',
+  //持续时间
+  duration: '1000ms',
+  //速度曲线
+  // ease; 缓慢
+  // ease-in; 缓入
+  // ease-out; 缓出
+  // ease-in-out; 缓入缓出
+  // linear; 线性
+  // step-start; 步骤
+  // step-end;
+  timingFunction: 'cubic-bezier(0.250, 0.460, 0.450, 0.940)',
+  //延时
+  delay: '1000ms',
+  //播放次数
+  iterationCount: '4',
+  //播放方向
+  direction: 'normal,reverse,alternate,alternate-reverse',
+  //播放前后模式
+  fillMode: 'none,forwards,backwards,both',
+  //播放/暂停
+  playState: 'running,paused' 
+}]
+
+export const animate = function (styleObj: objType): resultType {
+  // -webkit-animation: text-pop-up-br 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	//         animation: text-pop-up-br 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  //         animation: text-pop-up-br 0.5s steps(2, end) infinite both;
+  //         animation: text-pop-up-br 0.5s steps(2, end) both;
+  const position: objType = {
+    name: 0,
+    duration: 1,
+    'timing-function': 2,
+    delay: 3,
+    'iteration-count': 4,
+    direction: 5,
+    'fill-mode': 6,
+    'play-state': 7
+    
+  };
+
+  const rules: any[] = [];
+  const unitType: string[] = ['name', 'shiftDown', 'shiftRight'];
+
+  return {
+    result: {},
+    string: '',
+  };
+}
