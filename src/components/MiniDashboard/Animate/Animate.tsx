@@ -61,7 +61,7 @@ const Animate: React.FC<Props> = ({}) => {
         <AnimationTimingFunction />
       </Row>
       <Row className={s.row}>
-        <AnimationIterationCount />
+        <AnimationIterationCount defaultValue={111} onChange={(data) => console.log(data)} />
       </Row>
       <Row className={s.row}>
         <Col span={12}>

@@ -13,32 +13,37 @@ const AnimationIterationCount: React.FC<Props> = ({
   onChange,
 }) => {
   // 接管默认值
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState<number>(0);
 
-  const [isInfinite, setIsInfinite] = useState(false);
+  const [isInfinite, setIsInfinite] = useState<boolean>(false);
 
   useEffect(() => {
     if (defaultValue === 'infinite') {
       setIsInfinite(true);
-      if (typeof onChange === 'function') onChange('infinite');
     } else {
-      setValue(defaultValue);
-      if (typeof onChange === 'function' && value) onChange(value);
+      setIsInfinite(false);
+      setValue(Number(defaultValue) || 0);
     }
-  }, [defaultValue, onChange, value]);
+  }, [defaultValue]);
 
   const handleInfinite = useCallback(() => {
     setIsInfinite((isInfinite) => {
+      if (typeof onChange === 'function') {
+        if (!isInfinite === true) {
+          onChange('infinite');
+        } else {
+          onChange(value || 0);
+        }
+      }
       return !isInfinite;
     });
+  }, [value, onChange]);
+
+  const onChangeNum = useCallback((data) => {
+    if (typeof onChange === 'function') onChange(data as number);
+    setValue(data);
   }, []);
 
-  const onChangeNum = useCallback(
-    (data: any) => {
-      if (typeof onChange === 'function') onChange(data);
-    },
-    [onChange],
-  );
   return (
     <>
       <Col span={12}>
@@ -47,7 +52,7 @@ const AnimationIterationCount: React.FC<Props> = ({
           placeholder="定义动画播放次数"
           unit="次"
           min={0}
-          defaultValue={value}
+          defaultValue={Number(value) || undefined}
           onChange={onChangeNum}
           disabled={isInfinite}
         />
