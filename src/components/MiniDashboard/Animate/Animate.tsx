@@ -58,7 +58,7 @@ const Animate: React.FC<Props> = ({}) => {
         </Col>
       </Row>
       <Row className={s.row}>
-        <AnimationTimingFunction />
+        <AnimationTimingFunction defaultValue={'111'} onChange={(data) => console.log(data)} />
       </Row>
       <Row className={s.row}>
         <AnimationIterationCount defaultValue={111} onChange={(data) => console.log(data)} />
