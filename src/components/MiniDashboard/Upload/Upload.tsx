@@ -126,7 +126,7 @@ const Upload: React.FC<UploadProps> = ({
           <div className={s.button}>
             <UploadPic
               accept=".jpg,.jpeg,.png"
-              action={`https://wx-test1.by-health.com/commonservice/api/upload`}
+              action={process.env.REACT_APP_UPLOAD_PATH}
               onChange={onChangeUpload}
               showUploadList={false}
               disabled={isloading}

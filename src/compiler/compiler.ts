@@ -869,11 +869,9 @@ export const animate = function (styleObj: objType): resultType {
     direction: 5,
     'fill-mode': 6,
     'play-state': 7
-    
   };
 
   const rules: any[] = [];
-  const unitType: string[] = ['name', 'shiftDown', 'shiftRight'];
 
   return {
     result: {},

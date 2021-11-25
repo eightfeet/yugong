@@ -4,7 +4,7 @@
  * Copyright © 2016-present By-Health Co Ltd. All rights reserved.
  */
 const cachedScripts: {
-  [url: string]: Promise<void>;
+  [url: string]: Promise<void> | undefined;
 } = {};
 
 /**
