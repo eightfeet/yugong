@@ -14,7 +14,7 @@ import Transform from "../Transfrom";
 import BackgroundGroup from "../BackgroundGroup";
 
 import { StyleContext, StyleType } from "~/context/StyleContext";
-import Animate from "../Animate";
+import Animation from "../Animation";
 
 const { Panel } = Collapse;
 
@@ -70,7 +70,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
               <Transform />
             </Panel>
             <Panel header="动画" key="animate">
-              <Animate />
+              <Animation />
             </Panel>
           </Collapse>
         ) : null}

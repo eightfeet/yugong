@@ -2,6 +2,7 @@ import React from "react";
 
 export type StyleType =
   | "transform"
+  | "animation"
   | "border"
   | "boxShadow"
   | "textShadow"

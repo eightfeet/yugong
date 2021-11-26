@@ -39,10 +39,13 @@ const AnimationIterationCount: React.FC<Props> = ({
     });
   }, [value, onChange]);
 
-  const onChangeNum = useCallback((data) => {
-    if (typeof onChange === 'function') onChange(data as number);
-    setValue(data);
-  }, []);
+  const onChangeNum = useCallback(
+    (data) => {
+      if (typeof onChange === 'function') onChange(data as number);
+      setValue(data);
+    },
+    [onChange],
+  );
 
   return (
     <>
@@ -59,7 +62,8 @@ const AnimationIterationCount: React.FC<Props> = ({
       </Col>
       <Col span={12}>
         <Row className={s.row} gutter={4}>
-          <Col className={s.label} span={10}>
+          <Col className={s.label} span={2}></Col>
+          <Col>
             <Checkbox checked={isInfinite} onChange={handleInfinite}>
               无限次
             </Checkbox>
