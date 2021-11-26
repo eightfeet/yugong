@@ -857,40 +857,36 @@ const animatedata = [
 ];
 
 export const animation = function (styleObj: objType): resultType {
-  console.log(styleObj);
-
-  // -webkit-animation: text-pop-up-br 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-  //         animation: text-pop-up-br 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-  //         animation: text-pop-up-br 0.5s steps(2, end) infinite both;
-  //         animation: text-pop-up-br 0.5s steps(2, end) both;
   const position: objType = {
     animationName: 0,
-    animationDirection: 1,
+    animationDuration: 1,
     animationTimingFunction: 2,
     animationDelay: 3,
     animationIterationCount: 4,
-    animationDuration: 5,
+    animationDirection: 5,
     animationFillMode: 6,
   };
 
   const rules: any[] = [];
-
+  const result = {};
   if (styleObj?.animationName) {
     for (const key in styleObj) {
       if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
         const element = styleObj[key];
-        if (position[key] !== undefined) {
-          rules[position[key]] = element;
+        switch (key) {
+          case 'animationDuration':
+            result[key] = `${element}ms`;
+            break;
+          case 'animationDelay':
+            result[key] = `${element}ms`;
+            break;
+          default:
+            result[key] = element;
+            break;
         }
       }
     }
   }
-
-  const data = rules.filter(item => !!item === true);
-  const result = {
-
-  }
-  if (data.length) result['animation'] =  rules.filter(item => !!item === true)
 
   return {
     result,

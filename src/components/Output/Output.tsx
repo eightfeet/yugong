@@ -207,7 +207,6 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
   return (
     <div>
-      <div className="hahahaha" />
       <OutputLayout
         rootFontsize={rootFontsize}
         rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
