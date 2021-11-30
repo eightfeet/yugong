@@ -1,4 +1,4 @@
-<p style="text-align: center">
+<p align="center">
   <img src="https://www.eightfeet.cn/yugong/images/flow/logo.svg" />
 </p>
 
