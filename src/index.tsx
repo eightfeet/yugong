@@ -5,8 +5,9 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import reportWebVitals from "~/reportWebVitals";
 import BeforeOutput from '~/components/BeforeOutput';
-import jss from 'jss'
-import preset from 'jss-preset-default'
+import jss from 'jss';
+import preset from 'jss-preset-default';
+import '~/core/animate';
 
 jss.setup(preset());
 

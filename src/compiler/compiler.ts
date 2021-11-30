@@ -827,3 +827,69 @@ export const transform = function (styleObj: objType): resultType {
     string: prefixResult.join(' '),
   };
 };
+
+const animatedata = [
+  {
+    //动画名称
+    name: 'flip',
+    //持续时间
+    duration: '1000ms',
+    //速度曲线
+    // ease; 缓慢
+    // ease-in; 缓入
+    // ease-out; 缓出
+    // ease-in-out; 缓入缓出
+    // linear; 线性
+    // step-start; 步骤
+    // step-end;
+    timingFunction: 'cubic-bezier(0.250, 0.460, 0.450, 0.940)',
+    //延时
+    delay: '1000ms',
+    //播放次数
+    iterationCount: '4',
+    //播放方向
+    direction: 'normal,reverse,alternate,alternate-reverse',
+    //播放前后模式
+    fillMode: 'none,forwards,backwards,both',
+    //播放/暂停
+    playState: 'running,paused',
+  },
+];
+
+export const animation = function (styleObj: objType): resultType {
+  const position: objType = {
+    animationName: 0,
+    animationDuration: 1,
+    animationTimingFunction: 2,
+    animationDelay: 3,
+    animationIterationCount: 4,
+    animationDirection: 5,
+    animationFillMode: 6,
+  };
+
+  const rules: any[] = [];
+  const result = {};
+  if (styleObj?.animationName) {
+    for (const key in styleObj) {
+      if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
+        const element = styleObj[key];
+        switch (key) {
+          case 'animationDuration':
+            result[key] = `${element}ms`;
+            break;
+          case 'animationDelay':
+            result[key] = `${element}ms`;
+            break;
+          default:
+            result[key] = element;
+            break;
+        }
+      }
+    }
+  }
+
+  return {
+    result,
+    string: '',
+  };
+};

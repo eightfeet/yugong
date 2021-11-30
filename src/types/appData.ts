@@ -1,5 +1,5 @@
-import { Layout } from "react-grid-layout";
-import { EventsType } from "./modules";
+import { Layout } from 'react-grid-layout';
+import { EventsType } from './modules';
 
 export interface AnyObjectType {
   [keys: string]: any;
@@ -51,7 +51,7 @@ export type UnitType = [string | number | null, string];
 /**
  * 对象参数
  */
-export interface ArgumentsObject extends ArgumentBase<"object"> {
+export interface ArgumentsObject extends ArgumentBase<'object'> {
   data: {
     [keys: string]: any;
   };
@@ -60,56 +60,56 @@ export interface ArgumentsObject extends ArgumentBase<"object"> {
 /**
  * 数组参数
  */
-export interface ArgumentsArray extends ArgumentBase<"array"> {
+export interface ArgumentsArray extends ArgumentBase<'array'> {
   data: any[];
 }
 
 /**
  * 布尔参数
  */
-export interface ArgumentsBoolean extends ArgumentBase<"boolean"> {
+export interface ArgumentsBoolean extends ArgumentBase<'boolean'> {
   data: {
     comparableAverageA: any;
     comparableAverageB: any;
-    method: ">" | ">=" | "<" | "<=" | "===" | "==" | "!==" | "&&" | "||";
+    method: '>' | '>=' | '<' | '<=' | '===' | '==' | '!==' | '&&' | '||';
   };
 }
 
 /**
  * 文本参数
  */
-export interface ArgumentsString extends ArgumentBase<"string"> {
+export interface ArgumentsString extends ArgumentBase<'string'> {
   // 为了方便数据录入，这里允许通过配置select来设置字段值
   // 常用于约定值的录入，默认设置值
   // 通过下拉来选择值, 如果有select，按照下拉选择来展示
   // key为值,value为展示字段
-  select?: {[keys: string]: string};
+  select?: { [keys: string]: string };
   data: string;
 }
 
 /**
  * 数字参数
  */
-export interface ArgumentsNumber extends ArgumentBase<"number"> {
+export interface ArgumentsNumber extends ArgumentBase<'number'> {
   // 为了方便数据录入，这里允许通过配置select来设置字段值
   // 常用于约定值的录入，默认设置值
   // 通过下拉来选择值, 如果有select，按照下拉选择来展示
   // key为值,value为展示字段
-  select?: {[keys: string]: string};
+  select?: { [keys: string]: string };
   data: string;
 }
 
 /**
  * 运行时参数
  */
-export interface ArgumentsRunningTime extends ArgumentBase<"runningTime"> {
+export interface ArgumentsRunningTime extends ArgumentBase<'runningTime'> {
   data: string;
 }
 
 /**
  * 注入运行时参数
  */
- export interface ArgumentsMixed extends ArgumentBase<"mixed"> {
+export interface ArgumentsMixed extends ArgumentBase<'mixed'> {
   data: any;
 }
 
@@ -128,7 +128,7 @@ export interface Api {
   /**
    * api入参描述
    */
-   enterDescription?: string;
+  enterDescription?: string;
   /**
    * api识别Id
    */
@@ -137,12 +137,12 @@ export interface Api {
    * api Url地址
    */
   url?: string;
-  method?: RequestInit["method"];
-  headers?: RequestInit["headers"];
+  method?: RequestInit['method'];
+  headers?: RequestInit['headers'];
   hideBodyInput?: boolean;
   body?: ArgumentsItem[];
-  credentials?: RequestInit["credentials"];
-  mode?: RequestInit["mode"];
+  credentials?: RequestInit['credentials'];
+  mode?: RequestInit['mode'];
   successPublic?: ArgumentsItem[];
   errorPublic?: ArgumentsItem[];
   hideLoading?: boolean;
@@ -160,20 +160,20 @@ export interface Api {
   /**
    * 入参映射关系
    */
-   enterMap?: {
+  enterMap?: {
     /**源 */
     source?: string;
     /**目标 */
     target?: string;
     /**映射关系 */
     map?: ArgumentsObject;
-  }[]
+  }[];
 }
 
 /**
  * 模块类型
  */
-export type AppDataModuleTypes = "Conterner" | "Modal" | "Root";
+export type AppDataModuleTypes = 'Conterner' | 'Modal' | 'Root';
 
 export interface AppDataElementsTypes {
   style: AppDataElementsStyleTypes;
@@ -214,7 +214,7 @@ export interface BackgroundGroupListTypesOfStyleItems {
 
 export interface BackgroundGroupTypesOfStyleItems {
   /**背景列表 */
-  backgroundList?: BackgroundGroupListTypesOfStyleItems[],
+  backgroundList?: BackgroundGroupListTypesOfStyleItems[];
   /**背景颜色 */
   backgroundColor?: string;
 }
@@ -229,6 +229,17 @@ export interface StyleItemsTypes {
   font?: FontTypesOfStyleItems;
   display?: DisplayTypesOfStyleItems;
   transform?: TransformTypesOfStyleItems;
+  animation?: AnimationTypesOfStyleItems;
+}
+
+export interface AnimationTypesOfStyleItems {
+  animationDuration: number;
+  animationTimingFunction: string;
+  animationDelay: number;
+  animationIterationCount: 'infinite' | number;
+  animationDirection: string;
+  animationFillMode: string;
+  animationName: string;
 }
 
 export interface TransformTypesOfStyleItems {
@@ -294,8 +305,8 @@ export interface DisplayTypesOfStyleItems {
   right?: UnitType;
   top?: UnitType;
   bottom?: UnitType;
-  margin?: (UnitType|null)[];
-  padding?: (UnitType|null)[];
+  margin?: (UnitType | null)[];
+  padding?: (UnitType | null)[];
   display?: string;
   overflow?: string;
   boxSizing?: string;

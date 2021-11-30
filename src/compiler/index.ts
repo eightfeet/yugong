@@ -18,6 +18,7 @@ function handler(styleGroup: StyleItemsTypes): {
     'textShadow',
     'font',
     'transform',
+    'animation',
   ];
   const compiledResult = {
     style: {},
@@ -71,6 +72,9 @@ function handler(styleGroup: StyleItemsTypes): {
         break;
       case 'transform':
         generateStyle = compiler.transform(styleObj);
+        break;
+      case 'animation':
+        generateStyle = compiler.animation(styleObj);
         break;
       default:
         break;

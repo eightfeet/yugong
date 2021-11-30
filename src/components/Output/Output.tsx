@@ -206,12 +206,14 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   }
 
   return (
-    <OutputLayout
-      rootFontsize={rootFontsize}
-      rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
-      cols={cols >= 0 ? cols : GRID_DEFAULT_COLS}
-      space={space >= 0 ? space : GRID_DEFAULT_SPACE}
-    />
+    <div>
+      <OutputLayout
+        rootFontsize={rootFontsize}
+        rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
+        cols={cols >= 0 ? cols : GRID_DEFAULT_COLS}
+        space={space >= 0 ? space : GRID_DEFAULT_SPACE}
+      />
+    </div>
   );
 };
 

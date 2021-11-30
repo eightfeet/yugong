@@ -14,6 +14,7 @@ import Transform from "../Transfrom";
 import BackgroundGroup from "../BackgroundGroup";
 
 import { StyleContext, StyleType } from "~/context/StyleContext";
+import Animation from "../Animation";
 
 const { Panel } = Collapse;
 
@@ -67,6 +68,9 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
             </Panel>
             <Panel header="变换" key="transform">
               <Transform />
+            </Panel>
+            <Panel header="动画" key="animate">
+              <Animation />
             </Panel>
           </Collapse>
         ) : null}
