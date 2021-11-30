@@ -1,4 +1,6 @@
-![Minion](https://www.eightfeet.cn/yugong/images/flow/logo.svg)
+<p style="text-align: center">
+  <img src="https://www.eightfeet.cn/yugong/images/flow/logo.svg" />
+</p>
 
 ## CodingFarmes
 愚公码农😄
