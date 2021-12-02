@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, RootState } from "~/redux/store";
-import { AnyObjectType, AppDataElementsTypes } from "~/types/appData";
-import styleCompiler from "~/compiler";
-import s from "./Wrapper.module.less";
-import usePostMessage from "~/hooks/usePostMessage";
-import classNames from "classnames";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
+import { Dispatch, RootState } from '~/redux/store';
+import { AnyObjectType, AppDataElementsTypes } from '~/types/appData';
+import styleCompiler from '~/compiler';
+import s from './Wrapper.module.less';
+import usePostMessage from '~/hooks/usePostMessage';
+import classNames from 'classnames';
+import { cloneDeep } from 'lodash';
 
 interface Props extends AppDataElementsTypes {
   maxWidth?: boolean;
   maxHeight?: boolean;
-  itemAlign?: 'top'|'center'|'bottom'
+  itemAlign?: 'top' | 'center' | 'bottom';
 }
 
 const Wrapper: React.FC<Props> = ({
@@ -20,34 +22,41 @@ const Wrapper: React.FC<Props> = ({
   maxWidth,
   maxHeight,
   moduleId,
-  itemAlign="center",
+  itemAlign = 'center',
 }) => {
   /**
    * Wrapper 自身的样式
    */
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
   const actId = useSelector((state: RootState) => state.controller.editingId);
-  const [wrapSize, setWrapSize] = useState<{width: string; height: string}>();
+  const [wrapSize, setWrapSize] = useState<{ width: string; height: string }>();
   const setEditingId = useDispatch<Dispatch>().controller.setEditingId;
-  const currentLayout = useSelector((state: RootState) => state.appData).filter(item => item.moduleId === actId)?.[0]?.layout;
-  
+  const currentLayout = useSelector((state: RootState) => state.appData).filter(
+    (item) => item.moduleId === actId,
+  )?.[0]?.layout;
+
   const refWrap = useRef<HTMLDivElement>(null);
+  const [ref, inView] = useInView({
+    threshold: 1,
+  });
   const isEditing = useSelector(
-    (state: RootState) => state.controller.isEditing
+    (state: RootState) => state.controller.isEditing,
   );
-  
 
   const sendMessage = usePostMessage(() => {});
 
   useEffect(() => {
+    // base元素的动画控制
     const { basic } = style;
-    setBasicStyle(styleCompiler(basic));
-    if (basic.display?.zIndex !== undefined) {
+    const optStyle = cloneDeep(basic);
+    if (!inView) delete optStyle.animation;
+    setBasicStyle(styleCompiler(optStyle));
+    if (optStyle.display?.zIndex !== undefined) {
       document.getElementById(
-        `wrap-${moduleId}`
-      )!.style.zIndex = `${basic.display.zIndex}`;
+        `wrap-${moduleId}`,
+      )!.style.zIndex = `${optStyle.display.zIndex}`;
     }
-  }, [moduleId, style]);
+  }, [moduleId, style, inView]);
 
   useEffect(() => {
     if (refWrap.current) {
@@ -55,9 +64,8 @@ const Wrapper: React.FC<Props> = ({
         width: `${refWrap.current.offsetWidth}px`,
         height: `${refWrap.current.offsetHeight}px`,
       });
-      
     }
-  }, [refWrap, currentLayout?.w, currentLayout?.h])
+  }, [refWrap, currentLayout?.w, currentLayout?.h]);
 
   /**
    * 图层被触发
@@ -66,12 +74,12 @@ const Wrapper: React.FC<Props> = ({
     if (!isEditing) return;
     setEditingId(moduleId);
     // 向父级窗口通知当前激活Id
-    sendMessage({ tag: "id", value: moduleId }, window.top);
+    sendMessage({ tag: 'id', value: moduleId }, window.top);
   }, [isEditing, moduleId, sendMessage, setEditingId]);
   /**设置预览状态下不接受编辑事件 */
   const pointerEvents: React.CSSProperties = {};
   if (isEditing) {
-    pointerEvents.pointerEvents = "none";
+    pointerEvents.pointerEvents = 'none';
   } else {
     delete pointerEvents.pointerEvents;
   }
@@ -84,7 +92,7 @@ const Wrapper: React.FC<Props> = ({
     defaultSize.height = wrapSize?.height;
   }
   /*是否为隐藏模块*/
-  const isHide = (layout?.w === 0 || layout?.h === 0);
+  const isHide = layout?.w === 0 || layout?.h === 0;
   if (isHide) {
     defaultSize.width = defaultSize.height = 'auto';
   }
@@ -99,20 +107,22 @@ const Wrapper: React.FC<Props> = ({
       onMouseDown={onLayoutClick}
       ref={refWrap}
     >
-      {actId === moduleId ? (
+      <div ref={ref}>
+        {actId === moduleId ? (
+          <div
+            className={classNames(s.actwrap, {
+              [s.isedit]: isEditing,
+              [s.iswiew]: !isEditing,
+            })}
+          />
+        ) : null}
         <div
-          className={classNames(s.actwrap, {
-            [s.isedit]: isEditing,
-            [s.iswiew]: !isEditing,
-          })}
-        />
-      ) : null}
-      <div
-        id={moduleId}
-        className={s.secondwrap}
-        style={{...defaultSize, ...basicStyle.style, ...pointerEvents }}
-      >
+          id={moduleId}
+          className={s.secondwrap}
+          style={{ ...defaultSize, ...basicStyle.style, ...pointerEvents }}
+        >
           {children}
+        </div>
       </div>
     </div>
   );
