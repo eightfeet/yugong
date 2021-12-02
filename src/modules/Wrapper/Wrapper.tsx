@@ -49,7 +49,8 @@ const Wrapper: React.FC<Props> = ({
     // base元素的动画控制
     const { basic } = style;
     const optStyle = cloneDeep(basic);
-    if (!inView) delete optStyle.animation;
+    optStyle.animation!.animationPlayState = 'paused';
+    if (!inView) {delete optStyle.animation};
     setBasicStyle(styleCompiler(optStyle));
     if (optStyle.display?.zIndex !== undefined) {
       document.getElementById(

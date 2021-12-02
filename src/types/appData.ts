@@ -240,6 +240,7 @@ export interface AnimationTypesOfStyleItems {
   animationDirection: string;
   animationFillMode: string;
   animationName: string;
+  animationPlayState: 'paused'|'running';
 }
 
 export interface TransformTypesOfStyleItems {
