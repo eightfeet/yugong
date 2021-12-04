@@ -229,7 +229,7 @@ export interface StyleItemsTypes {
   font?: FontTypesOfStyleItems;
   display?: DisplayTypesOfStyleItems;
   transform?: TransformTypesOfStyleItems;
-  animation?: AnimationGroups;
+  animation?: AnimationTypesOfStyleItems;
 }
 
 export interface AnimationTypesOfStyleItems {
@@ -241,11 +241,7 @@ export interface AnimationTypesOfStyleItems {
   animationFillMode?: string;
   animationName?: string;
   animationPlayState?: 'paused'|'running';
-}
-
-export interface AnimationGroups {
   animationPlayInView?: boolean;
-  animations?:AnimationTypesOfStyleItems[];
 }
 
 export interface TransformTypesOfStyleItems {
