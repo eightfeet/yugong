@@ -233,14 +233,15 @@ export interface StyleItemsTypes {
 }
 
 export interface AnimationTypesOfStyleItems {
-  animationDuration: number;
-  animationTimingFunction: string;
-  animationDelay: number;
-  animationIterationCount: 'infinite' | number;
-  animationDirection: string;
-  animationFillMode: string;
-  animationName: string;
-  animationPlayState: 'paused'|'running';
+  animationDuration?: number;
+  animationTimingFunction?: string;
+  animationDelay?: number;
+  animationIterationCount?: 'infinite' | number;
+  animationDirection?: string;
+  animationFillMode?: string;
+  animationName?: string;
+  animationPlayState?: 'paused'|'running';
+  animationPlayInView?: boolean;
 }
 
 export interface TransformTypesOfStyleItems {

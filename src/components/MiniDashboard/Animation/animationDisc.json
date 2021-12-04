@@ -1,0 +1,70 @@
+{
+  "Attention seekers ": [
+    "bounce",
+    "flash",
+    "pulse",
+    "rubberBand",
+    "shakeX",
+    "shakeY",
+    "headShake",
+    "swing",
+    "tada",
+    "wobble",
+    "jello",
+    "heartBeat"
+  ],
+  "Back entrances": ["backInDown", "backInLeft", "backInRight", "backInUp"],
+
+  "Bouncing entrances ": [
+    "bounceIn",
+    "bounceInDown",
+    "bounceInLeft",
+    "bounceInRight",
+    "bounceInUp"
+  ],
+
+  "Fading entrances ": [
+    "fadeIn",
+    "fadeInDown",
+    "fadeInDownBig",
+    "fadeInLeft",
+    "fadeInLeftBig",
+    "fadeInRight",
+    "fadeInRightBig",
+    "fadeInUp",
+    "fadeInUpBig",
+    "fadeInTopLeft",
+    "fadeInTopRight",
+    "fadeInBottomLeft",
+    "fadeInBottomRight"
+  ],
+
+  "Flippers": ["flip", "flipInX", "flipInY"],
+
+  "Lightspeed": ["lightSpeedInRight", "lightSpeedInLeft"],
+
+  "Rotating entrances": [
+    "rotateIn",
+    "rotateInDownLeft",
+    "rotateInDownRight",
+    "rotateInUpLeft",
+    "rotateInUpRight"
+  ],
+
+  "Specials": ["hinge", "jackInTheBox", "rollIn"],
+
+  "Zooming entrances": [
+    "zoomIn",
+    "zoomInDown",
+    "zoomInLeft",
+    "zoomInRight",
+    "zoomInUp"
+  ],
+
+  "Sliding entrances": [
+    "slideInDown",
+    "slideInLeft",
+    "slideInRight",
+    "slideInUp"
+  ]
+}

@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Select as AntSelect } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { StyleContext } from '~/context/StyleContext';
@@ -8,6 +8,7 @@ import Select from '../Select';
 import s from './Animation.module.less';
 import AnimationIterationCount from './AnimationIterationCount';
 import AnimationTimingFunction from './AnimationTimingFunction';
+import animationDisc from './animationDisc.json';
 
 interface Props {}
 
@@ -56,26 +57,28 @@ const Animation: React.FC<Props> = ({}) => {
     <>
       <Row className={s.row}>
         <Col span={12}>
-          <Select
-            label="动画类型"
-            value={animation?.animationName}
-            optionsData={{
-              '': '无',
-              bounce: 'bounce',
-              flash: 'flash',
-              pulse: 'pulse',
-              rubberBand: 'rubberBand',
-              shakeX: 'shakeX',
-              shakeY: 'shakeY',
-              headShake: 'headShake',
-              swing: 'swing',
-              tada: 'tada',
-              wobble: 'wobble',
-              jello: 'jello',
-              heartBeat: 'heartBeat',
-            }}
-            onChange={onChangeAnimation('animationName')}
-          />
+          <Row className={s.row} gutter={4}>
+            <Col className={s.label} span={7}>
+              动画类型
+            </Col>
+            <Col span={17}>
+              <AntSelect
+                className={s.antselect}
+                value={animation?.animationName}
+                onChange={onChangeAnimation('animationName')}
+              >
+                {Object.keys(animationDisc).map((key) => (
+                  <AntSelect.OptGroup key={key} label={key}>
+                    {animationDisc[key].map((element: string) => (
+                      <AntSelect.Option key={element} value={element}>
+                        {element}
+                      </AntSelect.Option>
+                    ))}
+                  </AntSelect.OptGroup>
+                ))}
+              </AntSelect>
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Row className={s.row}>

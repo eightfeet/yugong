@@ -37,7 +37,7 @@ const Wrapper: React.FC<Props> = ({
 
   const refWrap = useRef<HTMLDivElement>(null);
   const [ref, inView] = useInView({
-    threshold: 1,
+    threshold: 0
   });
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing,
@@ -49,9 +49,8 @@ const Wrapper: React.FC<Props> = ({
     // base元素的动画控制
     const { basic } = style;
     const optStyle = cloneDeep(basic);
-    optStyle.animation!.animationPlayState = 'paused';
-    if (!inView) {delete optStyle.animation};
-    setBasicStyle(styleCompiler(optStyle));
+    if (optStyle.animation) optStyle.animation!.animationPlayInView = true;
+    setBasicStyle(styleCompiler(optStyle, inView));
     if (optStyle.display?.zIndex !== undefined) {
       document.getElementById(
         `wrap-${moduleId}`,

@@ -1,8 +1,38 @@
 import * as compiler from './compiler';
-import { StyleItemsTypes } from '~/types/appData';
+import { StyleItemsTypes, AnimationTypesOfStyleItems } from '~/types/appData';
 import React from 'react';
 
-function handler(styleGroup: StyleItemsTypes): {
+function handlerAnimation(
+  animation: AnimationTypesOfStyleItems,
+  // 是否进入视区
+  inView?: boolean,
+): AnimationTypesOfStyleItems {
+  // 动画元素是否有视觉区域观察者
+  // 或者有视觉区域观察者但动画没有设置元素可视时播放时
+  // 直接返回动画
+  if (inView === void 0 || animation.animationPlayInView !== true)
+    return animation;
+
+  // 离开视区时移除动画, 将内容做隐藏处理
+  const initAnimate: AnimationTypesOfStyleItems = {
+    animationName: 'initanimate',
+    animationDuration: 100,
+    animationIterationCount: 1,
+    animationPlayState: 'paused',
+  };
+  if (inView === false) {
+    return initAnimate;
+  }
+
+  // 有视觉区域观察者
+  const animationData = { ...animation };
+  return animationData;
+}
+
+function handler(
+  styleGroup: StyleItemsTypes,
+  inView?: boolean,
+): {
   style: React.CSSProperties;
   strStyle: string;
 } {
@@ -74,7 +104,8 @@ function handler(styleGroup: StyleItemsTypes): {
         generateStyle = compiler.transform(styleObj);
         break;
       case 'animation':
-        generateStyle = compiler.animation(styleObj);
+        const data = handlerAnimation(styleObj, inView);
+        generateStyle = compiler.animation(data);
         break;
       default:
         break;
