@@ -49,7 +49,6 @@ const Wrapper: React.FC<Props> = ({
     // base元素的动画控制
     const { basic } = style;
     const optStyle = cloneDeep(basic);
-    if (optStyle.animation) optStyle.animation!.animationPlayInView = true;
     setBasicStyle(styleCompiler(optStyle, inView));
     if (optStyle.display?.zIndex !== undefined) {
       document.getElementById(

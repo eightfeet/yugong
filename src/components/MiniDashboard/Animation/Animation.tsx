@@ -9,22 +9,14 @@ import s from './Animation.module.less';
 import AnimationIterationCount from './AnimationIterationCount';
 import AnimationTimingFunction from './AnimationTimingFunction';
 import animationDisc from './animationDisc.json';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
+import { AnimationTypesOfStyleItems } from '~/types/appData';
 
 interface Props {}
 
-interface DefautData {
-  animationDuration?: number;
-  animationTimingFunction?: string;
-  animationDelay?: number;
-  animationIterationCount?: 'infinite' | number;
-  animationDirection?: string;
-  animationFillMode?: string;
-  animationName?: string;
-}
-
 const Animation: React.FC<Props> = ({}) => {
   const context = useContext(StyleContext);
-  const [animation, setAnimation] = useState<DefautData>({});
+  const [animation, setAnimation] = useState<AnimationTypesOfStyleItems>({});
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId,
   );
@@ -42,10 +34,15 @@ const Animation: React.FC<Props> = ({}) => {
           | 'animationIterationCount'
           | 'animationFillMode'
           | 'animationDirection'
-          | 'animationName',
+          | 'animationName'
+          | 'animationPlayInView',
       ) =>
       (value: any) => {
-        animation[type] = value;
+        if (type === 'animationPlayInView') {
+          animation[type] = value.target.checked;
+        } else {
+          animation[type] = value;
+        }
         setAnimation({ ...animation });
         if (context.onChange instanceof Function) {
           context.onChange({ ...animation }, 'animation');
@@ -57,7 +54,7 @@ const Animation: React.FC<Props> = ({}) => {
     <>
       <Row className={s.row}>
         <Col span={12}>
-          <Row className={s.row} gutter={4}>
+          <Row gutter={4} className={s.rowtop}>
             <Col className={s.label} span={7}>
               动画类型
             </Col>
@@ -80,6 +77,19 @@ const Animation: React.FC<Props> = ({}) => {
             </Col>
           </Row>
         </Col>
+        <Col span={12}>
+          <Row className={s.rowtop} gutter={4}>
+            <Col className={s.label} span={2}></Col>
+            <Col>
+              <Checkbox
+                checked={animation?.animationPlayInView}
+                onChange={onChangeAnimation('animationPlayInView')}
+              >
+                显示时播放动画
+              </Checkbox>
+            </Col>
+          </Row>
+        </Col>
       </Row>
       <Row className={s.row}>
         <Col span={12}>
@@ -94,7 +104,7 @@ const Animation: React.FC<Props> = ({}) => {
         </Col>
         <Col span={12}>
           <NumberInput
-            label="延时"
+            label="延时播放"
             placeholder="延时时长(ms)"
             unit="ms"
             min={0}
@@ -104,15 +114,15 @@ const Animation: React.FC<Props> = ({}) => {
         </Col>
       </Row>
       <Row className={s.row}>
-        <AnimationTimingFunction
-          defaultValue={animation?.animationTimingFunction}
-          onChange={onChangeAnimation('animationTimingFunction')}
-        />
-      </Row>
-      <Row className={s.row}>
         <AnimationIterationCount
           defaultValue={animation?.animationIterationCount}
           onChange={onChangeAnimation('animationIterationCount')}
+        />
+      </Row>
+      <Row className={s.row}>
+        <AnimationTimingFunction
+          defaultValue={animation?.animationTimingFunction}
+          onChange={onChangeAnimation('animationTimingFunction')}
         />
       </Row>
       <Row className={s.row}>
