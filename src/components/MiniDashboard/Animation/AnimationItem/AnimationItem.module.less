@@ -1,0 +1,71 @@
+.row {
+  margin-bottom: 10px;
+  align-items: center;
+  :global {
+    .ant-radio-button-wrapper {
+      padding: 0 10px;
+    }
+  }
+
+  .label {
+    text-align: right;
+    width: 100%;
+  }
+}
+
+.icon {
+  cursor: move;
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #aaa;
+  svg {
+    display: block;
+    fill: currentColor;
+  }
+}
+
+.divide {
+  border-bottom: 1px solid rgb(240, 240, 240);
+  height: 30px;
+  margin: 10px 0;
+
+  display: flex;
+  .title {
+    flex: 1;
+    color: #aaa;
+    padding-left: 10px;
+  }
+  .menu {
+    width: 50%;
+    text-align: right;
+    margin-right: 10px;
+  }
+}
+.add {
+  text-align: right;
+}
+
+.backgroundwrap {
+  background-color: #fff;
+  border: 1px solid #eee;
+  margin-top: 10px;
+  position: relative;
+}
+
+.backgrounditem {
+  padding: 10px;
+}
+
+:global {
+  body > .ant-row.eventitem {
+    z-index: 2000;
+  }
+}
+
+.antselect {
+  width: 100%;
+}

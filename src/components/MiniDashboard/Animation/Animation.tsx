@@ -1,146 +1,125 @@
-import { Row, Col, Select as AntSelect } from 'antd';
+import { Row, Col, Button, Checkbox } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { StyleContext } from '~/context/StyleContext';
 import { RootState } from '~/redux/store';
-import NumberInput from '../NumberInput';
-import Select from '../Select';
 import s from './Animation.module.less';
-import AnimationIterationCount from './AnimationIterationCount';
-import AnimationTimingFunction from './AnimationTimingFunction';
-import animationDisc from './animationDisc.json';
+import { PlusOutlined } from '@ant-design/icons';
+import AnimationListHoc from './AnimationListHoc';
+import { AnimationGroups, AnimationTypesOfStyleItems } from '~/types/appData';
+import arrayMove from 'array-move';
 
 interface Props {}
 
-interface DefautData {
-  animationDuration?: number;
-  animationTimingFunction?: string;
-  animationDelay?: number;
-  animationIterationCount?: 'infinite' | number;
-  animationDirection?: string;
-  animationFillMode?: string;
-  animationName?: string;
-}
-
 const Animation: React.FC<Props> = ({}) => {
   const context = useContext(StyleContext);
-  const [animation, setAnimation] = useState<DefautData>({});
+  const [animation, setAnimation] = useState<AnimationGroups>({});
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId,
   );
 
   useEffect(() => {
-    setAnimation({ ...(context.getDefaultData?.('animation') || {}) });
+    const data = context.getDefaultData?.('animation') || {};
+    setAnimation(data);
   }, [context, moduleId]);
 
-  const onChangeAnimation = useCallback(
-    (
-        type:
-          | 'animationDuration'
-          | 'animationTimingFunction'
-          | 'animationDelay'
-          | 'animationIterationCount'
-          | 'animationFillMode'
-          | 'animationDirection'
-          | 'animationName',
-      ) =>
-      (value: any) => {
-        animation[type] = value;
-        setAnimation({ ...animation });
-        if (context.onChange instanceof Function) {
-          context.onChange({ ...animation }, 'animation');
-        }
-      },
-    [context, animation],
+  // 开启可见动画
+  const handleEnableInView = useCallback((e) => {
+    setAnimation(({ animations }) => {
+      const result: AnimationGroups = {
+        animations,
+        animationPlayInView: e.target.checked,
+      };
+      context.onChange?.(result, 'animation');
+      return result;
+    });
+  }, []);
+
+  // 添加动画
+  const onPlus = useCallback(() => {
+    setAnimation(({ animationPlayInView, animations }) => {
+      const result: AnimationGroups = {
+        animationPlayInView,
+        animations: [...(animations || []), {}],
+      };
+      context.onChange?.(result, 'animation');
+      return result;
+    });
+  }, []);
+
+  // 删除动画
+  const onMinus = useCallback((index: number) => {
+    setAnimation(({ animationPlayInView, animations }) => {
+      const newAnimations = animations?.filter((item, ind) => ind !== index);
+      console.log('newAnimations', newAnimations);
+
+      const result: AnimationGroups = {
+        animationPlayInView,
+        animations: animations?.filter((item, ind) => ind !== index),
+      };
+      context.onChange?.(result, 'animation');
+      return result;
+    });
+  }, []);
+
+  // 改变动画
+  const onChange = useCallback(
+    (index: number, data: AnimationTypesOfStyleItems) => {
+      setAnimation(({ animationPlayInView, animations }) => {
+        const newAnimations: AnimationTypesOfStyleItems[] = [
+          ...(animations || []),
+        ];
+        newAnimations[index] = data;
+        const result: AnimationGroups = {
+          animationPlayInView,
+          animations: newAnimations,
+        };
+        context.onChange?.(result, 'animation');
+        return result;
+      });
+    },
+    [],
   );
+
+  // 拖拽重新排序重置更新事件组数据
+  const onSortEnd = useCallback(({ oldIndex, newIndex }) => {
+    setAnimation(({ animationPlayInView, animations }) => {
+      const newAnimations: AnimationTypesOfStyleItems[] = [
+        ...(animations || []),
+      ];
+      const result: AnimationGroups = {
+        animationPlayInView,
+        animations: arrayMove(newAnimations, oldIndex, newIndex),
+      };
+      context.onChange?.(result, 'animation');
+      return result;
+    });
+  }, []);
+
   return (
     <>
       <Row className={s.row}>
         <Col span={12}>
-          <Row className={s.row} gutter={4}>
-            <Col className={s.label} span={7}>
-              动画类型
-            </Col>
-            <Col span={17}>
-              <AntSelect
-                className={s.antselect}
-                value={animation?.animationName}
-                onChange={onChangeAnimation('animationName')}
-              >
-                {Object.keys(animationDisc).map((key) => (
-                  <AntSelect.OptGroup key={key} label={key}>
-                    {animationDisc[key].map((element: string) => (
-                      <AntSelect.Option key={element} value={element}>
-                        {element}
-                      </AntSelect.Option>
-                    ))}
-                  </AntSelect.OptGroup>
-                ))}
-              </AntSelect>
-            </Col>
-          </Row>
+          <Checkbox
+            checked={animation.animationPlayInView}
+            onChange={handleEnableInView}
+          >
+            可见时展示动画
+          </Checkbox>
+        </Col>
+        <Col span={12} className={s.add}>
+          <Button size="small" icon={<PlusOutlined />} onClick={onPlus}>
+            添加动画
+          </Button>
         </Col>
       </Row>
-      <Row className={s.row}>
-        <Col span={12}>
-          <NumberInput
-            label="动画时长"
-            placeholder="动画持续时长(ms)"
-            unit="ms"
-            min={0}
-            defaultValue={animation?.animationDuration}
-            onChange={onChangeAnimation('animationDuration')}
-          />
-        </Col>
-        <Col span={12}>
-          <NumberInput
-            label="延时"
-            placeholder="延时时长(ms)"
-            unit="ms"
-            min={0}
-            defaultValue={animation?.animationDelay}
-            onChange={onChangeAnimation('animationDelay')}
-          />
-        </Col>
-      </Row>
-      <Row className={s.row}>
-        <AnimationTimingFunction
-          defaultValue={animation?.animationTimingFunction}
-          onChange={onChangeAnimation('animationTimingFunction')}
-        />
-      </Row>
-      <Row className={s.row}>
-        <AnimationIterationCount
-          defaultValue={animation?.animationIterationCount}
-          onChange={onChangeAnimation('animationIterationCount')}
-        />
-      </Row>
-      <Row className={s.row}>
-        <Col span={12}>
-          <Select
-            label="动画方向"
-            value={animation?.animationDirection}
-            optionsData={{
-              normal: '正常',
-              alternate: '来回播放',
-            }}
-            onChange={onChangeAnimation('animationDirection')}
-          />
-        </Col>
-        <Col span={12}>
-          <Select
-            label="填充模式"
-            value={animation?.animationFillMode}
-            optionsData={{
-              none: '默认',
-              forwards: '正向',
-              backwards: '反向',
-              both: '双向',
-            }}
-            onChange={onChangeAnimation('animationFillMode')}
-          />
-        </Col>
-      </Row>
+      <AnimationListHoc
+        animationList={animation.animations}
+        onChange={onChange}
+        onMinus={onMinus}
+        onSortEnd={onSortEnd}
+        useDragHandle
+      />
     </>
   );
 };

@@ -1,12 +1,15 @@
 import * as compiler from './compiler';
-import { StyleItemsTypes, AnimationTypesOfStyleItems } from '~/types/appData';
+import {
+  StyleItemsTypes,
+  AnimationGroups,
+} from '~/types/appData';
 import React from 'react';
 
 function handlerAnimation(
-  animation: AnimationTypesOfStyleItems,
+  animation: AnimationGroups,
   // 是否进入视区
   inView?: boolean,
-): AnimationTypesOfStyleItems {
+): AnimationGroups {
   // 动画元素是否有视觉区域观察者
   // 或者有视觉区域观察者但动画没有设置元素可视时播放时
   // 直接返回动画
@@ -14,11 +17,13 @@ function handlerAnimation(
     return animation;
 
   // 离开视区时移除动画, 将内容做隐藏处理
-  const initAnimate: AnimationTypesOfStyleItems = {
-    animationName: 'initanimate',
-    animationDuration: 100,
-    animationIterationCount: 1,
-    animationPlayState: 'paused',
+  const initAnimate: AnimationGroups = {
+    animations: [{
+      animationName: 'initanimate',
+      animationDuration: 100,
+      animationIterationCount: 1,
+      animationPlayState: 'paused',
+    }],
   };
   if (inView === false) {
     return initAnimate;

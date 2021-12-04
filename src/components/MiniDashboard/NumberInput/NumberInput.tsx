@@ -58,7 +58,6 @@ const QuadrangularSelect: React.FC<Props> = ({
     const onChangeDebounce = useMemo(
         () =>
             throttle((e: number) => {
-                console.log(e);
                 refChange(e);
             }, 500),
         [refChange]
