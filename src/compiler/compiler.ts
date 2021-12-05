@@ -828,34 +828,6 @@ export const transform = function (styleObj: objType): resultType {
   };
 };
 
-const animatedata = [
-  {
-    //动画名称
-    name: 'flip',
-    //持续时间
-    duration: '1000ms',
-    //速度曲线
-    // ease; 缓慢
-    // ease-in; 缓入
-    // ease-out; 缓出
-    // ease-in-out; 缓入缓出
-    // linear; 线性
-    // step-start; 步骤
-    // step-end;
-    timingFunction: 'cubic-bezier(0.250, 0.460, 0.450, 0.940)',
-    //延时
-    delay: '1000ms',
-    //播放次数
-    iterationCount: '4',
-    //播放方向
-    direction: 'normal,reverse,alternate,alternate-reverse',
-    //播放前后模式
-    fillMode: 'none,forwards,backwards,both',
-    //播放/暂停
-    playState: 'running,paused',
-  },
-];
-
 export const animation = function (styleObj: objType): resultType {
   const position: objType = {
     animationName: 0,
@@ -890,6 +862,6 @@ export const animation = function (styleObj: objType): resultType {
 
   return {
     result,
-    string: '',
+    string: createInlineStyles(result) || '',
   };
 };

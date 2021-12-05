@@ -1,4 +1,5 @@
 {
+  "-": ["none"],
   "Attention seekers ": [
     "bounce",
     "flash",
@@ -44,6 +45,7 @@
   "Lightspeed": ["lightSpeedInRight", "lightSpeedInLeft"],
 
   "Rotating entrances": [
+    "rotate",
     "rotateIn",
     "rotateInDownLeft",
     "rotateInDownRight",
@@ -51,7 +53,7 @@
     "rotateInUpRight"
   ],
 
-  "Specials": ["hinge", "jackInTheBox", "rollIn"],
+  "Specials": ["jackInTheBox", "rollIn"],
 
   "Zooming entrances": [
     "zoomIn",

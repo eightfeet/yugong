@@ -1,7 +1,7 @@
-import { Modal } from "antd";
-import React, { useCallback, useEffect } from "react";
-import useMarked from "~/hooks/useMarked";
-import s from "./MarkdownModalDoc.module.less";
+import { Modal } from 'antd';
+import React, { useCallback, useEffect } from 'react';
+import useMarked from '~/hooks/useMarked';
+import s from './MarkdownModalDoc.module.less';
 
 interface Props {
   visible: boolean;
@@ -19,7 +19,7 @@ const MarkdownModalDoc: React.FC<Props> = ({
   const getMd = useCallback(
     async (name?: string) => {
       if (!moduleName) {
-        setHelper("");
+        setHelper('');
         return;
       }
       let text: string = `<h3>找不到${name}文档</h3>请联系模块作者补充`;
@@ -27,14 +27,16 @@ const MarkdownModalDoc: React.FC<Props> = ({
         const file = await import(`~/modules/${name}/README.md`);
         const response = await fetch(file.default);
         text = await response.text();
-        text = text.replace(/\/images\/flow\//g, `${process.env.REACT_APP_PUBLIC_PATH || '/'}images/flow/`)
+        text = text.replace(
+          /\/images\/flow\//g,
+          `${process.env.REACT_APP_PUBLIC_PATH || '/'}images/flow/`,
+        );
       } catch (error) {
         console.warn(error);
       }
-      console.log('text', text)
       setHelper(text);
     },
-    [moduleName, setHelper]
+    [moduleName, setHelper],
   );
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const MarkdownModalDoc: React.FC<Props> = ({
         width={900}
         footer={null}
         onCancel={onCancel}
-        bodyStyle={{ padding: "20px 10px 30px 10px" }}
+        bodyStyle={{ padding: '20px 10px 30px 10px' }}
       >
         <div className={s.mdwrap}>
           <div>{helper}</div>

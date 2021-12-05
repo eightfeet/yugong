@@ -78,17 +78,19 @@ const Animation: React.FC<Props> = ({}) => {
           </Row>
         </Col>
         <Col span={12}>
-          <Row className={s.rowtop} gutter={4}>
-            <Col className={s.label} span={2}></Col>
-            <Col>
-              <Checkbox
-                checked={animation?.animationPlayInView}
-                onChange={onChangeAnimation('animationPlayInView')}
-              >
-                显示时播放动画
-              </Checkbox>
-            </Col>
-          </Row>
+          {context.path === 'basic' && (
+            <Row className={s.rowtop} gutter={4}>
+              <Col className={s.label} span={2}></Col>
+              <Col>
+                <Checkbox
+                  checked={animation?.animationPlayInView}
+                  onChange={onChangeAnimation('animationPlayInView')}
+                >
+                  显示时播放动画
+                </Checkbox>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
       <Row className={s.row}>
