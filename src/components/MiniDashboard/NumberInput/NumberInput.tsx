@@ -84,7 +84,7 @@ const QuadrangularSelect: React.FC<Props> = ({
                     onFocus={onFocus}
                     value={value}
                     ref={ref}
-                    addonAfter={unit}
+                    addonAfter={<span className={s.suf}>{unit}</span>}
                 />
             </Col>
         </Row>
