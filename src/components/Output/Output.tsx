@@ -2,36 +2,36 @@
  * Output入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
  */
 
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import OutputLayout from "~/OutputLayout";
-import requester from "~/core/fetch";
-import isUrl from "~/core/helper/isUrl";
-import useRem from "~/hooks/useRem";
-import { Dispatch, RootState } from "~/redux/store";
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import OutputLayout from '~/OutputLayout';
+import requester from '~/core/fetch';
+import isUrl from '~/core/helper/isUrl';
+import useRem from '~/hooks/useRem';
+import { Dispatch, RootState } from '~/redux/store';
 import {
   ComExposeEvents,
   EventsTypeItem,
   OutputModules,
-} from "~/types/modules";
-import { compilePlaceholderFromDataSource as getResult } from "~/core/getDataFromSource";
-import "./Output.less";
+} from '~/types/modules';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
+import './Output.less';
 import {
   GRID_DEFAULT_COLS,
   GRID_DEFAULT_ROWHEIGHT,
   GRID_DEFAULT_SPACE,
   ROOT_FONTSIZE,
-} from "~/core/constants";
-import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
-import { initTrack, trackEvent, trackPageView } from "~/core/tracking";
-import usePostMessage from "~/hooks/usePostMessage";
-import useLifeCycle from "~/hooks/useLifeCycle";
-import config from "./Output.config.json";
+} from '~/core/constants';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { initTrack, trackEvent, trackPageView } from '~/core/tracking';
+import usePostMessage from '~/hooks/usePostMessage';
+import useLifeCycle from '~/hooks/useLifeCycle';
+import config from './Output.config.json';
 import message from '~/components/Message';
-import { ArgumentsItem } from "~/types/appData";
+import { ArgumentsItem } from '~/types/appData';
 
 interface Props {
-  pageData: RootState["pageData"];
+  pageData: RootState['pageData'];
 }
 
 const Output: OutputModules<Props> = ({ pageData }) => {
@@ -52,8 +52,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   useRem();
 
   // 设置页面标题
-  useEffect(() => {    
-    document.title = getResult(pageData.pageTitle || "\u200E");
+  useEffect(() => {
+    document.title = getResult(pageData.pageTitle || '\u200E');
   }, [pageData.pageTitle]);
 
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
@@ -65,11 +65,11 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       if (argName && argValue) {
         setRunningTimes({ [`${argName}`]: argValue });
       } else {
-        console.error("注入自定义全局数据时缺少属性名或值！");
+        console.error('注入自定义全局数据时缺少属性名或值!');
       }
       // 弹出json Editer
     },
-    [setRunningTimes]
+    [setRunningTimes],
   );
 
   // 页面百度统计
@@ -90,7 +90,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   const redirect = useCallback((url, isReplace) => {
     const argUrl = getArgumentsItem(url);
     const argIsReplace = getArgumentsItem(isReplace);
-    if (argUrl === "-1") {
+    if (argUrl === '-1') {
       window.history.back();
     } else if (isUrl(argUrl as string)) {
       if (argIsReplace === 'replace') {
@@ -103,29 +103,33 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
   // message
   const globalMessage = useCallback(
-    (condition: ArgumentsItem, messageType: ArgumentsItem, messageStr: ArgumentsItem) => {
-        const argCondition = getArgumentsItem(condition) as boolean;
-        const argMessageType = getArgumentsItem(messageType) as number;
-        const argMessageStr = getArgumentsItem(messageStr) as string;
-        if (!argMessageStr?.length || !argCondition) {
-          return;
-        }
-        switch (argMessageType) {
-          case 1:
-            message.info(argMessageStr);
-            break;
-          case 2:
-            message.success(argMessageStr);
-            break;
-          case 3:
-            message.warning(argMessageStr);
-            break;
-          case 4:
-            message.error(argMessageStr);
-            break;
-          default:
-            break;
-        }
+    (
+      condition: ArgumentsItem,
+      messageType: ArgumentsItem,
+      messageStr: ArgumentsItem,
+    ) => {
+      const argCondition = getArgumentsItem(condition) as boolean;
+      const argMessageType = getArgumentsItem(messageType) as number;
+      const argMessageStr = getArgumentsItem(messageStr) as string;
+      if (!argMessageStr?.length || !argCondition) {
+        return;
+      }
+      switch (argMessageType) {
+        case 1:
+          message.info(argMessageStr);
+          break;
+        case 2:
+          message.success(argMessageStr);
+          break;
+        case 3:
+          message.warning(argMessageStr);
+          break;
+        case 4:
+          message.error(argMessageStr);
+          break;
+        default:
+          break;
+      }
     },
     [],
   );
@@ -135,22 +139,29 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     return new Promise<void>((resolve) =>
       setTimeout(() => {
         resolve();
-      }, argSleepTime)
+      }, argSleepTime),
     );
   }, []);
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   const [, eventEmitter] = useLifeCycle(
-    "global",
-    { mount: "初始化", unmount: "卸载" },
-    { injectGlobal, redirect, trackPageViewBD, trackEventBD, sleepFor, globalMessage }
+    'global',
+    { mount: '初始化', unmount: '卸载' },
+    {
+      injectGlobal,
+      redirect,
+      trackPageViewBD,
+      trackEventBD,
+      sleepFor,
+      globalMessage,
+    },
   );
 
   const onMount = useCallback(async () => {
     // 1、api处理 检查是不是http-url
     const apiArguments = pageData.onLoadApi?.filter(
       // isUrl(item.url || "") &&
-      (item) => !!item.method
+      (item) => !!item.method,
     );
 
     // 2、事先准备数据。
@@ -190,7 +201,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   }, [eventEmitter, onUnmount]);
 
   usePostMessage(({ tag, value }) => {
-    if (tag === "playEventEmit") {
+    if (tag === 'playEventEmit') {
       if (eventEmitter) {
         eventEmitter.emit(value.args);
       }

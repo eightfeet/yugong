@@ -37,7 +37,7 @@ const Wrapper: React.FC<Props> = ({
 
   const refWrap = useRef<HTMLDivElement>(null);
   const [ref, inView] = useInView({
-    threshold: 0
+    threshold: 0,
   });
   const isEditing = useSelector(
     (state: RootState) => state.controller.isEditing,
@@ -106,15 +106,15 @@ const Wrapper: React.FC<Props> = ({
       onMouseDown={onLayoutClick}
       ref={refWrap}
     >
+      {actId === moduleId ? (
+        <div
+          className={classNames(s.actwrap, {
+            [s.isedit]: isEditing,
+            [s.iswiew]: !isEditing,
+          })}
+        />
+      ) : null}
       <div ref={ref}>
-        {actId === moduleId ? (
-          <div
-            className={classNames(s.actwrap, {
-              [s.isedit]: isEditing,
-              [s.iswiew]: !isEditing,
-            })}
-          />
-        ) : null}
         <div
           id={moduleId}
           className={s.secondwrap}

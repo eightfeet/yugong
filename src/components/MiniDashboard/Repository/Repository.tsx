@@ -1,16 +1,17 @@
-import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from "antd";
-import Draggable from "react-draggable";
-import React, { useCallback, useEffect, useState } from "react";
-import { MODULES } from "~/core/constants";
-import { v4 as uuidv4 } from "uuid";
-import { AppDataLayoutItemTypes, AppDataModuleTypes } from "~/types/appData";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, RootState } from "~/redux/store";
+import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from 'antd';
+import Draggable from 'react-draggable';
+import React, { useCallback, useEffect, useState } from 'react';
+import { MODULES, GRID_DEFAULT_ROWHEIGHT } from '~/core/constants';
+import { v4 as uuidv4 } from 'uuid';
+import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch, RootState } from '~/redux/store';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 
-import s from "./Repository.module.less";
-import useKeyDown from "~/hooks/useKeyDown";
-import useLocalStorage from "~/hooks/useLocalStorage";
-import useMarked from "~/hooks/useMarked";
+import s from './Repository.module.less';
+import useKeyDown from '~/hooks/useKeyDown';
+import useLocalStorage from '~/hooks/useLocalStorage';
+import useMarked from '~/hooks/useMarked';
 
 const { Panel } = Collapse;
 
@@ -30,23 +31,27 @@ const Repository: React.FC = () => {
   const [addedModal, setAddedModal] = useState<ModalType | undefined>();
   const [newModalName, setNewModalName] = useState<string>();
   const appData = useSelector((state: RootState) => state.appData);
+  const pageData = useSelector((state: RootState) => state.pageData);
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   // 缓存
-  const [, setAppdataLocalStorage] = useLocalStorage("appData", null);
+  const [, setAppdataLocalStorage] = useLocalStorage('appData', null);
 
-  const [helper, setHelper ] = useMarked();
+  const [helper, setHelper] = useMarked();
 
-  const getMd = useCallback(async (name: string) => {
-    let text: string = "";
-    try {
-      const file = await import(`~/modules/${name}/README.md`);
-      const response = await fetch(file.default);
-      text = await response.text();
-    } catch (error) {
-      console.warn(error);
-    }
-    setHelper(text);
-  }, [setHelper]);
+  const getMd = useCallback(
+    async (name: string) => {
+      let text: string = '';
+      try {
+        const file = await import(`~/modules/${name}/README.md`);
+        const response = await fetch(file.default);
+        text = await response.text();
+      } catch (error) {
+        console.warn(error);
+      }
+      setHelper(text);
+    },
+    [setHelper],
+  );
 
   // 获取说明文档
   useEffect(() => {
@@ -61,14 +66,14 @@ const Repository: React.FC = () => {
         setAddedModal(module);
       }
     },
-    [setAddedModal]
+    [setAddedModal],
   );
 
   const onDoubleClick = useCallback(
     (module: ModalType) => (e: any) => {
       setAddedModal(module);
     },
-    [setAddedModal]
+    [setAddedModal],
   );
 
   const onAddItem = useCallback(
@@ -79,20 +84,34 @@ const Repository: React.FC = () => {
       // 做一层本地数据存储更新
       setAppdataLocalStorage(optAppData);
     },
-    [appData, setAppdataLocalStorage, updateAppData]
+    [appData, setAppdataLocalStorage, updateAppData],
   );
 
   const createModal = useCallback(
     (moduleType: AppDataModuleTypes, name?: string) => {
       let y = 0;
-      if (appData.length) {
-        const optAppData = [...appData].sort(
-          (a, b) => b.layout!.y - a.layout!.y
-        );
-        if (optAppData[0]) {
-          y = optAppData[0].layout!.y + optAppData[0].layout!.h;
-        }
-      }
+      // 行高
+      let rowHeight = pageData.rowHeight || GRID_DEFAULT_ROWHEIGHT;
+      if (typeof rowHeight === 'string') rowHeight = getResult(rowHeight);
+      // 滚动条高度
+      const iframeNode = document.getElementById(
+        'wrapiframe',
+      ) as HTMLIFrameElement | null;
+      const scrollTop =
+        iframeNode?.contentDocument?.documentElement.scrollTop || 0;
+      // 通过滚动条定位计算新增元素应该在当前视窗内
+      y = (scrollTop + 100) / (rowHeight as number);
+
+      // rowHeight : GRID_DEFAULT_ROWHEIGHT
+      // console.log('iframeNode?.scrollTop', iframeNode?.contentDocument?.documentElement.scrollTop)
+      // if (appData.length) {
+      //   const optAppData = [...appData].sort(
+      //     (a, b) => b.layout!.y - a.layout!.y
+      //   );
+      //   if (optAppData[0]) {
+      //     y = optAppData[0].layout!.y + optAppData[0].layout!.h;
+      //   }
+      // }
       // get module's static Options
       const module = require(`~/modules/${moduleType}`).default;
       const { exposeDefaultProps } = module;
@@ -111,7 +130,7 @@ const Repository: React.FC = () => {
       };
 
       const result: AppDataLayoutItemTypes = {
-        moduleName: name || "未标题",
+        moduleName: name || '未标题',
         moduleId,
         layout,
         style: style || { basic: {} }, // merge style
@@ -121,24 +140,24 @@ const Repository: React.FC = () => {
       setAddedModal(undefined);
       setNewModalName(undefined);
     },
-    [appData, onAddItem]
+    [appData, onAddItem],
   );
 
   const onCreate = useCallback(
     (event) => {
       if (addedModal?.moduleName) {
         event.preventDefault();
-        createModal(addedModal?.moduleName, newModalName || "未命名");
+        createModal(addedModal?.moduleName, newModalName || '未命名');
       }
     },
-    [addedModal?.moduleName, createModal, newModalName]
+    [addedModal?.moduleName, createModal, newModalName],
   );
 
-  useKeyDown(onCreate, "Enter");
+  useKeyDown(onCreate, 'Enter');
 
   return (
     <>
-      <Collapse bordered={false} defaultActiveKey={"base"}>
+      <Collapse bordered={false} defaultActiveKey={'base'}>
         {MODULES.map((moduleGroup, mdindex) => (
           <Panel header={moduleGroup.describe} key={moduleGroup.name}>
             <Row key={mdindex} gutter={[16, 16]}>
@@ -154,7 +173,7 @@ const Repository: React.FC = () => {
                       cover={null}
                     >
                       <Card.Meta
-                        style={{ textAlign: "center" }}
+                        style={{ textAlign: 'center' }}
                         title={
                           <>
                             <div className={s.iconwrap}>{item.icon}</div>
@@ -174,14 +193,14 @@ const Repository: React.FC = () => {
         ))}
       </Collapse>
       <Modal
-        title={`创建${addedModal?.title || ""}(${
-          addedModal?.moduleName || ""
+        title={`创建${addedModal?.title || ''}(${
+          addedModal?.moduleName || ''
         })组件`}
         visible={!!addedModal}
         width={900}
         footer={null}
         onCancel={() => setAddedModal(undefined)}
-        bodyStyle={{ padding: "20px 10px 30px 10px" }}
+        bodyStyle={{ padding: '20px 10px 30px 10px' }}
       >
         {addedModal?.tips ? (
           <p className={s.infomation}>{addedModal?.tips}</p>
@@ -193,8 +212,8 @@ const Repository: React.FC = () => {
               type="text"
               value={newModalName}
               onChange={(e) => setNewModalName(e.target.value || undefined)}
-              placeholder={`请输入${addedModal?.title || ""}(${
-                addedModal?.moduleName || ""
+              placeholder={`请输入${addedModal?.title || ''}(${
+                addedModal?.moduleName || ''
               })组件的别名`}
             />
           </Col>
