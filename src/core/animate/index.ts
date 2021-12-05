@@ -75,4 +75,4 @@ import 'animate.css/source/sliding_entrances/slideInLeft.css';
 import 'animate.css/source/sliding_entrances/slideInRight.css';
 import 'animate.css/source/sliding_entrances/slideInUp.css';
 
-import './initanimate.css';
+import './initanimate.less';
