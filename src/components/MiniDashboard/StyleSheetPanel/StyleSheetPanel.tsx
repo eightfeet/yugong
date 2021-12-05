@@ -1,20 +1,20 @@
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
+import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/redux/store';
 
-import { Collapse } from "antd";
-import Display from "../Display";
-import Font from "../Font";
+import { Collapse } from 'antd';
+import Display from '../Display';
+import Font from '../Font';
 
-import useMergeAppData from "~/hooks/useMergeAppData";
-import s from "./StyleSheetPanel.module.scss";
-import Shadow from "../Shadow";
-import Border from "../Border";
-import Transform from "../Transfrom";
-import BackgroundGroup from "../BackgroundGroup";
+import useMergeAppData from '~/hooks/useMergeAppData';
+import s from './StyleSheetPanel.module.scss';
+import Shadow from '../Shadow';
+import Border from '../Border';
+import Transform from '../Transfrom';
+import BackgroundGroup from '../BackgroundGroup';
 
-import { StyleContext, StyleType } from "~/context/StyleContext";
-import Animation from "../Animation";
+import { StyleContext, StyleType } from '~/context/StyleContext';
+import Animation from '../Animation';
 
 const { Panel } = Collapse;
 
@@ -32,12 +32,12 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
     (result: any, type: StyleType) => {
       update(result, `${rootStyle}.${type}`);
     },
-    [rootStyle, update]
+    [rootStyle, update],
   );
 
   const getDefaultData = useCallback(
     (type: StyleType) => selected?.style?.[path]?.[type],
-    [path, selected?.style]
+    [path, selected?.style],
   );
 
   return (
@@ -46,6 +46,7 @@ const StyleSheetPanel: React.FC<Props> = ({ path }) => {
         unit,
         onChange,
         getDefaultData,
+        path,
       }}
     >
       <div className={s.root}>

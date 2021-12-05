@@ -58,7 +58,6 @@ const QuadrangularSelect: React.FC<Props> = ({
     const onChangeDebounce = useMemo(
         () =>
             throttle((e: number) => {
-                console.log(e);
                 refChange(e);
             }, 500),
         [refChange]
@@ -77,7 +76,7 @@ const QuadrangularSelect: React.FC<Props> = ({
             <Col className={s.label} span={7}>
                 {label || ''}
             </Col>
-            <Col span={unit ? 15 : 17}>
+            <Col span={17}>
                 <InputNumber
                     {...other}
                     onChange={onChangeValue}
@@ -85,9 +84,9 @@ const QuadrangularSelect: React.FC<Props> = ({
                     onFocus={onFocus}
                     value={value}
                     ref={ref}
+                    addonAfter={<span className={s.suf}>{unit}</span>}
                 />
             </Col>
-            {unit ? <Col span={2}>{unit || ''}</Col> : null}
         </Row>
     );
 };

@@ -131,7 +131,7 @@ const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
         </Col>
         <Col span={14}>
           <div className={s.button}>
-            {process.env.REACT_APP_DEMO !== 'true' ? (
+            {process.env.REACT_APP_DEMO === 'true' ? (
               <Tooltip
               overlayInnerStyle={{width: 400}}
                 title={
