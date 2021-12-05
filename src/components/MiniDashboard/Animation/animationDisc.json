@@ -68,5 +68,15 @@
     "slideInLeft",
     "slideInRight",
     "slideInUp"
+  ],
+
+  "text": [
+    "tracking-in-expand",
+    "tracking-in-expand-fwd",
+    "tracking-in-expand-fwd-top",
+    "tracking-in-expand-fwd-bottom",
+    "text-focus-in",
+    "focus-in-expand",
+    "focus-in-expand-fwd"
   ]
 }
