@@ -114,7 +114,11 @@ const Wrapper: React.FC<Props> = ({
           })}
         />
       ) : null}
-      <div ref={ref}>
+      <div
+        ref={ref}
+        className={s.animationwrap}
+        style={{ ...defaultSize }}
+      >
         <div
           id={moduleId}
           className={s.secondwrap}
