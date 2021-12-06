@@ -57,6 +57,20 @@ const Wrapper: React.FC<Props> = ({
     }
   }, [moduleId, style, inView]);
 
+  // 仅针对有延时的入场动画在延时期间做元素隐藏处理,进入动画再做呈现
+  const { animationDelay } = style.basic.animation || {};
+  const timer = useRef<NodeJS.Timeout | null>();
+  useEffect(() => {
+    if (!animationDelay) return;
+    refWrap.current?.classList.add(s.hide);
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = setTimeout(
+      () => refWrap.current?.classList.remove(s.hide),
+      animationDelay + 50,
+    );
+    return () => {};
+  }, [animationDelay, inView]);
+
   useEffect(() => {
     if (refWrap.current) {
       setWrapSize({
@@ -114,11 +128,7 @@ const Wrapper: React.FC<Props> = ({
           })}
         />
       ) : null}
-      <div
-        ref={ref}
-        className={s.animationwrap}
-        style={{ ...defaultSize }}
-      >
+      <div ref={ref} className={s.animationwrap} style={{ ...defaultSize }}>
         <div
           id={moduleId}
           className={s.secondwrap}
