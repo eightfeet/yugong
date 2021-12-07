@@ -364,7 +364,7 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
-              {process.env.REACT_APP_DEMO !== 'true' ? (
+              {process.env.REACT_APP_DEMO === 'true' ? (
                 <>
                   &nbsp;
                   <a href="https://github.com/eightfeet/yugong">
