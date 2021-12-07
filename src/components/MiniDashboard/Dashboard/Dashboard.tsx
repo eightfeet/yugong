@@ -213,7 +213,10 @@ const Dashboard: React.FC<Props> = () => {
     }
   }, 'Enter');
 
-  const CodeEditor = useMemo(() => lazy(() => import(`../CodeEditor`)), []);
+  const CodeEditor = useMemo(
+    () => lazy(() => import(`../CodeEditor/index`)),
+    [],
+  );
 
   return (
     <>

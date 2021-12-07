@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Tooltip } from "antd";
-import s from "./EventGroup.module.less";
-import Icon, {
-  PlusOutlined,
-} from "@ant-design/icons";
-import { ArgumentsItem } from "~/types/appData";
-import { EventsTypeItem, ExposeEvents } from "~/types/modules";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Tooltip } from 'antd';
+import s from './EventGroup.module.less';
+import Icon, { PlusOutlined } from '@ant-design/icons';
+import { ArgumentsItem } from '~/types/appData';
+import { EventsTypeItem, ExposeEvents } from '~/types/modules';
 import EventListHoc from './EventListHoc';
-import Play from "./play";
-import arrayMove from "array-move";
+import Play from './play';
+import arrayMove from 'array-move';
 
 interface Props {
   /**
@@ -20,7 +18,7 @@ interface Props {
   /**事件组变更 */
   onChange: (
     curentEventInfomation: ExposeEvents,
-    data: EventsTypeItem[]
+    data: EventsTypeItem[],
   ) => void;
   /**播放事件组 */
   onPlay: (curentEventInfomation: ExposeEvents, data: EventsTypeItem[]) => void;
@@ -50,7 +48,6 @@ const EventGroup: React.FC<Props> = ({
   onPlay,
   eventName,
 }) => {
-
   // 当前模块发布的事件状态清单
   const [currentModuleEvents, setCurrentModuleEvents] = useState<
     EventDataList[]
@@ -62,7 +59,7 @@ const EventGroup: React.FC<Props> = ({
    */
   useEffect(() => {
     const eventDataList = value.map((event) => {
-      const selectData = event.name.split("/");
+      const selectData = event.name.split('/');
       const result = {
         moduleUuid: selectData[0],
         dispatchedFunctions: selectData[1],
@@ -87,7 +84,7 @@ const EventGroup: React.FC<Props> = ({
       });
       onChange(curentEventInfomation, result);
     },
-    [curentEventInfomation, onChange]
+    [curentEventInfomation, onChange],
   );
 
   /**
@@ -95,21 +92,21 @@ const EventGroup: React.FC<Props> = ({
    */
   const handleOnChange = useCallback(
     (currentModuleEvents: EventDataList[]) => {
-        // 更新事件状态清单
+      // 更新事件状态清单
       setCurrentModuleEvents(currentModuleEvents);
       // onchange AppData数据
       stateToAppdata(currentModuleEvents);
     },
     [stateToAppdata],
-  )
+  );
 
   /**
    * 新增事件执行
    */
   const onPlus = useCallback(() => {
     const newItem: any = {
-      moduleUuid: "",
-      dispatchedFunctions: "",
+      moduleUuid: '',
+      dispatchedFunctions: '',
     };
     currentModuleEvents.push(newItem);
     handleOnChange(currentModuleEvents);
@@ -124,7 +121,7 @@ const EventGroup: React.FC<Props> = ({
       const data = currentModuleEvents.filter((el, i) => i !== index);
       handleOnChange(data);
     },
-    [currentModuleEvents, handleOnChange]
+    [currentModuleEvents, handleOnChange],
   );
 
   const onPlayEnv = useCallback(() => {
@@ -133,13 +130,13 @@ const EventGroup: React.FC<Props> = ({
 
   // 拖拽重新排序重置更新事件组数据
   const onSortEnd = useCallback(
-    ({oldIndex, newIndex}) => {
-      const items = [...currentModuleEvents]
-       const result = arrayMove(items, oldIndex, newIndex);
-       handleOnChange(result);
+    ({ oldIndex, newIndex }) => {
+      const items = [...currentModuleEvents];
+      const result = arrayMove(items, oldIndex, newIndex);
+      handleOnChange(result);
     },
     [currentModuleEvents, handleOnChange],
-  )
+  );
 
   return (
     <>
@@ -147,7 +144,10 @@ const EventGroup: React.FC<Props> = ({
         <div className={s.title}>{curentEventInfomation.description}</div>
         <div className={s.menu}>
           {!!value.length ? (
-            <Tooltip mouseEnterDelay={1} title={`${curentEventInfomation.description}事件模拟`}>
+            <Tooltip
+              mouseEnterDelay={1}
+              title={`${curentEventInfomation.description}事件模拟`}
+            >
               <Button
                 size="small"
                 icon={<Icon component={Play} />}
@@ -159,7 +159,14 @@ const EventGroup: React.FC<Props> = ({
           <Button size="small" onClick={onPlus} icon={<PlusOutlined />} />
         </div>
       </div>
-      <EventListHoc onMinus={onMinus} onChange={handleOnChange} handlePlay={eventName === 'mount' ? onPlayEnv : undefined} onSortEnd={onSortEnd} moduleEvents={currentModuleEvents} useDragHandle />
+      <EventListHoc
+        onMinus={onMinus}
+        onChange={handleOnChange}
+        handlePlay={eventName === 'mount' ? onPlayEnv : undefined}
+        onSortEnd={onSortEnd}
+        moduleEvents={currentModuleEvents}
+        useDragHandle
+      />
     </>
   );
 };
