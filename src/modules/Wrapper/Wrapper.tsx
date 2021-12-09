@@ -47,8 +47,8 @@ const Wrapper: React.FC<Props> = ({
   const { display, animation } = basic || {};
 
   useEffect(() => {
-    if (display?.zIndex !== undefined) {
-      document.getElementById(`wrap-${moduleId}`)!.style.zIndex = `${display}`;
+    if (display?.zIndex !== undefined && refWrap.current?.parentElement) {
+      refWrap.current.parentElement.style.zIndex = `${display.zIndex}`;
     }
   }, [moduleId, display?.zIndex]);
 
