@@ -7,7 +7,6 @@ import styleCompiler from '~/compiler';
 import s from './Wrapper.module.less';
 import usePostMessage from '~/hooks/usePostMessage';
 import classNames from 'classnames';
-import { cloneDeep } from 'lodash';
 
 interface Props extends AppDataElementsTypes {
   maxWidth?: boolean;
@@ -24,9 +23,7 @@ const Wrapper: React.FC<Props> = ({
   moduleId,
   itemAlign = 'center',
 }) => {
-  /**
-   * Wrapper 自身的样式
-   */
+  // Wrapper 自身的样式
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
   const actId = useSelector((state: RootState) => state.controller.editingId);
   const [wrapSize, setWrapSize] = useState<{ width: string; height: string }>();
@@ -45,18 +42,34 @@ const Wrapper: React.FC<Props> = ({
 
   const sendMessage = usePostMessage(() => {});
 
-  useEffect(() => {
-    // base元素的动画控制
-    const { basic } = style;
-    const optStyle = cloneDeep(basic);
-    setBasicStyle(styleCompiler(optStyle, inView));
-    if (optStyle.display?.zIndex !== undefined) {
-      document.getElementById(
-        `wrap-${moduleId}`,
-      )!.style.zIndex = `${optStyle.display.zIndex}`;
-    }
-  }, [moduleId, style, inView]);
+  // base元素的样式控制
+  const { basic } = style;
+  const { display, animation } = basic || {};
 
+  useEffect(() => {
+    if (display?.zIndex !== undefined && refWrap.current?.parentElement) {
+      refWrap.current.parentElement.style.zIndex = `${display.zIndex}`;
+    }
+  }, [moduleId, display?.zIndex]);
+
+  // 样式编译
+  useEffect(() => {
+    setBasicStyle(styleCompiler({ ...basic }, inView));
+  }, [moduleId, basic, inView]);
+
+  // 仅针对有延时的入场动画在延时期间做元素隐藏处理,进入动画再做呈现
+  const timer = useRef<NodeJS.Timeout | null>();
+  useEffect(() => {
+    if (!animation?.animationDelay) return;
+    refWrap.current?.classList.add(s.hide);
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = setTimeout(
+      () => refWrap.current?.classList.remove(s.hide),
+      animation.animationDelay + 50,
+    );
+  }, [basic, animation, inView]);
+
+  // 计算尺寸
   useEffect(() => {
     if (refWrap.current) {
       setWrapSize({
@@ -114,7 +127,7 @@ const Wrapper: React.FC<Props> = ({
           })}
         />
       ) : null}
-      <div ref={ref}>
+      <div ref={ref} className={s.animationwrap} style={{ ...defaultSize }}>
         <div
           id={moduleId}
           className={s.secondwrap}

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, lazy } from 'react';
+import React, { useCallback, useState, useMemo, lazy, useEffect } from 'react';
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from './Dashboard.module.less';
 import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
@@ -141,7 +141,8 @@ const Dashboard: React.FC<Props> = () => {
   // 模块删除快捷键
   // key deletd
   useKeyDown((event) => {
-    if (!isDeleteComp) {
+    const activeNode = document.activeElement?.tagName.toLowerCase();
+    if (!isDeleteComp && activeNode !== 'input' && activeNode !== 'textarea') {
       event.preventDefault();
       confirmModal();
     }
@@ -193,7 +194,16 @@ const Dashboard: React.FC<Props> = () => {
 
   // 处理键盘事件
   // 模拟模块复制
-  // useKeyDown(beforCopyModule, 'c', 'ctrlKey');
+  useKeyDown(
+    () => {
+      const activeNode = document.activeElement?.tagName.toLowerCase();
+      if (activeNode === 'iframe') {
+        beforCopyModule();
+      }
+    },
+    'c',
+    'ctrlKey',
+  );
 
   // // 确认复制模块
   useKeyDown((event) => {
@@ -203,7 +213,10 @@ const Dashboard: React.FC<Props> = () => {
     }
   }, 'Enter');
 
-  const CodeEditor = useMemo(() => lazy(() => import(`../CodeEditor`)), []);
+  const CodeEditor = useMemo(
+    () => lazy(() => import(`../CodeEditor/index`)),
+    [],
+  );
 
   return (
     <>

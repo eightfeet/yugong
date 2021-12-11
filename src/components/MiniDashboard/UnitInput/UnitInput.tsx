@@ -143,15 +143,15 @@ const Unitinput: React.FC<Props> = ({
             if (unit === '-' || unit === 'runningTime') {
                 setValueType('text');
                 // 单位设为text类型时需要将数据转换为文本值
-                const val = (value || value === 0) ? `${value}` : null;
+                const val = value ?? '';
                 setValue(val);
-                onChangeDebounce({ val: `${value}`, un: unit });
+                onChangeDebounce({ val, un: unit });
             } else {
                 setValueType('number');
-                const numberValue = Number(value);
-                const val = (numberValue || numberValue === 0) ? numberValue : null;
+                const numberValue = Number(value || '-');
+                const val = numberValue ?? null;
                 setValue(val);
-                onChangeDebounce({ val: val as number, un: unit });
+                onChangeDebounce({ val, un: unit });
             }
             setUnit(unit);
         },

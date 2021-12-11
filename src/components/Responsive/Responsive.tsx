@@ -8,68 +8,69 @@ import {
   EditOutlined,
   EyeOutlined,
   FileAddOutlined,
+  GithubOutlined,
   PlusOutlined,
   SettingOutlined,
   UploadOutlined,
-} from "@ant-design/icons";
-import { Button, Drawer, message } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import usePostMessage from "~/hooks/usePostMessage";
-import { Dispatch, RootState } from "~/redux/store";
-import MiniDashboard from "../MiniDashboard";
-import s from "./Responsive.module.less";
-import Draggable from "react-draggable";
-import Ruler from "./Ruler";
-import Repository from "../MiniDashboard/Repository";
-import PageSetting from "../MiniDashboard/PageSetting";
+} from '@ant-design/icons';
+import { Button, Drawer, message } from 'antd';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import usePostMessage from '~/hooks/usePostMessage';
+import { Dispatch, RootState } from '~/redux/store';
+import MiniDashboard from '../MiniDashboard';
+import s from './Responsive.module.less';
+import Draggable from 'react-draggable';
+import Ruler from './Ruler';
+import Repository from '../MiniDashboard/Repository';
+import PageSetting from '../MiniDashboard/PageSetting';
 import CreateProject from '../CreateProject';
-import classNames from "classnames";
-import { AppDataListTypes } from "~/types/appData";
-import useLocalStorage from "~/hooks/useLocalStorage";
-import { createTemplate, updateTemplate } from "~/api";
-import { cloneDeep } from "lodash";
-import TemplateInfoModal from "../TemplateInfoModal";
-import { TemplateInfo } from "../TemplateInfoModal/TemplateInfoModal";
-import { Template } from "~/types/pageData";
-import { useHistory } from "react-router-dom";
-import LoadingAnimate from "./LoadingAnimate";
-import { trackPageView } from "~/core/tracking";
+import classNames from 'classnames';
+import { AppDataListTypes } from '~/types/appData';
+import useLocalStorage from '~/hooks/useLocalStorage';
+import { createTemplate, updateTemplate } from '~/api';
+import { cloneDeep } from 'lodash';
+import TemplateInfoModal from '../TemplateInfoModal';
+import { TemplateInfo } from '../TemplateInfoModal/TemplateInfoModal';
+import { Template } from '~/types/pageData';
+import { useHistory } from 'react-router-dom';
+import LoadingAnimate from './LoadingAnimate';
+import { trackPageView } from '~/core/tracking';
 // import loading from "~/core/loading";
 
 interface Props {}
 const Responsive: React.FC<Props> = () => {
   useEffect(() => {
-      trackPageView('/首页')
-  }, [])
+    trackPageView('/首页');
+  }, []);
   /**
    * ----------
    * 定义编辑模式
    * ----------
    */
-  const {isEditing, auth} = useSelector(
-    (state: RootState) => state.controller
+  const { isEditing, auth } = useSelector(
+    (state: RootState) => state.controller,
   );
 
   const history = useHistory();
 
   const appData = useSelector((state: RootState) => state.appData);
   const activationItem = useSelector(
-    (state: RootState) => state.activationItem
+    (state: RootState) => state.activationItem,
   );
   const stateTag = useSelector((state: RootState) => state.controller.stateTag);
 
-  const forceUpdateByStateTag = useDispatch<Dispatch>().controller
-    .forceUpdateByStateTag;
+  const forceUpdateByStateTag =
+    useDispatch<Dispatch>().controller.forceUpdateByStateTag;
   const setIsEditing = useDispatch<Dispatch>().controller.setIsEditing;
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   const updatePageData = useDispatch<Dispatch>().pageData.updatePage;
   const setWindowHeight = useDispatch<Dispatch>().pageData.setWindowHeight;
   const setWindowWidth = useDispatch<Dispatch>().pageData.setWindowWidth;
-  const updateActivationItem = useDispatch<Dispatch>().activationItem
-    .updateActivationItem;
-  const removeActivationItem = useDispatch<Dispatch>().activationItem
-    .removeActivationItem;
+  const updateActivationItem =
+    useDispatch<Dispatch>().activationItem.updateActivationItem;
+  const removeActivationItem =
+    useDispatch<Dispatch>().activationItem.removeActivationItem;
 
   const setRunningTimes = useDispatch<Dispatch>().runningTimes.setRunningTimes;
 
@@ -77,7 +78,7 @@ const Responsive: React.FC<Props> = () => {
 
   const pageData = useSelector((state: RootState) => state.pageData);
 
-  const [, setLocalPageData] = useLocalStorage('pageData', null)
+  const [, setLocalPageData] = useLocalStorage('pageData', null);
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPageDrawer, setShowPageDrawer] = useState(false);
@@ -88,27 +89,27 @@ const Responsive: React.FC<Props> = () => {
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
     switch (tag) {
-      case "setIsEditing":
+      case 'setIsEditing':
         setIsEditing(value);
         break;
-      case "updateAppData":
+      case 'updateAppData':
         updateAppData(value);
         // 同步更新被选模块的属性
         if (activationItem.moduleId === undefined) return;
         const asynAcactivationItem = (value as AppDataListTypes).find(
-          (item) => item.moduleId === activationItem.moduleId
+          (item) => item.moduleId === activationItem.moduleId,
         );
         if (asynAcactivationItem?.moduleId) {
           updateActivationItem(asynAcactivationItem);
         }
         break;
-      case "updateRunningTimes":
+      case 'updateRunningTimes':
         setRunningTimes(value);
         break;
-      case "updatePage":
+      case 'updatePage':
         updatePageData(value);
         break;
-      case "id":
+      case 'id':
         // 设置当前项正在被编辑
         // 禁止重复设置当前编辑项
         if (activationItem.moduleId === value) return;
@@ -132,10 +133,11 @@ const Responsive: React.FC<Props> = () => {
     : null;
 
   useEffect(() => {
-    const windows = (document.getElementById('wrapiframe') as any)?.contentWindow;
+    const windows = (document.getElementById('wrapiframe') as any)
+      ?.contentWindow;
     if (windows && !isCreate) {
       windows.onload = () => {
-        sendMessage({ tag: "setIsEditing", value: true }, windows);
+        sendMessage({ tag: 'setIsEditing', value: true }, windows);
         setIsEditing(true);
         sethideIframe(false);
       };
@@ -143,13 +145,13 @@ const Responsive: React.FC<Props> = () => {
   }, [sendMessage, setIsEditing, isCreate]);
 
   useEffect(() => {
-    sendMessage({ tag: "setIsEditing", value: true }, win);
+    sendMessage({ tag: 'setIsEditing', value: true }, win);
     setIsEditing(true);
   }, [sendMessage, setIsEditing, win]);
 
   const toggleEdit = useCallback(() => {
     const states = !isEditing;
-    sendMessage({ tag: "setIsEditing", value: states }, win);
+    sendMessage({ tag: 'setIsEditing', value: states }, win);
     setIsEditing(states);
   }, [isEditing, sendMessage, setIsEditing, win]);
 
@@ -161,30 +163,33 @@ const Responsive: React.FC<Props> = () => {
   useEffect(() => {
     sendMessage(
       {
-        tag: "updateAppData",
+        tag: 'updateAppData',
         value: appData,
       },
-      win
+      win,
     );
   }, [sendMessage, win, appData]);
 
-  const onChangeRule = (width: number, height: number = (window.innerHeight - 140)) => {
+  const onChangeRule = (
+    width: number,
+    height: number = window.innerHeight - 140,
+  ) => {
     setWindowWidth(width);
     setWindowHeight(height);
-    const optPageData = {...pageData};
+    const optPageData = { ...pageData };
     optPageData.windowWidth = width;
     optPageData.windowHeight = height;
     setLocalPageData(optPageData);
     if (win) {
-      sendMessage({ tag: "updatePage", value: true }, win);
-      sendMessage({ tag: "setIsEditing", value: isEditing }, win);
+      sendMessage({ tag: 'updatePage', value: true }, win);
+      sendMessage({ tag: 'setIsEditing', value: isEditing }, win);
     }
     setIsEditing(true);
     forceUpdateByStateTag();
   };
 
   const [showDashboard, setShowDashboard] = useState(false);
-  const [opacity, setOpacity] = useState("1");
+  const [opacity, setOpacity] = useState('1');
   // 无激活模块时隐藏设置面板
   useEffect(() => {
     if (!activationItem.moduleId) {
@@ -196,20 +201,20 @@ const Responsive: React.FC<Props> = () => {
     setShowDashboard(false);
     removeActivationItem();
     if (win) {
-      sendMessage({ tag: "removeActivationItem", value: undefined }, win);
+      sendMessage({ tag: 'removeActivationItem', value: undefined }, win);
     }
   }, [removeActivationItem, sendMessage, win]);
 
   // const saveProjects = useCallback(
   //   async (data: Template) => {
-      
+
   //     const id: number = await createTemplate(data);
   //     if (id) {
   //       const copyPageData = cloneDeep(pageData);
   //       copyPageData.template = {...copyPageData.template || {}, id};
   //       return updatePageData(copyPageData)
   //     }
-      
+
   //   },
   //   [pageData, updatePageData],
   // )
@@ -217,19 +222,27 @@ const Responsive: React.FC<Props> = () => {
   const updateProject = useCallback(
     (data: Template) => {
       data.id = pageData.template?.id;
-      return updateTemplate(data)
+      return updateTemplate(data);
     },
     [pageData.template?.id],
-  )
+  );
 
   interface TemplateAll extends Template {
     pageData: string;
-    appData: string
+    appData: string;
   }
-  
+
   // 保存或更新项目
   const onSaveProject = useCallback(
-    async ({cove=[], terminal, isPublic, describe, tag, title, id}:TemplateInfo) => {
+    async ({
+      cove = [],
+      terminal,
+      isPublic,
+      describe,
+      tag,
+      title,
+      id,
+    }: TemplateInfo) => {
       if (!auth?.isLogin) {
         history.push('/login');
         return;
@@ -243,8 +256,8 @@ const Responsive: React.FC<Props> = () => {
         cove: cove[0]?.thumbUrl,
         describe,
         tag: tag?.join(','),
-        isPublic: isPublic === true ? 1 : 0
-      }
+        isPublic: isPublic === true ? 1 : 0,
+      };
       // 存入模板信息到pageData
       pageDataCopy.template = templateData || {};
 
@@ -254,9 +267,9 @@ const Responsive: React.FC<Props> = () => {
         appData: JSON.stringify(appData),
         id,
         userId: auth.session?.id,
-        ...templateData
-      }
-      
+        ...templateData,
+      };
+
       // 更新
       if (!!pageData.template?.id) {
         await updateProject(params);
@@ -267,34 +280,40 @@ const Responsive: React.FC<Props> = () => {
       }
       message.success('已发布');
       // 更新
-      updatePageData(pageDataCopy)
+      updatePageData(pageDataCopy);
       // 关闭弹窗
       setShowTemplateModal(false);
     },
-    [appData, auth?.isLogin, auth?.session?.id, history, pageData, updatePageData, updateProject],
-  )
+    [
+      appData,
+      auth?.isLogin,
+      auth?.session?.id,
+      history,
+      pageData,
+      updatePageData,
+      updateProject,
+    ],
+  );
 
-  const showPublishModal = useCallback(
-    () => {
-      if (!auth?.isLogin) {
-        history.push('/login');
-      }
-      setShowTemplateModal(true);
-    },
-    [auth?.isLogin, history],
-  )
-  
+  const showPublishModal = useCallback(() => {
+    if (!auth?.isLogin) {
+      history.push('/login');
+    }
+    setShowTemplateModal(true);
+  }, [auth?.isLogin, history]);
+
   return (
     <>
-      {
-        isCreate ? <CreateProject goBack={() => toggleCreate()} /> :
+      {isCreate ? (
+        <CreateProject goBack={() => toggleCreate()} />
+      ) : (
         <div className={s.main}>
           {showDashboard && isEditing ? (
             <Draggable
               axis="both"
               handle={`.${s.header}`}
-              onDrag={() => setOpacity("0.5")}
-              onStop={() => setOpacity("1")}
+              onDrag={() => setOpacity('0.5')}
+              onStop={() => setOpacity('1')}
             >
               <div className={s.dashboard} style={{ opacity }}>
                 <div className={s.header}>
@@ -345,6 +364,16 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
+              {process.env.REACT_APP_DEMO === 'true' ? (
+                <>
+                  &nbsp;
+                  <a href="https://github.com/eightfeet/yugong">
+                    <Button type="default" icon={<GithubOutlined />}>
+                      github
+                    </Button>
+                  </a>
+                </>
+              ) : null}
             </div>
             <div className={s.save}>
               <Button
@@ -363,11 +392,11 @@ const Responsive: React.FC<Props> = () => {
             width={580}
             onClose={() => setShowPageDrawer(false)}
             visible={showPageDrawer}
-            bodyStyle={{ padding: "0", overflow: "auto" }}
-            maskStyle={{ backgroundColor: "transparent" }}
+            bodyStyle={{ padding: '0', overflow: 'auto' }}
+            maskStyle={{ backgroundColor: 'transparent' }}
             footer={null}
           >
-           { showPageDrawer ? <PageSetting /> : null}
+            {showPageDrawer ? <PageSetting /> : null}
           </Drawer>
           <Drawer
             className={s.drawer}
@@ -375,8 +404,8 @@ const Responsive: React.FC<Props> = () => {
             width={580}
             onClose={() => setShowDrawer(false)}
             visible={showDrawer}
-            bodyStyle={{ padding: "0px" }}
-            maskStyle={{ backgroundColor: "transparent" }}
+            bodyStyle={{ padding: '0px' }}
+            maskStyle={{ backgroundColor: 'transparent' }}
             footer={null}
           >
             <Repository />
@@ -386,30 +415,44 @@ const Responsive: React.FC<Props> = () => {
               className={classNames({
                 [s.viewbg]: !isEditing,
               })}
-              style={{ transition: "all 0.5s" }}
+              style={{ transition: 'all 0.5s' }}
             />
-            {!stateTag ? <div
+            {!stateTag ? (
+              <div
                 className={s.iframebox}
-                style={{ width: pageData.windowWidth === -1 ? `100%` : `${pageData.windowWidth}px`, height: `${pageData.windowHeight}px` }}
+                style={{
+                  width:
+                    pageData.windowWidth === -1
+                      ? `100%`
+                      : `${pageData.windowWidth}px`,
+                  height: `${pageData.windowHeight}px`,
+                }}
               >
                 <LoadingAnimate />
                 <iframe
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`${process.env.REACT_APP_PUBLIC_PATH}${window.location.search || ''}`}
+                  src={`${process.env.REACT_APP_PUBLIC_PATH}${
+                    window.location.search || ''
+                  }`}
                   style={{
-                    border: "none",
+                    border: 'none',
                     opacity: hideIframe ? 0 : 1,
-                    minWidth: "100%",
+                    minWidth: '100%',
                     minHeight: `${pageData.windowHeight}px`,
                   }}
                 />
-              </div> : null}
+              </div>
+            ) : null}
           </div>
         </div>
-      }
-      <TemplateInfoModal visible={showTemplateModal} onOk={onSaveProject} onCancel={() => setShowTemplateModal(false)} />
+      )}
+      <TemplateInfoModal
+        visible={showTemplateModal}
+        onOk={onSaveProject}
+        onCancel={() => setShowTemplateModal(false)}
+      />
     </>
   );
 };

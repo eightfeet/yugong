@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.eightfeet.cn/yugong/images/flow/logo.svg" />
+  <img src="https://www.eightfeet.cn/yugong/images/flow/logo.svg" style="width: 200px" />
 </p>
 
 ## CodingFarmes
@@ -29,6 +29,7 @@
 
   ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/baoming.png)
   ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png)
+  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/donghua.png)
 
 ## Documents
 
