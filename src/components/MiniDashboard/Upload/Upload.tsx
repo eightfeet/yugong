@@ -151,7 +151,7 @@ const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
             ) : (
               <UploadPic
                 accept=".jpg,.jpeg,.png"
-                action={'https://wx-test1.by-health.com/commonservice/api/upload' || process.env.REACT_APP_UPLOAD_PATH}
+                action={process.env.REACT_APP_UPLOAD_PATH}
                 onChange={onChangeUpload}
                 showUploadList={false}
                 disabled={isloading}
