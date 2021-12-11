@@ -7,6 +7,11 @@
 
     div {
         width: 400px;
-        height: 80px;
+        height: 200px;
+        text-align: center;
+        svg {
+          display: inline-block;
+          height: 100%;
+        }
     }
 }
