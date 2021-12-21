@@ -24,7 +24,7 @@
   
   [预览地址](https://www.eightfeet.cn/yugong/?tpl=82)
 
-  - 本地预览地址请先创建活动后在访问下面网址
+  **本地预览地址请先通过编辑器创建活动后再访问下面网址**
   
   [本地预览地址](https://www.eightfeet.cn/yugong/)
 
