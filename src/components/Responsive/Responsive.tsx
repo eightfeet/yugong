@@ -224,7 +224,7 @@ const Responsive: React.FC<Props> = () => {
       data.id = pageData.template?.id;
       return updateTemplate(data);
     },
-    [pageData.template?.id],
+    [pageData],
   );
 
   interface TemplateAll extends Template {
@@ -247,8 +247,10 @@ const Responsive: React.FC<Props> = () => {
         history.push('/login');
         return;
       }
+
       // copy
       const pageDataCopy = cloneDeep(pageData);
+      
       // template数据
       const templateData: Template = {
         title: title || pageData.pageTitle,
@@ -259,9 +261,15 @@ const Responsive: React.FC<Props> = () => {
         isPublic: isPublic === true ? 1 : 0,
       };
       // 存入模板信息到pageData
-      pageDataCopy.template = templateData || {};
+      if (!pageDataCopy.template) {
+        pageDataCopy.template = templateData;
+      }
 
       // 完整数据
+      /**
+       * 完整数据包含页面数据、组件数据与模板信息三个部分，
+       * 页面数据同时也包含一份模板信息供页面处理
+       */
       const params: TemplateAll = {
         pageData: JSON.stringify(pageData),
         appData: JSON.stringify(appData),
