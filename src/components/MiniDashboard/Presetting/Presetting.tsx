@@ -308,8 +308,8 @@ const Presetting: React.FC<Props> = () => {
                                             optionFilterProp="children"
                                             filterOption={
                                                 (input, option) => {
-                                                    const childrens = (Array.isArray(option?.children)?option?.children.join('') : option?.children).toLowerCase();
-                                                    if (childrens.indexOf(input) !== -1) {
+                                                    const childrens = (Array.isArray(option?.children)?option?.children.join('') : option?.children)?.toLowerCase();
+                                                    if (childrens?.indexOf(input) !== -1) {
                                                         return true;
                                                     }
                                                     return false;
