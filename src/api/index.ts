@@ -1,7 +1,8 @@
 import request from '~/core/request';
 import { stringify } from 'query-string';
 
-const isDemo = process.env.REACT_APP_DEMO === 'true';
+const isDemo = process.env.REACT_APP_DEMO === 'true' || process.env.NODE_ENV === 'development';
+
 
 /**
  * 创建模板入参
