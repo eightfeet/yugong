@@ -6,7 +6,6 @@ import {
   DEFAULT_TO_UNIT,
   DEFAULT_UNIT,
   GRID_DEFAULT_COLS,
-  GRID_DEFAULT_ROWHEIGHT,
   GRID_DEFAULT_SPACE,
 } from '~/core/constants';
 import {
@@ -17,6 +16,7 @@ import {
 import { EventsType } from '~/types/modules';
 import { PageData } from '~/types/pageData';
 import { RootModel } from './models';
+import produce from '~/core/helper/produce';
 
 // grid 部分参数无法热更新，这里优先使用最正确的数据，然后使用默认数据
 let localPageData: PageData = {};
@@ -47,39 +47,19 @@ const defaultData: PageData = {
 export const pageData = createModel<RootModel>()({
   state: defaultData, // typed complex state
   reducers: {
-    updatePage(state, payload: PageData) {
-      return { ...state, ...payload };
-    },
-    updatePageStyle(
+    updatePage: (state, payload: PageData) => produce(state, draft => {Object.assign(draft, payload)}),
+    updatePageStyle: (
       state,
       payload: {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
       },
-    ) {
-      return { ...state, style: payload };
-    },
-    updatePageApi(state, payload: Api[]) {
-      return {
-        ...state,
-        onLoadApi: payload,
-      };
-    },
-    updatePageEvents(state, payload: EventsType[]) {
-      return {
-        ...state,
-        onLoadEnvents: payload,
-      };
-    },
-    initPageData(state, pageData?: PageData) {
-      return { ...defaultData, ...(pageData || {}) };
-    },
-    setWindowWidth(state, payload: number) {
-      return { ...state, windowWidth: payload };
-    },
-    setWindowHeight(state, payload: number) {
-      return { ...state, windowHeight: payload };
-    },
+    ) => produce(state, draft => {draft.style = payload}),
+    updatePageApi: (state, payload: Api[]) => produce(state, draft => {draft.onLoadApi = payload}),
+    updatePageEvents: (state, payload: EventsType[]) => produce(state, draft => {(draft as any).onLoadEnvents = payload}),
+    initPageData: (state, payload?: PageData) => produce(state, draft => {Object.assign(draft, payload || {})}),
+    setWindowWidth: (state, payload: number) => produce(state, draft => {draft.windowWidth = payload}),
+    setWindowHeight: (state, payload: number) => produce(state, draft => {draft.windowHeight = payload}),
   },
   effects: (dispach) => {
     const updatePage = dispach.pageData.updatePage;
