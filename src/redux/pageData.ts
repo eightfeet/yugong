@@ -47,19 +47,19 @@ const defaultData: PageData = {
 export const pageData = createModel<RootModel>()({
   state: defaultData, // typed complex state
   reducers: {
-    updatePage: (state, payload: PageData) => produce(state, draft => {Object.assign(draft, payload)}),
+    updatePage: (state, payload: PageData) => produce(state, draft => {Object.assign(draft, payload)}, true),
     updatePageStyle: (
       state,
       payload: {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
       },
-    ) => produce(state, draft => {draft.style = payload}),
-    updatePageApi: (state, payload: Api[]) => produce(state, draft => {draft.onLoadApi = payload}),
-    updatePageEvents: (state, payload: EventsType[]) => produce(state, draft => {(draft as any).onLoadEnvents = payload}),
-    initPageData: (state, payload?: PageData) => produce(state, draft => {Object.assign(draft, payload || {})}),
-    setWindowWidth: (state, payload: number) => produce(state, draft => {draft.windowWidth = payload}),
-    setWindowHeight: (state, payload: number) => produce(state, draft => {draft.windowHeight = payload}),
+    ) => produce(state, draft => {draft.style = payload}, true),
+    updatePageApi: (state, payload: Api[]) => produce(state, draft => {draft.onLoadApi = payload}, true),
+    updatePageEvents: (state, payload: EventsType[]) => produce(state, draft => {(draft as any).onLoadEnvents = payload}, true),
+    initPageData: (state, payload?: PageData) => produce(state, draft => {Object.assign(draft, payload || {})}, true),
+    setWindowWidth: (state, payload: number) => produce(state, draft => {draft.windowWidth = payload}, true),
+    setWindowHeight: (state, payload: number) => produce(state, draft => {draft.windowHeight = payload}, true),
   },
   effects: (dispach) => {
     const updatePage = dispach.pageData.updatePage;

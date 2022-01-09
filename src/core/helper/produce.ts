@@ -9,8 +9,9 @@ type Producer<T> = (draft: immer.Draft<T>) => void
  * @param trackable 是否记录
  * @returns 
  */
-function produce<T>(baseState: Readonly<T>, producer: Producer<T>, trackable: boolean = false): any {
-  const data = immer.produce(baseState, producer);
+function produce<T>(baseState: Readonly<T>, producer?: Producer<T>, trackable: boolean = false): any {
+  let data = baseState;
+  if (producer) data = immer.produce(baseState, producer);
   return data
 }
 
