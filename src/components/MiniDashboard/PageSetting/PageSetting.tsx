@@ -366,6 +366,7 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
               <Col span={7}>
                 <InputNumber
+                  min={5}
                   value={pageData.baseFont}
                   onChange={onChangeBaseFont}
                   placeholder="px"

@@ -1,6 +1,7 @@
 import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 import queryString from 'query-string';
+import produce from '~/core/helper/produce';
 
 const parsed = queryString.parse(window.location.search);
 const height = window.innerHeight;
@@ -33,9 +34,9 @@ export const runningTimes = createModel<RootModel>()({
     state: defaultData, 
 
     reducers: {
-        setRunningTimes(state, payload: RunningTimesItem) {
-            return { ...state, ...payload };
-        },
+        setRunningTimes: (state, payload: RunningTimesItem) => produce(state, draft => {
+          Object.assign(draft, payload)
+        }),
         setRemSize({unit, ...other}, payload: number) {
             return {...other, unit:{...unit, rem: payload}}
         },
