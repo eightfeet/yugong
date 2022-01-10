@@ -6,13 +6,13 @@ import { RootState, Dispatch } from '~/redux/store';
 import { useCallback } from 'react';
 import useLocalStorage from './useLocalStorage';
 import { EventsTypeItem } from '~/types/modules';
+import produce from '~/core/helper/produce';
 
 const useMergeAppData = () => {
     const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
     const updateActivationItem = useDispatch<Dispatch>().activationItem.updateActivationItem;
     
     const appData = useSelector((state: RootState) => state.appData);
-    const nextAppData = cloneDeep(appData);
 
     const activationItem = useSelector((state: RootState) => state.activationItem);
     const nextActivationItem = cloneDeep(activationItem);
@@ -25,11 +25,13 @@ const useMergeAppData = () => {
             set(nextActivationItem, path, data);
 
             // 将编辑数据合并到appData
-            const result = nextAppData.map(item => {
+            const result = produce(appData, draft => {
+              draft.map(item => {
                 if (item.moduleId === nextActivationItem.moduleId) {
                     return nextActivationItem
                 }
                 return item;
+              })
             })
             
             // 更新appData
@@ -41,7 +43,7 @@ const useMergeAppData = () => {
             // 更新浏览器本地数据
             setLocalStorage(result);
         },
-        [nextActivationItem, nextAppData, updateAppData, updateActivationItem, setLocalStorage],
+        [nextActivationItem, appData, updateAppData, updateActivationItem, setLocalStorage],
     )
     
     return update
