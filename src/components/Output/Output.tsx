@@ -29,6 +29,7 @@ import useLifeCycle from '~/hooks/useLifeCycle';
 import config from './Output.config.json';
 import message from '~/components/Message';
 import { ArgumentsItem } from '~/types/appData';
+import produce from '~/core/helper/produce';
 
 interface Props {
   pageData: RootState['pageData'];
@@ -63,7 +64,10 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       const argName = getArgumentsItem(name);
       const argValue = getArgumentsItem(value);
       if (argName && argValue) {
-        setRunningTimes({ [`${argName}`]: argValue });
+        setRunningTimes(produce({ [`${argName}`]: argValue }, undefined, {
+          name: "全局数据",
+          desc: `设置${argName}`
+        }));
       } else {
         console.error('注入自定义全局数据时缺少属性名或值!');
       }
