@@ -30,6 +30,8 @@ import RunningTimesModal from "../RunningTimesModal";
 import BackgroundGroup from "../BackgroundGroup";
 import ReactJson from "react-json-view";
 import { StyleContext, StyleType } from "~/context/StyleContext";
+import produce from "~/core/helper/produce";
+import { createDesc } from '~/core/constants';
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -82,13 +84,15 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeEnv = useCallback(
     (envinfo, data) => {
-      const optPageData = cloneDeep(pageData);
-      if (envinfo.name === "mount") {
-        optPageData.mountEnvents = data;
-      }
-      if (envinfo.name === "unmount") {
-        optPageData.unmountEnvents = data;
-      }
+      const optPageData = produce(pageData, draft => {
+        if (envinfo.name === "mount") {
+          draft.mountEnvents = data;
+        }
+        if (envinfo.name === "unmount") {
+          draft.unmountEnvents = data;
+        }
+      }, createDesc('页面', `修改${envinfo.name}事件`));
+      
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -100,10 +104,11 @@ const Pagesetting: React.FC<Props> = () => {
       type: StyleType
     ) => {
       if (type === 'backgroundGroup') {
-        const optPageData = cloneDeep(pageData);
-        optPageData.style = {
-          backgroundGroup: result
-        };
+        const optPageData = produce(pageData, draft => {
+          draft.style = {
+            backgroundGroup: result
+          }
+        }, createDesc('页面', '修改背景样式'));
         handleUpdatePage(optPageData);
       }
     },
@@ -112,21 +117,22 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeUnit = useCallback(
     (type: "unit" | "toUnit") => (e: any) => {
-      const optPageData = cloneDeep(pageData);
-      if (type === "unit") {
-        optPageData.unit = e;
-      }
-      if (type === "toUnit") {
-        optPageData.toUnit = e;
-      }
-
-      if (optPageData.unit !== "rem" && optPageData.toUnit !== "rem") {
-        delete optPageData.UIWidth;
-        delete optPageData.baseFont;
-      } else {
-        optPageData.UIWidth = undefined;
-        optPageData.baseFont = undefined;
-      }
+      const optPageData = produce(pageData, draft => {
+        if (type === "unit") {
+          draft.unit = e;
+        }
+        if (type === "toUnit") {
+          draft.toUnit = e;
+        }
+  
+        if (draft.unit !== "rem" && draft.toUnit !== "rem") {
+          delete draft.UIWidth;
+          delete draft.baseFont;
+        } else {
+          draft.UIWidth = undefined;
+          draft.baseFont = undefined;
+        }
+      }, createDesc('页面', '修改全局单位'));
 
       handleUpdatePage(optPageData);
     },
@@ -135,8 +141,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeStatisticsId = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.statisticsId = e.target.value;
+      const optPageData = produce(pageData, draft => {
+        draft.statisticsId = e.target.value;
+      }, createDesc('页面', '设置百度统计'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -144,8 +151,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeUIWidth = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.UIWidth = e;
+      const optPageData = produce(pageData, draft => {
+        draft.UIWidth = e;
+      }, createDesc('页面', '设置UI宽度'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -153,8 +161,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeBaseFont = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.baseFont = e;
+      const optPageData = produce(pageData, draft => {
+        draft.baseFont = e;
+      }, createDesc('页面', '设置UI基准字体'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -162,8 +171,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeApi = useCallback(
     (data) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.onLoadApi = data;
+      const optPageData = produce(pageData, draft => {
+        draft.onLoadApi = data;
+      }, createDesc('页面', '修改Api'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -171,28 +181,32 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onRemoveApi = useCallback(
     (_, data: ApiType) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.onLoadApi = reject(optPageData.onLoadApi, {
-        apiId: data.apiId,
-      });
+      const optPageData = produce(pageData, draft => {
+        draft.onLoadApi = reject(draft.onLoadApi, {
+          apiId: data.apiId,
+        });
+      }, createDesc('页面', '删除Api'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
   );
 
   const onPlus = useCallback(() => {
-    const optPageData = cloneDeep(pageData);
-    optPageData.onLoadApi?.push({
-      name: `ApiBeforMounted`,
-      apiId: uuidv4(),
-    });
+    const optPageData = produce(pageData, draft => {
+      draft.onLoadApi?.push({
+        name: `ApiBeforMounted`,
+        apiId: uuidv4(),
+      });
+    }, createDesc('页面', '新增Api'));
     handleUpdatePage(optPageData);
   }, [handleUpdatePage, pageData]);
 
   const onChangeRowHeight = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.rowHeight = e.target.value;
+      const optPageData = produce(pageData, draft => {
+        draft.rowHeight = e.target.value;
+      }, createDesc('页面', '修改删格行高'));
+      
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -200,8 +214,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeCols = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.cols = e.target.value;
+      const optPageData = produce(pageData, draft => {
+        draft.cols = e.target.value;
+      }, createDesc('页面', '修改删格列宽'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -209,8 +224,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangeSpace = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.space = e.target.value;
+      const optPageData = produce(pageData, draft => {
+        draft.space = e.target.value;
+      }, createDesc('页面', '修改删格间距'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -218,8 +234,9 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onChangePageTitle = useCallback(
     (e) => {
-      const optPageData = cloneDeep(pageData);
-      optPageData.pageTitle = e.target.value;
+      const optPageData = produce(pageData, draft => {
+        draft.pageTitle = e.target.value;
+      }, createDesc('页面', '修改标题'));
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
