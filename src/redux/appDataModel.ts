@@ -16,7 +16,7 @@ export const appData = createModel<RootModel>()({
         // handle state changes with pure functions
         updateAppData(_, payload: AppDataListTypes) {
             const data = [...payload];
-            return produce(data, undefined, true);
+            return produce(data, undefined);
         },
         initAppData(){
             return []

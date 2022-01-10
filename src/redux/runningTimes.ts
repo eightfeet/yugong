@@ -36,12 +36,12 @@ export const runningTimes = createModel<RootModel>()({
     reducers: {
         setRunningTimes: (state, payload: RunningTimesItem) => produce(state, draft => {
           Object.assign(draft, payload)
-        }, true),
+        }),
         setRemSize({unit, ...other}, payload: number) {
             const newUnit = Object.assign({rem: payload}, unit);
             return produce(other, draft => {
               draft.unit = newUnit
-            }, true)
+            })
         },
         initRunningTimes() {
             return defaultData

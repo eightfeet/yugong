@@ -127,3 +127,6 @@ export const GRID_DEFAULT_COLS = 12;
 // TagColor
 export const TAG_TYPE = ["purple", "magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"];
 // export default {}
+
+export const creatDesc = (name: string, desc?: string) =>  ({name, desc: desc || ''});
+  
