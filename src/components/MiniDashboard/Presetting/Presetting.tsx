@@ -4,6 +4,8 @@ import parse from 'html-react-parser';
 import { cloneDeep } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createDesc } from '~/core/constants';
+import produce from '~/core/helper/produce';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import usePostMessage from '~/hooks/usePostMessage';
 import { Dispatch, RootState } from '~/redux/store';
@@ -56,7 +58,7 @@ const Presetting: React.FC<Props> = () => {
                 }
                 return item;
             });
-            dispatch.appData.updateAppData(operateData);
+            dispatch.appData.updateAppData(produce(operateData, undefined, createDesc('修改组件', `${actData.moduleName || actData.moduleId} 预设`)));
             setLocalStorage(operateData);
         },
         [appData, dispatch.activationItem, dispatch.appData, setLocalStorage]
