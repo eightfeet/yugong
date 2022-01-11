@@ -1,7 +1,7 @@
 import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from 'antd';
 import Draggable from 'react-draggable';
 import React, { useCallback, useEffect, useState } from 'react';
-import { MODULES, GRID_DEFAULT_ROWHEIGHT } from '~/core/constants';
+import { MODULES, GRID_DEFAULT_ROWHEIGHT, createDesc } from '~/core/constants';
 import { v4 as uuidv4 } from 'uuid';
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import s from './Repository.module.less';
 import useKeyDown from '~/hooks/useKeyDown';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import useMarked from '~/hooks/useMarked';
+import produce from '~/core/helper/produce';
 
 const { Panel } = Collapse;
 
@@ -79,7 +80,7 @@ const Repository: React.FC = () => {
   const onAddItem = useCallback(
     (data: AppDataLayoutItemTypes) => {
       // Add a new item. It must have a unique key!
-      const optAppData = [...appData].concat(data);
+      const optAppData = produce(appData.concat(data), undefined, createDesc('新增', `组件${data.moduleName}`));
       updateAppData(optAppData);
       // 做一层本地数据存储更新
       setAppdataLocalStorage(optAppData);
@@ -140,7 +141,7 @@ const Repository: React.FC = () => {
       setAddedModal(undefined);
       setNewModalName(undefined);
     },
-    [appData, onAddItem],
+    [onAddItem, pageData.rowHeight],
   );
 
   const onCreate = useCallback(

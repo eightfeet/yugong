@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, lazy, useEffect } from 'react';
+import React, { useCallback, useState, useMemo, lazy } from 'react';
 import ConfigurationController from '~/components/MiniDashboard/ConfigurationController';
 import s from './Dashboard.module.less';
 import { Menu, Select, Tooltip, Modal, Row, Col, Input, Button } from 'antd';
@@ -20,6 +20,9 @@ import { v4 as uuidv4 } from 'uuid';
 import cloneDeep from 'lodash/cloneDeep';
 import useKeyDown from '~/hooks/useKeyDown';
 import RunningTimesModal from '../RunningTimesModal';
+import produce from '~/core/helper/produce';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
+import { createDesc, GRID_DEFAULT_ROWHEIGHT } from '~/core/constants';
 
 const { confirm } = Modal;
 interface Props {}
@@ -35,6 +38,8 @@ const Dashboard: React.FC<Props> = () => {
 
   // appdata
   const appData = useSelector((state: RootState) => state.appData);
+
+  const pageData = useSelector((state: RootState) => state.pageData);
 
   // 模板ID
   const moduleId = useSelector(
@@ -86,7 +91,7 @@ const Dashboard: React.FC<Props> = () => {
   const [isDeleteComp, setIsDeleteComp] = useState(false);
 
   const delModule = useCallback(() => {
-    const optAppData = reject([...appData], { moduleId });
+    const optAppData = produce(reject([...appData], { moduleId }), undefined, createDesc('删除',`组件${activationItem.moduleName}`) );
     const win = (document.getElementById('wrapiframe') as HTMLIFrameElement)
       .contentWindow;
     updateAppData(optAppData);
@@ -98,7 +103,6 @@ const Dashboard: React.FC<Props> = () => {
       },
       win,
     );
-    console.log(4);
     sendMessage(
       {
         tag: 'removeActivationItem',
@@ -107,7 +111,7 @@ const Dashboard: React.FC<Props> = () => {
       win,
     );
     setIsDeleteComp(false);
-  }, [appData, moduleId, removeActivationItem, sendMessage, updateAppData]);
+  }, [activationItem.moduleName, appData, moduleId, removeActivationItem, sendMessage, updateAppData]);
 
   const confirmModal = useCallback(() => {
     if (isDeleteComp) return;
@@ -165,32 +169,34 @@ const Dashboard: React.FC<Props> = () => {
   const copyModule = useCallback(() => {
     // 准备创建
     const oprateActivationItem = cloneDeep(activationItem);
-    const copyAppData = cloneDeep(appData);
     const moduleId = uuidv4();
     oprateActivationItem.moduleId = moduleId;
     oprateActivationItem.layout!.i = moduleId;
     oprateActivationItem.moduleName =
       newModalName || `${activationItem.moduleName} 拷贝`;
-    // 模块位置
-    if (copyAppData.length > 1) {
-      copyAppData.sort((a, b) => (b.layout?.y || 0) - (a.layout?.y || 0));
-    }
-    const layoutY = copyAppData[0].layout?.y || 0;
-    const layoutH = copyAppData[0].layout?.h || 0;
-    oprateActivationItem.layout!.y = layoutY + layoutH;
+
+    // 模块垂直位置
+    let y = 0;
+    // 行高
+    let rowHeight = pageData.rowHeight || GRID_DEFAULT_ROWHEIGHT;
+    if (typeof rowHeight === 'string') rowHeight = getResult(rowHeight);
+    // 滚动条高度
+    const iframeNode = document.getElementById(
+      'wrapiframe',
+    ) as HTMLIFrameElement | null;
+    const scrollTop =
+      iframeNode?.contentDocument?.documentElement.scrollTop || 0;
+    // 通过滚动条定位计算新增元素应该在当前视窗内
+    y = (scrollTop + 100) / (rowHeight as number);
+    
+
+    oprateActivationItem.layout!.y = y;
     // 复制模块,更新当前模块到全局并设为当前被选择模块
-    updateAppData([...appData, oprateActivationItem]);
+    updateAppData(produce([...appData, oprateActivationItem], undefined, createDesc('复制',`新组件${oprateActivationItem.moduleName}`)));
     updateActivationItem(oprateActivationItem);
     // 初始化复制窗口
     initCopyModule();
-  }, [
-    activationItem,
-    appData,
-    newModalName,
-    updateAppData,
-    updateActivationItem,
-    initCopyModule,
-  ]);
+  }, [activationItem, appData, newModalName, pageData.rowHeight, updateAppData, updateActivationItem, initCopyModule]);
 
   // 处理键盘事件
   // 模拟模块复制
