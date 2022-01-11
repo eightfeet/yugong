@@ -64,10 +64,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       const argName = getArgumentsItem(name);
       const argValue = getArgumentsItem(value);
       if (argName && argValue) {
-        setRunningTimes(produce({ [`${argName}`]: argValue }, undefined, {
-          name: "全局数据",
-          desc: `设置${argName}`
-        }));
+        setRunningTimes({ [`${argName}`]: argValue });
       } else {
         console.error('注入自定义全局数据时缺少属性名或值!');
       }
