@@ -36,6 +36,7 @@ import { Template } from '~/types/pageData';
 import { useHistory } from 'react-router-dom';
 import LoadingAnimate from './LoadingAnimate';
 import { trackPageView } from '~/core/tracking';
+import Undo from '../MiniDashboard/Undo';
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -372,6 +373,8 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
+              &nbsp;
+              <Undo />
               {process.env.REACT_APP_DEMO === 'true' ? (
                 <>
                   &nbsp;
