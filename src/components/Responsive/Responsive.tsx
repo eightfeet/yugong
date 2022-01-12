@@ -10,8 +10,8 @@ import {
   FileAddOutlined,
   GithubOutlined,
   PlusOutlined,
+  QrcodeOutlined,
   SettingOutlined,
-  UploadOutlined,
 } from '@ant-design/icons';
 import { Button, Drawer, message } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -389,7 +389,7 @@ const Responsive: React.FC<Props> = () => {
             <div className={s.save}>
               <Button
                 type="primary"
-                icon={<UploadOutlined />}
+                icon={<QrcodeOutlined />}
                 onClick={showPublishModal}
               >
                 {pageData.template?.id ? '修改' : '发布'}
