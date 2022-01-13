@@ -1,4 +1,6 @@
 import * as immer from "immer"
+import { cloneDeep } from "lodash";
+import { store } from "~/redux/store";
 
 type Producer<T> = (draft: immer.Draft<T>) => void;
 interface Tag {
@@ -6,6 +8,17 @@ interface Tag {
   name: string;
   /**变更描述 */
   desc: string;
+}
+
+
+function saveRecord(name: string) {
+    const { runningTimes, appData, pageData } = store.getState();
+    store.dispatch.record.setRecord({
+      desc: name,
+      runningTimes: cloneDeep(runningTimes),
+      appData: cloneDeep(appData),
+      pageData: cloneDeep(pageData),
+    })
 }
 
 /**
@@ -18,7 +31,12 @@ interface Tag {
 function produce<T>(baseState: Readonly<T>, producer?: Producer<T>, tag?: Tag): any {
   let data = baseState;
   if (producer) data = immer.produce(baseState, producer);
-  if (tag) console.log(`${tag.name}-${tag.desc}`);
+  if (tag) {
+    setTimeout(() => {
+      const name = `${tag.name}-${tag.desc}`;
+      saveRecord(name)
+    }, 1000);
+  };
   
   return data
 }
