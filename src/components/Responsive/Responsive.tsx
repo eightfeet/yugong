@@ -37,6 +37,7 @@ import { useHistory } from 'react-router-dom';
 import LoadingAnimate from './LoadingAnimate';
 import { trackPageView } from '~/core/tracking';
 import Undo from '../MiniDashboard/Undo';
+import { saveRecord } from '~/core/helper/produce';
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -123,6 +124,9 @@ const Responsive: React.FC<Props> = () => {
         }
         setShowDashboard(true);
         break;
+      case 'record':
+        saveRecord(value)
+        break
       default:
         break;
     }
@@ -444,8 +448,8 @@ const Responsive: React.FC<Props> = () => {
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`${process.env.REACT_APP_PUBLIC_PATH}${
-                    window.location.search || ''
+                  src={`${process.env.REACT_APP_PUBLIC_PATH || ''}${
+                    window.location.search || 'isediting'
                   }`}
                   style={{
                     border: 'none',

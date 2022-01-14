@@ -24,12 +24,8 @@ export const record = createModel<RootModel>()({
             draft.push(payload);
             if (draft.length > 10) {
               draft = draft.splice(0, 1);
-              console.log(333, draft);
             } 
           });
-          console.log(data);
-          
-
           return data
         },
     },
