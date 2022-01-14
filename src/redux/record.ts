@@ -14,19 +14,23 @@ interface RecordItem {
 const defaultData:RecordItem[] = []
 
 /**
- * 全局变量，被动增加，被动使用，
+ * 被动使用，
  */
 export const record = createModel<RootModel>()({
     state: defaultData, 
     reducers: {
         setRecord: (state, payload: RecordItem) => {
-          console.log(3, payload.desc);
-          return produce(state, draft => { 
+          const data = produce(state, draft => { 
             draft.push(payload);
             if (draft.length > 10) {
-              draft = draft.slice(draft.length - 10)
+              draft = draft.splice(0, 1);
+              console.log(333, draft);
             } 
-          })
-        }
-    }
+          });
+          console.log(data);
+          
+
+          return data
+        },
+    },
 });

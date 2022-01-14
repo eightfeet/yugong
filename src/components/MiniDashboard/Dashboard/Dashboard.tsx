@@ -223,9 +223,14 @@ const Dashboard: React.FC<Props> = () => {
     () => lazy(() => import(`../CodeEditor/index`)),
     [],
   );
+  
+  const record = useSelector((state: RootState) => state.record);
+
+  const setRecord = useDispatch<Dispatch>().record.setRecord;
 
   return (
     <>
+      <div onClick={() => setRecord({desc: '', appData})}>{JSON.stringify(record)}</div>
       <div className={s.headtab}>
         <div className={s.moduleselect}>
           <Select
