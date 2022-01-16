@@ -298,6 +298,7 @@ const Responsive: React.FC<Props> = () => {
       updatePageData(pageDataCopy);
       // 关闭弹窗
       setShowTemplateModal(false);
+      // todo 展示二维码与模板访问链接，支持扫码访问
     },
     [
       appData,
