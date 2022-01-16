@@ -15,6 +15,7 @@ interface Tag {
 let recordTimer: number | undefined = undefined;
 export function saveRecord(name: string) {
   if (recordTimer) window.clearTimeout(recordTimer);
+  if (!store.getState().record.isRecordReady) return;
   recordTimer = window.setTimeout(() => {
     const { runningTimes, appData, pageData } = store.getState();
     store.dispatch.record.setRecord({

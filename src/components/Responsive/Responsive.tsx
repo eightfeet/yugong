@@ -79,6 +79,7 @@ const Responsive: React.FC<Props> = () => {
   const ref = useRef(null);
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const setIsReady = useDispatch<Dispatch>().record.setIsReady;
 
   const [, setLocalPageData] = useLocalStorage('pageData', null);
 
@@ -144,10 +145,11 @@ const Responsive: React.FC<Props> = () => {
       windows.onload = () => {
         sendMessage({ tag: 'setIsEditing', value: true }, windows);
         setIsEditing(true);
+        setIsReady(true);
         sethideIframe(false);
       };
     }
-  }, [sendMessage, setIsEditing, isCreate]);
+  }, [sendMessage, setIsEditing, isCreate, setIsReady]);
 
   useEffect(() => {
     sendMessage({ tag: 'setIsEditing', value: true }, win);

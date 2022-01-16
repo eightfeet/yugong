@@ -40,6 +40,7 @@ const Dashboard: React.FC<Props> = () => {
   const appData = useSelector((state: RootState) => state.appData);
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  
 
   // 模板ID
   const moduleId = useSelector(
@@ -145,11 +146,8 @@ const Dashboard: React.FC<Props> = () => {
   // 模块删除快捷键
   // key deletd
   useKeyDown((event) => {
-    const activeNode = document.activeElement?.tagName.toLowerCase();
-    if (!isDeleteComp && activeNode !== 'input' && activeNode !== 'textarea') {
-      event.preventDefault();
-      confirmModal();
-    }
+    event.preventDefault();
+    confirmModal();
   }, 'Delete');
 
   // =====================================模块复制=======================================//
@@ -202,10 +200,7 @@ const Dashboard: React.FC<Props> = () => {
   // 模拟模块复制
   useKeyDown(
     () => {
-      const activeNode = document.activeElement?.tagName.toLowerCase();
-      if (activeNode === 'iframe') {
-        beforCopyModule();
-      }
+      beforCopyModule();
     },
     'c',
     'ctrlKey',

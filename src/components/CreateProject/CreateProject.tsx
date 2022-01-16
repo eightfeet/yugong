@@ -62,8 +62,9 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     trackEvent('点击', '创建空白');
     /**初始化 */
     initData();
+    dispatch.record.initRecord();
     goBack();
-  }, [goBack, initData]);
+  }, [dispatch.record, goBack, initData]);
 
   const confirmModal = useCallback(() => {
     if (!localAppData?.length && !localPageData) {
@@ -91,6 +92,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
         /**初始化 */
         initData();
+        dispatch.record.initRecord();
 
         const parseAppData: AppDataListTypes = JSON.parse(appData || '"[]"');
         const parsePageData: PageData = JSON.parse(pageData || '"{}"');
@@ -125,17 +127,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         onOk: fn,
       });
     },
-    [
-      dispatch.appData,
-      dispatch.pageData,
-      getTemplate,
-      goBack,
-      initData,
-      localAppData?.length,
-      localPageData,
-      setLocalAppData,
-      setLocalPageData,
-    ],
+    [dispatch.appData, dispatch.pageData, dispatch.record, getTemplate, goBack, initData, localAppData?.length, localPageData, setLocalAppData, setLocalPageData],
   );
 
   return (

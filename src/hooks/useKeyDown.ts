@@ -115,6 +115,7 @@ const useKeyDown = (
   key?: string,
   firstKey?: "altKey" | "ctrlKey" | "shiftKey" | "metaKey",
 ) => {
+  
   // 确认复制模块
   useEffect(() => {
     // 上下window都监听delete按键，对当前元素进行删除处理
@@ -126,6 +127,9 @@ const useKeyDown = (
 
     // 处理方法
     const fn = (event: KeyboardEvent) => {
+      const dom = window.document?.activeElement;
+      if (dom?.tagName.toLowerCase() === 'input' || dom?.tagName.toLowerCase() === 'textarea') return;
+
       if (!(callback instanceof Function)) { // 没有回调方法直接返回
         return;
       }
@@ -135,8 +139,9 @@ const useKeyDown = (
       };
 
       if (event.key !== undefined) { // 确认key值
+        
         // Handle the event with KeyboardEvent.key and set handled true.
-        if (event.key === key) { // 确认key值
+        if (event.key.toLowerCase() === key?.toLowerCase()) { // 确认key值
           callback(event);
         }
       } else if (event.keyCode !== undefined) {
