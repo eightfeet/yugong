@@ -184,6 +184,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
             className={s.card}
             bodyStyle={{ padding: "10px" }}
             key={`${item.id}${index}`}
+            onDoubleClick={() => onSelectedTemplate(item.id, "create")}
             cover={
               <div className={classNames(s.projectcove, s.projectcovetpl)}>
                 {item.cove ? (
