@@ -5,6 +5,7 @@
 
 import {
   CloseOutlined,
+  CloudUploadOutlined,
   EditOutlined,
   EyeOutlined,
   FileAddOutlined,
@@ -39,6 +40,7 @@ import { trackPageView } from '~/core/tracking';
 import Undo from '../MiniDashboard/Undo';
 import { saveRecord } from '~/core/helper/produce';
 import QrcodeModal from '../QrcodeModal';
+import { stringify } from 'query-string';
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -80,6 +82,7 @@ const Responsive: React.FC<Props> = () => {
   const ref = useRef(null);
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const setIsReady = useDispatch<Dispatch>().record.setIsReady;
 
   const [, setLocalPageData] = useLocalStorage('pageData', null);
@@ -89,6 +92,7 @@ const Responsive: React.FC<Props> = () => {
   const [isCreate, setIsCreate] = useState(true);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [hideIframe, sethideIframe] = useState(true);
+  const [visibleQrcode, setVisibleQrcode] = useState(false);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -300,6 +304,7 @@ const Responsive: React.FC<Props> = () => {
       // 关闭弹窗
       setShowTemplateModal(false);
       // todo 展示二维码与模板访问链接，支持扫码访问
+      setVisibleQrcode(true);
     },
     [
       appData,
@@ -318,6 +323,10 @@ const Responsive: React.FC<Props> = () => {
     }
     setShowTemplateModal(true);
   }, [auth?.isLogin, history]);
+
+  const pageSearch = stringify({tpl: pageData.template?.id, ...runningTimes.search, isediting: true});
+
+  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
 
   return (
     <>
@@ -397,11 +406,19 @@ const Responsive: React.FC<Props> = () => {
             <div className={s.save}>
               <Button
                 type="primary"
-                icon={<QrcodeOutlined />}
+                icon={<CloudUploadOutlined />}
                 onClick={showPublishModal}
               >
                 {pageData.template?.id ? '修改' : '发布'}
               </Button>
+              {pageData.template?.id ? <>
+                &nbsp;
+                <Button
+                  icon={<QrcodeOutlined />}
+                  onClick={() => setVisibleQrcode(true)}
+                />
+              </> : null}
+              
             </div>
           </div>
           <Ruler onChange={onChangeRule} />
@@ -452,7 +469,7 @@ const Responsive: React.FC<Props> = () => {
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`${process.env.REACT_APP_PUBLIC_PATH || ''}${
+                  src={`${process.env.REACT_APP_SITE_PATH || ''}${
                     window.location.search || 'isediting'
                   }`}
                   style={{
@@ -473,9 +490,11 @@ const Responsive: React.FC<Props> = () => {
         onCancel={() => setShowTemplateModal(false)}
       />
       <QrcodeModal 
-        visible 
-        sourceData='testdata' 
-        info={<>访问地址</>}
+        visible={visibleQrcode}
+        onCancel={() => setVisibleQrcode(false)}
+        sourceData={viewUrl}
+        title="请扫码访问"
+        info={<div className={s.viewurl}>访问地址:<a href={viewUrl} target={'_blank'} rel="noreferrer">{viewUrl}</a></div>}
         options={{
           width: 122,
           margin: 1

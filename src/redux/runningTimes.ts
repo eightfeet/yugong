@@ -4,9 +4,10 @@ import queryString from 'query-string';
 import produce from '~/core/helper/produce';
 
 const parsed = queryString.parse(window.location.search);
+const hash = window.location.hash.split('?')[1];
+const hashParsed = queryString.parse(hash);
 const height = window.innerHeight;
 const width = window.innerWidth;
-
 const windowSize = {
     height,
     width,
@@ -19,7 +20,7 @@ interface RunningTimesItem {
 const defaultData : {
     [keys: string]: RunningTimesItem;
 } = {
-    search: parsed,
+    search: {...hashParsed, ...parsed},
     window: windowSize,
     unit: {
         vw: width/100,

@@ -57,7 +57,7 @@ export const pageData = createModel<RootModel>()({
     ) => produce(state, draft => {draft.style = payload}),
     updatePageApi: (state, payload: Api[]) => produce(state, draft => {draft.onLoadApi = payload}),
     updatePageEvents: (state, payload: EventsType[]) => produce(state, draft => {(draft as any).onLoadEnvents = payload}),
-    initPageData: (state, payload?: PageData) => produce(state, draft => {Object.assign(draft, payload || {})}),
+    initPageData: (state, payload?: PageData) => produce(defaultData, draft => {Object.assign(draft, payload || {})}),
     setWindowWidth: (state, payload: number) => produce(state, draft => {draft.windowWidth = payload}),
     setWindowHeight: (state, payload: number) => produce(state, draft => {draft.windowHeight = payload}),
   },
