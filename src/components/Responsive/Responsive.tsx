@@ -38,6 +38,7 @@ import LoadingAnimate from './LoadingAnimate';
 import { trackPageView } from '~/core/tracking';
 import Undo from '../MiniDashboard/Undo';
 import { saveRecord } from '~/core/helper/produce';
+import QrcodeModal from '../QrcodeModal';
 // import loading from "~/core/loading";
 
 interface Props {}
@@ -470,6 +471,15 @@ const Responsive: React.FC<Props> = () => {
         visible={showTemplateModal}
         onOk={onSaveProject}
         onCancel={() => setShowTemplateModal(false)}
+      />
+      <QrcodeModal 
+        visible 
+        sourceData='testdata' 
+        info={<>访问地址</>}
+        options={{
+          width: 122,
+          margin: 1
+        }} 
       />
     </>
   );
