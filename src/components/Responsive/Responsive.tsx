@@ -469,9 +469,7 @@ const Responsive: React.FC<Props> = () => {
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`${process.env.REACT_APP_SITE_PATH || ''}${
-                    window.location.search || 'isediting'
-                  }`}
+                  src={viewUrl}
                   style={{
                     border: 'none',
                     opacity: hideIframe ? 0 : 1,

@@ -480,7 +480,7 @@
           "name": "提交表单(由提交表单事件自动收集表单数据)",
           "hideBodyInput": true,
           "method": "POST",
-          "url": "http://www.xxx.com",
+          "url": "https://www.path.com",
           "successPublic": [
             {
               "type": "string",
@@ -521,7 +521,7 @@
                 "data": {
                   "url": "https://yyjzx.blob.core.chinacloudapi.cn/upload-test/images/0520105344382.jpg",
                   "alt": "",
-                  "linkUrl": "http://www.xxx.com"
+                  "linkUrl": "https://www.path.com"
                 },
                 "fieldName": "img"
               }
