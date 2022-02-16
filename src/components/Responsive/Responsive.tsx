@@ -217,20 +217,6 @@ const Responsive: React.FC<Props> = () => {
     }
   }, [removeActivationItem, sendMessage, win]);
 
-  // const saveProjects = useCallback(
-  //   async (data: Template) => {
-
-  //     const id: number = await createTemplate(data);
-  //     if (id) {
-  //       const copyPageData = cloneDeep(pageData);
-  //       copyPageData.template = {...copyPageData.template || {}, id};
-  //       return updatePageData(copyPageData)
-  //     }
-
-  //   },
-  //   [pageData, updatePageData],
-  // )
-
   const updateProject = useCallback(
     (data: Template) => {
       data.id = pageData.template?.id;
