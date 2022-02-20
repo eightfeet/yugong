@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Input, message } from "antd";
 import React, { useCallback } from "react";
 import { login, userResult } from "~/api";
+import loading from "~/core/loading";
 
 interface Props {
   labelCol?: number;
@@ -11,12 +12,15 @@ interface Props {
 const Login: React.FC<Props> = ({ labelCol, wrapperCol, onLogin }) => {
   const onFinish = useCallback(
     (values: any) => {
+      loading.show();
       login(values)
         .then(user => {
+          loading.hide();
           if (onLogin instanceof Function) {
             onLogin(user)
           }
         }).catch(({ error }) => {
+          loading.hide();
           message.error(error || '登录失败')
         });
     },

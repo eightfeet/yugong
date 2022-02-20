@@ -119,7 +119,7 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
                     rules={[{ required: true, message: '请上传封面图片' }]}
                 >
                     <Upload
-                        action="https://wx-test1.by-health.com/commonservice/api/upload"
+                        action="/api/upload"
                         listType="picture"
                         maxCount={1}
                     >

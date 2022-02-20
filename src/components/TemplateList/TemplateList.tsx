@@ -17,6 +17,7 @@ import EmptyIcon from "../CreateProject/EmptyIcon";
 import clearEmptyOfObject from '~/core/helper/clearEmptyOfObject';
 import Searchbar from "./Searchbar";
 import s from "./TemplateList.module.less";
+import loading from "~/core/loading";
 
 interface Props {
   onSelectedTemplate: (id: string, type: "create" | "edit") => void;
@@ -30,7 +31,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [templateList, setTemplateList] = useState<queryTemplateParams[]>([]);
   const [templateParams, setTemplateParams] = useState<queryTemplateParams>({
     isPublic: 1,
-    limit: 5,
+    limit: 8,
     offset: 0,
   });
   // 总条数决定页数
@@ -41,8 +42,16 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   const [tags, setTags] = useState<queryTagParams[]>([]);
 
   const getTags = useCallback(async () => {
-    const tagsResult = await queryTag();
-    setTags(tagsResult);
+    try {
+      loading.show();
+      const tagsResult = await queryTag();
+      setTags(tagsResult);
+      loading.hide();
+    } catch (error) {
+      loading.hide();
+      console.error(error);
+    }
+    
   }, []);
 
   useEffect(() => {
@@ -78,16 +87,23 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
       };
       params = clearEmptyOfObject(params)
       if (force) {
-        params = {...query}
+        params = { ...query }
       }
       if (params.isPublic === 0) {
         params.userId = auth?.session?.id
       }
+      try {
+        loading.show();
+        const { rows = [], limit, offset, count } = await queryTemplate(params);
+        setTemplateList(rows);
+        setTotal(Math.ceil(count / limit) * limit);
+        setCurrent(offset / limit + 1);
+        loading.hide();
+      } catch (error) {
+        loading.hide();
+        console.error(error);
+      }
       
-      const { rows = [], limit, offset, count } = await queryTemplate(params);
-          setTemplateList(rows);
-          setTotal(Math.ceil(count / limit) * limit);
-          setCurrent(offset / limit + 1);
     },
     [auth?.session?.id, templateParams]
   );
@@ -99,8 +115,13 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const del = useCallback(
     (id) => {
+      loading.show();
       deleteTemplate(id).then(() => {
+        loading.hide();
         getTemplateList();
+      }).catch(error => {
+        console.error(error)
+        loading.hide();
       });
     },
     [getTemplateList]
@@ -130,7 +151,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const onSearch = useCallback(
     (data) => {
-      const optData = {...templateParams, ...data};
+      const optData = { ...templateParams, ...data };
       if (!data.tag) {
         delete optData.tag;
       }
@@ -152,7 +173,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         content: <div>确定要删除当前模板？</div>,
         okText: "确定",
         cancelText: "取消",
-        onCancel: () => {},
+        onCancel: () => { },
         onOk: () => del(id),
       });
     },
@@ -161,10 +182,10 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
 
   const onChangePagination = useCallback(
     (page) => {
-        const currentOffset = (page - 1)*(templateParams.limit || 0);
-        
+      const currentOffset = (page - 1) * (templateParams.limit || 0);
+
       getTemplateList({
-          offset: currentOffset
+        offset: currentOffset
       });
     },
     [getTemplateList, templateParams.limit]
