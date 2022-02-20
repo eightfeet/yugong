@@ -312,8 +312,13 @@ const Responsive: React.FC<Props> = () => {
 
   const pageSearch = stringify({tpl: pageData.template?.id, ...runningTimes.search, isediting: true});
 
-  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
-
+  // let viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+  // console.log('viewUrl1', viewUrl);
+  
+  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${
+    window.location.search || ''
+  }`
+  
   return (
     <>
       {isCreate ? (

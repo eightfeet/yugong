@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import OutputLayout from '~/OutputLayout';
+import OutputLayout from '~/components/Output/OutputLayout';
 import requester from '~/core/fetch';
 import isUrl from '~/core/helper/isUrl';
 import useRem from '~/hooks/useRem';
