@@ -41,9 +41,8 @@ import Undo from '../MiniDashboard/Undo';
 import { saveRecord } from '~/core/helper/produce';
 import QrcodeModal from '../QrcodeModal';
 import { stringify } from 'query-string';
-// import loading from "~/core/loading";
-
-interface Props {}
+import loading from '~/core/loading';
+interface Props { }
 const Responsive: React.FC<Props> = () => {
   useEffect(() => {
     trackPageView('/首页');
@@ -248,7 +247,7 @@ const Responsive: React.FC<Props> = () => {
 
       // copy
       const pageDataCopy = cloneDeep(pageData);
-      
+
       // template数据
       const templateData: Template = {
         title: title || pageData.pageTitle,
@@ -275,22 +274,29 @@ const Responsive: React.FC<Props> = () => {
         userId: auth.session?.id,
         ...templateData,
       };
-
-      // 更新
-      if (!!pageData.template?.id) {
-        await updateProject(params);
-      } else {
-        // 新增
-        const newId = await createTemplate(params);
-        pageDataCopy.template.id = newId;
+      try {
+        loading.show();
+        // 更新
+        if (!!pageData.template?.id) {
+          await updateProject(params);
+        } else {
+          // 新增
+          const newId = await createTemplate(params);
+          pageDataCopy.template.id = newId;
+        }
+        message.success('已发布');
+        // 更新
+        updatePageData(pageDataCopy);
+        // 关闭弹窗
+        setShowTemplateModal(false);
+        // todo 展示二维码与模板访问链接，支持扫码访问
+        setVisibleQrcode(true);
+        loading.hide();
+      } catch (error) {
+        console.error(error);
+        loading.hide();
       }
-      message.success('已发布');
-      // 更新
-      updatePageData(pageDataCopy);
-      // 关闭弹窗
-      setShowTemplateModal(false);
-      // todo 展示二维码与模板访问链接，支持扫码访问
-      setVisibleQrcode(true);
+      
     },
     [
       appData,
@@ -310,9 +316,13 @@ const Responsive: React.FC<Props> = () => {
     setShowTemplateModal(true);
   }, [auth?.isLogin, history]);
 
-  const pageSearch = stringify({tpl: pageData.template?.id, ...runningTimes.search, isediting: true});
+  const pageSearch = stringify({ tpl: pageData.template?.id, ...runningTimes.search });
 
-  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+
+  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${window.location.search || '?isediting'
+    }`
+
 
   return (
     <>
@@ -376,18 +386,14 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
-              &nbsp;
+              
               <Undo />
-              {process.env.REACT_APP_DEMO === 'true' ? (
-                <>
-                  &nbsp;
-                  <a href="https://github.com/eightfeet/yugong">
-                    <Button type="default" icon={<GithubOutlined />}>
-                      github
-                    </Button>
-                  </a>
-                </>
-              ) : null}
+              &nbsp;
+              <a href="https://github.com/eightfeet/yugong">
+                <Button type="default" icon={<GithubOutlined />}>
+                  github
+                </Button>
+              </a>
             </div>
             <div className={s.save}>
               <Button
@@ -404,7 +410,7 @@ const Responsive: React.FC<Props> = () => {
                   onClick={() => setVisibleQrcode(true)}
                 />
               </> : null}
-              
+
             </div>
           </div>
           <Ruler onChange={onChangeRule} />
@@ -473,16 +479,16 @@ const Responsive: React.FC<Props> = () => {
         onOk={onSaveProject}
         onCancel={() => setShowTemplateModal(false)}
       />
-      <QrcodeModal 
+      <QrcodeModal
         visible={visibleQrcode}
         onCancel={() => setVisibleQrcode(false)}
-        sourceData={viewUrl}
+        sourceData={codeViewUrl}
         title="请扫码访问"
-        info={<div className={s.viewurl}>访问地址:<a href={viewUrl} target={'_blank'} rel="noreferrer">{viewUrl}</a></div>}
+        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">{codeViewUrl}</a></div>}
         options={{
           width: 122,
           margin: 1
-        }} 
+        }}
       />
     </>
   );
