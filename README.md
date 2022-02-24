@@ -21,6 +21,10 @@
 演示:
 
   [编辑器地址](https://yugong.dawenxi.art/dashboard/#/project) 
+
+  用户名：demo，密码：123456 
+  
+  > 服务器数据将定期被清理
   
   [本地预览地址](https://yugong.dawenxi.art)
 
