@@ -20,9 +20,9 @@
 
 演示:
 
-  [编辑器地址](https://www.eightfeet.cn/yugong/dashboard/#/project) 
+  [编辑器地址](https://yugong.dawenxi.art/dashboard/#/project) 
   
-  [本地预览地址](https://www.eightfeet.cn/yugong/)
+  [本地预览地址](https://yugong.dawenxi.art)
 
 模拟项目(请手机扫描访问): 
 
