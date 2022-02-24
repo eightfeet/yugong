@@ -1,4 +1,4 @@
-import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { CopyOutlined, DeleteOutlined, EditOutlined, QrcodeOutlined } from "@ant-design/icons";
 import { Card, Tag, Tabs, Button, Modal, Pagination } from "antd";
 import Meta from "antd/lib/card/Meta";
 import classNames from "classnames";
@@ -18,6 +18,8 @@ import clearEmptyOfObject from '~/core/helper/clearEmptyOfObject';
 import Searchbar from "./Searchbar";
 import s from "./TemplateList.module.less";
 import loading from "~/core/loading";
+import QrcodeModal from "../QrcodeModal";
+import { stringify } from "query-string";
 
 interface Props {
   onSelectedTemplate: (id: string, type: "create" | "edit") => void;
@@ -36,9 +38,10 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   });
   // 总条数决定页数
   const [total, setTotal] = useState<number>();
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   // 当前页
   const [current, setCurrent] = useState(1)
-
+  const [visibleQrcode, setVisibleQrcode] = useState(0);
   const [tags, setTags] = useState<queryTagParams[]>([]);
 
   const getTags = useCallback(async () => {
@@ -51,7 +54,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
       loading.hide();
       console.error(error);
     }
-    
+
   }, []);
 
   useEffect(() => {
@@ -103,7 +106,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         loading.hide();
         console.error(error);
       }
-      
+
     },
     [auth?.session?.id, templateParams]
   );
@@ -191,6 +194,17 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
     [getTemplateList, templateParams.limit]
   );
 
+  const handleShowQrCode = useCallback(
+    (item) => {
+      setVisibleQrcode(item.id);
+    },
+    [],
+  )
+  
+  const pageSearch = stringify({ tpl: visibleQrcode, ...runningTimes.search });
+
+  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+
   return (
     <>
       <Tabs className={s.tab} defaultActiveKey="1" onChange={onChangeTab}>
@@ -230,7 +244,6 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                     <Button
                       size="small"
                       type="primary"
-                      icon={<CopyOutlined />}
                       onClick={() => onSelectedTemplate(item.id, "create")}
                     >
                       从模板创建
@@ -251,6 +264,12 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                         />
                       </>
                     ) : null}
+                    &nbsp;
+                    <Button
+                      size="small"
+                      icon={<QrcodeOutlined />}
+                      onClick={() => handleShowQrCode(item)}
+                    />
                   </div>
                 </>
               }
@@ -266,6 +285,17 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
           total={total}
         />
       )}
+      <QrcodeModal
+        visible={!!visibleQrcode}
+        onCancel={() => setVisibleQrcode(0)}
+        sourceData={codeViewUrl}
+        title="请扫码访问"
+        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">{codeViewUrl}</a></div>}
+        options={{
+          width: 122,
+          margin: 1
+        }}
+      />
     </>
   );
 };

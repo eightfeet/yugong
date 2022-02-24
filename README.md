@@ -22,7 +22,7 @@
 
   [编辑器地址](https://yugong.dawenxi.art/dashboard/#/project) 
 
-  用户名：demo，密码：123456 
+  用户名：test，密码：123456 
   
   > 服务器数据将定期被清理
   
