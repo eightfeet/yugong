@@ -1,6 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import React, { useCallback } from "react";
 import { register, registerParams, userResult } from "~/api";
+import loading from "~/core/loading";
 
 interface Props {
   labelCol?: number;
@@ -10,13 +11,16 @@ interface Props {
 
 const Login: React.FC<Props> = ({ labelCol, wrapperCol, onRegister }) => {
   const onFinish = useCallback((values: registerParams) => {
+    loading.show();
     register(values).then((res) => {
-        if (onRegister instanceof Function) {
-            onRegister(res)
-        }
-        message.success("注册成功，请登录！")
-    }).catch(({ error })=> {
-        message.error(error);
+      loading.hide();
+      if (onRegister instanceof Function) {
+        onRegister(res)
+      }
+      message.success("注册成功，请登录！")
+    }).catch(({ error }) => {
+      loading.hide();
+      message.error(error);
     });
   }, [onRegister]);
 

@@ -1,17 +1,19 @@
 import * as compiler from './compiler';
 import { StyleItemsTypes, AnimationTypesOfStyleItems } from '~/types/appData';
 import React from 'react';
+import { createDraft, finishDraft } from 'immer';
 
 function handlerAnimation(
   animation: AnimationTypesOfStyleItems,
   // 是否进入视区
   inView?: boolean,
 ): AnimationTypesOfStyleItems {
+  const animationDraft = createDraft(animation);
   // 动画元素是否有视觉区域观察者
   // 或者有视觉区域观察者但动画没有设置元素可视时播放时
   // 直接返回动画
-  if (inView === void 0 || animation.animationPlayInView !== true)
-    return animation;
+  if (inView === void 0 || animationDraft.animationPlayInView !== true)
+    return finishDraft(animationDraft);
 
   // 离开视区时移除动画, 将内容做隐藏处理
   const initAnimate: AnimationTypesOfStyleItems = {
@@ -25,7 +27,7 @@ function handlerAnimation(
   }
 
   // 有视觉区域观察者
-  const animationData = { ...animation };
+  const animationData = finishDraft(animationDraft);
   return animationData;
 }
 

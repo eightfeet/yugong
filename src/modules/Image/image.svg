@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(0.44000000000000006,0,0,0.44000000000000006,143.36,143.36)">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enableBackground:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(0.44000000000000006,0,0,0.44000000000000006,143.36,143.36)">
 <g xmlns="http://www.w3.org/2000/svg">
 	<g>
 		<path d="M502,98c5.523,0,10-4.477,10-10V40c0-5.523-4.477-10-10-10h-48c-5.523,0-10,4.477-10,10v14H174.826    c-5.523,0-10,4.477-10,10s4.477,10,10,10H444v14c0,5.523,4.477,10,10,10h14v316h-14c-5.523,0-10,4.477-10,10v48    c0,5.523,4.477,10,10,10h48c5.523,0,10-4.477,10-10v-48c0-5.523-4.477-10-10-10h-14V98H502z M492,434v28h-28v-28H492z M464,78V50    h28v28H464z" fill="#878787" data-original="#000000" style="" class=""/>

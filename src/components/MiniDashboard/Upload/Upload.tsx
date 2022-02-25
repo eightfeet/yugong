@@ -20,6 +20,7 @@ import { UploadChangeParam } from 'antd/lib/upload/interface';
 import { RootState } from '~/redux/store';
 import isUrl from '~/core/helper/isUrl';
 import { useSelector } from 'react-redux';
+import { useCookie } from 'react-use';
 
 interface UploadProps {
   label?: string;
@@ -28,7 +29,6 @@ interface UploadProps {
 }
 
 const antIcon = <LoadingOutlined className={s.loading} spin />;
-
 const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
   const [img, setimg] = useState<string>();
   const [isloading, setIsloading] = useState(false);
@@ -37,7 +37,8 @@ const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
   const moduleId = useSelector(
     (state: RootState) => state.activationItem.moduleId,
   );
-
+  const [csrfToken] = useCookie('csrfToken')
+  
   const ref = useRef(null);
 
   // 创建临时图片文件
@@ -151,10 +152,13 @@ const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
             ) : (
               <UploadPic
                 accept=".jpg,.jpeg,.png"
-                action={process.env.REACT_APP_UPLOAD_PATH}
+                action={'/api/upload'}
                 onChange={onChangeUpload}
                 showUploadList={false}
                 disabled={isloading}
+                headers={{
+                  'x-csrf-token': csrfToken || ''
+                }}
               >
                 <span
                   className={classNames(s.uploadicon, s.empty, s.flid)}

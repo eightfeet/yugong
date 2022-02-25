@@ -3,6 +3,7 @@ import { stringify } from 'query-string';
 
 const isDemo = process.env.REACT_APP_DEMO === 'true';
 
+
 /**
  * 创建模板入参
  *
@@ -94,6 +95,7 @@ export function queryTemplate(params: queryTemplateParams): Promise<{
   offset: number;
   count: number;
 }> {
+  // git发布
   if (isDemo) {
     return request.get(
       `${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demoRow.json`,
@@ -125,6 +127,7 @@ export interface queryTemplateByIdResult extends queryTemplateParams {
 export function queryTemplateById(
   id: number | string,
 ): Promise<queryTemplateByIdResult> {
+  // git发布
   if (isDemo) {
     return request.get(
       `${process.env.REACT_APP_PUBLIC_PATH || '/'}template/demo/${id}.json`,

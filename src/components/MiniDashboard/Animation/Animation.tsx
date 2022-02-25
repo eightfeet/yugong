@@ -11,6 +11,7 @@ import AnimationTimingFunction from './AnimationTimingFunction';
 import animationDisc from './animationDisc.json';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { AnimationTypesOfStyleItems } from '~/types/appData';
+import produce from '~/core/helper/produce';
 
 interface Props {}
 
@@ -38,14 +39,17 @@ const Animation: React.FC<Props> = ({}) => {
           | 'animationPlayInView',
       ) =>
       (value: any) => {
-        if (type === 'animationPlayInView') {
-          animation[type] = value.target.checked;
-        } else {
-          animation[type] = value;
-        }
-        setAnimation({ ...animation });
+        const nextAnimation = produce(animation, draft => {
+          if (type === 'animationPlayInView') {
+            draft[type] = value.target.checked;
+          } else {
+            draft[type] = value;
+          }
+        })
+        
+        setAnimation(nextAnimation);
         if (context.onChange instanceof Function) {
-          context.onChange({ ...animation }, 'animation');
+          context.onChange(nextAnimation, 'animation');
         }
       },
     [context, animation],

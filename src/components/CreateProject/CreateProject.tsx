@@ -62,8 +62,9 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     trackEvent('点击', '创建空白');
     /**初始化 */
     initData();
+    dispatch.record.initRecord();
     goBack();
-  }, [goBack, initData]);
+  }, [dispatch.record, goBack, initData]);
 
   const confirmModal = useCallback(() => {
     if (!localAppData?.length && !localPageData) {
@@ -86,15 +87,21 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   const onSelectedTemplate = useCallback(
     (id, type: 'edit' | 'create') => {
       const fn = async () => {
+        /**根据id查找模板 */
         const data = await getTemplate(id);
+        /**
+         * 从模板中获取 
+         * 分为三块内容页面pageData、组件数据appData、与当前页面的模板信息templateArg
+         * */
         const { appData, pageData, ...templateArg } = data;
-
         /**初始化 */
         initData();
-
+        /**重置记录 */
+        dispatch.record.initRecord();
+        /**序列化模板数据 */
         const parseAppData: AppDataListTypes = JSON.parse(appData || '"[]"');
         const parsePageData: PageData = JSON.parse(pageData || '"{}"');
-
+        /**清除模板信息中的id */
         if (type === 'create') {
           delete templateArg.id;
         }
@@ -125,17 +132,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         onOk: fn,
       });
     },
-    [
-      dispatch.appData,
-      dispatch.pageData,
-      getTemplate,
-      goBack,
-      initData,
-      localAppData?.length,
-      localPageData,
-      setLocalAppData,
-      setLocalPageData,
-    ],
+    [dispatch.appData, dispatch.pageData, dispatch.record, getTemplate, goBack, initData, localAppData?.length, localPageData, setLocalAppData, setLocalPageData],
   );
 
   return (

@@ -6,6 +6,7 @@ import isType from '~/core/helper/isType';
 import { AnyObject } from 'yup/lib/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/redux/store';
+import { useCookie } from 'react-use';
 
 export interface TemplateInfo {
     /**模板id */
@@ -42,6 +43,8 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
     const [tags, setTags] = useState<queryTagParams[]>([]);
     const pageData = useSelector((state: RootState) => state.pageData);
     const [defaultValue, setDefaultValue] = useState<AnyObject>();
+
+    const [csrfToken] = useCookie('csrfToken')
 
     const getTags = useCallback(async () => {
         const tagsResult = await queryTag();
@@ -119,12 +122,16 @@ const TemplateInfoModal: React.FC<Props> = ({ visible, onOk, onCancel }) => {
                     rules={[{ required: true, message: '请上传封面图片' }]}
                 >
                     <Upload
-                        action="https://wx-test1.by-health.com/commonservice/api/upload"
+                        action="/api/upload"
                         listType="picture"
                         maxCount={1}
+                        headers={{
+                          'x-csrf-token': csrfToken || ''
+                        }}
                     >
                         <Button icon={<UploadOutlined />}>上传图片</Button>
                     </Upload>
+
                 </Form.Item>
                 <Form.Item label="描述" name="describe">
                     <Input.TextArea rows={3} />

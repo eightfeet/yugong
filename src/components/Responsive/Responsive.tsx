@@ -5,13 +5,14 @@
 
 import {
   CloseOutlined,
+  CloudUploadOutlined,
   EditOutlined,
   EyeOutlined,
   FileAddOutlined,
   GithubOutlined,
   PlusOutlined,
+  QrcodeOutlined,
   SettingOutlined,
-  UploadOutlined,
 } from '@ant-design/icons';
 import { Button, Drawer, message } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -36,9 +37,12 @@ import { Template } from '~/types/pageData';
 import { useHistory } from 'react-router-dom';
 import LoadingAnimate from './LoadingAnimate';
 import { trackPageView } from '~/core/tracking';
-// import loading from "~/core/loading";
-
-interface Props {}
+import Undo from '../MiniDashboard/Undo';
+import { saveRecord } from '~/core/helper/produce';
+import QrcodeModal from '../QrcodeModal';
+import { stringify } from 'query-string';
+import loading from '~/core/loading';
+interface Props { }
 const Responsive: React.FC<Props> = () => {
   useEffect(() => {
     trackPageView('/首页');
@@ -77,6 +81,8 @@ const Responsive: React.FC<Props> = () => {
   const ref = useRef(null);
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
+  const setIsReady = useDispatch<Dispatch>().record.setIsReady;
 
   const [, setLocalPageData] = useLocalStorage('pageData', null);
 
@@ -85,6 +91,7 @@ const Responsive: React.FC<Props> = () => {
   const [isCreate, setIsCreate] = useState(true);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [hideIframe, sethideIframe] = useState(true);
+  const [visibleQrcode, setVisibleQrcode] = useState(false);
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -122,6 +129,9 @@ const Responsive: React.FC<Props> = () => {
         }
         setShowDashboard(true);
         break;
+      case 'record':
+        saveRecord(value)
+        break
       default:
         break;
     }
@@ -139,10 +149,11 @@ const Responsive: React.FC<Props> = () => {
       windows.onload = () => {
         sendMessage({ tag: 'setIsEditing', value: true }, windows);
         setIsEditing(true);
+        setIsReady(true);
         sethideIframe(false);
       };
     }
-  }, [sendMessage, setIsEditing, isCreate]);
+  }, [sendMessage, setIsEditing, isCreate, setIsReady]);
 
   useEffect(() => {
     sendMessage({ tag: 'setIsEditing', value: true }, win);
@@ -205,26 +216,12 @@ const Responsive: React.FC<Props> = () => {
     }
   }, [removeActivationItem, sendMessage, win]);
 
-  // const saveProjects = useCallback(
-  //   async (data: Template) => {
-
-  //     const id: number = await createTemplate(data);
-  //     if (id) {
-  //       const copyPageData = cloneDeep(pageData);
-  //       copyPageData.template = {...copyPageData.template || {}, id};
-  //       return updatePageData(copyPageData)
-  //     }
-
-  //   },
-  //   [pageData, updatePageData],
-  // )
-
   const updateProject = useCallback(
     (data: Template) => {
       data.id = pageData.template?.id;
       return updateTemplate(data);
     },
-    [pageData.template?.id],
+    [pageData],
   );
 
   interface TemplateAll extends Template {
@@ -247,8 +244,10 @@ const Responsive: React.FC<Props> = () => {
         history.push('/login');
         return;
       }
+
       // copy
       const pageDataCopy = cloneDeep(pageData);
+
       // template数据
       const templateData: Template = {
         title: title || pageData.pageTitle,
@@ -259,9 +258,15 @@ const Responsive: React.FC<Props> = () => {
         isPublic: isPublic === true ? 1 : 0,
       };
       // 存入模板信息到pageData
-      pageDataCopy.template = templateData || {};
+      if (!pageDataCopy.template) {
+        pageDataCopy.template = templateData;
+      }
 
       // 完整数据
+      /**
+       * 完整数据包含页面数据、组件数据与模板信息三个部分，
+       * 页面数据同时也包含一份模板信息供页面处理
+       */
       const params: TemplateAll = {
         pageData: JSON.stringify(pageData),
         appData: JSON.stringify(appData),
@@ -269,20 +274,29 @@ const Responsive: React.FC<Props> = () => {
         userId: auth.session?.id,
         ...templateData,
       };
-
-      // 更新
-      if (!!pageData.template?.id) {
-        await updateProject(params);
-      } else {
-        // 新增
-        const newId = await createTemplate(params);
-        pageDataCopy.template.id = newId;
+      try {
+        loading.show();
+        // 更新
+        if (!!pageData.template?.id) {
+          await updateProject(params);
+        } else {
+          // 新增
+          const newId = await createTemplate(params);
+          pageDataCopy.template.id = newId;
+        }
+        message.success('已发布');
+        // 更新
+        updatePageData(pageDataCopy);
+        // 关闭弹窗
+        setShowTemplateModal(false);
+        // todo 展示二维码与模板访问链接，支持扫码访问
+        setVisibleQrcode(true);
+        loading.hide();
+      } catch (error) {
+        console.error(error);
+        loading.hide();
       }
-      message.success('已发布');
-      // 更新
-      updatePageData(pageDataCopy);
-      // 关闭弹窗
-      setShowTemplateModal(false);
+      
     },
     [
       appData,
@@ -301,6 +315,14 @@ const Responsive: React.FC<Props> = () => {
     }
     setShowTemplateModal(true);
   }, [auth?.isLogin, history]);
+
+  const pageSearch = stringify({ tpl: pageData.template?.id, ...runningTimes.search });
+
+  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+
+  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${window.location.search || '?isediting'
+    }`
+
 
   return (
     <>
@@ -364,25 +386,31 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
-              {process.env.REACT_APP_DEMO === 'true' ? (
-                <>
-                  &nbsp;
-                  <a href="https://github.com/eightfeet/yugong">
-                    <Button type="default" icon={<GithubOutlined />}>
-                      github
-                    </Button>
-                  </a>
-                </>
-              ) : null}
+              
+              <Undo />
+              &nbsp;
+              <a href="https://github.com/eightfeet/yugong">
+                <Button type="default" icon={<GithubOutlined />}>
+                  github
+                </Button>
+              </a>
             </div>
             <div className={s.save}>
               <Button
                 type="primary"
-                icon={<UploadOutlined />}
+                icon={<CloudUploadOutlined />}
                 onClick={showPublishModal}
               >
                 {pageData.template?.id ? '修改' : '发布'}
               </Button>
+              {pageData.template?.id ? <>
+                &nbsp;
+                <Button
+                  icon={<QrcodeOutlined />}
+                  onClick={() => setVisibleQrcode(true)}
+                />
+              </> : null}
+
             </div>
           </div>
           <Ruler onChange={onChangeRule} />
@@ -433,9 +461,7 @@ const Responsive: React.FC<Props> = () => {
                   ref={ref}
                   id="wrapiframe"
                   title="wrapiframe"
-                  src={`${process.env.REACT_APP_PUBLIC_PATH}${
-                    window.location.search || ''
-                  }`}
+                  src={viewUrl}
                   style={{
                     border: 'none',
                     opacity: hideIframe ? 0 : 1,
@@ -452,6 +478,17 @@ const Responsive: React.FC<Props> = () => {
         visible={showTemplateModal}
         onOk={onSaveProject}
         onCancel={() => setShowTemplateModal(false)}
+      />
+      <QrcodeModal
+        visible={visibleQrcode}
+        onCancel={() => setVisibleQrcode(false)}
+        sourceData={codeViewUrl}
+        title="请扫码访问"
+        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">{codeViewUrl}</a></div>}
+        options={{
+          width: 122,
+          margin: 1
+        }}
       />
     </>
   );

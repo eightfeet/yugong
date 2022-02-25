@@ -20,6 +20,8 @@ import usePostMessage from "~/hooks/usePostMessage";
 import { eventEmitter } from "~/core/EventEmitter";
 import { backgroundGroup } from "~/compiler/compiler";
 import { cloneDeep, isEqual } from "lodash";
+import produce from "~/core/helper/produce";
+import { createDesc } from "~/core/constants";
 
 const GridLayout = WidthProvider(RGL) as any;
 
@@ -110,10 +112,12 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       const optAppdata = cloneDeep(appData);
       // 检查是否需要更新
       let updates = false;
+      let currentName = undefined
       optAppdata.forEach((item) => {
         layout.some((element) => {
           if (item.moduleId === element.i && !isEqual(element, item.layout)) {
             item.layout = element;
+            currentName = item.moduleName;
             updates = true;
             return updates;
           }
@@ -131,7 +135,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
         },
         window.top
       );
-      updateAppData(optAppdata);
+      updateAppData(produce(optAppdata, undefined, createDesc('修改组件', `${currentName} 位置/大小`)));
       setAppdataLocalStorage(optAppdata);
     },
     [appData, sendMessage, setAppdataLocalStorage, updateAppData]

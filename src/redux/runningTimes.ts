@@ -1,11 +1,13 @@
 import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 import queryString from 'query-string';
+import produce from '~/core/helper/produce';
 
 const parsed = queryString.parse(window.location.search);
+const hash = window.location.hash.split('?')[1];
+const hashParsed = queryString.parse(hash);
 const height = window.innerHeight;
 const width = window.innerWidth;
-
 const windowSize = {
     height,
     width,
@@ -18,7 +20,7 @@ interface RunningTimesItem {
 const defaultData : {
     [keys: string]: RunningTimesItem;
 } = {
-    search: parsed,
+    search: {...hashParsed, ...parsed},
     window: windowSize,
     unit: {
         vw: width/100,
@@ -33,11 +35,14 @@ export const runningTimes = createModel<RootModel>()({
     state: defaultData, 
 
     reducers: {
-        setRunningTimes(state, payload: RunningTimesItem) {
-            return { ...state, ...payload };
-        },
+        setRunningTimes: (state, payload: RunningTimesItem) => produce(state, draft => {
+          Object.assign(draft, payload)
+        }),
         setRemSize({unit, ...other}, payload: number) {
-            return {...other, unit:{...unit, rem: payload}}
+            const newUnit = Object.assign({rem: payload}, unit);
+            return produce(other, draft => {
+              draft.unit = newUnit
+            })
         },
         initRunningTimes() {
             return defaultData

@@ -377,8 +377,8 @@ const ArgumentsSetting: React.FC<Props> = ({
                     optionFilterProp="children"
                     filterOption={
                       (input, option) => {
-                        const str = option?.children.join('').toLowerCase();
-                        if (str.indexOf(input) !== -1) {
+                        const str = option?.children?.join('').toLowerCase();
+                        if (str?.indexOf(input) !== -1) {
                           return true;
                         }
                         return false;

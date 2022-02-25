@@ -12,6 +12,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import Radio from "antd/lib/radio";
 import Button from "antd/lib/button";
 import { AppDataLayoutItemTypes } from "~/types/appData";
+import produce from "~/core/helper/produce";
 
 interface Props {}
 
@@ -42,11 +43,14 @@ const Codeeditor: React.FC<Props> = () => {
       ) {
         setJsonData(json);
         dispatch.activationItem.updateActivationItem(json);
-        const operateData = [...appData].map((item) => {
+        const operateData = produce([...appData].map((item) => {
           if (item.moduleId === json.moduleId) {
             return json;
           }
           return item;
+        }), undefined, {
+          name: `修改组件${activationItem.moduleName || activationItem.moduleId}`,
+          desc: 'code'
         });
         dispatch.appData.updateAppData(operateData);
         setLocalStorage(operateData);
@@ -55,7 +59,7 @@ const Codeeditor: React.FC<Props> = () => {
     } catch (e) {
       return;
     }
-  }, [activationItem.moduleId, appData, dispatch.activationItem, dispatch.appData, dispatch.controller, setLocalStorage]);
+  }, [activationItem.moduleId, activationItem.moduleName, appData, dispatch.activationItem, dispatch.appData, dispatch.controller, setLocalStorage]);
 
   useEffect(() => {
     if (container.current && jsonData) {
