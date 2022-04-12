@@ -5,6 +5,7 @@ import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState, useMemo, lazy } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { Dispatch, RootState } from '~/redux/store';
 import {
   ArgumentsItem,
@@ -99,7 +100,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   // number
   const onChangeInput = useCallback(
     (index: number, isSelect?: boolean) => (e: any) => {
-      const result = [...argumentState];
+      const result = cloneDeep(argumentState);
       result[index].data = isSelect ? e : e.target.value;
       setArgumentState(result);
     },
