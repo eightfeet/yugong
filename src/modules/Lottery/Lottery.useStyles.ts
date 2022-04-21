@@ -220,7 +220,7 @@ const useStyles = (id: string, style: any, type: keyof GameMap) => {
     }
     const data = jss.createStyleSheet<string>(createStyleParames());
     style.innerHTML = data.toString();
-    document.body.className = data.classes[Object.keys(data.classes)[0]];
+    document.body.classList.add(data.classes[Object.keys(data.classes)[0]]);
   }, [createStyleParames, id]);
 
   const removeDom = useCallback(() => {
