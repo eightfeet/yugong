@@ -79,6 +79,8 @@ export const LOTTERY = [
   }
 ]
 
+
+
 export const CHART = [
   {
     moduleName: "Chart",
