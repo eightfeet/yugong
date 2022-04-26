@@ -7,16 +7,8 @@ import { ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
-import config from './ClassModuleTpl.config';
-import createStyles from './ClassModuleTpl.createStyles';
-
-
-type ClassesKey = 'style1' | 'style2';
-type EventsKey = 'click';
-
-type State = {
-  text: string
-}
+import config, { ExposeEventsKeys } from './ClassModuleTpl.config';
+import createStyles, { ClassesKey } from './ClassModuleTpl.createStyles';
 
 class ClassModuleTpl extends Component<ClassModuleTplProps, State> {
   constructor(props: ClassModuleTplProps) {
@@ -80,13 +72,18 @@ const mapDispatch = (dispatch: Dispatch) => ({
   setRunningTimes: dispatch.runningTimes.setRunningTimes,
 })
 
+// typeof State
+type State = {
+  text: string
+}
 
+// typeof Props
 type StateProps = ReturnType<typeof mapState>
 type DispatchProps = ReturnType<typeof mapDispatch>
 
 export type ClassModuleTplProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
-  { [keys in EventsKey]: Function; }
+  { [keys in ExposeEventsKeys]: Function; }
 > & StateProps & DispatchProps
 
 export default connect(mapState, mapDispatch)(PresetModule<ClassModuleTplProps>(ClassModuleTpl, config, createStyles))
