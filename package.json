@@ -38,6 +38,7 @@
     "qrcode": "^1.5.0",
     "query-string": "^6.14.1",
     "rc-form": "^2.4.12",
+    "rc-slider": "9.7.5",
     "react": "^17.0.1",
     "react-awesome-slider": "^4.1.0",
     "react-color": "^2.19.3",
