@@ -67,13 +67,6 @@ export const BASEMODULES = [
     discribe: "弹窗列表",
     tips: "弹窗列表属于隐形模块，请在设置面板中选择编辑",
     icon: <Icon component={IconListModal} />,
-  },
-  {
-    moduleName: "SBBBB",
-    title: "SBBBB",
-    discribe: "ccc",
-    tips: "弹窗列表属于隐形模块，请在设置面板中选择编辑",
-    icon: <Icon component={IconListModal} />,
   }
 ];
 
