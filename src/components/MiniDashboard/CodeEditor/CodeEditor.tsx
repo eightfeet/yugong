@@ -14,7 +14,7 @@ import Button from "antd/lib/button";
 import { AppDataLayoutItemTypes } from "~/types/appData";
 import produce from "~/core/helper/produce";
 
-interface Props {}
+interface Props { }
 
 const Codeeditor: React.FC<Props> = () => {
   const activationItem = useSelector(

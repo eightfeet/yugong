@@ -187,7 +187,6 @@ const Dashboard: React.FC<Props> = () => {
     // 通过滚动条定位计算新增元素应该在当前视窗内
     y = (scrollTop + 100) / (rowHeight as number);
     
-
     oprateActivationItem.layout!.y = y;
     // 复制模块,更新当前模块到全局并设为当前被选择模块
     updateAppData(produce([...appData, oprateActivationItem], undefined, createDesc('复制',`新组件${oprateActivationItem.moduleName}`)));
@@ -198,13 +197,13 @@ const Dashboard: React.FC<Props> = () => {
 
   // 处理键盘事件
   // 模拟模块复制
-  useKeyDown(
-    () => {
-      beforCopyModule();
-    },
-    'c',
-    'ctrlKey',
-  );
+  // useKeyDown(
+  //   () => {
+  //     beforCopyModule();
+  //   },
+  //   'c',
+  //   'ctrlKey',
+  // );
 
   // // 确认复制模块
   useKeyDown((event) => {
