@@ -1,130 +1,125 @@
-import { useCallback, useState } from 'react';
-import requester from '~/core/fetch';
-import { useLongPress } from 'react-use';
-import {
-    AppDataElementsTypes,
-    ArgumentsBoolean,
-    ArgumentsString,
-} from '~/types/appData';
-import { Modules } from '~/types/modules';
-import Wrapper from '../Wrapper';
-import s from './Button.module.less';
-import useStyles from './Button.useStyles';
+import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
-import config from './Button.config';
-import useLifeCycle from '~/hooks/useLifeCycle';
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ArgumentsItem, ArgumentsString } from '~/types/appData';
+import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import requester from '~/core/fetch';
+import Wrapper from '../Wrapper';
+import config, { ExposeEventsKeys } from './Button.config';
+import createStyles, { ClassesKey } from './Button.createStyles';
+import s from './Button.module.less';
+import { useLongPress } from 'react-use';
 
-export interface ButtonProps extends AppDataElementsTypes {}
 
-const Button: Modules<ButtonProps> = (props) => {
-    const { api, style, moduleId } = props;
-    const [text, setText] = useState();
-    const [disabled, setDisabled] = useState(false);
-    const [hidden, setHidden] = useState(false);
-    const [displayState, setDisplayState] = useState<string>();
+export type ButtonProps = ClassModuleBaseProps<
+  { [keys in ClassesKey]: string; },
+  { [keys in ExposeEventsKeys]: Function; }
+>
 
-    const userClass = useStyles(style);
-    const defaultOptions = {
-        isPreventDefault: false,
-        delay: 2000,
-    };
-
-    // 设置按钮
-    const setButton = useCallback(
-        (
-            buttonText: ArgumentsString,
-            disabled: ArgumentsBoolean,
-            hidden: ArgumentsBoolean
-        ) => {
-            const getText = getArgumentsItem(buttonText);
-            const isDisable = getArgumentsItem(disabled);
-            const isHidden = getArgumentsItem(hidden);
-            setText(getText as any);
-            setDisabled(isDisable as boolean);
-            setHidden(isHidden as boolean);
-        },
-        []
-    );
-
-    // 设置按钮显示样式
-    const setButtonDisplay = useCallback((state: ArgumentsString) => {
-        const getState = getArgumentsItem(state);
-        setDisplayState(getState as string);
-    }, []);
-
-    // 向eventEmitter注册事件，向外公布
-    const [eventsDispatch] = useLifeCycle(
-        moduleId,
-        {
-            mount: '初始化',
-            unmount: '卸载',
-            click: '点击',
-            doubleClick: '双击',
-            longPress: '长按',
-        },
-        { setButton, setButtonDisplay }
-    );
-
-    // 点击事件
-    const onClick = useCallback(async () => {
-        const apiArguments = api?.find((item) => item.apiId === 'beforeClick');
-        // api 参数交由requester自行处理
-        await requester(apiArguments || {});
-        eventsDispatch.click();
-    }, [api, eventsDispatch]);
-
-    // 双击事件
-    const onDoubleClick = useCallback(async () => {
-        const apiArguments = api?.find(
-            (item) => item.apiId === 'beforeDoubleClick'
-        );
-        if (apiArguments) {
-            await requester(apiArguments || {});
-        }
-        eventsDispatch.doubleClick();
-    }, [api, eventsDispatch]);
-
-    // 长按事件
-    const onLongPress = useCallback(async () => {
-        const apiArguments = api?.find(
-            (item) => item.apiId === 'beforeLongPress'
-        );
-        if (apiArguments) {
-            await requester(apiArguments || {});
-        }
-        eventsDispatch.longPress();
-    }, [api, eventsDispatch]);
-
-    const longPressEvent = useLongPress(onLongPress, defaultOptions);
-
-    return (
-        <Wrapper {...props} maxWidth maxHeight>
-            {!hidden ? (
-                <button
-                    onClick={onClick}
-                    onDoubleClick={onDoubleClick}
-                    {...longPressEvent}
-                    className={classNames(s.btn, userClass.button, {
-                        [userClass.disabled]: displayState === 'disabled',
-                        [userClass.focus]: displayState === 'focus',
-                        [userClass.active]: displayState === 'active',
-                        [userClass.hover]: displayState === 'hover',
-                    })}
-                    disabled={disabled}
-                >
-                    {text || '按钮'}
-                </button>
-            ) : null}
-        </Wrapper>
-    );
+const defaultOptions = {
+  isPreventDefault: false,
+  delay: 2000,
 };
 
-// bind static
-for (const key in config) {
-    if (Object.prototype.hasOwnProperty.call(config, key)) {
-        Button[key] = config[key];
+const Button: React.FC<ButtonProps> = (props) => {
+  const {
+    registersFunction,
+    eventDispatch,
+    classes,
+  } = props;
+  const { api } = props;
+  const [text, setText] = useState<string>();
+  const [disabled, setDisabled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [displayState, setDisplayState] = useState<string>();
+
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // 设置按钮
+  const setButton = useCallback(
+    (
+      ...args: ArgumentsItem[]
+    ) => {
+      const resArg = getArguments(args);
+      const {buttonText, disabled, hidden} = resArg;
+      setText(buttonText);
+      setDisabled(disabled);
+      setHidden(hidden);
+    },
+    []
+  );
+
+  // 设置按钮显示样式
+  const setButtonDisplay = useCallback((state: ArgumentsString) => {
+    const getState = getArgumentsItem(state);
+    setDisplayState(getState as string);
+}, []);
+
+  // 点击事件
+  const onClick = useCallback(async () => {
+    const apiArguments = api?.find((item) => item.apiId === 'beforeClick');
+    // api 参数交由requester自行处理
+    await requester(apiArguments || {});
+    eventDispatch().click();
+  }, [api, eventDispatch]);
+
+  // 双击事件
+  const onDoubleClick = useCallback(async () => {
+    const apiArguments = api?.find(
+      (item) => item.apiId === 'beforeDoubleClick'
+    );
+    if (apiArguments) {
+      await requester(apiArguments || {});
+    }
+    eventDispatch().doubleClick();
+  }, [api, eventDispatch]);
+
+  // 长按事件
+  const onLongPress = useCallback(async () => {
+    const apiArguments = api?.find(
+      (item) => item.apiId === 'beforeLongPress'
+    );
+    if (apiArguments) {
+      await requester(apiArguments || {});
+    }
+    eventDispatch().longPress();
+  }, [api, eventDispatch]);
+
+  const longPressEvent = useLongPress(onLongPress, defaultOptions);
+
+  useEffect(() => {
+    registersFunction({
+      setButton, setButtonDisplay
+    })
+  }, [registersFunction, setButton, setButtonDisplay])
+
+  return (
+    <Wrapper {...props} maxWidth maxHeight>
+      {!hidden ? (
+        <button
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          {...longPressEvent}
+          className={classNames(s.btn, classes.button, {
+            [classes.disabled]: displayState === 'disabled',
+            [classes.focus]: displayState === 'focus',
+            [classes.active]: displayState === 'active',
+            [classes.hover]: displayState === 'hover',
+          })}
+          disabled={disabled}
+        >
+          {text || '按钮'}
+        </button>
+      ) : null}
+    </Wrapper>
+  )
 }
 
-export default Button;
+export default PresetModule<ButtonProps>(Button, config, createStyles);
