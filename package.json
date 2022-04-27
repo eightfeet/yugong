@@ -71,7 +71,7 @@
     "build:git": "GENERATE_SOURCEMAP=false env-cmd -f .env.git react-app-rewired --openssl-legacy-provider build",
     "demo:publish": "gh-pages -m \"publish demo\" -d build",
     "demo": "npm run build:git && npm run demo:publish",
-    "createModule": "sh ./.vscode/createModule.sh",
+    "createFunctionModule": "sh ./.vscode/createFunctionModule.sh",
     "createClassModule": "sh ./.vscode/createClassModule.sh",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
