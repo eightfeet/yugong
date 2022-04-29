@@ -19,7 +19,7 @@ import { Api as ApiType } from "~/types/appData";
 import ApiConfig from "../ApiConfig";
 import EventGroup from "../EventsSetting/EventGroup";
 import reject from "lodash/reject";
-import { v4 as uuidv4 } from "uuid";
+import { nanoid } from 'nanoid';
 import s from "./PageSetting.module.less";
 import { useDispatch, useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
@@ -195,7 +195,7 @@ const Pagesetting: React.FC<Props> = () => {
     const optPageData = produce(pageData, draft => {
       draft.onLoadApi?.push({
         name: `ApiBeforMounted`,
-        apiId: uuidv4(),
+        apiId: nanoid(),
       });
     }, createDesc('页面', '新增Api'));
     handleUpdatePage(optPageData);

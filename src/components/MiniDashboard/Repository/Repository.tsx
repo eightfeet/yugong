@@ -2,7 +2,7 @@ import { Button, Card, Col, Input, Modal, Row, Tooltip, Collapse } from 'antd';
 import Draggable from 'react-draggable';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MODULES, GRID_DEFAULT_ROWHEIGHT, createDesc } from '~/core/constants';
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
@@ -117,7 +117,7 @@ const Repository: React.FC = () => {
       const module = require(`~/modules/${moduleType}`).default;
       const { exposeDefaultProps } = module;
       const { style } = exposeDefaultProps || {};
-      const moduleId: string = uuidv4();
+      const moduleId: string = nanoid();
       // Add a new item. It must have a unique key!
       const layout = {
         i: moduleId,

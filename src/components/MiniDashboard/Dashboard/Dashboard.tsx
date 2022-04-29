@@ -16,7 +16,7 @@ import { RootState, Dispatch } from '~/redux/store';
 import StyleController from '../StyleController';
 import usePostMessage from '~/hooks/usePostMessage';
 
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid'
 import cloneDeep from 'lodash/cloneDeep';
 import useKeyDown from '~/hooks/useKeyDown';
 import RunningTimesModal from '../RunningTimesModal';
@@ -167,7 +167,7 @@ const Dashboard: React.FC<Props> = () => {
   const copyModule = useCallback(() => {
     // 准备创建
     const oprateActivationItem = cloneDeep(activationItem);
-    const moduleId = uuidv4();
+    const moduleId = nanoid();
     oprateActivationItem.moduleId = moduleId;
     oprateActivationItem.layout!.i = moduleId;
     oprateActivationItem.moduleName =
