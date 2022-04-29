@@ -25,20 +25,8 @@ const FunctionModuleTpl: React.FC<FunctionModuleTplProps> = (props) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    registersFunction({});
-  }, [registersFunction])
-
-  useEffect(() => {
     setRunningTimes({ text: 'runningTimeData' });
   }, [setRunningTimes])
-
-  useEffect(() => {
-    eventDispatch().mount()
-    return () => {
-      eventDispatch().unmount();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const handleClick = useCallback(
     (text: ArgumentsString) => {
@@ -48,6 +36,16 @@ const FunctionModuleTpl: React.FC<FunctionModuleTplProps> = (props) => {
     [],
   )
 
+  // First, give priority to distributing events so that you can call yourself
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Second setup registers
   useEffect(() => {
     registersFunction({
       handleClick

@@ -11,7 +11,6 @@ import createStyles, { ClassesKey } from './Button.createStyles';
 import s from './Button.module.less';
 import { useLongPress } from 'react-use';
 
-
 export type ButtonProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
@@ -33,14 +32,6 @@ const Button: React.FC<ButtonProps> = (props) => {
   const [disabled, setDisabled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [displayState, setDisplayState] = useState<string>();
-
-  useEffect(() => {
-    eventDispatch().mount()
-    return () => {
-      eventDispatch().unmount();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // 设置按钮
   const setButton = useCallback(
@@ -99,6 +90,14 @@ const Button: React.FC<ButtonProps> = (props) => {
       setButton, setButtonDisplay
     })
   }, [registersFunction, setButton, setButtonDisplay])
+
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Wrapper {...props} maxWidth maxHeight>
