@@ -36,7 +36,14 @@ const FunctionModuleTpl: React.FC<FunctionModuleTplProps> = (props) => {
     [],
   )
 
-  // First, give priority to distributing events so that you can call yourself
+  // First setup registers
+  useEffect(() => {
+    registersFunction({
+      handleClick
+    })
+  }, [handleClick, registersFunction])
+
+  // Second, distributing events
   useEffect(() => {
     eventDispatch().mount()
     return () => {
@@ -44,13 +51,6 @@ const FunctionModuleTpl: React.FC<FunctionModuleTplProps> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // Second setup registers
-  useEffect(() => {
-    registersFunction({
-      handleClick
-    })
-  }, [handleClick, registersFunction])
 
   return (
     <Wrapper {...props}>
