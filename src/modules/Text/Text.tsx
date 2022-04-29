@@ -28,8 +28,6 @@ const Text: React.FC<TextProps> = (props) => {
     // args: ArgumentsItem, autoNumber: ArgumentsItem
     const data = getArguments(args);
     const { textArray, autoNumber } = data;
-    console.log(data);
-    
     if (autoNumber === 1) setAutoNumber(true);
     if (autoNumber === 2) setAutoNumber(false);
     setTextArea(textArray);
@@ -50,6 +48,13 @@ const Text: React.FC<TextProps> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 得到一个初始值
+  useEffect(() => {
+    const args0 = config.exposeFunctions![0].arguments![0];
+    const args1 = config.exposeFunctions![0].arguments![1];
+    setText(args0, args1);
+  }, [setText])
 
   return (
     <Wrapper {...props} maxWidth maxHeight itemAlign="top">
