@@ -1,251 +1,221 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  AppDataElementsTypes,
-  ArgumentsArray,
-  ArgumentsBoolean,
-  ArgumentsNumber,
-} from '~/types/appData';
-import Swiper, { Autoplay } from 'swiper';
+
+import { Component, ReactNode } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import SwiperCore, {
   Navigation,
   Pagination,
   Scrollbar,
+  Autoplay,
   Lazy,
-} from 'swiper/core';
+} from 'swiper';
+
+import * as effects from './effect';
+
+// Styles must use direct files imports
+import 'swiper/modules/navigation/navigation.scss'; // Navigation module
+import 'swiper/modules/pagination/pagination.scss'; // Pagination module
 import 'swiper/swiper-bundle.min.css';
-import { Modules } from '~/types/modules';
+import 'swiper/swiper.min.css';
+
+
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import config, { ExposeEventsKeys } from './Slider.config';
+import createStyles, { ClassesKey } from './Slider.createStyles';
+import classNames from 'classnames';
+import s from './Slider.module.less';
 import Wrapper from '../Wrapper';
 import isUrl from '~/core/helper/isUrl';
-import s from './Slider.module.less';
-import useStyles from './Slider.useStyles';
-import config from './Slider.config';
-import classNames from 'classnames';
-import {
-  getArguments,
-  getArgumentsItem,
-} from '~/core/getArgumentsTypeDataFromDataSource';
-import useLifeCycle from '~/hooks/useLifeCycle';
+import { ArgumentsItem } from '~/types/appData';
+import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 
-export interface SliderProps extends AppDataElementsTypes {}
-
-interface ImagesType {
-  imageUrl?: string;
-  imageLink?: string;
-}
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
 
-/**
- * 组件 https://github.com/kidjp85/react-id-swiper
- * 组件Props接收AppDataElementsTypes类型数据，
- * 同时接受事件处理器eventEmitter注册事件(addEventListener)、执行事件(emit)
- * @param props
- * @returns
- */
+interface Datas {
+  data?: string;
+  link?: string;
+}
 
-const Slider: Modules<SliderProps> = (props) => {
-  // ===================================获取变量=================================== //
-  const { style, moduleId, api } = props;
-  const prefix = `swiper${moduleId}`;
-  // ===================================创建运行时class============================ //
-  const useClass = useStyles(props.style);
-  // ===================================定义方法=================================== //
+class Slider extends Component<SliderProps, State> {
+  swiper: SwiperCore | undefined;
+  prefix: string;
+  ref: any;
+  constructor(props: SliderProps) {
+    super(props)
+    this.state = {
+      datas: [],
+      delay: 3000,
+      hideNav: false,
+      hidePage: false,
+      breakInterface: false,
+      autoplay: true,
+      loop: true,
+      speed: 600,
+      effect: effects.slider1,
+      reSetSW: true,
+      direction: 'horizontal'
+    }
+    this.prefix = `swiper${this.props.moduleId}`;
+  }
 
-  const [images, setImages] = useState<ImagesType[]>();
-  const [delay, setDelay] = useState<number>(0);
-  const [hideNav, setHideNav] = useState(false);
-  const [hidePage, setHidePage] = useState(false);
-  const [breakInterface, setBreakInterface] = useState(false);
-  // ===================================eventEmitter事件定义=================================== //
-  const setData = useCallback(
-    (imageUrls: ArgumentsArray, imageLinks: ArgumentsArray) => {
-      const data: ImagesType[] = [];
-      const imageUrlsData = getArgumentsItem(imageUrls);
-      const imageLinksData = getArgumentsItem(imageLinks);
-      (imageUrlsData as any[])?.forEach((element: any, index: number) => {
-        data.push({
-          imageUrl: element,
-          imageLink: imageLinksData[index],
+  componentDidMount() {
+    this.props.registersFunction({
+      setData: this.setData,
+      setSlider: this.setSlider
+    })
+    this.props.eventDispatch().mount();
+    if (config.exposeFunctions?.[1].arguments) this.setData(...config.exposeFunctions[1].arguments);
+  }
+
+  componentWillUnmount() {
+    this.props.eventDispatch().unmount();
+  }
+
+  setData =
+    (...args: ArgumentsItem[]) => {
+      const datas: Datas[] = [];
+      const { imageUrls, imageLinks } = getArguments(args);
+      (imageUrls as any[])?.forEach((element: any, index: number) => {
+        datas.push({
+          data: element,
+          link: imageLinks[index],
         });
       });
+      this.setState({
+        datas
+      });
+    }
 
-      const result = data.filter((item) => isUrl(item.imageUrl || '')) || [];
-      setImages(result);
-    },
-    [],
-  );
+  setSlider = (...args: ArgumentsItem[]) => {
+    const { navigation, pagination, delay, speed, disableOnInteraction, effect, direction, loop } = getArguments(args);
+    const data: any = {}
+    if (effects[effect]) data.effect = effects[effect];
+    if (delay) data.delay = delay;
+    if (delay) { data.autoplay = true } else { data.autoplay = false };
+    if (speed) data.speed = speed;
+    if (direction) data.direction = direction;
 
-  const setSlider = useCallback(
-    (
-      navigation: ArgumentsBoolean,
-      pagination: ArgumentsBoolean,
-      delay: ArgumentsNumber,
-      disableOnInteraction: ArgumentsBoolean,
-    ) => {
-      const data = getArguments([
-        navigation,
-        pagination,
-        delay,
-        disableOnInteraction,
-      ]);
+    if (loop === 1 )  data.loop = true;
+    if (loop === 2 )  data.loop = false;
 
-      if (data.delay && data.delay > 0) {
-        setDelay(data.delay);
-      } else {
-        setDelay(0);
-      }
+    if (disableOnInteraction === 1) { data.breakInterface = true };
+    if (disableOnInteraction === 2) { data.breakInterface = false };
 
-      if (data.disableOnInteraction === 1) setBreakInterface(true);
-      if (data.disableOnInteraction === 2) setBreakInterface(false);
+    if (navigation === 1) data.hideNav = true;
+    if (navigation === 2) data.hideNav = false;
 
-      if (data.navigation === 1) setHideNav(true);
-      if (data.navigation === 2) setHideNav(false);
+    if (pagination === 1) data.hidePage = true;
+    if (pagination === 2) data.hidePage = false;
+    data.reSetSW = false;
+    console.log('data.delay', data.delay);
+    
+    this.setState(data, () => this.setState({reSetSW: true}))
+  }
 
-      if (data.pagination === 1) setHidePage(true);
-      if (data.pagination === 2) setHidePage(false);
-    },
-    [setDelay],
-  );
+  onClickImg = (item: Datas) => () => {
+    if (item.link && isUrl(item.link)) {
+      window.location.href = item.link;
+    }
+  }
 
-  const [, eventEmitter] = useLifeCycle(
-    moduleId,
-    { mount: '初始化', unmount: '卸载' },
-    { setData, setSlider },
-    api?.find((item) => item.apiId === 'init'),
-  );
-
-  // ===================================定义组件方法=================================== //
-  //向eventEmitter注册事件，向外公布
-  useMemo(() => {
-    eventEmitter.addEventListener('setData', setData);
-    eventEmitter.addEventListener('setSlider', setSlider);
-  }, [eventEmitter, setData, setSlider]);
-
-  const onClickImg = useCallback(
-    (item) => () => {
-      if (isUrl(item.imageLink)) {
-        window.location.href = item.imageLink;
-      }
-    },
-    [],
-  );
-
-  // 初始化组件参数
-  const swiperRef = useRef<Swiper>();
-  useEffect(() => {
-    const params: { [keys: string]: any } = {
-      resizeObserver: true,
+  getPageDatas: () => ({ pageDatas: Datas[], style: any }) = () => {
+    let pageDatas = this.state.datas;
+    let style = () => ({});
+    const array = ['P', 'a', 'r', 'a', 'l', 'l', 'a', 'x'];
+    if (!pageDatas.length) {
+      pageDatas = [{ data: '1' }, { data: '2' }, { data: '3' }, { data: '4' }, {
+        data: <>
+          {array.map((item, index) => <div
+            key={index}
+            data-swiper-parallax-x="800"
+            data-swiper-parallax-y="800"
+            data-swiper-parallax-opacity="0"
+            data-swiper-parallax-duration={`${(index + 1) * 200}`}
+          >
+            {item}
+          </div>)}
+        </> as any,
+      }];
+      style = () => ({
+        background: `rgb(${Math.random() * 255} ${Math.random() * 255} ${Math.random() * 255})`,
+        borderRadius: '10px',
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#fff'
+      })
     };
 
-    if (hideNav === false) {
-      params.navigation = {
-        nextEl: `.${prefix}next`,
-        prevEl: `.${prefix}prev`,
-      };
-    }
-    if (hideNav === true) {
-      delete params.navigation;
-    }
+    return { pageDatas, style };
+  }
 
-    if (hidePage === false) {
-      params.pagination = {
-        el: '.swiper-pagination',
-        clickable: true,
-      };
-    }
-    if (hidePage === true) {
-      delete params.pagination;
-    }
 
-    if (delay > 0) {
-      params.autoplay = {
-        delay,
-      };
-      if (breakInterface === true) {
-        params.autoplay.disableOnInteraction = true;
-      } else {
-        params.autoplay.disableOnInteraction = false;
-      }
-    } else {
-      delete params.autoplay;
+  onStart = (e: any) => {
+    if (e.activeIndex === this.state.datas.length) {
+      this.props.eventDispatch().onLastOneStart();
     }
-    swiperRef.current = new Swiper(`.${prefix}container`, params);
-    return () => {
-      if (swiperRef.current) {
-        swiperRef.current.destroy(true, true);
-      }
-    };
-  }, [prefix, delay, hideNav, hidePage, breakInterface]);
+  }
 
-  useEffect(() => {
-    if (swiperRef.current) {
-      swiperRef.current.update();
-    }
-  }, [images, style]);
-
-  // 创建组件
-  return (
-    <Wrapper {...props} maxWidth maxHeight>
-      <div
-        className={classNames(
-          'swiper-container',
-          s.swipercontainer,
-          `${prefix}container`,
-        )}
-      >
-        <div className="swiper-wrapper">
-          {images?.map((item, index) => (
-            <div
-              className={classNames(
-                'swiper-slide',
-                s.swiperslide,
-                useClass.slideItem,
-              )}
-              key={`${moduleId}-slideContent-${index}`}
-              onClick={onClickImg(item)}
+  render() {
+    if (!this.state.reSetSW) return null;
+    const { classes } = this.props;
+    const { hideNav, hidePage, autoplay, breakInterface, loop, delay, speed, effect, direction } = this.state;
+    const nav = hideNav ? { navigation: false } : {};
+    const page = hidePage ? { pagination: false } : {};
+    const { pageDatas, style } = this.getPageDatas();
+    
+    return (
+      <Wrapper {...this.props} maxWidth maxHeight>
+        <Swiper
+          className={classNames(s.sliderwrap, classes.sliderWrap)}
+          ref={this.swiper}
+          mousewheel={true}
+          direction={direction}
+          speed={speed}
+          onSlideNextTransitionStart={this.onStart}
+          autoplay={autoplay ? {
+            delay: delay,
+            disableOnInteraction: breakInterface,
+          } : false}
+          loop={loop}
+          {...effect as any}
+          {...nav}
+          {...page}
+          onInit={(e) => this.swiper = e}
+        >
+          {pageDatas.map((item, index) =>
+            <SwiperSlide
+              key={index}
+              className={classNames(s.swiperslide, classes.slideItem)}
+              style={style()}
+              onClick={this.onClickImg(item)}
             >
-              <img src={item.imageUrl || ''} alt={`${index}`} />
-            </div>
-          ))}
-        </div>
-        {hideNav ? null : (
-          <>
-            <div className={classNames(s.next, useClass.next, `${prefix}next`)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 443.52 443.52"
-              >
-                <path d="M336.226 209.591l-204.8-204.8c-6.78-6.548-17.584-6.36-24.132.42-6.388 6.614-6.388 17.099 0 23.712l192.734 192.734-192.734 192.734c-6.663 6.664-6.663 17.468 0 24.132 6.665 6.663 17.468 6.663 24.132 0l204.8-204.8c6.663-6.665 6.663-17.468 0-24.132z" />
-              </svg>
-            </div>
-            <div className={classNames(s.prev, useClass.prev, `${prefix}prev`)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 443.52 443.52"
-              >
-                <path d="M143.492 221.863L336.226 29.129c6.663-6.664 6.663-17.468 0-24.132-6.665-6.662-17.468-6.662-24.132 0l-204.8 204.8c-6.662 6.664-6.662 17.468 0 24.132l204.8 204.8c6.78 6.548 17.584 6.36 24.132-.42 6.387-6.614 6.387-17.099 0-23.712L143.492 221.863z" />
-              </svg>
-            </div>
-          </>
-        )}
-        {hidePage ? null : (
-          <div
-            className={classNames(
-              'swiper-pagination',
-              useClass.swiperPagination,
-            )}
-          ></div>
-        )}
-      </div>
-    </Wrapper>
-  );
-};
-
-// bind static
-for (const key in config) {
-  if (Object.prototype.hasOwnProperty.call(config, key)) {
-    Slider[key] = config[key];
+              {isUrl(item.data || '') ? <img src={item.data} alt={`slide${index}`} /> : item.data}
+            </SwiperSlide>)}
+        </Swiper>
+      </Wrapper>
+    )
   }
 }
 
-export default Slider;
+// typeof State
+type State = {
+  datas: Datas[];
+  delay: number,
+  hideNav: boolean,
+  hidePage: boolean,
+  breakInterface: boolean,
+  autoplay: boolean,
+  loop: boolean,
+  speed: number,
+  effect: {[key: string]: any},
+  reSetSW: boolean,
+  direction: string,
+}
+
+export type SliderProps = ClassModuleBaseProps<
+  { [keys in ClassesKey]: string; },
+  { [keys in ExposeEventsKeys]: Function; }
+>
+
+export default PresetModule<SliderProps>(Slider, config, createStyles)
