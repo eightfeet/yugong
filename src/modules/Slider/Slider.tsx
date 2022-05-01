@@ -1,5 +1,5 @@
 
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import SwiperCore, {
   Navigation,
@@ -96,8 +96,8 @@ class Slider extends Component<SliderProps, State> {
     if (speed) data.speed = speed;
     if (direction) data.direction = direction;
 
-    if (loop === 1 )  data.loop = true;
-    if (loop === 2 )  data.loop = false;
+    if (loop === 1) data.loop = true;
+    if (loop === 2) data.loop = false;
 
     if (disableOnInteraction === 1) { data.breakInterface = true };
     if (disableOnInteraction === 2) { data.breakInterface = false };
@@ -109,12 +109,12 @@ class Slider extends Component<SliderProps, State> {
     if (pagination === 2) data.hidePage = false;
     data.reSetSW = false;
     console.log('data.delay', data.delay);
-    
-    this.setState(data, () => this.setState({reSetSW: true}))
+
+    this.setState(data, () => this.setState({ reSetSW: true }))
   }
 
-  onClickImg = (item: Datas) => () => {
-    if (item.link && isUrl(item.link)) {
+  onClickImg = (item: Datas, index: number) => () => {
+    if (item.link && isUrl(item.link) && this.swiper?.activeIndex === index + 1) {
       window.location.href = item.link;
     }
   }
@@ -163,7 +163,7 @@ class Slider extends Component<SliderProps, State> {
     const nav = hideNav ? { navigation: false } : {};
     const page = hidePage ? { pagination: false } : {};
     const { pageDatas, style } = this.getPageDatas();
-    
+
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
         <Swiper
@@ -188,9 +188,13 @@ class Slider extends Component<SliderProps, State> {
               key={index}
               className={classNames(s.swiperslide, classes.slideItem)}
               style={style()}
-              onClick={this.onClickImg(item)}
+              onClick={this.onClickImg(item, index)}
             >
-              {isUrl(item.data || '') ? <img src={item.data} alt={`slide${index}`} /> : item.data}
+              {
+                isUrl(item.data || '') ?
+                  <img className={classNames(s.content, classes.content)} src={item.data} alt={`slide${index}`} /> :
+                  <div className={classNames(s.content, classes.content)}>{item.data}</div>
+              }
             </SwiperSlide>)}
         </Swiper>
       </Wrapper>
@@ -208,7 +212,7 @@ type State = {
   autoplay: boolean,
   loop: boolean,
   speed: number,
-  effect: {[key: string]: any},
+  effect: { [key: string]: any },
   reSetSW: boolean,
   direction: string,
 }

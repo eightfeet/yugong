@@ -21,9 +21,21 @@ function createStyles(props: SliderProps) {
       }
     },
     slideItem: (style: Style) => toStyle(style.slideItem),
+    content: (style: Style) => toStyle(style.content), 
   }
 };
 // export type key of classes list
-export type ClassesKey = 'sliderWrap' | 'next' | 'nextarrow' | 'prev' | 'prevarrow' | 'pagination' | 'swiperPagination' | 'paginationBullet' | 'slideItem' | 'paginationBulletActive';
+export type ClassesKey =
+  'content' |
+  'sliderWrap' |
+  'next' |
+  'nextarrow' |
+  'prev' |
+  'prevarrow' |
+  'pagination' |
+  'swiperPagination' |
+  'paginationBullet' |
+  'slideItem' |
+  'paginationBulletActive';
 type Style = { [keys in ClassesKey]: StyleItemsTypes };
 export default createStyles

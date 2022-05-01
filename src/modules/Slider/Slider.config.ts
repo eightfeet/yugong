@@ -147,6 +147,8 @@ const config: ModulesStatic = {
       basic: {},
       // 滑动包裹器
       sliderWrap: {},
+      // 内容
+      content: {},
       // 滑动页
       slideItem: {},
       // 导航
@@ -174,6 +176,12 @@ const config: ModulesStatic = {
               {
                 title: "滑动页",
                 value: "slideItem",
+                children: [
+                  {
+                    title: "页面内容",
+                    value: "content",
+                  }
+                ]
               },
               {
                 title: "导航条",
