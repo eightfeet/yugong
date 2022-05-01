@@ -53,7 +53,7 @@ const config: {
                     type: 'array',
                     fieldName: 'setTheadWidth',
                     name: '设置表头项宽度',
-                    describe: '设置表头每列宽度，每项代表一列',
+                    describe: '设置表头每列宽度，每项代表一列，ex：20px、50%',
                     data: [],
                 },
             ],
