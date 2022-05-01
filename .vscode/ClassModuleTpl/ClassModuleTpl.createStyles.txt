@@ -1,8 +1,8 @@
 import { toStyle } from "~/core/helper/toStyles";
 import { StyleItemsTypes } from "~/types/appData";
-import { FunctionModuleTplProps } from "./FunctionModuleTpl";
+import { ClassModuleTplProps } from "./ClassModuleTpl";
 
-function createStyles(props: FunctionModuleTplProps) {
+function createStyles(props: ClassModuleTplProps) {
   return {
     style1: (style: Style) => toStyle(style.style1),
     style2: (style: Style) => toStyle(style.style2),
