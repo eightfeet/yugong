@@ -8,6 +8,7 @@ import { RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Image.config';
 import createStyles, { ClassesKey } from './Image.createStyles';
+import DefaultImg from '~/components/Icon/DefaultImg';
 
 export type ImageProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string },
@@ -57,7 +58,7 @@ const Image: React.FC<ImageProps> = (props) => {
 
   return (
     <Wrapper {...props} maxWidth maxHeight>
-      <img
+      {imgurl?.url ? <img
         src={imgurl?.url}
         onClick={handleClick}
         className={classes.image}
@@ -68,6 +69,7 @@ const Image: React.FC<ImageProps> = (props) => {
         }}
         alt={imgurl?.alt || '设置图片url'}
       />
+      :<DefaultImg className={classes.image} />}
     </Wrapper>
   );
 };
