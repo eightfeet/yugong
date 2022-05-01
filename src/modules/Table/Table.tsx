@@ -2,6 +2,8 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import parse from 'html-react-parser';
+import classNames from 'classnames';
+import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import PresetModule from '~/components/PresetModule';
 import requester from '~/core/fetch';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
@@ -15,8 +17,6 @@ import config, { ExposeEventsKeys } from './Table.config';
 import createStyles, { ClassesKey } from './Table.createStyles';
 
 import s from './Table.module.less';
-import PullToRefresh from 'rmc-pull-updown-to-refresh';
-import classNames from 'classnames';
 
 class Table extends Component<TableProps, State> {
   constructor(props: TableProps) {
