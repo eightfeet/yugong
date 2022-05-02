@@ -70,8 +70,6 @@ export const BASEMODULES = [
   }
 ];
 
-
-
 export const LOTTERY = [
   {
     moduleName: "Lottery",
