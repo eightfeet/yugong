@@ -37,12 +37,6 @@ export const BASEMODULES = [
     icon: <Icon component={IconTable} />,
   },
   {
-    moduleName: "TableB",
-    title: "TableB",
-    discribe: "表格",
-    icon: <Icon component={IconTable} />,
-  },
-  {
     moduleName: "Slider",
     title: "Slider",
     discribe: "跑马灯",

@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createUseStyles } from "react-jss";
 import { EventsType, ModulesStatic } from '~/types/modules';
 import EventEmitter, { eventEmitter as globalEventEmitter, EventEmitterEmitArgs, EventEmitterEvents } from "~/core/EventEmitter";
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch, RootState } from '~/redux/store';
 import { AppDataElementsTypes } from '~/types/appData';
 
 interface PresetModuleProps { };
@@ -35,6 +35,13 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
 
   const ComponentPresetModule = (props: Omit<T, keyof PresetModuleProps>) => {
     const { style, moduleId: id } = props as any;
+
+    const editorMode = useSelector(
+      (state: RootState) => state.controller.isEditing,
+    );
+  
+    const { runningTimes } = useSelector((state: RootState) => state);
+    const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
 
     useEffect(() => {
       const evn = globalEventEmitter.bind(id)
@@ -81,13 +88,16 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
       })
       return dispatch.current;
     }, [eventEmitter]);
-    
+
     const useStyles = createUseStyles<string, any>(createStyle(props));
     const classes = useStyles(style);
     return eventEmitter ? <WrappedComponent
       eventDispatch={eventDispatch}
       eventEmitter={eventEmitter}
       registersFunction={registersFunction}
+      editorMode={editorMode}
+      runningTimes={runningTimes}
+      setRunningTimes={setRunningTimes}
       classes={{ ...classes }} {...(props as T)} /> : null;
   };
 
@@ -103,9 +113,15 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
   return ComponentPresetModule;
 }
 
-export interface ClassModuleBaseProps<Classes=anyObj, Evevnts=FunObj> extends AppDataElementsTypes {
+export interface ClassModuleBaseProps<Classes = anyObj, Evevnts = FunObj> extends AppDataElementsTypes {
   classes: Classes;
   eventDispatch: () => EventsDispatch & Evevnts;
   eventEmitter: CurrentEventEmitter;
   registersFunction: (registers: FunObj) => void;
+  /**编辑器模式 */
+  editorMode: boolean;
+  runningTimes: {
+    [keys: string]: any;
+  }
+  setRunningTimes: (params: { [keys: string]: any }) => void;
 }
