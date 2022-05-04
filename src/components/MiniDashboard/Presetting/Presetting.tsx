@@ -30,7 +30,8 @@ interface OnChangeProps {
 
 export interface CustomPersetProps {
   runningData: ExposeFunctions[],
-  onChange: (params: OnChangeProps) => void
+  onChange: (copyRunningData: ExposeFunctions[]) => void,
+  activationItem: AppDataLayoutItemTypes
 }
 
 /**
@@ -39,7 +40,7 @@ export interface CustomPersetProps {
  * 作为预设模块只操作组件自己的内置方法
  * */
 const Presetting: React.FC<Props> = ({ custom }) => {
-  // 获取当前激活组件信息
+  /**获取当前激活组件信息*/
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
@@ -112,7 +113,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
    */
 
   // step1、设置预设编辑数据
-  // 运行时mount数据剔除非当前模块数据
+  /**运行时mount数据剔除非当前模块数据 */
   const getData = useCallback(() => {
     // 深拷一份组件内部可预设数据 和组件运行时数据
     const copyExposeFunctions = cloneDeep(exposeFunctions).filter(
@@ -144,107 +145,94 @@ const Presetting: React.FC<Props> = ({ custom }) => {
   // step2、获取预设数据 保存预设面板数据，用于页面render
   const runningData = getData();
 
+
+  const updateRunningDataToActivationItem = useCallback((copyRunningData: ExposeFunctions[]) => {
+    // 从编辑器预设面板获取当前已设置的值copyRunningData；
+    // 将预设值回填给运行时运行时mount数据；
+    // step1、判断预设数据值有没有被编辑过，抽取被编辑过的数据
+    // (判断依据：预设数据和组件静态数据是否保持一至)；
+    const readyToSetting: EventsTypeItem[] = [];
+    copyRunningData.forEach((item, index) => {
+      if (
+        !deepEqual(
+          item.arguments,
+          exposeFunctions[index].arguments
+        ) ||
+        !item.arguments?.[index]?.data
+      ) {
+        readyToSetting.push({
+          name: `${moduleId}/${item.name}`,
+          arguments: item.arguments || [],
+        });
+      }
+    });
+
+    // step2、将抽取的数据更新到运行时mount数据；
+    // 深拷一份当前组件运行时数据 activationItem
+    const copyModuleData = cloneDeep(activationItem);
+
+    // 没有初始化事件时
+    if (!copyModuleData.events?.mount) {
+      // 还未定义mount事件
+      if (!copyModuleData.events) {
+        copyModuleData.events = {};
+      }
+      // 给运行时追加准备数据
+      copyModuleData.events.mount = readyToSetting;
+    } else {
+      // 有初始化事件
+      // 倒序是为了匹配最末一条
+      const mount = [...copyModuleData.events.mount].reverse();
+      // 需要从mount中替换当前最新值
+      mount.forEach(mountItem => {
+        copyRunningData.forEach(runningDataItem => {
+          if (mountItem.name === `${moduleId}/${runningDataItem.name}`) {
+            if(runningDataItem.arguments) mountItem.arguments = runningDataItem.arguments;
+          }
+        })
+      })
+      // 遍历ready数据
+      readyToSetting.forEach((readyItem) => {
+        // 是否数据覆盖
+        let isCove: boolean = false;
+        mount.some((mountItem) => {
+          if (mountItem.name === readyItem.name) {
+            mountItem.arguments = readyItem.arguments;
+            // 覆盖旧值
+            isCove = true;
+            return true;
+          }
+          return false;
+        });
+        // 如果没有覆盖旧值则追加到mount数据上
+        if (!isCove) {
+          mount.unshift(readyItem);
+        }
+      });
+
+      copyModuleData.events.mount = mount.reverse();
+    }
+
+    // 更新且播放所有内部事件
+    updateActDataToAll(copyModuleData);
+    onPlay(copyModuleData.events.mount);
+  },
+    [activationItem, exposeFunctions, moduleId, onPlay, updateActDataToAll]
+  );
+
   // step3、数据变更
   const onChange = useCallback(
     ({ index, argIndex, value }: OnChangeProps) => {
 
       let copyRunningData = cloneDeep(runningData);
-      console.log('copyRunningData', copyRunningData);
-      
+
       // 当前编辑数据赋值
       if (copyRunningData[index].arguments) {
         copyRunningData[index].arguments![argIndex] = value;
       }
+      updateRunningDataToActivationItem(copyRunningData)
+    }, [runningData, updateRunningDataToActivationItem])
 
-      // 从编辑器预设面板获取当前已设置的值copyRunningData；
-      // 将预设值回填给运行时运行时mount数据；
-      // step1、判断预设数据值有没有被编辑过，抽取被编辑过的数据
-      // (判断依据：预设数据和组件静态数据是否保持一至)；
-      const readyToSetting: EventsTypeItem[] = [];
-      copyRunningData.forEach((item, index) => {
-        if (
-          !deepEqual(
-            item.arguments,
-            exposeFunctions[index].arguments
-          ) ||
-          !item.arguments?.[index]?.data
-        ) {
-          readyToSetting.push({
-            name: `${moduleId}/${item.name}`,
-            arguments: item.arguments || [],
-          });
-        }
-      });
-
-
-      // step2、将抽取的数据更新到运行时mount数据；
-      // 深拷一份当前组件运行时数据 activationItem
-      const copyModuleData = cloneDeep(activationItem);
-
-      // 没有初始化事件时
-      if (!copyModuleData.events?.mount) {
-        // 还未定义mount事件
-        if (!copyModuleData.events) {
-          copyModuleData.events = {};
-        }
-        // 给运行时追加准备数据
-        copyModuleData.events.mount = readyToSetting;
-      } else {
-        // 有初始化事件
-        // 倒序是为了匹配最末一条
-        const mount = [...copyModuleData.events.mount].reverse();
-        // 需要从mount中替换当前最新值
-        const currentName = `${moduleId}/${exposeFunctions[index].name}`;
-        mount.some(item => {
-          if (item.name === currentName) {
-            item.arguments.forEach((itemarg, itemargindex) => {
-              if (itemarg.fieldName === value.fieldName) {
-                item.arguments[itemargindex] = value;
-              }
-            })
-            return true
-          }
-          return false
-        })
-        // 遍历ready数据
-        readyToSetting.forEach((readyItem) => {
-          // 是否数据覆盖
-          let isCove: boolean = false;
-          mount.some((mountItem) => {
-            if (mountItem.name === readyItem.name) {
-              mountItem.arguments = readyItem.arguments;
-              // 覆盖旧值
-              isCove = true;
-              return true;
-            }
-            return false;
-          });
-          // 如果没有覆盖旧值则追加到mount数据上
-          if (!isCove) {
-            mount.unshift(readyItem);
-          }
-        });
-
-        copyModuleData.events.mount = mount.reverse();
-      }
-
-      // 更新且播放所有内部事件
-      updateActDataToAll(copyModuleData);
-      onPlay(copyModuleData.events.mount);
-    },
-    [
-      activationItem,
-      exposeFunctions,
-      moduleId,
-      onPlay,
-      runningData,
-      updateActDataToAll,
-    ]
-  );
-
-  const onChangeSelfMountEventData = () => {
-    let copyRunningData = cloneDeep(runningData);
-  }
 
   if (!moduleId) {
     return null;
@@ -310,7 +298,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
 
   if (custom) {
     const CComp = require(`~/modules/${type}/${type}.Preset.tsx`)?.default;
-    if (CComp) return <CComp runningData={runningData} onChange={onChange}  />
+    if (CComp) return <CComp activationItem={activationItem} runningData={runningData} onChange={updateRunningDataToActivationItem} />
   }
 
   return (
@@ -329,106 +317,106 @@ const Presetting: React.FC<Props> = ({ custom }) => {
                     {argItem.name}
                   </Tooltip>
                 </Col>
-                
-                  <Col span={19}>
-                    {argItem.type === 'number' ||
-                      argItem.type === 'string' ? renderNumberString(index, argItem, argIndex) : null}
 
-                    {argItem.type === 'runningTime' ? (
-                      <Select
-                        className={s.select}
-                        placeholder="请选择"
-                        showSearch
-                        value={argItem.data}
-                        optionFilterProp="children"
-                        filterOption={
-                          (input, option) => {
-                            const childrens = (Array.isArray(option?.children) ? option?.children.join('') : option?.children)?.toLowerCase();
-                            if (childrens?.indexOf(input) !== -1) {
-                              return true;
-                            }
-                            return false;
+                <Col span={19}>
+                  {argItem.type === 'number' ||
+                    argItem.type === 'string' ? renderNumberString(index, argItem, argIndex) : null}
+
+                  {argItem.type === 'runningTime' ? (
+                    <Select
+                      className={s.select}
+                      placeholder="请选择"
+                      showSearch
+                      value={argItem.data}
+                      optionFilterProp="children"
+                      filterOption={
+                        (input, option) => {
+                          const childrens = (Array.isArray(option?.children) ? option?.children.join('') : option?.children)?.toLowerCase();
+                          if (childrens?.indexOf(input) !== -1) {
+                            return true;
                           }
-                          // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          return false;
                         }
-                        onChange={(e) =>
-                          onChange({
-                            index, // 数据索引值
-                            argIndex, // 参数索引
-                            value: {
-                              // 参数索引对应的参数值
-                              ...argItem,
-                              data: e,
-                            },
-                          })
-                        }
-                      >
-                        {Object.keys(runningTimes)?.map(
-                          (item, index) => (
-                            <Select.Option key={index} value={item}>
-                              {item}
-                            </Select.Option>
-                          )
-                        )}
-                      </Select>
-                    ) : null}
+                        // option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      onChange={(e) =>
+                        onChange({
+                          index, // 数据索引值
+                          argIndex, // 参数索引
+                          value: {
+                            // 参数索引对应的参数值
+                            ...argItem,
+                            data: e,
+                          },
+                        })
+                      }
+                    >
+                      {Object.keys(runningTimes)?.map(
+                        (item, index) => (
+                          <Select.Option key={index} value={item}>
+                            {item}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                  ) : null}
 
-                    {argItem.type === 'array' ? (
-                      <ArrayArguments
-                        typeArguments={argItem}
-                        flexible
-                        htmlInput={!!argItem.html}
-                        onChange={(value) =>
-                          onChange({
-                            index,
-                            argIndex,
-                            value,
-                          })
-                        }
-                      />
-                    ) : null}
-                    {argItem.type === 'boolean' ? (
-                      <BooleanArguments
-                        typeArguments={argItem}
-                        flexible={false}
-                        onChange={(value) =>
-                          onChange({
-                            index,
-                            argIndex,
-                            value,
-                          })
-                        }
-                      />
-                    ) : null}
-                    {argItem.type === 'object' ? (
-                      <ObjectArguments
-                        describe={argItem.describe}
-                        htmlInput={!!argItem.html}
-                        onChange={(value) =>
-                          onChange({
-                            index,
-                            argIndex,
-                            value,
-                          })
-                        }
-                        typeArguments={argItem}
-                        flexible={false}
-                      />
-                    ) : null}
-                    {argItem.type === 'mixed' ? (
-                      <MixedArguments
-                        onChange={(value) =>
-                          onChange({
-                            index,
-                            argIndex,
-                            value,
-                          })
-                        }
-                        typeArguments={argItem}
-                        flexible={false}
-                      />
-                    ) : null}
-                  </Col>
+                  {argItem.type === 'array' ? (
+                    <ArrayArguments
+                      typeArguments={argItem}
+                      flexible
+                      htmlInput={!!argItem.html}
+                      onChange={(value) =>
+                        onChange({
+                          index,
+                          argIndex,
+                          value,
+                        })
+                      }
+                    />
+                  ) : null}
+                  {argItem.type === 'boolean' ? (
+                    <BooleanArguments
+                      typeArguments={argItem}
+                      flexible={false}
+                      onChange={(value) =>
+                        onChange({
+                          index,
+                          argIndex,
+                          value,
+                        })
+                      }
+                    />
+                  ) : null}
+                  {argItem.type === 'object' ? (
+                    <ObjectArguments
+                      describe={argItem.describe}
+                      htmlInput={!!argItem.html}
+                      onChange={(value) =>
+                        onChange({
+                          index,
+                          argIndex,
+                          value,
+                        })
+                      }
+                      typeArguments={argItem}
+                      flexible={false}
+                    />
+                  ) : null}
+                  {argItem.type === 'mixed' ? (
+                    <MixedArguments
+                      onChange={(value) =>
+                        onChange({
+                          index,
+                          argIndex,
+                          value,
+                        })
+                      }
+                      typeArguments={argItem}
+                      flexible={false}
+                    />
+                  ) : null}
+                </Col>
               </Row>
             ))}
           </div>

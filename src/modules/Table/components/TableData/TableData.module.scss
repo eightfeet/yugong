@@ -1,0 +1,11 @@
+.label {
+  text-align: right;
+  &::after {
+    content: '：';
+    display: inline-block;
+  }
+}
+
+.item {
+  margin-bottom: 5px;
+}

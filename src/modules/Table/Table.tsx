@@ -7,8 +7,8 @@ import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import PresetModule from '~/components/PresetModule';
 import requester from '~/core/fetch';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsArray, ArgumentsBoolean, ArgumentsNumber, ArgumentsString } from '~/types/appData';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { ArgumentsArray, ArgumentsBoolean, ArgumentsItem, ArgumentsNumber, ArgumentsString } from '~/types/appData';
+import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 
@@ -35,21 +35,26 @@ class Table extends Component<TableProps, State> {
   }
 
   /**设置表格交互 */
-  setTable = (isPullDown: ArgumentsBoolean, isPullUp: ArgumentsBoolean) => {
+  setTablePull = (...args: ArgumentsItem[]) => {
+    const result = getArguments(args) as pullStatesType;
     this.setState({
-      pullStates: {
-        pullDown: getArgumentsItem(isPullDown) as boolean,
-        pullUp: getArgumentsItem(isPullUp) as boolean,
-      }
+      pullStates: result
     })
   };
 
-  /**设置表格头部 */
-  setTheadData = (argsName: ArgumentsArray, argWidth: ArgumentsArray) => {
+  /**设置表格列名 */
+  setTheadName = (argsName: ArgumentsArray) => {
     const data = getArgumentsItem(argsName);
+    this.setState({
+      theadDataStatu: { data: data as any[], width: [...this.state.theadDataStatu?.width || []] }
+    })
+  };
+
+  /**设置表格列宽 */
+  setColumWidth = (argWidth: ArgumentsArray) => {
     const width = getArgumentsItem(argWidth);
     this.setState({
-      theadDataStatu: { data: data as any[], width: width as any[] }
+      theadDataStatu: { data: [...this.state.theadDataStatu?.data || []], width: width as any[] }
     })
   };
 
@@ -77,7 +82,9 @@ class Table extends Component<TableProps, State> {
         if (Array.isArray(map)) {
           map.forEach((item) => {
             if (item) {
-              temp.push(parse(getResult(item, element)));
+              console.log(item);
+
+              temp.push(item ? parse(getResult(item, element)) : null);
             }
           });
         }
@@ -95,36 +102,36 @@ class Table extends Component<TableProps, State> {
      *
      * */
   overrideTbodyItem = (
-      rowItem: ArgumentsNumber,
-      colItem: ArgumentsNumber,
-      override: ArgumentsString
-    ) => {
-      const {tbodyDataStatu, copyDataSource} = this.state;
-      const row = (getArgumentsItem(rowItem) as number) - 1;
-      const col = (getArgumentsItem(colItem) as number) - 1;
+    rowItem: ArgumentsNumber,
+    colItem: ArgumentsNumber,
+    override: ArgumentsString
+  ) => {
+    const { tbodyDataStatu, copyDataSource } = this.state;
+    const row = (getArgumentsItem(rowItem) as number) - 1;
+    const col = (getArgumentsItem(colItem) as number) - 1;
 
-      if (
-        tbodyDataStatu?.[row] &&
-        tbodyDataStatu?.[row][col] &&
-        copyDataSource
-      ) {
-        const optTbodyDataStatu = [...tbodyDataStatu];
-        optTbodyDataStatu[row][col] = getArgumentsItem(
-          override,
-          copyDataSource[row]
-        );
-        this.setState({
-          tbodyDataStatu: optTbodyDataStatu
-        });
-      }
-    };
+    if (
+      tbodyDataStatu?.[row] &&
+      tbodyDataStatu?.[row][col] &&
+      copyDataSource
+    ) {
+      const optTbodyDataStatu = [...tbodyDataStatu];
+      optTbodyDataStatu[row][col] = getArgumentsItem(
+        override,
+        copyDataSource[row]
+      );
+      this.setState({
+        tbodyDataStatu: optTbodyDataStatu
+      });
+    }
+  };
 
   /**init */
   onMount = async () => {
-    const { setTable, setTheadData, setTbodyData, overrideTbodyItem } = this;
+    const { setTablePull, setTheadName, setColumWidth, setTbodyData, overrideTbodyItem } = this;
     const { api, } = this.props;
     this.props.registersFunction({
-      setTable, setTheadData, setTbodyData, overrideTbodyItem
+      setTablePull, setTheadName, setColumWidth, setTbodyData, overrideTbodyItem
     });
     const apiArguments = api?.find((item) => item.apiId === 'mount');
     if (apiArguments) {
@@ -158,15 +165,15 @@ class Table extends Component<TableProps, State> {
     const { classes } = this.props;
     const { pullStates, theadDataStatu, tbodyDataStatu } = this.state;
     return (
-      <Wrapper {...this.props} maxHeight maxWidth>
+      <Wrapper {...this.props} maxHeight maxWidth visible={true}>
         <div className={s.tablewrap}>
           <PullToRefresh
             className={s.bg_orange}
             onPullDown={this.onPullDown}
-            disablePullUp={!pullStates?.pullUp}
-            disablePullDown={!pullStates?.pullDown}
-            pullDownText="下拉更新"
-            pullUpText="上拉更新"
+            disablePullUp={!pullStates?.isPullUp}
+            disablePullDown={!pullStates?.isPullDown}
+            pullDownText={!pullStates?.pullDownText || '下拉更新'}
+            pullUpText={!pullStates?.pullUpText || '上拉更新'}
             onPullUp={this.onPullUp}
           >
             <table className={classNames(s.table, classes.table)}>
@@ -216,6 +223,13 @@ const mapDispatch = (dispatch: Dispatch) => ({
   setRunningTimes: dispatch.runningTimes.setRunningTimes,
 })
 
+interface pullStatesType {
+  isPullDown: boolean;
+  pullDownText: string;
+  isPullUp: boolean;
+  pullUpText: string;
+}
+
 // typeof State
 type State = {
   theadDataStatu?: {
@@ -223,10 +237,7 @@ type State = {
     data: React.ReactNode[];
   },
   tbodyDataStatu?: any[][];
-  pullStates?: {
-    pullDown: boolean;
-    pullUp: boolean;
-  };
+  pullStates?: pullStatesType;
   copyDataSource?: any
 }
 

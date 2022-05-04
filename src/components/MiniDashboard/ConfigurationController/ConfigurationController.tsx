@@ -8,6 +8,7 @@ import { Modules } from "~/types/modules";
 import Presetting from "../Presetting";
 import { ExceptionOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import MarkdownModalDoc from "../MarkdownModalDoc";
+import React from "react";
 const { Panel } = Collapse;
 
 const ConfigurationController = () => {
@@ -48,7 +49,7 @@ const ConfigurationController = () => {
     >
       {module.exposeFunctions?.length ? (
         <Panel header="预设" key="0" extra={<div onClick={handlerHelp}><ExceptionOutlined /> 帮助</div>}>
-          <Presetting />
+          <Presetting custom={!!module.exposeDefaultProps?.preset} />
         </Panel>
       ) : null}
       <Panel header="事件" key="1">

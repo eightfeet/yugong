@@ -12,6 +12,7 @@ interface Props extends AppDataElementsTypes {
   maxWidth?: boolean;
   maxHeight?: boolean;
   itemAlign?: 'top' | 'center' | 'bottom';
+  visible?: boolean
 }
 
 const Wrapper: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const Wrapper: React.FC<Props> = ({
   maxHeight,
   moduleId,
   itemAlign = 'center',
+  visible = true
 }) => {
   // Wrapper 自身的样式
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
@@ -108,6 +110,8 @@ const Wrapper: React.FC<Props> = ({
   if (isHide) {
     defaultSize.width = defaultSize.height = 'auto';
   }
+  if (visible === false) return null;
+  
   return (
     <div
       className={classNames(s.touchwrap, {
