@@ -18,7 +18,7 @@ import MixedArguments from '../ArgumentsSetting/MixedArguments';
 import ObjectArguments from '../ArgumentsSetting/ObjectArguments';
 import s from './Presetting.module.less';
 
-interface Props { }
+interface Props { custom: boolean }
 interface OnChangeProps {
   /* 数据索引值 */
   index: number;
@@ -27,13 +27,18 @@ interface OnChangeProps {
   /* 参数索引对应的参数值 */
   value: any;
 }
+
+export interface CustomPersetProps {
+  runningData: ExposeFunctions[],
+  onChange: (params: OnChangeProps) => void
+}
+
 /**
  * 所有预设事件将在挂载时运行，
  * 其根本还是EventEmitter对事件流控制，
  * 作为预设模块只操作组件自己的内置方法
  * */
-
-const Presetting: React.FC<Props> = () => {
+const Presetting: React.FC<Props> = ({ custom }) => {
   // 获取当前激活组件信息
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
@@ -144,7 +149,8 @@ const Presetting: React.FC<Props> = () => {
     ({ index, argIndex, value }: OnChangeProps) => {
 
       let copyRunningData = cloneDeep(runningData);
-
+      console.log('copyRunningData', copyRunningData);
+      
       // 当前编辑数据赋值
       if (copyRunningData[index].arguments) {
         copyRunningData[index].arguments![argIndex] = value;
@@ -236,6 +242,10 @@ const Presetting: React.FC<Props> = () => {
     ]
   );
 
+  const onChangeSelfMountEventData = () => {
+    let copyRunningData = cloneDeep(runningData);
+  }
+
   if (!moduleId) {
     return null;
   }
@@ -297,6 +307,11 @@ const Presetting: React.FC<Props> = () => {
       }
     />
   };
+
+  if (custom) {
+    const CComp = require(`~/modules/${type}/${type}.Preset.tsx`)?.default;
+    if (CComp) return <CComp runningData={runningData} onChange={onChange}  />
+  }
 
   return (
     <div>
