@@ -1,9 +1,10 @@
 import { CaretDownOutlined, CaretRightOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select, Space, Tag } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { SortableElement, SortableHandle } from "react-sortable-hoc";
 import MoveIcon from '~/components/MiniDashboard/ApiConfig/MoveIcon';
 import HtmlSuffix from '~/components/MiniDashboard/ArgumentsSetting/HtmlSuffix';
+import { TableModuleContext } from '../../TableModuleContext';
 import { dataType, dataTypeFormat } from '../../type';
 import s from './TableDataItem.module.scss';
 
@@ -38,8 +39,7 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
   const [form] = Form.useForm();
   const [currentdataType, setCurrentDataType] = useState<string>();
   const [showOptions, setShowOptions] = useState(false);
-  const disabled = true;
-
+  const { disabled, dataSource } = useContext(TableModuleContext);
 
   const onFormChange = useCallback(
     () => {
@@ -107,8 +107,8 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
                   <div>可用字段：</div>
                   <Space wrap>
                     {
-                      Object.keys({ name: 'xiaomi' })?.map(key =>
-                        <Tag className={s.tag} key={key} onClick={() => { if(!disabled)form.setFieldsValue({ 'rowMap': `{{${key}}}` }); onFormChange() }}>
+                      Object.keys(dataSource?.[0] || {})?.map(key =>
+                        <Tag className={s.tag} key={key} onClick={() => { if (!disabled) form.setFieldsValue({ 'rowMap': `{{${key}}}` }); onFormChange() }}>
                           {`{{${key}}}`}
                         </Tag>
                       )

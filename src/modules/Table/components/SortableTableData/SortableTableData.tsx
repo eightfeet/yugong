@@ -1,31 +1,34 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import arrayMove from 'array-move';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { TableModuleContext } from '../../TableModuleContext';
 import TableData from '../TableData';
 import { TableDataItemValue } from '../TableDataItem/TableDataItem';
 
 interface Props {
   onChange?: (value: TableDataItemValue[]) => void;
-  value: TableDataItemValue[];
-  disabled?: boolean;
+  value?: TableDataItemValue[];
 }
 
-const SortableTableData: React.FC<Props> = ({ value, onChange }) => {
-  const [list, setList] = useState<TableDataItemValue[]>([])
+const SortableTableData: React.FC<Props> = ({ value = [], onChange }) => {
+  const [list, setList] = useState<TableDataItemValue[]>([]);
+  const { disabled } = useContext(TableModuleContext);
+
   useEffect(() => {
     setList(value)
   }, [value])
 
   const onSortEnd = useCallback(
     ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
+      if (disabled) return;
       const res = arrayMove(list, oldIndex, newIndex);
       if (typeof onChange === 'function') {
         onChange(res)
       }
       setList(res)
     },
-    [list, onChange],
+    [disabled, list, onChange],
   )
 
   const handleOnChange = useCallback(
@@ -69,7 +72,7 @@ const SortableTableData: React.FC<Props> = ({ value, onChange }) => {
     <div>
       <Row>
         <Col span={1}></Col>
-        <Col><Button onClick={onPlus} icon={<PlusOutlined />}>增加列</Button></Col>
+        <Col><Button disabled={disabled} onClick={onPlus} icon={<PlusOutlined />}>增加列</Button></Col>
       </Row><br />
       <TableData list={list} onChange={handleOnChange} onSortEnd={onSortEnd} onMinus={onMinus} />
     </div>
