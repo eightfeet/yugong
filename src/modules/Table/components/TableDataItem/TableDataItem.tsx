@@ -51,7 +51,7 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
       }
       setCurrentDataType(dataType);
       if (typeof onChange === 'function') {
-        onChange(form.getFieldsValue())
+        onChange(data)
       }
     },
     [disabled, form, onChange],
@@ -84,7 +84,7 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
   }, [])
 
   useEffect(() => {
-    form.resetFields(Object.keys(value || {}))
+    // form.resetFields(Object.keys(value || {}))
   }, [form, value])
 
   return (

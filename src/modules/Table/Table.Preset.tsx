@@ -1,9 +1,10 @@
 import { Form, message, PageHeader, Select } from 'antd';
-import { cloneDeep, isObject, update } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import { cloneDeep, isObject, update, throttle } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import { RootState } from '~/redux/store';
+import LineItem from './components/LineItem/LineItem';
 import SortableTableData from './components/SortableTableData';
 import { TableDataItemValue } from './components/TableDataItem/TableDataItem';
 import { TableModuleContext } from './TableModuleContext';
@@ -35,7 +36,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     // 设置数据源
     const path = (runningData?.[0].arguments?.[0].data || '') as string;
     if (path) {
-      const dataSource = (runningTimes[path] || []) as Object[] ;
+      const dataSource = (runningTimes[path] || []) as Object[];
       if (dataSource) {
         setDataSource(dataSource);
         form.setFieldsValue({
@@ -50,7 +51,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     const columWidth = (runningData?.[1].arguments?.[4].data || []) as any[];
     const data: { [key: string]: string; }[] = [];
     headName.forEach((item, index) => {
-      const element: {[key:string]: string} = {};
+      const element: { [key: string]: string } = {};
       element.headName = item;
       element.rowMap = rowMap[index];
       element.dataType = dataType[index];
@@ -62,9 +63,9 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     form.setFieldsValue({
       setTableData: data
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
+
   const onChangeData = useCallback(
     () => {
       // 更新运行数据
@@ -78,20 +79,28 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
         onChange(copyRunningData)
       } else {
         message.error('请选择合规数组对象 [ { element:string, ... }, ... ]');
-        form.setFieldsValue({setDataSource: undefined})
+        form.setFieldsValue({ setDataSource: undefined })
       }
     },
     [form, onChange, onChangeDataSource, runningData, runningTimes],
   )
 
+  const onChangeDebounce = useMemo(
+    () =>
+      throttle((value) => {
+        onChange(value);
+      }, 500),
+    [onChange]
+  );
+
   const onChangeTableData = useCallback(
     (value: TableDataItemValue[]) => {
       const copyRunningData = cloneDeep(runningData);
-      const columWidth: (string|undefined)[] = [];
-      const dataType: (string|undefined)[] = [];
-      const format: (string|undefined)[] = [];
-      const headName: (string|undefined)[] = [];
-      const rowMap: (string|undefined)[] = [];
+      const columWidth: (string | undefined)[] = [];
+      const dataType: (string | undefined)[] = [];
+      const format: (string | undefined)[] = [];
+      const headName: (string | undefined)[] = [];
+      const rowMap: (string | undefined)[] = [];
       value.forEach((item, index) => {
         columWidth[index] = item.columWidth;
         dataType[index] = item.dataType;
@@ -104,15 +113,18 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
       update(copyRunningData, '[1].arguments[2].data', () => dataType);
       update(copyRunningData, '[1].arguments[3].data', () => format);
       update(copyRunningData, '[1].arguments[4].data', () => columWidth);
-      onChange(copyRunningData)
+      onChangeDebounce(copyRunningData)
     },
-    [onChange, runningData],
+    [onChangeDebounce, runningData],
   )
-  
+
 
   return (
     <TableModuleContext.Provider value={{ disabled, onChangeDisable: () => setDisabled(!disabled), onChangeDataSource, dataSource }}>
       <PageHeader title="表格设置" />
+      <LineItem label="数据源">
+        asd
+      </LineItem>
       <Form form={form} {...formLayout}>
         <Form.Item label="数据源" required name="setDataSource">
           <Select
