@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import { RootState } from '~/redux/store';
 import SortableTableData from './components/SortableTableData';
+import { TableDataItemValue } from './components/TableDataItem/TableDataItem';
 import { TableModuleContext } from './TableModuleContext';
 
 const Option = Select.Option;
@@ -42,9 +43,24 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
         })
       };
     }
+    const headName = (runningData?.[1].arguments?.[0].data || []) as any[];
+    const rowMap = (runningData?.[1].arguments?.[1].data || []) as any[];
+    const dataType = (runningData?.[1].arguments?.[2].data || []) as any[];
+    const format = (runningData?.[1].arguments?.[3].data || []) as any[];
+    const columWidth = (runningData?.[1].arguments?.[4].data || []) as any[];
+    const data: { [key: string]: string; }[] = [];
+    headName.forEach((item, index) => {
+      const element: {[key:string]: string} = {};
+      element.headName = item;
+      element.rowMap = rowMap[index];
+      element.dataType = dataType[index];
+      element.format = format[index];
+      element.columWidth = columWidth[index];
+      data.push(element);
+    })
     // 设置表格
     form.setFieldsValue({
-      setTableData: []
+      setTableData: data
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -68,6 +84,32 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     [form, onChange, onChangeDataSource, runningData, runningTimes],
   )
 
+  const onChangeTableData = useCallback(
+    (value: TableDataItemValue[]) => {
+      const copyRunningData = cloneDeep(runningData);
+      const columWidth: (string|undefined)[] = [];
+      const dataType: (string|undefined)[] = [];
+      const format: (string|undefined)[] = [];
+      const headName: (string|undefined)[] = [];
+      const rowMap: (string|undefined)[] = [];
+      value.forEach((item, index) => {
+        columWidth[index] = item.columWidth;
+        dataType[index] = item.dataType;
+        format[index] = item.format;
+        headName[index] = item.headName;
+        rowMap[index] = item.rowMap;
+      });
+      update(copyRunningData, '[1].arguments[0].data', () => headName);
+      update(copyRunningData, '[1].arguments[1].data', () => rowMap);
+      update(copyRunningData, '[1].arguments[2].data', () => dataType);
+      update(copyRunningData, '[1].arguments[3].data', () => format);
+      update(copyRunningData, '[1].arguments[4].data', () => columWidth);
+      onChange(copyRunningData)
+    },
+    [onChange, runningData],
+  )
+  
+
   return (
     <TableModuleContext.Provider value={{ disabled, onChangeDisable: () => setDisabled(!disabled), onChangeDataSource, dataSource }}>
       <PageHeader title="表格设置" />
@@ -87,7 +129,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
           </Select>
         </Form.Item>
         <Form.Item label="表格列" name="setTableData" >
-          <SortableTableData />
+          <SortableTableData onChange={onChangeTableData} />
         </Form.Item>
       </Form>
     </TableModuleContext.Provider>

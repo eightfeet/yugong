@@ -108,7 +108,10 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
                   <Space wrap>
                     {
                       Object.keys(dataSource?.[0] || {})?.map(key =>
-                        <Tag className={s.tag} key={key} onClick={() => { if (!disabled) form.setFieldsValue({ 'rowMap': `{{${key}}}` }); onFormChange() }}>
+                        <Tag className={s.tag} key={key} onClick={() => {
+                          if (!disabled) form.setFieldsValue({ 'rowMap': `{{${key}}}` }); onFormChange()
+                        }
+                        }>
                           {`{{${key}}}`}
                         </Tag>
                       )
@@ -120,7 +123,9 @@ const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, o
           </Form.Item>
           <Form.Item noStyle>
             {/* <Button icon={<CaretRightOutlined />} /> */}
-            <Button disabled={disabled} className={s.btn} icon={showOptions ? <CaretDownOutlined /> : <CaretRightOutlined />} onClick={() => setShowOptions(!showOptions)} />
+            <Button disabled={disabled} className={s.btn} icon={showOptions ?
+              <CaretDownOutlined /> :
+              <CaretRightOutlined />} onClick={() => setShowOptions(!showOptions)} />
           </Form.Item>
           <Form.Item noStyle>
             <Button disabled={disabled} className={s.btn} icon={<MinusOutlined />} onClick={() => onMinus?.()} />

@@ -36,7 +36,7 @@ const SortableTableData: React.FC<Props> = ({ value = [], onChange }) => {
       setList(list => {
         list[index] = value;
         if (typeof onChange === 'function') {
-          onChange(value)
+          onChange(list)
         }
         return list;
       })
@@ -46,7 +46,6 @@ const SortableTableData: React.FC<Props> = ({ value = [], onChange }) => {
 
   const onMinus = useCallback(
     (index) => {
-      console.log(index);
       setList(list => {
         const data = list.filter((_, listIndex) => index !== listIndex);
         if (typeof onChange === 'function') {
