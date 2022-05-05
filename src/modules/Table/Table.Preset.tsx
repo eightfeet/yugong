@@ -9,20 +9,11 @@ import { TableModuleContext } from './TableModuleContext';
 
 const Option = Select.Option;
 
-const data = [
-  { headName: 'string1', rowMap: '{{string1}}', dataType: 'date', format: undefined, columWidth: '21px' },
-  { headName: 'string2', rowMap: 'string2', dataType: 'date', format: undefined, columWidth: '22px' },
-  { headName: 'string3', rowMap: 'string3', dataType: 'date', format: undefined, columWidth: '23px' },
-]
-
 const formLayout = {
   labelCol: { span: 4 }, wrapperCol: { span: 20 }
 }
 
 const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activationItem }) => {
-  const [setTbodyData] = runningData;
-  console.log('runningData', runningData);
-
   const [disabled, setDisabled] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<Object[]>();
   const { runningTimes } = useSelector((state: RootState) => state);
@@ -38,17 +29,36 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     setDisabled(!dataSource?.length)
   }, [dataSource])
 
-
+  // did mount
+  useEffect(() => {
+    // 设置数据源
+    const path = (runningData?.[0].arguments?.[0].data || '') as string;
+    if (path) {
+      const dataSource = (runningTimes[path] || []) as Object[] ;
+      if (dataSource) {
+        setDataSource(dataSource);
+        form.setFieldsValue({
+          setDataSource: path || undefined
+        })
+      };
+    }
+    // 设置表格
+    form.setFieldsValue({
+      setTableData: []
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
   const onChangeData = useCallback(
     () => {
       // 更新运行数据
       const copyRunningData = cloneDeep(runningData);
-      const TbodyData = form.getFieldValue('TbodyData');
-      const dataSource = runningTimes[TbodyData] as Object[];
+      const setDataSource = form.getFieldValue('setDataSource');
+      const dataSource = runningTimes[setDataSource] as Object[];
 
       if (Array.isArray(dataSource) && dataSource.length && isObject(dataSource[0])) {
         onChangeDataSource(dataSource)
-        update(copyRunningData, '[0].arguments[0].data', () => TbodyData);
+        update(copyRunningData, '[0].arguments[0].data', () => setDataSource);
         onChange(copyRunningData)
       } else {
         message.error('请选择合规数组对象 [ { element:string, ... }, ... ]');
@@ -62,12 +72,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     <TableModuleContext.Provider value={{ disabled, onChangeDisable: () => setDisabled(!disabled), onChangeDataSource, dataSource }}>
       <PageHeader title="表格设置" />
       <Form form={form} {...formLayout}>
-        <Form.Item label="数据源" name="setDataSource"
-          // initialValue={
-          //   setDataSource.arguments?.[0].data
-          // }
-          rules={[{ required: true, message: '请从运行时中选择正确的表格数据' }]}
-        >
+        <Form.Item label="数据源" required name="setDataSource">
           <Select
             placeholder="请选择"
             onChange={onChangeData}
@@ -81,8 +86,8 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
             )}
           </Select>
         </Form.Item>
-        <Form.Item label="数据源" name="setTableData" initialValue={data}>
-          <SortableTableData value={data} />
+        <Form.Item label="表格列" name="setTableData" >
+          <SortableTableData />
         </Form.Item>
       </Form>
     </TableModuleContext.Provider>

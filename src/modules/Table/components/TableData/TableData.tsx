@@ -10,11 +10,11 @@ interface Props {
   disabled?: boolean;
 }
 
-const TableData: React.FC<Props> = ({ list, onChange, onMinus }) => {
+const TableData: React.FC<Props> = ({ list=[], onChange, onMinus }) => {
   return (
     <div>
       {
-        list.map((item, index) => <TableDataItem
+        list?.map((item, index) => <TableDataItem
           label={`第${index + 1}列`}
           onChange={(value) => {
             onChange?.(value, index)

@@ -71,7 +71,6 @@ const SortableTableData: React.FC<Props> = ({ value = [], onChange }) => {
   return (
     <div>
       <Row>
-        <Col span={1}></Col>
         <Col><Button disabled={disabled} onClick={onPlus} icon={<PlusOutlined />}>增加列</Button></Col>
       </Row><br />
       <TableData list={list} onChange={handleOnChange} onSortEnd={onSortEnd} onMinus={onMinus} />
