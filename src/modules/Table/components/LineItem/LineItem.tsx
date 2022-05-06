@@ -11,7 +11,7 @@ interface Props {
 const LineItem: React.FC<Props> = ({ label, describe, children }) => {
   return (
     <Row className={s.row} gutter={10}>
-      <Col span={5} className={s.label}>
+      <Col span={4} className={s.label}>
         {describe ? <Tooltip
           placement="topRight"
           title={parse(describe || '')}
@@ -19,7 +19,7 @@ const LineItem: React.FC<Props> = ({ label, describe, children }) => {
           {label}
         </Tooltip> : label}
       </Col>
-      <Col span={19}>
+      <Col span={20}>
         {children}
       </Col>
     </Row>

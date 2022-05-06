@@ -1,89 +1,42 @@
-import { Form, message, PageHeader, Select } from 'antd';
-import { cloneDeep, isObject, update, throttle } from 'lodash';
+import { message, PageHeader, Select } from 'antd';
+import { cloneDeep, isObject, update, throttle, get } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import { RootState } from '~/redux/store';
 import LineItem from './components/LineItem/LineItem';
 import SortableTableData from './components/SortableTableData';
-import { TableDataItemValue } from './components/TableDataItem/TableDataItem';
 import { TableModuleContext } from './TableModuleContext';
 
 const Option = Select.Option;
 
-const formLayout = {
-  labelCol: { span: 4 }, wrapperCol: { span: 20 }
+export const tableValuePath = {
+  runningTimes: '[0].arguments[0].data',
+  headName: '[1].arguments[0].data',
+  rowMap: '[1].arguments[1].data',
+  dataType: '[1].arguments[2].data',
+  format: '[1].arguments[3].data',
+  columWidth: '[1].arguments[4].data'
 }
+
+export type TablePathKeys = 'runningTimes' | 'headName' | 'rowMap' | 'dataType' | 'format' | 'columWidth';
 
 const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activationItem }) => {
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [dataSource, setDataSource] = useState<Object[]>();
+  const [dataSource, setDataSource] = useState<Object[]>([]);
+
   const { runningTimes } = useSelector((state: RootState) => state);
-  const [form] = Form.useForm();
-  const onChangeDataSource = useCallback(
-    (data: Object[]) => {
-      setDataSource(data);
-    },
-    [],
-  )
 
   useEffect(() => {
-    setDisabled(!dataSource?.length)
-  }, [dataSource])
-
-  // did mount
-  useEffect(() => {
-    // 设置数据源
-    const path = (runningData?.[0].arguments?.[0].data || '') as string;
+    const path: string = get(runningData, tableValuePath.runningTimes);
     if (path) {
       const dataSource = (runningTimes[path] || []) as Object[];
-      if (dataSource) {
+      if (dataSource.length) {
         setDataSource(dataSource);
-        form.setFieldsValue({
-          setDataSource: path || undefined
-        })
       };
+      setDisabled(!dataSource?.length)
     }
-    const headName = (runningData?.[1].arguments?.[0].data || []) as any[];
-    const rowMap = (runningData?.[1].arguments?.[1].data || []) as any[];
-    const dataType = (runningData?.[1].arguments?.[2].data || []) as any[];
-    const format = (runningData?.[1].arguments?.[3].data || []) as any[];
-    const columWidth = (runningData?.[1].arguments?.[4].data || []) as any[];
-    const data: { [key: string]: string; }[] = [];
-    headName.forEach((item, index) => {
-      const element: { [key: string]: string } = {};
-      element.headName = item;
-      element.rowMap = rowMap[index];
-      element.dataType = dataType[index];
-      element.format = format[index];
-      element.columWidth = columWidth[index];
-      data.push(element);
-    })
-    // 设置表格
-    form.setFieldsValue({
-      setTableData: data
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const onChangeData = useCallback(
-    () => {
-      // 更新运行数据
-      const copyRunningData = cloneDeep(runningData);
-      const setDataSource = form.getFieldValue('setDataSource');
-      const dataSource = runningTimes[setDataSource] as Object[];
-
-      if (Array.isArray(dataSource) && dataSource.length && isObject(dataSource[0])) {
-        onChangeDataSource(dataSource)
-        update(copyRunningData, '[0].arguments[0].data', () => setDataSource);
-        onChange(copyRunningData)
-      } else {
-        message.error('请选择合规数组对象 [ { element:string, ... }, ... ]');
-        form.setFieldsValue({ setDataSource: undefined })
-      }
-    },
-    [form, onChange, onChangeDataSource, runningData, runningTimes],
-  )
+  }, [dataSource, runningData, runningTimes]);
 
   const onChangeDebounce = useMemo(
     () =>
@@ -93,43 +46,37 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
     [onChange]
   );
 
-  const onChangeTableData = useCallback(
-    (value: TableDataItemValue[]) => {
+  const onChangeRunningData = useCallback(
+    (value: any, path: string) => {
       const copyRunningData = cloneDeep(runningData);
-      const columWidth: (string | undefined)[] = [];
-      const dataType: (string | undefined)[] = [];
-      const format: (string | undefined)[] = [];
-      const headName: (string | undefined)[] = [];
-      const rowMap: (string | undefined)[] = [];
-      value.forEach((item, index) => {
-        columWidth[index] = item.columWidth;
-        dataType[index] = item.dataType;
-        format[index] = item.format;
-        headName[index] = item.headName;
-        rowMap[index] = item.rowMap;
-      });
-      update(copyRunningData, '[1].arguments[0].data', () => headName);
-      update(copyRunningData, '[1].arguments[1].data', () => rowMap);
-      update(copyRunningData, '[1].arguments[2].data', () => dataType);
-      update(copyRunningData, '[1].arguments[3].data', () => format);
-      update(copyRunningData, '[1].arguments[4].data', () => columWidth);
-      onChangeDebounce(copyRunningData)
+      update(copyRunningData, path, () => value);
+      onChangeDebounce(copyRunningData);
     },
     [onChangeDebounce, runningData],
   )
 
+  const onChangeRunningTimes = useCallback(
+    (e) => {
+      const dataSource = (runningTimes[e] || []) as Object[];
+      if (Array.isArray(dataSource) && dataSource.length && isObject(dataSource[0])) {
+        onChangeRunningData(e, tableValuePath.runningTimes)
+      } else {
+        message.error('请选择合规数组对象 [ { element:string, ... }, ... ]');
+      }
+    },
+    [onChangeRunningData, runningTimes],
+  )
 
   return (
-    <TableModuleContext.Provider value={{ disabled, onChangeDisable: () => setDisabled(!disabled), onChangeDataSource, dataSource }}>
-      <PageHeader title="表格设置" />
-      <LineItem label="数据源">
-        asd
-      </LineItem>
-      <Form form={form} {...formLayout}>
-        <Form.Item label="数据源" required name="setDataSource">
+    <>
+      {JSON.stringify(dataSource)}
+      <TableModuleContext.Provider value={{ disabled, setDisabled, dataSource, runningData, onChangeRunningData }}>
+        <PageHeader title="表格设置" />
+        <LineItem label="数据源">
           <Select
             placeholder="请选择"
-            onChange={onChangeData}
+            value={get(runningData, tableValuePath.runningTimes)}
+            onChange={onChangeRunningTimes}
           >
             {Object.keys(runningTimes)?.map(
               (item, index) => (
@@ -139,12 +86,12 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
               )
             )}
           </Select>
-        </Form.Item>
-        <Form.Item label="表格列" name="setTableData" >
-          <SortableTableData onChange={onChangeTableData} />
-        </Form.Item>
-      </Form>
-    </TableModuleContext.Provider>
+        </LineItem>
+        <LineItem label='表格列'>
+          <SortableTableData />
+        </LineItem>
+      </TableModuleContext.Provider>
+    </>
   )
 }
 

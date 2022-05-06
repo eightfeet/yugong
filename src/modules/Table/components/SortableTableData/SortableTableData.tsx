@@ -15,10 +15,6 @@ const SortableTableData: React.FC<Props> = ({ value = [], onChange }) => {
   const [list, setList] = useState<TableDataItemValue[]>([]);
   const { disabled } = useContext(TableModuleContext);
 
-  useEffect(() => {
-    setList(value)
-  }, [value])
-
   const onSortEnd = useCallback(
     ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
       if (disabled) return;
