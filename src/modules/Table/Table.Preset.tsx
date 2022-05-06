@@ -77,6 +77,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
             placeholder="请选择"
             value={get(runningData, tableValuePath.runningTimes)}
             onChange={onChangeRunningTimes}
+            style={{width:"100%"}}
           >
             {Object.keys(runningTimes)?.map(
               (item, index) => (
