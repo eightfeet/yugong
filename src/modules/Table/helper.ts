@@ -1,19 +1,7 @@
-import { keys } from "@material-ui/core/styles/createBreakpoints";
 
-interface ObjItem {
-  [keys: string]: string;
-}
-
-type Obj2arr = (arr: {
-  [keys: string]: string | undefined;
-}[]) => ({[keys: string]: any})
-
-
-//  StateType => any
-// 因为state没有设置类型，所以ts推断state的类型为any
-
-export function obj2arr<K>(arr: {[keys: string]: any}[]){
-  const data: {} = {}
+/**组参数转换为参数 */
+export function groupArgumentsPars<K>(arr: {[keys in keyof K]: any}[]): {[keys in keyof K]: (string | undefined)[]}{
+  const data: any  = {}
   arr.forEach((subObject: any) => {
     for (const key in subObject) {
       if (Object.prototype.hasOwnProperty.call(subObject, key)) {
