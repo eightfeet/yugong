@@ -147,7 +147,7 @@ const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => 
               style={{ flex: 'auto' }}
               disabled={disabled}
               value={value?.dataType}
-              placeholder="请选择数据类型，默认字符"
+              placeholder="默认为字符"
               onChange={onChangeType}>
               {
                 Object.keys(dataType).map(key => <Select.Option key={key} value={key}>{dataType[key]}</Select.Option>)
