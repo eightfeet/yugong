@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
 import TableDataItem from '../TableDataItem';
 import { TableDataItemValue } from '../TableDataItem/TableDataItem';
@@ -10,7 +10,8 @@ interface Props {
   disabled?: boolean;
 }
 
-const TableData: React.FC<Props> = ({ list=[], onChange, onMinus }) => {
+const TableData: React.FC<Props> = ({ list
+  , onChange, onMinus }) => {
   return (
     <div>
       {
@@ -19,9 +20,12 @@ const TableData: React.FC<Props> = ({ list=[], onChange, onMinus }) => {
           onChange={(value) => {
             onChange?.(value, index)
           }}
-          key={`${item.rowMap}${item.headName}${index}`} onMinus={() => {
+          value={item}
+          key={index} 
+          onMinus={() => {
             onMinus?.(index)
-          }} index={index} defaultValue={item}
+          }} 
+          index={index} 
         />)
       }
     </div>

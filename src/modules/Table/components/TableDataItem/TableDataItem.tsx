@@ -1,11 +1,13 @@
 import { CaretDownOutlined, CaretRightOutlined, MinusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Space, Tag } from 'antd';
+import { Button, Input, Select, Space, Tag } from 'antd';
+import classNames from 'classnames';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { SortableElement, SortableHandle } from "react-sortable-hoc";
 import MoveIcon from '~/components/MiniDashboard/ApiConfig/MoveIcon';
 import HtmlSuffix from '~/components/MiniDashboard/ArgumentsSetting/HtmlSuffix';
 import { TableModuleContext } from '../../TableModuleContext';
 import { dataType, dataTypeFormat } from '../../type';
+import LineItem from '../LineItem/LineItem';
 import s from './TableDataItem.module.scss';
 
 export interface TableDataItemValue {
@@ -16,7 +18,6 @@ interface Props {
   onChange?: (value: TableDataItemValue) => void;
   onMinus?: () => void;
   value?: TableDataItemValue;
-  defaultValue?: TableDataItemValue;
   label?: string;
   disabled?: boolean;
 }
@@ -27,130 +28,143 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-const formLayout = {
-  labelCol: { span: 4 }, wrapperCol: { span: 20 }
-}
+const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => {
+  useEffect(() => {
+    console.log('重新渲染');
+  }, [])
 
-const subLayout = {
-  labelCol: { span: 6 }, wrapperCol: { span: 18 }
-}
-
-const TableDataItem: React.FC<Props> = ({ defaultValue, label, onMinus, value, onChange }) => {
-  const [form] = Form.useForm();
-  const [currentdataType, setCurrentDataType] = useState<string>();
+  const [currentdataType, setCurrentDataType] = useState<string>(value?.dataType || '');
+  console.log('currentdataType', currentdataType);
+  
   const [showOptions, setShowOptions] = useState(false);
   const { disabled, dataSource } = useContext(TableModuleContext);
 
-  const onFormChange = useCallback(
-    () => {
-      if (disabled) return;
-      const data = form.getFieldsValue();
-      const { dataType } = data;
-      if (dataType !== 'number' && dataType !== 'date') {
-        form.setFieldsValue({ format: undefined })
-      }
-      setCurrentDataType(dataType);
-      if (typeof onChange === 'function') {
-        onChange(data)
-      }
+  const onChangeValue = useCallback((data: { [keys in keyof TableDataItemValue]?: string }) => {
+    onChange?.({ ...value, ...data })
+  }, [onChange, value]);
+
+  const onChangeType = useCallback(
+    (e) => {
+      setCurrentDataType(e)
+      onChangeValue({ dataType: e, format: undefined })
     },
-    [disabled, form, onChange],
+    [onChangeValue],
   )
 
+  const onChangeFormat = useCallback(
+    (e) => {
+      onChangeValue({ format: e })
+    },
+    [onChangeValue],
+  )
+
+
   const renderNumber = useCallback(
-    () => Object.keys(dataTypeFormat.number).map(
-      key =>
-        <Select.Option key={key} value={key}>
-          {dataTypeFormat.number[key]}
-        </Select.Option>
-    ),
-    [],
+    () => <Select
+      placeholder="请选择数据格式"
+      onChange={onChangeFormat}
+      className={classNames(s.format)}
+      value={value?.format}
+    >
+      {Object.keys(dataTypeFormat.number).map(
+        key =>
+          <Select.Option key={key} value={key}>
+            {dataTypeFormat.number[key]}
+          </Select.Option>
+      )}
+    </Select>,
+    [onChangeFormat, value?.format],
   )
 
   const renderDate = useCallback(
-    () => Object.keys(dataTypeFormat.date).map(
-      key =>
-        <Select.Option key={key} value={key}>
-          {dataTypeFormat.date[key]}
-        </Select.Option>
-    ),
-    [],
+    () => <Select
+      placeholder="请选择数据格式"
+      className={classNames(s.format)}
+      onChange={onChangeFormat}
+      value={value?.format}
+    >
+      {Object.keys(dataTypeFormat.date).map(
+        key =>
+          <Select.Option key={key} value={key}>
+            {dataTypeFormat.date[key]}
+          </Select.Option>
+      )}
+    </Select>,
+    [onChangeFormat, value?.format],
   )
 
-  useEffect(() => {
-    setCurrentDataType(defaultValue?.dataType)
-    form.setFieldsValue(defaultValue || {})
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    // form.resetFields(Object.keys(value || {}))
-  }, [form, value])
-
   return (
-    <Form className={s.wrap} form={form} {...formLayout} onFieldsChange={onFormChange}>
-      <Form.Item label={<><span className={s.drag}><DragHandle /></span>{label || '列'}</>} className={s.item}>
-        <Input.Group compact>
-          <Form.Item
-            name="headName"
-            noStyle
-          >
-            <Input disabled={disabled} className={s.inp} placeholder="名称" suffix={<HtmlSuffix />} />
-          </Form.Item>
-          <Form.Item
-            name="rowMap"
-            noStyle
-          >
-            <Input disabled={disabled} className={s.inp} placeholder="字段" suffix={
-              <HtmlSuffix info={
-                <>
-                  <div>可用字段：</div>
-                  <Space wrap>
-                    {
-                      Object.keys(dataSource?.[0] || {})?.map(key =>
-                        <Tag className={s.tag} key={key} onClick={() => {
-                          if (!disabled) form.setFieldsValue({ 'rowMap': `{{${key}}}` }); onFormChange()
-                        }
-                        }>
-                          {`{{${key}}}`}
-                        </Tag>
-                      )
-                    }
-                  </Space>
-                </>
-              } />
+    <div className={s.root}>
+      <LineItem label={<div className={s.dragwrap}><span className={s.drag}><DragHandle /></span>{label || '列'}</div>}>
+        <Input
+          disabled={disabled}
+          className={s.inp}
+          onChange={(e) => onChangeValue({ headName: e.target.value })}
+          value={value?.headName}
+          placeholder="名称"
+          suffix={<HtmlSuffix />}
+        />
+        <Input name="rowMap"
+          disabled={disabled}
+          className={classNames(s.inp, s.nbl, s.nbrad)}
+          onChange={(e) => onChangeValue({ rowMap: e.target.value })}
+          value={value?.rowMap}
+          placeholder="字段"
+          suffix={
+            <HtmlSuffix info={
+              <>
+                <div>可用字段：</div>
+                <Space wrap>
+                  {
+                    Object.keys(dataSource?.[0] || {})?.map(key =>
+                      <Tag className={s.tag} key={key} onClick={() => onChangeValue({ rowMap: `{{${key}}}` })}>
+                        {`{{${key}}}`}
+                      </Tag>
+                    )
+                  }
+                </Space>
+              </>
             } />
-          </Form.Item>
-          <Form.Item noStyle>
-            {/* <Button icon={<CaretRightOutlined />} /> */}
-            <Button disabled={disabled} className={s.btn} icon={showOptions ?
-              <CaretDownOutlined /> :
-              <CaretRightOutlined />} onClick={() => setShowOptions(!showOptions)} />
-          </Form.Item>
-          <Form.Item noStyle>
-            <Button disabled={disabled} className={s.btn} icon={<MinusOutlined />} onClick={() => onMinus?.()} />
-          </Form.Item>
-        </Input.Group>
-      </Form.Item>
+          } />
+        <Button
+          disabled={disabled}
+          className={classNames(s.btn, s.nbl, s.nbr)}
+          icon={showOptions ? <CaretDownOutlined /> : <CaretRightOutlined />}
+          onClick={() => setShowOptions(!showOptions)}
+        />
+        <Button
+          disabled={disabled}
+          className={s.btn}
+          icon={<MinusOutlined />}
+          onClick={() => onMinus?.()}
+        />
+      </LineItem>
       <div style={{ display: showOptions ? 'block' : 'none' }}>
-        <Form.Item {...subLayout} label="类别" name="dataType" className={s.item}>
-          <Select disabled={disabled} placeholder="请选择数据类型，默认字符" onChange={() => { form.setFieldsValue({ 'format': undefined }); onFormChange() }}>
-            {
-              Object.keys(dataType).map(key => <Select.Option key={key} value={key}>{dataType[key]}</Select.Option>)
-            }
-          </Select>
-        </Form.Item>
-        <Form.Item {...subLayout} label="格式" name="format" className={s.item}>
-          <Select placeholder="请选择数据格式" disabled={(currentdataType !== 'number' && currentdataType !== 'date') || disabled}>
+        <LineItem label="数据类别">
+          <div className={s.datatype}>
+            <Select
+              className={classNames(s.nbrad)}
+              style={{ flex: 'auto' }}
+              disabled={disabled}
+              value={value?.dataType}
+              placeholder="请选择数据类型，默认字符"
+              onChange={onChangeType}>
+              {
+                Object.keys(dataType).map(key => <Select.Option key={key} value={key}>{dataType[key]}</Select.Option>)
+              }
+            </Select>
             {currentdataType === 'number' ? renderNumber() : null}
             {currentdataType === 'date' ? renderDate() : null}
-          </Select>
-        </Form.Item>
-        <Form.Item {...subLayout} label="列宽" name="columWidth" className={s.item}>
-          <Input disabled={disabled} placeholder="ex:50%或50px, 默认自动" />
-        </Form.Item>
+          </div>
+        </LineItem>
+        <LineItem label="列宽">
+          <Input disabled={disabled} placeholder="ex:50%或50px, 默认自动"
+            value={value?.columWidth}
+            onChange={(e) => onChangeValue({ columWidth: e.target.value })}
+          />
+        </LineItem>
       </div>
-    </Form>
+    </div>
   )
 }
 

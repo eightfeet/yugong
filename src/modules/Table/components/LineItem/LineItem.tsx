@@ -4,7 +4,7 @@ import React from 'react';
 import s from './LineItem.module.scss'
 
 interface Props {
-  label: string,
+  label: React.ReactNode,
   describe?: string
 }
 

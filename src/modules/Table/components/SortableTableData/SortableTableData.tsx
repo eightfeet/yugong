@@ -1,89 +1,87 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import arrayMove from 'array-move';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { obj2arr } from '../../helper';
+import { cloneDeep } from 'lodash';
+import React, { useCallback, useContext } from 'react';
+import groupArgumentsPars, { getGroupArgumentsValues } from '~/core/helper/groupArgumentsPars';
 import { TableModuleContext } from '../../TableModuleContext';
 import TableData from '../TableData';
-import { TableDataItemValue } from '../TableDataItem/TableDataItem';
 
 interface Props {
 }
 
 const SortableTableData: React.FC<Props> = () => {
-  const [list, setList] = useState<TableDataItemValue[]>([]);
-  const { disabled, onChangeRunningData, dataSource } = useContext(TableModuleContext);
+  const { disabled, onChangeRunningData, getDataFromRunningData } = useContext(TableModuleContext);
+  const getData = useCallback(
+    () => {
+      const data = getDataFromRunningData?.(['headName', 'columWidth', 'dataType', 'format', 'rowMap']) || {};
+      return getGroupArgumentsValues(data);
+    },
+    [getDataFromRunningData],
+  )
 
   const onChange = useCallback(
     (data) => {
-      console.log(data);
+      /**获取数据 */
+      let param = groupArgumentsPars(data);
+      /**考虑数据为空的情况 */
+      if (!Object.keys(param).length) {
+        param = {
+          columWidth: [],
+          dataType: [],
+          format: [],
+          headName: [],
+          rowMap: [],
+        }
+      }
+      /**更新到runningData */
+      onChangeRunningData?.(param)
     },
-    [],
+    [onChangeRunningData],
   )
-  
-
-  useEffect(() => {
-const data = [{headName: 'string2333', rowMap: undefined, dataType: undefined, format: undefined, columWidth: undefined},{headName: 'string2333', rowMap: undefined, dataType: undefined, format: undefined, columWidth: undefined}]
-    console.log(333, obj2arr(data));
-    
-    setList([])
-  }, [dataSource])
-  
 
   const onSortEnd = useCallback(
     ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
       if (disabled) return;
+      const list = getData();
       const res = arrayMove(list, oldIndex, newIndex);
-      if (typeof onChange === 'function') {
-        onChange(res)
-      }
-      setList(res)
+      onChange(res)
     },
-    [disabled, list, onChange],
+    [disabled, getData, onChange],
   )
 
   const handleOnChange = useCallback(
     (value, index) => {
-      setList(list => {
-        list[index] = value;
-        if (typeof onChange === 'function') {
-          onChange(list)
-        }
-        return list;
-      })
+      const optData = cloneDeep(getData());
+      optData[index] = value;
+      onChange(optData)
     },
-    [onChange],
+    [getData, onChange],
   )
 
   const onMinus = useCallback(
     (index) => {
-      setList(list => {
-        const data = list.filter((_, listIndex) => index !== listIndex);
-        if (typeof onChange === 'function') {
-          onChange(data)
-        }
-        return data;
-      })
+      const optData = cloneDeep(getData()).filter((_, listIndex) => index !== listIndex);
+      onChange(optData)
     },
-    [onChange],
+    [getData, onChange],
   )
 
   const onPlus = useCallback(
     () => {
-      setList(data => {
-        data?.push({});
-        return [...data];
-      })
+      const optData = cloneDeep(getData());
+      optData.push({ 'headName': undefined, 'columWidth': undefined, 'dataType': undefined, 'format': undefined, 'rowMap': undefined })
+      onChange(optData)
     },
-    [],
+    [getData, onChange],
   )
-  
+
   return (
     <div>
       <Row>
         <Col><Button disabled={disabled} onClick={onPlus} icon={<PlusOutlined />}>增加列</Button></Col>
       </Row><br />
-      <TableData list={list} onChange={handleOnChange} onSortEnd={onSortEnd} onMinus={onMinus} />
+      <TableData list={getData()} onChange={handleOnChange} onSortEnd={onSortEnd} onMinus={onMinus} />
     </div>
   )
 }

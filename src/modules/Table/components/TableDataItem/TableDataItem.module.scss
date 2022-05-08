@@ -13,8 +13,46 @@
 }
 
 .drag {
-  display: block;
+  display: inline-block;
   opacity: 0.5;
   width: 20px;
   height: 20px;
+}
+
+.dragwrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.root {
+  position: relative;
+  z-index: 100;
+}
+
+.nbrad {
+  border-radius: 0 !important;
+}
+
+.nbl {
+  border-left: none !important;
+}
+.nbr {
+  border-right: none;
+}
+
+.datatype {
+  display: flex;
+  align-items: center;
+}
+
+.format {
+  flex-shrink: 0;
+  width: 200px;
+  border-left: none !important;
+  :global {
+    .ant-select-selector {
+      border-left: none !important;
+    }
+  }
 }
