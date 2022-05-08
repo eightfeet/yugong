@@ -68,7 +68,7 @@ const config: ModulesStatic = {
     },
     {
       name: 'setTablePull',
-      description: '设置table上下拉功能',
+      description: '移动端操作',
       arguments: [
         {
           type: 'boolean',
@@ -111,7 +111,7 @@ const config: ModulesStatic = {
     {
       name: 'overrideTbodyItem',
       presettable: false,
-      description: '覆写表格，请在源数据准备完成后做覆写！',
+      description: '覆写表格',
       arguments: [
         {
           type: 'number',
@@ -137,6 +137,11 @@ const config: ModulesStatic = {
         },
       ],
     },
+    {
+      name: 'updateTable',
+      presettable: false,
+      description: '更新表格',
+    },
   ],
 
   /**
@@ -153,11 +158,11 @@ const config: ModulesStatic = {
     },
     {
       name: 'pullDown',
-      description: '下拉',
+      description: '移动端下拉',
     },
     {
       name: 'pullUp',
-      description: '上拉',
+      description: '移动端上拉',
     },
   ],
 
@@ -272,11 +277,11 @@ const config: ModulesStatic = {
     },
     {
       apiId: 'pullUp',
-      name: '上拉',
+      name: '移动端上拉',
     },
     {
       apiId: 'pullDown',
-      name: '下拉',
+      name: '移动端下拉',
     },
   ],
 };

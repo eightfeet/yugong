@@ -34,8 +34,6 @@ const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => 
   }, [])
 
   const [currentdataType, setCurrentDataType] = useState<string>(value?.dataType || '');
-  console.log('currentdataType', currentdataType);
-  
   const [showOptions, setShowOptions] = useState(false);
   const { disabled, dataSource } = useContext(TableModuleContext);
 

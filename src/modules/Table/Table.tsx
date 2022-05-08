@@ -22,16 +22,46 @@ class Table extends Component<TableProps, State> {
   constructor(props: TableProps) {
     super(props)
     this.state = {
-      theadDataStatu: undefined
+      theadDataStatu: undefined,
+      setDataSourceArgs: [],
+      setTableDataArgs: [],
     }
   }
 
   componentDidMount() {
+    const { setDataSource, setTableData, setTablePull, overrideTbodyItem } = this;
+    this.props.registersFunction({
+      setDataSource,
+      setTableData,
+      setTablePull,
+      overrideTbodyItem,
+    })
     this.onMount();
   }
 
   componentWillUnmount() {
     this.props.eventDispatch().unmount();
+  }
+
+  /**表格数据源 */
+  setDataSource = (...args: ArgumentsItem[]) => {
+    const data = getArguments(args);
+    this.setState({
+      copyDataSource: data
+    })
+  }
+
+  /**设置表格列 */
+  setTableData = (...args: ArgumentsItem[]) => {
+    const {
+      headName, rowMap, dataType, format, columWidth
+    } = getArguments(args);
+    this.setState({
+      theadDataStatu: { 
+        data: headName, 
+        width: columWidth as any[] 
+      }
+    })
   }
 
   /**设置表格交互 */
@@ -41,6 +71,13 @@ class Table extends Component<TableProps, State> {
       pullStates: result
     })
   };
+
+  /**更行表格 */
+  updateTable = () => {
+    const { setDataSourceArgs, setTableDataArgs } = this.state;
+    this.setDataSource(...setDataSourceArgs)
+    this.setTableData(...setTableDataArgs)
+  }
 
   /**设置表格列名 */
   setTheadName = (argsName: ArgumentsArray) => {
@@ -54,7 +91,10 @@ class Table extends Component<TableProps, State> {
   setColumWidth = (argWidth: ArgumentsArray) => {
     const width = getArgumentsItem(argWidth);
     this.setState({
-      theadDataStatu: { data: [...this.state.theadDataStatu?.data || []], width: width as any[] }
+      theadDataStatu: { 
+        data: [...this.state.theadDataStatu?.data || []], 
+        width: width as any[] 
+      }
     })
   };
 
@@ -232,6 +272,8 @@ interface pullStatesType {
 
 // typeof State
 type State = {
+  setDataSourceArgs: ArgumentsItem[];
+  setTableDataArgs: ArgumentsItem[];
   theadDataStatu?: {
     width: any[];
     data: React.ReactNode[];

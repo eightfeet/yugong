@@ -297,7 +297,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
   };
 
   if (custom) {
-    const CComp = require(`~/modules/${type}/${type}.Preset.tsx`)?.default;
+    const CComp = require(`~/modules/${type}/${type}.Preset`)?.default;
     if (CComp) return <CComp activationItem={activationItem} runningData={runningData} onChange={updateRunningDataToActivationItem} />
   }
 

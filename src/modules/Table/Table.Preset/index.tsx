@@ -1,12 +1,12 @@
 import { message, PageHeader, Select } from 'antd';
-import { cloneDeep, isObject, update, throttle, get, lowerFirst } from 'lodash';
+import { cloneDeep, isObject, update, throttle, get } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import { RootState } from '~/redux/store';
-import LineItem from './components/LineItem/LineItem';
-import SortableTableData from './components/SortableTableData';
-import { TableModuleContext } from './TableModuleContext';
+import LineItem from '../components/LineItem/LineItem';
+import SortableTableData from '../components/SortableTableData';
+import { TableModuleContext } from '../TableModuleContext';
 
 const Option = Select.Option;
 
@@ -16,7 +16,7 @@ export const tableValuePath = {
   rowMap: '[1].arguments[1].data',
   dataType: '[1].arguments[2].data',
   format: '[1].arguments[3].data',
-  columWidth: '[1].arguments[4].data'
+  columWidth: '[1].arguments[4].data',
 }
 
 export type TablePathKeys = keyof typeof tableValuePath;
@@ -87,7 +87,6 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
 
   return (
     <>
-      {JSON.stringify(dataSource)}
       <TableModuleContext.Provider value={{ disabled, setDisabled, dataSource, runningData, onChangeRunningData, getDataFromRunningData }}>
         <PageHeader title="表格设置" />
         <LineItem label="数据源">
