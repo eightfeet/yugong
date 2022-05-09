@@ -1,4 +1,3 @@
-
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import parse from 'html-react-parser';
@@ -7,8 +6,18 @@ import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import PresetModule from '~/components/PresetModule';
 import requester from '~/core/fetch';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsArray, ArgumentsBoolean, ArgumentsItem, ArgumentsNumber, ArgumentsString } from '~/types/appData';
-import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import {
+  AnyObjectType,
+  ArgumentsArray,
+  ArgumentsBoolean,
+  ArgumentsItem,
+  ArgumentsNumber,
+  ArgumentsString,
+} from '~/types/appData';
+import {
+  getArguments,
+  getArgumentsItem,
+} from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 
@@ -20,22 +29,23 @@ import s from './Table.module.less';
 
 class Table extends Component<TableProps, State> {
   constructor(props: TableProps) {
-    super(props)
+    super(props);
     this.state = {
       theadDataStatu: undefined,
       setDataSourceArgs: [],
       setTableDataArgs: [],
-    }
+    };
   }
 
   componentDidMount() {
-    const { setDataSource, setTableData, setTablePull, overrideTbodyItem } = this;
+    const { setDataSource, setTableData, setTablePull, overrideTbodyItem } =
+      this;
     this.props.registersFunction({
       setDataSource,
       setTableData,
       setTablePull,
       overrideTbodyItem,
-    })
+    });
     this.onMount();
   }
 
@@ -45,140 +55,168 @@ class Table extends Component<TableProps, State> {
 
   /**表格数据源 */
   setDataSource = (...args: ArgumentsItem[]) => {
-    const data = getArguments(args);
+    const { dataSource } = getArguments(args);
     this.setState({
-      copyDataSource: data
-    })
-  }
+      copyDataSource: dataSource,
+    });
+  };
 
   /**设置表格列 */
   setTableData = (...args: ArgumentsItem[]) => {
-    const {
-      headName, rowMap, dataType, format, columWidth
-    } = getArguments(args);
-    this.setState({
-      theadDataStatu: { 
-        data: headName, 
-        width: columWidth as any[] 
+    const { headName, dataType, format, columWidth } = getArguments(args);
+    const map = args.find((item) => item.fieldName === 'rowMap')?.data || [];
+    const { copyDataSource } = this.state;
+    console.log('copyDataSource', copyDataSource);
+    
+    const result: any[] = [];
+    copyDataSource.forEach((element: AnyObjectType | undefined) => {
+      const temp: any[] = [];
+      if (Array.isArray(map)) {
+        map.forEach((item) => {
+          if (item) {
+            console.log(item);
+
+            temp.push(item ? parse(getResult(item, element)) : null);
+          }
+        });
       }
-    })
-  }
+      result.push(temp);
+    });
+
+    this.setState({
+      theadDataStatu: {
+        data: headName,
+        width: columWidth as any[],
+      },
+      tbodyDataStatu: result
+    });
+  };
 
   /**设置表格交互 */
   setTablePull = (...args: ArgumentsItem[]) => {
     const result = getArguments(args) as pullStatesType;
     this.setState({
-      pullStates: result
-    })
+      pullStates: result,
+    });
   };
 
   /**更行表格 */
   updateTable = () => {
     const { setDataSourceArgs, setTableDataArgs } = this.state;
-    this.setDataSource(...setDataSourceArgs)
-    this.setTableData(...setTableDataArgs)
-  }
+    this.setDataSource(...setDataSourceArgs);
+    this.setTableData(...setTableDataArgs);
+  };
 
   /**设置表格列名 */
   setTheadName = (argsName: ArgumentsArray) => {
     const data = getArgumentsItem(argsName);
     this.setState({
-      theadDataStatu: { data: data as any[], width: [...this.state.theadDataStatu?.width || []] }
-    })
+      theadDataStatu: {
+        data: data as any[],
+        width: [...(this.state.theadDataStatu?.width || [])],
+      },
+    });
   };
 
   /**设置表格列宽 */
   setColumWidth = (argWidth: ArgumentsArray) => {
     const width = getArgumentsItem(argWidth);
     this.setState({
-      theadDataStatu: { 
-        data: [...this.state.theadDataStatu?.data || []], 
-        width: width as any[] 
-      }
-    })
+      theadDataStatu: {
+        data: [...(this.state.theadDataStatu?.data || [])],
+        width: width as any[],
+      },
+    });
   };
 
   /**设置表格数据 */
-  setTbodyData =
-    (
-      dataSource: ArgumentsArray,
-      isConcate: ArgumentsBoolean,
-      rowMap: ArgumentsArray
-    ) => {
-      const data = getArgumentsItem(dataSource);
-      this.setState({
-        copyDataSource: data
-      })
-      const concat = getArgumentsItem(isConcate);
-      // 这里单独处理，定义列数据从原数据映射
-      const map = rowMap.data;
-      if (!Array.isArray(data)) {
-        return;
+  setTbodyData = (
+    dataSource: ArgumentsArray,
+    isConcate: ArgumentsBoolean,
+    rowMap: ArgumentsArray,
+  ) => {
+    const data = getArgumentsItem(dataSource);
+    this.setState({
+      copyDataSource: data,
+    });
+    const concat = getArgumentsItem(isConcate);
+    // 这里单独处理，定义列数据从原数据映射
+    const map = rowMap.data;
+    if (!Array.isArray(data)) {
+      return;
+    }
+
+    const result: any[] = [];
+    data.forEach((element) => {
+      const temp: any[] = [];
+      if (Array.isArray(map)) {
+        map.forEach((item) => {
+          if (item) {
+            console.log(item);
+
+            temp.push(item ? parse(getResult(item, element)) : null);
+          }
+        });
       }
+      result.push(temp);
+    });
+    // 递增翻页
 
-      const result: any[] = [];
-      data.forEach((element) => {
-        const temp: any[] = [];
-        if (Array.isArray(map)) {
-          map.forEach((item) => {
-            if (item) {
-              console.log(item);
-
-              temp.push(item ? parse(getResult(item, element)) : null);
-            }
-          });
-        }
-        result.push(temp);
-      });
-      // 递增翻页
-
-      this.setState({
-        tbodyDataStatu: concat ? this.state.tbodyDataStatu?.concat(result) : result
-      })
-    };
+    this.setState({
+      tbodyDataStatu: concat
+        ? this.state.tbodyDataStatu?.concat(result)
+        : result,
+    });
+  };
 
   /**
-     * 从数据源覆写表格，做到表格项灵活覆写，满足列表样式的各种变换
-     *
-     * */
+   * 从数据源覆写表格，做到表格项灵活覆写，满足列表样式的各种变换
+   *
+   * */
   overrideTbodyItem = (
     rowItem: ArgumentsNumber,
     colItem: ArgumentsNumber,
-    override: ArgumentsString
+    override: ArgumentsString,
   ) => {
     const { tbodyDataStatu, copyDataSource } = this.state;
     const row = (getArgumentsItem(rowItem) as number) - 1;
     const col = (getArgumentsItem(colItem) as number) - 1;
 
-    if (
-      tbodyDataStatu?.[row] &&
-      tbodyDataStatu?.[row][col] &&
-      copyDataSource
-    ) {
+    if (tbodyDataStatu?.[row] && tbodyDataStatu?.[row][col] && copyDataSource) {
       const optTbodyDataStatu = [...tbodyDataStatu];
       optTbodyDataStatu[row][col] = getArgumentsItem(
         override,
-        copyDataSource[row]
+        copyDataSource[row],
       );
       this.setState({
-        tbodyDataStatu: optTbodyDataStatu
+        tbodyDataStatu: optTbodyDataStatu,
       });
     }
   };
 
   /**init */
   onMount = async () => {
-    const { setTablePull, setTheadName, setColumWidth, setTbodyData, overrideTbodyItem } = this;
-    const { api, } = this.props;
+    const {
+      setTablePull,
+      setTheadName,
+      setColumWidth,
+      setTbodyData,
+      overrideTbodyItem,
+    } = this;
+    const { api } = this.props;
     this.props.registersFunction({
-      setTablePull, setTheadName, setColumWidth, setTbodyData, overrideTbodyItem
+      setTablePull,
+      setTheadName,
+      setColumWidth,
+      setTbodyData,
+      overrideTbodyItem,
     });
     const apiArguments = api?.find((item) => item.apiId === 'mount');
     if (apiArguments) {
       await requester(apiArguments || {});
     }
     this.props.eventDispatch().mount();
-  }
+  };
 
   /** 下拉事件*/
   onPullDown = async () => {
@@ -225,9 +263,7 @@ class Table extends Component<TableProps, State> {
                         key={index}
                         scope="col"
                         style={{
-                          width: theadDataStatu.width[
-                            index
-                          ],
+                          width: theadDataStatu.width[index],
                         }}
                       >
                         {item}
@@ -251,17 +287,17 @@ class Table extends Component<TableProps, State> {
           </PullToRefresh>
         </div>
       </Wrapper>
-    )
+    );
   }
 }
 
 const mapState = (state: RootState) => ({
   runningTimes: state.runningTimes,
-})
+});
 
 const mapDispatch = (dispatch: Dispatch) => ({
   setRunningTimes: dispatch.runningTimes.setRunningTimes,
-})
+});
 
 interface pullStatesType {
   isPullDown: boolean;
@@ -277,19 +313,24 @@ type State = {
   theadDataStatu?: {
     width: any[];
     data: React.ReactNode[];
-  },
+  };
   tbodyDataStatu?: any[][];
   pullStates?: pullStatesType;
-  copyDataSource?: any
-}
+  copyDataSource?: any;
+};
 
 // typeof Props
-type StateProps = ReturnType<typeof mapState>
-type DispatchProps = ReturnType<typeof mapDispatch>
+type StateProps = ReturnType<typeof mapState>;
+type DispatchProps = ReturnType<typeof mapDispatch>;
 
 export type TableProps = ClassModuleBaseProps<
-  { [keys in ClassesKey]: string; },
-  { [keys in ExposeEventsKeys]: Function; }
-> & StateProps & DispatchProps
+  { [keys in ClassesKey]: string },
+  { [keys in ExposeEventsKeys]: Function }
+> &
+  StateProps &
+  DispatchProps;
 
-export default connect(mapState, mapDispatch)(PresetModule<TableProps>(Table, config, createStyles))
+export default connect(
+  mapState,
+  mapDispatch,
+)(PresetModule<TableProps>(Table, config, createStyles));
