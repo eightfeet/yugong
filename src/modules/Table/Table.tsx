@@ -26,6 +26,25 @@ import config, { ExposeEventsKeys } from './Table.config';
 import createStyles, { ClassesKey } from './Table.createStyles';
 
 import s from './Table.module.less';
+import dayjs from 'dayjs';
+
+const effectNumber = (data: any, effect: string) => {
+  let result = data;
+  if (effect && Number(result)) result = Number(result).toFixed(Number(effect) || 0);
+  
+  return result;
+}
+
+const effectDate = (data: any, effect: string) => {
+  const time = dayjs(data);
+  let result = data;
+  if (dayjs.isDayjs(time) && effect) {
+    result = time.format(effect || 'YYYY-MM-DD')
+  } 
+  return result;
+}
+
+const effectImage = (data: any, width: string) => `<img src="${data}" style="height:90%" />` 
 
 class Table extends Component<TableProps, State> {
   constructor(props: TableProps) {
@@ -72,11 +91,16 @@ class Table extends Component<TableProps, State> {
     copyDataSource.forEach((element: AnyObjectType | undefined) => {
       const temp: any[] = [];
       if (Array.isArray(map)) {
-        map.forEach((item) => {
+        map.forEach((item, index) => {
           if (item) {
-            console.log(item);
-
-            temp.push(item ? parse(getResult(item, element)) : null);
+            const itemDatatype = dataType[index];
+            const itemFormat = format[index];
+            let fn = undefined;
+            if(itemDatatype === 'image') fn = (data: string) => effectImage(data, itemFormat);
+            if(itemDatatype === 'number') fn = (data: string) => effectNumber(data, itemFormat);
+            if(itemDatatype === 'date') fn = (data: string) => effectDate(data, itemFormat);
+            const result = getResult(item, element, fn)
+            temp.push(item ? parse(`${result}`) : null);
           }
         });
       }
@@ -152,8 +176,6 @@ class Table extends Component<TableProps, State> {
       if (Array.isArray(map)) {
         map.forEach((item) => {
           if (item) {
-            console.log(item);
-
             temp.push(item ? parse(getResult(item, element)) : null);
           }
         });
