@@ -30,8 +30,8 @@ import dayjs from 'dayjs';
 
 const effectNumber = (data: any, effect: string) => {
   let result = data;
-  if (effect && Number(result)) result = Number(result).toFixed(Number(effect) || 0);
-  
+  const num = parseInt(result)
+  if (effect && num) result = num.toFixed(parseInt(effect) || 0);
   return result;
 }
 
