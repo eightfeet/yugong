@@ -31,7 +31,7 @@ import dayjs from 'dayjs';
 const effectNumber = (data: any, effect: string) => {
   let result = data;
   const num = parseInt(result)
-  if (effect && num) result = num.toFixed(parseInt(effect) || 0);
+  if (effect && num) result = num.toFixed(parseFloat(effect) || 0);
   return result;
 }
 
@@ -44,7 +44,10 @@ const effectDate = (data: any, effect: string) => {
   return result;
 }
 
-const effectImage = (data: any, width: string) => `<img src="${data}" style="height:90%" />` 
+const effectImage = (data: any, val: string) => {
+  const style = val.split(',');
+  return `<img src="${data}" style="width:${style[0]}; height:${style[1]}" />` 
+}
 
 class Table extends Component<TableProps, State> {
   constructor(props: TableProps) {
@@ -85,8 +88,6 @@ class Table extends Component<TableProps, State> {
     const { headName, dataType, format, columWidth } = getArguments(args);
     const map = args.find((item) => item.fieldName === 'rowMap')?.data || [];
     const { copyDataSource } = this.state;
-    console.log('copyDataSource', copyDataSource);
-    
     const result: any[] = [];
     copyDataSource.forEach((element: AnyObjectType | undefined) => {
       const temp: any[] = [];

@@ -105,9 +105,8 @@ const TablePreset: React.FC<CustomPersetProps> = ({ runningData, onChange, activ
             )}
           </Select>
         </LineItem>
-        <LineItem label='表格列'>
-          <SortableTableData />
-        </LineItem>
+        <LineItem label='表格列' />
+        <SortableTableData />
       </TableModuleContext.Provider>
     </>
   )

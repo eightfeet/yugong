@@ -34,10 +34,9 @@ export const dataType = {
   string: '字符',
   date: '日期',
   image: '图片',
-  script: '脚本'
 }
 
-export type DataType<T = undefined> = keyof T & 'number' | 'string' | 'date' | 'image' | 'script';
+export type DataType<T = undefined> = keyof T & 'number' | 'string' | 'date' | 'image';
 
 export const dataTypeFormat = {
   number: {
@@ -46,6 +45,7 @@ export const dataTypeFormat = {
     2: '保留2位小数',
   },
   date: {
+    'YYYY': 'YYYY',
     'YYYY-MM-DD HH:mm:ss': 'YYYY-MM-DD HH:mm:ss',
     'YYYY-MM-DD': 'YYYY-MM-DD',
     'MM-DD': 'MM-DD',

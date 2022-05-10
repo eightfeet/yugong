@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
 import TableDataItem from '../TableDataItem';
 import { TableDataItemValue } from '../TableDataItem/TableDataItem';

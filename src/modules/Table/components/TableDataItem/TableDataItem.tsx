@@ -1,7 +1,7 @@
 import { CaretDownOutlined, CaretRightOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Input, Select, Space, Tag } from 'antd';
 import classNames from 'classnames';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { SortableElement, SortableHandle } from "react-sortable-hoc";
 import MoveIcon from '~/components/MiniDashboard/ApiConfig/MoveIcon';
 import HtmlSuffix from '~/components/MiniDashboard/ArgumentsSetting/HtmlSuffix';
@@ -87,6 +87,36 @@ const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => 
     [onChangeFormat, value?.format],
   )
 
+  const onChangeImgFormat = useCallback(
+    (val, type: ('width' | 'height')) => {
+      const data = value?.format?.split(',') || [];
+      if (type === 'width') data[0] = val || '';
+      if (type === 'height') data[1] = val || '';
+      onChangeFormat(data.join(','));
+    },
+    [onChangeFormat, value?.format],
+  )
+
+
+  const renderImage = useCallback(
+    () => <>
+      <Input
+        placeholder='宽度'
+        className={classNames(s.format)}
+        style={{ width: '25%' }}
+        onChange={e => onChangeImgFormat(e.target.value, 'width')}
+        value={value?.format?.split(',')[0]} />
+      <Input
+        placeholder='高度'
+        className={classNames(s.format)}
+        style={{ width: '25%' }}
+        onChange={e => onChangeImgFormat(e.target.value, 'height')}
+        value={value?.format?.split(',')[1]} />
+    </>,
+    [onChangeImgFormat, value?.format],
+  )
+
+
   return (
     <div className={s.root}>
       <LineItem label={<div className={s.dragwrap}><span className={s.drag}><DragHandle /></span>{label || '列'}</div>}>
@@ -134,28 +164,31 @@ const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => 
         />
       </LineItem>
       <div style={{ display: showOptions ? 'block' : 'none' }}>
-        <LineItem label="数据类别">
-          <div className={s.datatype}>
-            <Select
-              className={classNames(s.nbrad)}
-              style={{ flex: 'auto' }}
-              disabled={disabled}
-              value={value?.dataType}
-              placeholder="默认为字符"
-              onChange={onChangeType}>
-              {
-                Object.keys(dataType).map(key => <Select.Option key={key} value={key}>{dataType[key]}</Select.Option>)
-              }
-            </Select>
-            {currentdataType === 'number' ? renderNumber() : null}
-            {currentdataType === 'date' ? renderDate() : null}
-          </div>
-        </LineItem>
-        <LineItem label="列宽">
-          <Input disabled={disabled} placeholder="ex:50%或50px, 默认自动"
-            value={value?.columWidth}
-            onChange={(e) => onChangeValue({ columWidth: e.target.value })}
-          />
+        <LineItem label="">
+          <LineItem label="数据类别">
+            <div className={s.datatype}>
+              <Select
+                className={classNames(s.nbrad)}
+                style={{ flex: 'auto' }}
+                disabled={disabled}
+                value={value?.dataType}
+                placeholder="默认为字符"
+                onChange={onChangeType}>
+                {
+                  Object.keys(dataType).map(key => <Select.Option key={key} value={key}>{dataType[key]}</Select.Option>)
+                }
+              </Select>
+              {currentdataType === 'number' ? renderNumber() : null}
+              {currentdataType === 'date' ? renderDate() : null}
+              {currentdataType === 'image' ? renderImage() : null}
+            </div>
+          </LineItem>
+          <LineItem label="列宽">
+            <Input disabled={disabled} placeholder="ex:50%或50px, 默认自动"
+              value={value?.columWidth}
+              onChange={(e) => onChangeValue({ columWidth: e.target.value })}
+            />
+          </LineItem>
         </LineItem>
       </div>
     </div>
