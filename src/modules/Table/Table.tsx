@@ -38,7 +38,7 @@ const effectNumber = (data: any, effect: string) => {
 const effectDate = (data: any, effect: string) => {
   const time = dayjs(data);
   let result = data;
-  if (dayjs.isDayjs(time) && effect) {
+  if (effect && dayjs.isDayjs(time)) {
     result = time.format(effect || 'YYYY-MM-DD')
   } 
   return result;

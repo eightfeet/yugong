@@ -29,10 +29,6 @@ const DragHandle = SortableHandle(() => (
 ));
 
 const TableDataItem: React.FC<Props> = ({ label, onMinus, value, onChange }) => {
-  useEffect(() => {
-    console.log('重新渲染');
-  }, [])
-
   const [currentdataType, setCurrentDataType] = useState<string>(value?.dataType || '');
   const [showOptions, setShowOptions] = useState(false);
   const { disabled, dataSource } = useContext(TableModuleContext);
