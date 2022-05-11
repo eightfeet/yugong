@@ -89,7 +89,7 @@ class Table extends Component<TableProps, State> {
     const map = args.find((item) => item.fieldName === 'rowMap')?.data || [];
     const { copyDataSource } = this.state;
     const result: any[] = [];
-    copyDataSource.forEach((element: AnyObjectType | undefined) => {
+    Array.isArray(copyDataSource) && copyDataSource.forEach((element: AnyObjectType | undefined) => {
       const temp: any[] = [];
       if (Array.isArray(map)) {
         map.forEach((item, index) => {

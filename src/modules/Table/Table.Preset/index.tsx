@@ -77,6 +77,7 @@ const TablePreset: React.FC<CustomPersetProps> = ({
   const onBlurRunningTimes = useCallback(
     (e) => {
       const key = e.target.value;
+      if (!key) return;
       const dataSource = (get(runningTimes, key) || []) as Object[];
       if (
         Array.isArray(dataSource) &&
