@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
+    "@ant-design/pro-form": "^1.67.1",
     "@byhealth/lottery": "^1.2.38",
     "@hookform/resolvers": "^2.4.0",
     "@material-ui/core": "^4.11.3",
