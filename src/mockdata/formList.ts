@@ -1,6 +1,6 @@
-import { FormArguments } from "~/modules/Form/compoments/formTypes";
+// import { FormArguments } from "~/modules/Form/compoments/formTypes";
 
-const list: FormArguments[] = [
+const list: any[] = [
   {
       "fieldName": "name",
       "label": "姓名",

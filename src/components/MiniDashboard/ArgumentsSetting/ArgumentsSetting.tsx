@@ -58,6 +58,10 @@ interface Props {
    * forceUpdate
    */
   forceUpdate?: boolean;
+  /**
+   * showRunningTime
+   */
+  visiableRunningTimeIcon?: boolean;
 }
 
 const ArgumentsSetting: React.FC<Props> = ({
@@ -70,6 +74,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   dataFlexible = false,
   headerFlexible = false,
   forceUpdate,
+  visiableRunningTimeIcon = true,
 }) => {
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
@@ -248,7 +253,7 @@ const ArgumentsSetting: React.FC<Props> = ({
           <div className={s.title}>
             <h4>
               {title}{' '}
-              <Button
+              {visiableRunningTimeIcon ? <Button
                 type="text"
                 onClick={onClickShowGloabVar}
                 icon={
@@ -258,7 +263,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                     />
                   </Tooltip>
                 }
-              />
+              /> : null}
             </h4>
             <div className={s.right}>
               {headerFlexible ? (

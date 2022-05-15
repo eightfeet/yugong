@@ -8,14 +8,14 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "handleClick",
-      description: '点击设置文字',
+      name: "setForm",
+      description: '设置表单',
       arguments: [{
-        type: "string",
-        name: "文字",
-        fieldName: "testText",
-        describe: "测试点击设置文字",
-        data: "我被改变了",
+        type: "mixed",
+        name: "表单字段",
+        fieldName: "formColumns",
+        describe: "编辑表单字段",
+        data: undefined,
       }]
     }
   ],
@@ -32,15 +32,21 @@ const config: ModulesStatic = {
       description: "卸载",
     },
     {
-      name: "click",
-      description: "点击",
+      name: "submit",
+      description: "提交",
     },
   ],
 
   /**
    * publish Api
    */
-  exposeApi: [],
+   exposeApi: [
+    {
+      apiId: "submit",
+      name: "提交表单(由提交表单事件自动收集表单数据)",
+      hideBodyInput: true,
+    },
+  ],
 
   /**
    * publish defaultporps styles
@@ -82,10 +88,11 @@ const config: ModulesStatic = {
           },
         ]
       }
-    ]
+    ],
+    preset: true
   },
 };
 // export type key of events list
-export type ExposeEventsKeys = 'mount' | 'unmount' | 'click';
+export type ExposeEventsKeys = 'mount' | 'unmount' | 'submit';
 
 export default config;

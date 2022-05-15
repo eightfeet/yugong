@@ -297,7 +297,12 @@ const Presetting: React.FC<Props> = ({ custom }) => {
   };
 
   if (custom) {
-    const CComp = require(`~/modules/${type}/${type}.Preset`)?.default;
+    let CComp = undefined;
+    try {
+      CComp = require(`~/modules/${type}/${type}.Preset`)?.default;
+    } catch (error) {
+      console.warn('找不到自定义预设组件')
+    }
     if (CComp) return <CComp activationItem={activationItem} runningData={runningData} onChange={updateRunningDataToActivationItem} />
   }
 
