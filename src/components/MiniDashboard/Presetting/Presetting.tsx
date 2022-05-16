@@ -419,6 +419,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
                       }
                       typeArguments={argItem}
                       flexible={false}
+                      className={s.mixed}
                     />
                   ) : null}
                 </Col>

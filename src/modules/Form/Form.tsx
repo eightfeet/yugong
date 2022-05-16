@@ -11,6 +11,8 @@ import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Form.config';
 import createStyles, { ClassesKey } from './Form.createStyles';
 import s from './Form.module.less';
+import isType from '~/core/helper/isType';
+import { message } from 'antd';
 
 export type FormProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
@@ -37,7 +39,11 @@ const Form: React.FC<FormProps> = (props) => {
   const setForm = useCallback(
     (formColumns: ArgumentsMixed) => {
       const columns = getArgumentsItem(formColumns);
-      setformColumns(columns as any)
+      if (isType(columns, "Array")) {
+        setformColumns(columns as any)
+      } else {
+        message.error('表单数据不正确')
+      }
     },
     [],
   )
@@ -70,7 +76,7 @@ const Form: React.FC<FormProps> = (props) => {
       }
       eventDispatch().submit();
     },
-    [api, moduleId, setRunningTimes],
+    [api, eventDispatch, moduleId, setRunningTimes],
   )
   
 
