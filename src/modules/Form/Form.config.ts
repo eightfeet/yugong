@@ -15,7 +15,63 @@ const config: ModulesStatic = {
         name: "表单字段",
         fieldName: "formColumns",
         describe: "编辑表单字段",
-        data: undefined,
+        data: [
+          {
+            "title": "来源",
+            "dataIndex": "title",
+            "initialValue": "titlecontent",
+            "formItemProps": {
+              "rules": [{
+                "required":true
+              }]
+            },
+            "width": "100%"
+          },
+          {
+            "title": "状态",
+            "dataIndex": "state",
+            "valueType": "cascader",
+            "valueEnum": {
+              "all": {
+                "text": "全部",
+                "status": "Default"
+              },
+              "open": {
+                "text": "未解决",
+                "status": "Error"
+              },
+              "closed": {
+                "text": "已解决",
+                "status": "Success",
+                "disabled": true
+              },
+              "processing": {
+                "text": "解决中",
+                "status": "Processing"
+              }
+            },
+            "width": "100%",
+            "tooltip": "当title为disabled时状态无法选择",
+            "dependencies": [
+              "title"
+            ]
+          },
+          {
+            "title": "标签",
+            "dataIndex": "labels",
+            "width": "100%",
+            "tooltip": "当title为必填时此项将为必填",
+            "initialValue": "labelscontent",
+            "dependencies": [
+              "title"
+            ]
+          },
+          {
+            "title": "创建时间",
+            "key": "showTime",
+            "dataIndex": "createName",
+            "valueType": "date"
+          }]
       }]
     }
   ],
@@ -53,24 +109,16 @@ const config: ModulesStatic = {
    */
   exposeDefaultProps: {
     layout: {
-      w: 6, // width
-      h: 5, // height
+      x: 1,
+      w: 10, // width
+      h: 20, // height
     },
     style: {
       basic: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 255, 34, 1)"
-        }
       },
       style1: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(116, 92, 255, 1)"
-        }
       },
       style2: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 87, 34, 1)"
-        }
       },
     },
     styleDescription: [

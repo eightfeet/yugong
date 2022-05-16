@@ -79,6 +79,11 @@ const Form: React.FC<FormProps> = (props) => {
     [api, eventDispatch, moduleId, setRunningTimes],
   )
   
+  // 得到一个初始值
+  useEffect(() => {
+    const args0 = config.exposeFunctions![0].arguments![0];
+    setForm(args0 as ArgumentsMixed);
+  }, [setForm])
 
   return (
     <Wrapper {...props} maxWidth>
