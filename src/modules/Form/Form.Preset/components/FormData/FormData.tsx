@@ -24,7 +24,8 @@ const FormData: React.FC<Props> = ({ list
           key={index} 
           onMinus={() => {
             onMinus?.(index)
-          }} 
+          }}
+          order={index + 1}
           index={index} 
         />)
       }

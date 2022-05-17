@@ -7,8 +7,20 @@ import LineItem from '../LineItem/LineItem';
 import s from './FormDataItem.module.scss';
 
 interface Props {
+  value: {
+    dataIndex?: string
+    dependencies?: string
+    title?: string
+    tooltip?: string
+    valueEnum?: { [keys: string]: any; }
+    valueType?: string,
+    width?: string,
+  }
+  order: number,
   [keys: string]: any;
 }
+
+
 
 const DragHandle = SortableHandle(() => (
   <span className={s.icon}>
@@ -16,7 +28,7 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-const FormDataItem: React.FC<Props> = ({onMinus}) => {
+const FormDataItem: React.FC<Props> = ({ onMinus, value, index, order }) => {
   return (
     <div className={s.root}>
       <LineItem
@@ -25,11 +37,11 @@ const FormDataItem: React.FC<Props> = ({onMinus}) => {
             <span className={s.drag}>
               <DragHandle />
             </span>
-            第1项
+            第{order}项
           </div>
         }
       >
-        内容
+        {value.title}
         <Button
           disabled={false}
           className={s.btn}
