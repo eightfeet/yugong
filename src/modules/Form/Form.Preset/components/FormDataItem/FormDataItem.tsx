@@ -7,6 +7,7 @@ import { SortableHandle, SortableElement } from 'react-sortable-hoc';
 import MoveIcon from '~/components/MiniDashboard/ApiConfig/MoveIcon';
 import { FormModuleContext } from '../../FormModuleContext';
 import LineItem from '../LineItem/LineItem';
+import SubItem from '../SubItem';
 import s from './FormDataItem.module.scss';
 
 interface Props {
@@ -88,6 +89,11 @@ const FormDataItem: React.FC<Props> = ({ onMinus, value, order }) => {
           onClick={() => onMinus?.()}
         />
       </LineItem>
+      <div style={{ display: showOptions ? 'block' : 'none' }}>
+        <LineItem label="">
+          <SubItem onChange={onChange} />
+        </LineItem>
+      </div>
     </div>
   );
 };
