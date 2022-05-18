@@ -50,6 +50,7 @@ const FormDataItem: React.FC<Props> = ({ onMinus, value, order }) => {
   
   const [showOptions, setShowOptions] = useState(false);
   const disabled = false;
+  const {title, dataIndex, ...other} = value;
   return (
     <div className={s.root}>
       <LineItem
@@ -91,7 +92,7 @@ const FormDataItem: React.FC<Props> = ({ onMinus, value, order }) => {
       </LineItem>
       <div style={{ display: showOptions ? 'block' : 'none' }}>
         <LineItem label="">
-          <SubItem onChange={onChange} />
+          <SubItem value={other} onChange={onChange} />
         </LineItem>
       </div>
     </div>

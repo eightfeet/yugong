@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import requester from '~/core/fetch';
 import { BetaSchemaForm } from '@ant-design/pro-form';
@@ -35,6 +35,7 @@ const Form: React.FC<FormProps> = (props) => {
   const { runningTimes } = useSelector((state: RootState) => state);
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
   const [formColumns, setformColumns] = useState([]);
+  const formRef = useRef<any>(null)
 
   const setForm = useCallback(
     (formColumns: ArgumentsMixed) => {
@@ -87,15 +88,23 @@ const Form: React.FC<FormProps> = (props) => {
     setForm(args0 as ArgumentsMixed);
   }, [setForm])
 
+  useEffect(() => {
+    console.log('formRef.current', formRef.current);
+    formRef.current?.setFieldsValue({title: '5555'})
+  }, [formColumns])
+  
+
   return (
     <Wrapper {...props} maxWidth>
       <div className={s.wrap}>
       <BetaSchemaForm<DataItem>
         className={s.form}
         shouldUpdate={false}
+        formRef={formRef}
         layoutType="Form"
         onFinish={onSubmit}
-        columns={formColumns }
+        columns={[...formColumns]}
+        autoFocusFirstInput={false}
       />
       </div>
     </Wrapper>
