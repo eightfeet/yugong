@@ -2,49 +2,50 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import arrayMove from 'array-move';
 import { cloneDeep, get, set } from 'lodash';
-import React, { useCallback } from 'react';
-import { ExposeFunctions } from '~/types/modules';
+import React, { useCallback, useContext } from 'react';
+import { FormModuleContext } from '../../FormModuleContext';
 import FormData from '../FormData';
 
 interface Props {
-  exposeFunctions: ExposeFunctions[];
-  onChange: (copyRunningData: ExposeFunctions[]) => void;
 }
-const dataPath = '[0].arguments[0].data';
-
-const SortableFormData: React.FC<Props> = ({ exposeFunctions, onChange }) => {
-  const list = get(exposeFunctions, dataPath);
+const SortableFormData: React.FC<Props> = () => {
+  const { onChangeRunningData, runningData, dataPath } = useContext(FormModuleContext)
+  const list = get(runningData, dataPath);
 
   const onSortEnd = useCallback(
     ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
+      if (!runningData) return;
       const sortList = cloneDeep(list);
       const res = arrayMove(sortList, oldIndex, newIndex);
-      const newData = set(exposeFunctions, dataPath, res)
-      onChange(newData)
+      const newData = set(runningData, dataPath, res)
+      onChangeRunningData?.(newData)
     },
-    [exposeFunctions, list, onChange],
+    [dataPath, list, onChangeRunningData, runningData],
   )
 
   const onMinus = useCallback(
     (index) => {
+      if (!runningData) return;
       const sortList = cloneDeep(list);
       const res = sortList.filter((item: any, elIndex: number) => (index !== elIndex))
-      const newData = set(exposeFunctions, dataPath, res)
-      onChange(newData)
+      const newData = set(runningData, dataPath, res)
+      onChangeRunningData?.(newData)
     },
-    [exposeFunctions, list, onChange],
+    [dataPath, list, onChangeRunningData, runningData],
   )
 
   const onPlus = useCallback(
     () => {
+      if (!runningData) return;
       const sortList = cloneDeep(list);
       sortList.push({
-        "title": "名称"
+        "title": "名称",
+        "width": "100%"
       });
-      const newData = set(exposeFunctions, dataPath, sortList)
-      onChange(newData)
+      const newData = set(runningData, dataPath, sortList)
+      onChangeRunningData?.(newData)
     },
-    [exposeFunctions, list, onChange],
+    [dataPath, list, onChangeRunningData, runningData],
   )
 
   return (

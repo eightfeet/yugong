@@ -66,6 +66,8 @@ const Form: React.FC<FormProps> = (props) => {
 
   const onSubmit = useCallback(
     async (values) => {
+      console.log('values', values);
+      
       setRunningTimes({
         [`form_${moduleId}`]: values
       });
