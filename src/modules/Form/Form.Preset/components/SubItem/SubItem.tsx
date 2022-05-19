@@ -4,13 +4,15 @@ import { AnyObjectType } from '~/types/appData';
 import valueTypes from '../../valueTypes';
 import LineItem from '../LineItem/LineItem';
 import ValueEnumModal from '../ValueEnumModal';
+import { valueEnumType } from '../ValueEnumModal/ValueEnumModal';
 import s from './SubItem.module.scss';
 
 export interface SubItemValue {
   initialValue?: string;
   fieldProps?: AnyObjectType;
   formItemProps?: AnyObjectType;
-  required?: boolean;
+  valueType?: string;
+  valueEnum?: valueEnumType;
   [keys: string]: any;
 }
 
@@ -22,7 +24,7 @@ interface Props {
 const valueEnumList = ['select', 'checkbox', 'radio', 'radioButton'];
 
 const SubItem:React.FC<Props> = ({onChange, value}) => {
-  const { initialValue, fieldProps={}, formItemProps={}, valueType } = value;
+  const { initialValue, fieldProps={}, formItemProps={}, valueType="", valueEnum } = value;
   const [showModal, setShowModal] = useState(false);
   
   const changeFormItemProps = useCallback(
@@ -41,6 +43,16 @@ const SubItem:React.FC<Props> = ({onChange, value}) => {
       }
     },
     [fieldProps, formItemProps, onChange],
+  )
+
+  const onChangeEnum = useCallback(
+    (value: valueEnumType) => {
+      console.log(value);
+      
+      changeFormItemProps('valueEnum', value);
+      setShowModal(false)
+    },
+    [changeFormItemProps],
   )
   
   return (
@@ -87,10 +99,12 @@ const SubItem:React.FC<Props> = ({onChange, value}) => {
       </LineItem>
       <ValueEnumModal 
         title={`${value.title || ''}[${value.dataIndex || ''}]-选择属性`} 
+        valueEnum={valueEnum}
         okText="确定"
         cancelText="取消"
         visible={showModal} 
         onCancel={() => setShowModal(false)}
+        onConfirm={onChangeEnum}
       />
     </div>
   )
