@@ -20,6 +20,7 @@ const config: ModulesStatic = {
             "title": "来源",
             "dataIndex": "title",
             "initialValue": "titlecontent",
+            "fieldProps": { "placeholder": '123' },
             "formItemProps": {
               "rules": [{
                 "required":true
@@ -31,6 +32,10 @@ const config: ModulesStatic = {
             "title": "状态",
             "dataIndex": "state",
             "valueType": "cascader",
+            "placeholder": '输入',
+            "formItemProps": {
+              "placeholder": '输入',
+            },
             "valueEnum": {
               "all": {
                 "text": "全部",

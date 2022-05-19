@@ -81,7 +81,7 @@ const matchRule = (
     if (type === '[object Object]' || type === '[object Array]' || isCompleteData) {
       result = value;
     } else {
-      result = result.replace(item, (value || value === 0) ? value : '');
+      result = result.toString().replace(item, (value || value === 0) ? value : '');
     }
   });
   return result;

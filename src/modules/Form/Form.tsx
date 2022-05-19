@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import requester from '~/core/fetch';
 import { BetaSchemaForm } from '@ant-design/pro-form';
 import PresetModule from '~/components/PresetModule';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsMixed, ArgumentsString } from '~/types/appData';
+import { AnyObjectType, ArgumentsMixed } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Form.config';
@@ -13,6 +14,8 @@ import createStyles, { ClassesKey } from './Form.createStyles';
 import s from './Form.module.less';
 import isType from '~/core/helper/isType';
 import { message } from 'antd';
+import { usePrevious } from 'react-use';
+import { SubItemValue } from './Form.Preset/components/SubItem/SubItem';
 
 export type FormProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
@@ -34,20 +37,35 @@ const Form: React.FC<FormProps> = (props) => {
   } = props;
   const { runningTimes } = useSelector((state: RootState) => state);
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
-  const [formColumns, setformColumns] = useState([]);
-  const formRef = useRef<any>(null)
+  const [formColumns, setformColumns] = useState<AnyObjectType[]>([]);
+
+  // 数据编译到显示端
+  const formColumnsCompiler = useCallback(
+    (formColumns: AnyObjectType[]) => {
+      formColumns.forEach(column => {
+        Object.keys(column).forEach(key => {
+          const element = column[key];
+          if (isType(element, 'String')) getResult(element);
+        })
+      })
+      setformColumns(formColumns)
+    },
+    [],
+  )
 
   const setForm = useCallback(
     (formColumns: ArgumentsMixed) => {
       const columns = getArgumentsItem(formColumns);
       if (isType(columns, "Array")) {
-        setformColumns(columns as any)
+        formColumnsCompiler(columns as AnyObjectType[])
       } else {
         message.error('表单数据不正确')
       }
     },
-    [],
+    [formColumnsCompiler],
   )
+
+  const prevFormColumns = usePrevious<any>(formColumns);
 
   // First setup registers
   useEffect(() => {
@@ -88,22 +106,28 @@ const Form: React.FC<FormProps> = (props) => {
     setForm(args0 as ArgumentsMixed);
   }, [setForm])
 
+  // 数据比较更新
+  const [updateKey, setUpdateKey] = useState(Date.now());
   useEffect(() => {
-    console.log('formRef.current', formRef.current);
-    formRef.current?.setFieldsValue({title: '5555'})
-  }, [formColumns])
+    formColumns.some((item: SubItemValue, index) => {
+      if (item.initialValue === prevFormColumns?.[index]?.initialValue) {
+        setUpdateKey(Date.now())
+        return true
+      }
+      return false
+    })
+  }, [prevFormColumns, formColumns])
   
-
   return (
     <Wrapper {...props} maxWidth>
       <div className={s.wrap}>
       <BetaSchemaForm<DataItem>
+        key={updateKey}
         className={s.form}
         shouldUpdate={false}
-        formRef={formRef}
         layoutType="Form"
         onFinish={onSubmit}
-        columns={[...formColumns]}
+        columns={formColumns}
         autoFocusFirstInput={false}
       />
       </div>
