@@ -129,6 +129,12 @@ const Form: React.FC<FormProps> = (props) => {
         onFinish={onSubmit}
         columns={formColumns}
         autoFocusFirstInput={false}
+        submitter={{
+          resetButtonProps: {
+          },
+          submitButtonProps: {
+          }
+        }}
       />
       </div>
     </Wrapper>
