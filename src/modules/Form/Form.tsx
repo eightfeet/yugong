@@ -16,6 +16,7 @@ import isType from '~/core/helper/isType';
 import { message } from 'antd';
 import { usePrevious } from 'react-use';
 import { SubItemValue } from './Form.Preset/components/SubItem/SubItem';
+import classNames from 'classnames';
 
 export type FormProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
@@ -121,21 +122,28 @@ const Form: React.FC<FormProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth>
       <div className={s.wrap}>
-      <BetaSchemaForm<DataItem>
-        key={updateKey}
-        className={s.form}
-        shouldUpdate={false}
-        layoutType="Form"
-        onFinish={onSubmit}
-        columns={formColumns}
-        autoFocusFirstInput={false}
-        submitter={{
-          resetButtonProps: {
-          },
-          submitButtonProps: {
-          }
-        }}
-      />
+        <BetaSchemaForm<DataItem>
+          key={updateKey}
+          className={classNames(s.form, classes.form)}
+          shouldUpdate={false}
+          layoutType="Form"
+          onFinish={onSubmit}
+          columns={formColumns}
+          autoFocusFirstInput={false}
+          submitter={{
+            // 配置按钮文本
+            searchConfig: {
+              resetText: '取消',
+              submitText: '报名',
+            },
+            submitButtonProps: {
+              className: classes.submit,
+            },
+            resetButtonProps: {
+              className: classes.reset
+            }
+          }}
+        />
       </div>
     </Wrapper>
   )

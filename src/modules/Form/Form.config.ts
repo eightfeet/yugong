@@ -121,10 +121,20 @@ const config: ModulesStatic = {
     style: {
       basic: {
       },
-      style1: {
+      wrap: {
+
       },
-      style2: {
+      footer: {
       },
+      submit: {
+      },
+      reset: {
+      },
+      label: {},
+      checkbox: {},
+      radiobox: {},
+      radiobutton: {},
+      radiobuttonchecked: {}
     },
     styleDescription: [
       {
@@ -132,13 +142,45 @@ const config: ModulesStatic = {
         value: "basic",
         children: [
           {
-            title: "style1Name",
-            value: "style1",
-          },
-          {
-            title: "style2Name",
-            value: "style2",
-          },
+            title: "表单",
+            value: "form",
+            children: [
+              {
+                title: "底部",
+                value: "footer",
+                children: [
+                  {
+                    title: "提交按钮",
+                    value: "submit",
+                  },
+                  {
+                    title: "重置按钮",
+                    value: "reset",
+                  }
+                ]
+              },
+              {
+                title: "标签",
+                value: "label"
+              },
+              {
+                title: "复选",
+                value: "checkbox"
+              },
+              {
+                title: "单选",
+                value: "radiobox"
+              },
+              {
+                title: "单选按钮",
+                value: "radiobutton"
+              },
+              {
+                title: "单选按钮被选状态",
+                value: "radiobuttonchecked"
+              }
+            ]
+          }
         ]
       }
     ],
