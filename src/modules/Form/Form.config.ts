@@ -10,75 +10,30 @@ const config: ModulesStatic = {
     {
       name: "setForm",
       description: '设置表单',
-      arguments: [{
-        type: "mixed",
-        name: "表单字段",
-        fieldName: "formColumns",
-        describe: "编辑表单字段",
-        data: [
+      arguments: [
           {
-            "title": "来源",
-            "dataIndex": "title",
-            "initialValue": "titlecontent",
-            "fieldProps": { "placeholder": '123' },
-            "formItemProps": {
-              "rules": [{
-                "required":true
-              }]
-            },
-            "width": "100%"
-          },
-          {
-            "title": "状态",
-            "dataIndex": "state",
-            "valueType": "cascader",
-            "placeholder": '输入',
-            "formItemProps": {
-              "placeholder": '输入',
-            },
-            "valueEnum": {
-              "all": {
-                "text": "全部",
-                "status": "Default"
-              },
-              "open": {
-                "text": "未解决",
-                "status": "Error"
-              },
-              "closed": {
-                "text": "已解决",
-                "status": "Success",
-                "disabled": true
-              },
-              "processing": {
-                "text": "解决中",
-                "status": "Processing"
-              }
-            },
-            "width": "100%",
-            "tooltip": "当title为disabled时状态无法选择",
-            "dependencies": [
-              "title"
-            ]
-          },
-          {
-            "title": "标签",
-            "dataIndex": "labels",
-            "width": "100%",
-            "tooltip": "当title为必填时此项将为必填",
-            "initialValue": "labelscontent",
-            "dependencies": [
-              "title"
-            ]
-          },
-          {
-            "title": "创建时间",
-            "key": "showTime",
-            "dataIndex": "createName",
-            "valueType": "date"
-          }]
-      }]
-    }
+          type: "mixed",
+          name: "表单字段",
+          fieldName: "formColumns",
+          describe: "编辑表单字段",
+          data: []
+        },
+        {
+          type: "string",
+          name: "重置按钮",
+          fieldName: "resetText",
+          describe: "重置按钮",
+          data: "重置"
+        },
+        {
+          type: "string",
+          name: "提交按钮",
+          fieldName: "submitText",
+          describe: "提交按钮",
+          data: "提交"
+        },
+      ]
+    },
   ],
   /**
    * register events
@@ -134,7 +89,10 @@ const config: ModulesStatic = {
       checkbox: {},
       radiobox: {},
       radiobutton: {},
-      radiobuttonchecked: {}
+      radiobuttonchecked: {},
+      textbox: {},
+      switchchecked: {},
+      switch: {}
     },
     styleDescription: [
       {
@@ -164,6 +122,10 @@ const config: ModulesStatic = {
                 value: "label"
               },
               {
+                title: "输入框",
+                value: "textbox"
+              },
+              {
                 title: "复选",
                 value: "checkbox"
               },
@@ -178,7 +140,23 @@ const config: ModulesStatic = {
               {
                 title: "单选按钮被选状态",
                 value: "radiobuttonchecked"
-              }
+              },
+              {
+                title: "开关",
+                value: "switch"
+              },
+              {
+                title: "开关被打开状态",
+                value: "switchchecked"
+              },
+              {
+                title: "评分",
+                value: "star"
+              },
+              {
+                title: "评分被选状态",
+                value: "starselected"
+              },
             ]
           }
         ]

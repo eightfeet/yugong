@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import requester from '~/core/fetch';
 import { BetaSchemaForm } from '@ant-design/pro-form';
 import PresetModule from '~/components/PresetModule';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { AnyObjectType, ArgumentsMixed } from '~/types/appData';
+import { AnyObjectType, ArgumentsMixed, ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
-import { Dispatch, RootState } from '~/redux/store';
+import { Dispatch } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Form.config';
 import createStyles, { ClassesKey } from './Form.createStyles';
@@ -36,27 +36,37 @@ const Form: React.FC<FormProps> = (props) => {
     moduleId,
     api
   } = props;
-  const { runningTimes } = useSelector((state: RootState) => state);
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
   const [formColumns, setformColumns] = useState<AnyObjectType[]>([]);
+  const [resetBtn, setResetBtn] = useState<string>();
+  const [subBtn, setSubBtn] = useState<string>();
+  const [configArgs, setConfigArgs] = useState<[ArgumentsMixed, ArgumentsString, ArgumentsString]>()
 
   // 数据编译到显示端
   const formColumnsCompiler = useCallback(
     (formColumns: AnyObjectType[]) => {
       formColumns.forEach(column => {
         Object.keys(column).forEach(key => {
-          const element = column[key];
-          if (isType(element, 'String')) getResult(element);
+          let element = column[key];
+          if (isType(element, 'String')) {
+            getResult(element);
+          };
         })
-      })
-      setformColumns(formColumns)
+      });
+      setformColumns(formColumns);
     },
     [],
   )
 
   const setForm = useCallback(
-    (formColumns: ArgumentsMixed) => {
+    (...args: [ArgumentsMixed, ArgumentsString, ArgumentsString] ) => {
+      const [formColumns, resetText, submitText] = args;
+      setConfigArgs(args);
       const columns = getArgumentsItem(formColumns);
+      const reset = getArgumentsItem(resetText);
+      setResetBtn(reset as string)
+      const submit = getArgumentsItem(submitText);
+      setSubBtn(submit as string)
       if (isType(columns, "Array")) {
         formColumnsCompiler(columns as AnyObjectType[])
       } else {
@@ -66,14 +76,25 @@ const Form: React.FC<FormProps> = (props) => {
     [formColumnsCompiler],
   )
 
+  const resetForm = useCallback(
+    () => {
+      if (configArgs) {
+        const [formColumns, resetText, submitText] = configArgs;
+        setForm(formColumns, resetText, submitText);
+      }
+    },
+    [configArgs, setForm],
+  )
+
   const prevFormColumns = usePrevious<any>(formColumns);
 
   // First setup registers
   useEffect(() => {
     registersFunction({
-      setForm
+      setForm,
+      resetForm
     })
-  }, [setForm, registersFunction])
+  }, [setForm, registersFunction, resetForm])
 
   // Second, distributing events
   useEffect(() => {
@@ -103,8 +124,10 @@ const Form: React.FC<FormProps> = (props) => {
   
   // 得到一个初始值
   useEffect(() => {
-    const args0 = config.exposeFunctions![0].arguments![0];
-    setForm(args0 as ArgumentsMixed);
+    const formColumns = config.exposeFunctions![0].arguments![0] as ArgumentsMixed;
+    const resetText = config.exposeFunctions![0].arguments![1] as ArgumentsString;
+    const submitText = config.exposeFunctions![0].arguments![2] as ArgumentsString;
+    setForm(formColumns, resetText, submitText);
   }, [setForm])
 
   // 数据比较更新
@@ -133,8 +156,8 @@ const Form: React.FC<FormProps> = (props) => {
           submitter={{
             // 配置按钮文本
             searchConfig: {
-              resetText: '取消',
-              submitText: '报名',
+              resetText: resetBtn || '重置',
+              submitText: subBtn || '提交',
             },
             submitButtonProps: {
               className: classes.submit,

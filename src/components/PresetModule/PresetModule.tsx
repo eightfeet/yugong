@@ -72,7 +72,6 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
         for (const key in funObj) {
           if (Object.prototype.hasOwnProperty.call(funObj, key)) {
             const fun = funObj[key];
-            console.log('注册', key, funObj);
             eventEmitter?.addEventListener(key, fun);
           }
         }

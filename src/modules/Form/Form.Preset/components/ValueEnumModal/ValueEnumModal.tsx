@@ -1,10 +1,10 @@
-import { Button, Checkbox, Col, Input, Modal, ModalProps, Row, Switch } from 'antd';
+import { Button, Checkbox, Col, Input, Modal, ModalProps, Row, } from 'antd';
 import { cloneDeep } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import s from './ValueEnumModal.module.scss';
 
 export interface valueEnumType {
-  [field: string]: {
+  [filed: string]: {
     text?: string;
     disabled?: boolean;
   }
@@ -16,23 +16,41 @@ interface Props {
 }
 
 const ValueEnumModal: React.FC<Props & ModalProps> = ({ valueEnum, onOk, onConfirm, ...other }) => {
-  const [enumData, setEnumData] = useState<valueEnumType>({});
+  const [fileds, setFileds] = useState<string[]>([]);
+  const [text, setText] = useState<(string|undefined)[]>([]);
+  const [disableds, setDisableds] = useState<boolean[]>([]);
 
   useEffect(() => {
     if (valueEnum) {
-      setEnumData(valueEnum)
+      const initFileds:string[] = [];
+      const initText:(string|undefined)[] = [];
+      const initDisableds:boolean[] = [];
+      Object.keys(valueEnum).forEach(key => {
+        const element = valueEnum[key];
+        initFileds.push(key);
+        initText.push(element.text);
+        initDisableds.push(!!element.disabled);
+      });
+      setFileds(initFileds)
     }
   }, [valueEnum])
   
 
   const onPlus = useCallback(
     () => {
-      setEnumData(enumData => {
-        const newData = cloneDeep(enumData);
-        const length = Object.keys(newData).length;
-        newData[`field${length + 1}`] = {
-          text: `字段${length + 1}`
-        }
+      setFileds(datas => {
+        const newData = cloneDeep(datas);
+        newData.push(`filed${newData.length}`);
+        return newData;
+      })
+      setText(datas => {
+        const newData = cloneDeep(datas);
+        newData.push(`字段${newData.length}`);
+        return newData;
+      })
+      setDisableds(datas => {
+        const newData = cloneDeep(datas);
+        newData.push(false);
         return newData;
       })
     },
@@ -40,21 +58,19 @@ const ValueEnumModal: React.FC<Props & ModalProps> = ({ valueEnum, onOk, onConfi
   )
 
   const onMinus = useCallback(
-    (key: string) => {
-      setEnumData(enumData => {
-        const newData = cloneDeep(enumData);
-        delete newData[key];
-        return newData
-      })
+    (index: number) => {
+      setFileds(data => data.filter((item, ind) => index !== ind));
+      setText(data => data.filter((item, ind) => index !== ind));
+      setDisableds(data => data.filter((item, ind) => index !== ind));
     },
     [],
   )
   
-  const handleDisabled =  useCallback(
-    (key: string, value: boolean) => {
-      setEnumData(enumData => {
-        const newData = cloneDeep(enumData);
-        newData[key].disabled = value;
+  const handleDisabled = useCallback(
+    (index: number, value: any) => {
+      setDisableds(data => {
+        const newData = cloneDeep(data)
+        newData[index] = value;
         return newData
       })
     },
@@ -63,10 +79,41 @@ const ValueEnumModal: React.FC<Props & ModalProps> = ({ valueEnum, onOk, onConfi
 
   const handleOk = useCallback(
     (e) => {
+      const enumData = {};
+      fileds.forEach((key, index) => {
+        if (key) {
+          enumData[key] = {
+            text: text[index],
+            disabled: disableds[index]
+          }
+        }
+      })
       if(typeof onOk === 'function') onOk(e);
       if(typeof onConfirm === 'function' && enumData) onConfirm(enumData);
     },
-    [onConfirm, onOk, enumData],
+    [fileds, onOk, onConfirm, text, disableds],
+  )
+
+  const handleText = useCallback(
+    (index: number, text: any) => {
+      setText(data => {
+        const newData = cloneDeep(data)
+        newData[index] = text;
+        return newData
+      })
+    },
+    [],
+  )
+
+  const handleFiled = useCallback(
+    (index: number, value: any) => {
+      setFileds(data => {
+        const newData = cloneDeep(data)
+        newData[index] = value;
+        return newData
+      })
+    },
+    [],
   )
   
   return (
@@ -74,18 +121,18 @@ const ValueEnumModal: React.FC<Props & ModalProps> = ({ valueEnum, onOk, onConfi
       <Modal onOk={handleOk} {...other}>
         <Button onClick={onPlus}>新增属性</Button>
         {
-          Object.keys(enumData).map((key, index) => <Row key={`${key}${index}`} className={s.formitem}>
+          fileds.map((filed, index) => <Row key={index} className={s.formitem}>
             <Col>
               名称/字段：
             </Col>
             <Col>
               <Input.Group compact>
-                <Input name='text' value={enumData[key].text} className={s.inp} placeholder="名称" />
-                <Input name='all' value={key} className={s.inp} placeholder="字段" />
+                <Input name='text' onChange={e => handleText(index, e.target.value)} value={text[index]} className={s.inp} placeholder="名称" />
+                <Input name='all'  onChange={(e) => handleFiled(index, e.target.value)} value={fileds[index]} className={s.inp} placeholder="字段" />
                 <div className={s.checkbox}>
-                  <Checkbox checked={enumData[key].disabled} onChange={(e) => handleDisabled(key, e.target.checked)}>禁用</Checkbox>
+                  <Checkbox checked={disableds[index]} onChange={(e) => handleDisabled(index, e.target.checked)}>禁用</Checkbox>
                 </div>
-                <Button onClick={() => onMinus(key)}>删除</Button>
+                <Button onClick={() => onMinus(index)}>删除</Button>
               </Input.Group>
             </Col>
           </Row>)

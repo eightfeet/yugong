@@ -47,8 +47,6 @@ const SubItem:React.FC<Props> = ({onChange, value}) => {
 
   const onChangeEnum = useCallback(
     (value: valueEnumType) => {
-      console.log(value);
-      
       changeFormItemProps('valueEnum', value);
       setShowModal(false)
     },

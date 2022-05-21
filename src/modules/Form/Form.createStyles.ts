@@ -19,8 +19,20 @@ function createStyles(props: FormProps) {
       '& .ant-radio-button-wrapper': {
         ...toStyle(style.radiobutton)
       },
-      '& .ant-radio-button-wrapper:not(:first-child)::before': { display: 'none'},
-      '& .ant-radio-button.ant-radio-button-checked': toStyle(style.radiobuttonchecked)
+      '& .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)': {
+        ...toStyle(style.radiobuttonchecked)
+      },
+      '& .ant-input-affix-wrapper > input.ant-input': {backgroundColor: 'transparent', color: 'inherit'},
+      '& .ant-input-affix-wrapper': toStyle(style.textbox),
+      '& .ant-select .ant-select-selector': toStyle(style.textbox),
+      '& .ant-picker': toStyle(style.textbox),
+      '& .ant-input-number': toStyle(style.textbox),
+      '& .ant-switch': toStyle(style.switch),
+      '& .ant-switch.ant-switch-checked': toStyle(style.switchchecked),
+      '& .ant-rate-star.ant-rate-star-zero': toStyle(style.star),
+      '& .ant-rate-star-first, .ant-rate-star-second': toStyle(style.star),
+      '& .ant-rate-star.ant-rate-star-full .ant-rate-star-first, .ant-rate-star.ant-rate-star-full .ant-rate-star-second': toStyle(style.starselected),
+      '& .ant-rate-star.ant-rate-star-half .ant-rate-star-first': toStyle(style.starselected),
     }),
     submit: (style: Style) => ({
       ...toStyle(style.submit),
@@ -33,6 +45,21 @@ function createStyles(props: FormProps) {
   }
 };
 // export type key of classes list
-export type ClassesKey = 'button' | 'submit' | 'reset' | 'form' | 'footer' | 'label' | 'checkbox' | 'radiobox' | 'radiobutton' | 'radiobuttonchecked';
+export type ClassesKey = 
+'button' | 
+'submit' | 
+'reset' | 
+'form' | 
+'footer' | 
+'label' | 
+'checkbox' | 
+'radiobox' | 
+'radiobutton' | 
+'radiobuttonchecked' |
+'textbox' |
+'switchchecked' |
+'switch' |
+'star' |
+'starselected';
 type Style = { [keys in ClassesKey]: StyleItemsTypes };
 export default createStyles
