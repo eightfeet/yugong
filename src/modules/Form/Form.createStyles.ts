@@ -33,6 +33,8 @@ function createStyles(props: FormProps) {
       '& .ant-rate-star-first, .ant-rate-star-second': toStyle(style.star),
       '& .ant-rate-star.ant-rate-star-full .ant-rate-star-first, .ant-rate-star.ant-rate-star-full .ant-rate-star-second': toStyle(style.starselected),
       '& .ant-rate-star.ant-rate-star-half .ant-rate-star-first': toStyle(style.starselected),
+      '& .ant-form-item-explain-error': toStyle(style.requiremsg),
+      '& .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before': toStyle(style.requiremsg),
     }),
     submit: (style: Style) => ({
       ...toStyle(style.submit),
@@ -60,6 +62,7 @@ export type ClassesKey =
 'switchchecked' |
 'switch' |
 'star' |
-'starselected';
+'starselected' |
+'requiremsg';
 type Style = { [keys in ClassesKey]: StyleItemsTypes };
 export default createStyles

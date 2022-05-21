@@ -92,7 +92,8 @@ const config: ModulesStatic = {
       radiobuttonchecked: {},
       textbox: {},
       switchchecked: {},
-      switch: {}
+      switch: {},
+      requiremsg: {},
     },
     styleDescription: [
       {
@@ -157,6 +158,10 @@ const config: ModulesStatic = {
                 title: "评分被选状态",
                 value: "starselected"
               },
+              {
+                title: "表单验证",
+                value: "requiremsg"
+              }
             ]
           }
         ]
