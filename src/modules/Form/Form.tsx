@@ -13,15 +13,21 @@ import config, { ExposeEventsKeys } from './Form.config';
 import createStyles, { ClassesKey } from './Form.createStyles';
 import s from './Form.module.less';
 import isType from '~/core/helper/isType';
-import { message } from 'antd';
+import { message, ConfigProvider } from 'antd';
 import { usePrevious } from 'react-use';
 import { SubItemValue } from './Form.Preset/components/SubItem/SubItem';
 import classNames from 'classnames';
+import isMobile from '~/core/helper/isMobile';
+import moment from 'moment';
+
+const zhCn = require('moment/locale/zh-cn').default;
 
 export type FormProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >
+
+moment.locale(zhCn)
 
 type DataItem = {
   name: string;
@@ -141,6 +147,15 @@ const Form: React.FC<FormProps> = (props) => {
       return false
     })
   }, [prevFormColumns, formColumns])
+
+  const handleOnFocus = useCallback(
+    e => {
+      if(e.target.parentNode.className.indexOf('ant-picker-input') >= 0 && isMobile){
+        e.target.setAttribute('readonly', true);
+      }
+    },
+    [],
+  )
   
   return (
     <Wrapper {...props} maxWidth>
@@ -153,6 +168,7 @@ const Form: React.FC<FormProps> = (props) => {
           onFinish={onSubmit}
           columns={formColumns}
           autoFocusFirstInput={false}
+          onFocus={handleOnFocus}
           submitter={{
             // 配置按钮文本
             searchConfig: {

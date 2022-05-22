@@ -35,6 +35,8 @@ function createStyles(props: FormProps) {
       '& .ant-rate-star.ant-rate-star-half .ant-rate-star-first': toStyle(style.starselected),
       '& .ant-form-item-explain-error': toStyle(style.requiremsg),
       '& .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before': toStyle(style.requiremsg),
+      '& .ant-picker-input, .ant-picker.ant-picker-focused': {'pointer-events': 'none'},
+      '& .ant-picker-input > input': {'pointer-events': 'none'}
     }),
     submit: (style: Style) => ({
       ...toStyle(style.submit),
