@@ -8,7 +8,7 @@ import IconForm from "./icons/IconForm";
 import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
-import IconListModal from "./icons/IconListModal";
+// import IconListModal from "./icons/IconListModal";
 import IconChart from "./icons/IconChart";
 
 export const BASEMODULES = [
@@ -60,13 +60,6 @@ export const BASEMODULES = [
     title: "Broadcast",
     discribe: "滚动播报",
     icon: <Icon component={IconBroadcast} />,
-  },
-  {
-    moduleName: "ListModal",
-    title: "ListModal",
-    discribe: "弹窗列表",
-    tips: "弹窗列表属于隐形模块，请在设置面板中选择编辑",
-    icon: <Icon component={IconListModal} />,
   }
 ];
 
@@ -99,11 +92,11 @@ export const MODULES = [
     describe: "抽奖组件",
     modules: LOTTERY,
   },
-  {
-    name: "chart",
-    describe: "数据展示组件",
-    modules: CHART,
-  },
+  // {
+  //   name: "chart",
+  //   describe: "数据展示组件",
+  //   modules: CHART,
+  // },
 ];
 
 // 默认字体大小
