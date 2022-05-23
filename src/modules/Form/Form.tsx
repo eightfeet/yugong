@@ -13,7 +13,7 @@ import config, { ExposeEventsKeys } from './Form.config';
 import createStyles, { ClassesKey } from './Form.createStyles';
 import s from './Form.module.less';
 import isType from '~/core/helper/isType';
-import { message, ConfigProvider } from 'antd';
+import { message } from 'antd';
 import { usePrevious } from 'react-use';
 import { SubItemValue } from './Form.Preset/components/SubItem/SubItem';
 import classNames from 'classnames';

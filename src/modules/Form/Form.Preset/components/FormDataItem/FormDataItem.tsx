@@ -74,7 +74,7 @@ const FormDataItem: React.FC<Props> = ({ onMinus, value, order }) => {
           className={classNames(s.inp, s.nbl, s.nbrad)}
           onChange={(e) => onChange({dataIndex: e.target.value})}
           value={value?.dataIndex}
-          placeholder="字段"
+          placeholder="字段（必填）"
           />
         <Button
           disabled={disabled}
