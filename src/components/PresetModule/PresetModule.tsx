@@ -27,7 +27,7 @@ export type EventsDispatch<T = {}> = T & {
 export default function PresetModule<T extends PresetModuleProps = PresetModuleProps>(
   WrappedComponent: React.ComponentType<T>,
   config: ModulesStatic,
-  createStyle: (props: T) => anyObj
+  createStyle?: (props: T) => anyObj
 ) {
   // Try to create a nice displayName for React Dev Tools.
   const displayName =
@@ -88,7 +88,7 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
       return dispatch.current;
     }, [eventEmitter]);
 
-    const useStyles = createUseStyles<string, any>(createStyle(props));
+    const useStyles = createUseStyles<string, any>(createStyle?.(props) || {});
     const classes = useStyles(style);
     return eventEmitter ? <WrappedComponent
       eventDispatch={eventDispatch}

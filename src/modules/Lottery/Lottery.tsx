@@ -1,639 +1,599 @@
-import EventEmitter from '~/core/EventEmitter';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { AnyObjectType, ArgumentsItem, ArgumentsString } from '~/types/appData';
 import {
-    AnyObjectType,
-    AppDataElementsTypes,
-    ArgumentsArray,
-    ArgumentsBoolean,
-    ArgumentsItem,
-    ArgumentsNumber,
-    ArgumentsString,
-} from '~/types/appData';
-import { Modules } from '~/types/modules';
-import config from './Lottery.config';
+  getArguments,
+  getArgumentsItem,
+} from '~/core/getArgumentsTypeDataFromDataSource';
+import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
-import useLifeCycle from '~/hooks/useLifeCycle';
-import useStyles from './Lottery.useStyles';
-import Game, { GameRecords, GameModal } from '~/components/Game';
-import { GameHandle, GameMap } from '~/components/Game/useGame';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as mock from './mockData';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
-import message from '~/components/Message';
-import requester from '~/core/fetch';
+import config, { ExposeEventsKeys } from './Lottery.config';
+import createStyles, { ClassesKey } from './Lottery.createStyles';
 import { Prize } from '@byhealth/lottery/dist/types/core';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
-import { getPrizeById } from './helper';
-import { debounce } from 'lodash';
+import * as mock from './mockData';
+import { GameHandle, GameMap } from '~/components/Game/useGame';
+import Game, { GameModal, GameRecords } from '~/components/Game';
+import requester from '~/core/fetch';
+import { saveAddressParames } from '~/components/Game/GameType';
+import message from '~/components/Message';
 import { gametypes } from '~/components/Game/Game';
 import s from './Lottery.module.less';
-import { saveAddressParames } from '~/components/Game/GameType';
 import classNames from 'classnames';
+import { getPrizeById } from './helper';
 
 export interface RecordsType extends Prize {
-    /**中奖id */
-    id?: number | string;
-    /**收货地址 */
-    receiverAddress?: string;
-    /**收货姓名 */
-    receiverName?: string;
-    /**收货电话 */
-    receiverPhone?: string;
-    /**中奖时间 */
-    winTime?: string;
-    [keys: string]: any;
+  /**中奖id */
+  id?: number | string;
+  /**收货地址 */
+  receiverAddress?: string;
+  /**收货姓名 */
+  receiverName?: string;
+  /**收货电话 */
+  receiverPhone?: string;
+  /**中奖时间 */
+  winTime?: string;
+  [keys: string]: any;
 }
 
-export interface LotteryProps extends AppDataElementsTypes {
-    id: string;
-    eventEmitter: EventEmitter;
-}
+class Lottery extends Component<LotteryProps, State> {
+  winInfo: Prize | undefined;
+  // 检查禁用抽奖
+  checked: {
+    /**禁用信息 */
+    message?: string;
+    /**是否禁用 */
+    enabled: boolean;
+  };
+  gameHandle: GameHandle<typeof Game> | null;
+  prizesIsReadyRef: boolean;
+  MId: string;
+  constructor(props: LotteryProps) {
+    super(props);
+    this.state = {
+      text: '',
+      prizes: [],
+      phoneAndRCardId: {},
+      receiverInfo: mock.receiverInfo,
+      successmodalParams: {},
+      type: 'redenvelope',
+      displayRecord: false,
+      displayRule: false,
+      ruleText: [],
+      records: mock.records,
+      disablePullDown: false,
+      disablePullUp: false,
+    };
+    this.checked = { enabled: true };
+    this.prizesIsReadyRef = false;
+    this.MId = `gametarget${this.props.moduleId}_${this.state.type}`;
+    this.gameHandle = null;
+  }
 
-const Lottery: Modules<LotteryProps> = (props) => {
-    const { moduleId, style } = props;
-    const { currentEditorStylePath } = useSelector(
-        (state: RootState) => state.controller
+  componentDidMount() {
+    const {
+      setGameType,
+      setRunningPrizes,
+      setRules,
+      setRunningRecords,
+      lottery,
+      checkedLottery,
+      useConfig,
+      setDefaultReceiveInfo,
+      setSuccessModal,
+      showRecord,
+      showRules,
+    } = this;
+    this.props.registersFunction({
+      setGameType,
+      setRunningPrizes,
+      setRules,
+      setRunningRecords,
+      lottery,
+      checkedLottery,
+      useConfig,
+      setDefaultReceiveInfo,
+      setSuccessModal,
+      showRecord,
+      showRules,
+    });
+    this.props.eventDispatch().mount();
+    this.props.setRunningTimes({ text: 'runningTimeData' });
+  }
+
+  componentWillUnmount() {
+    this.props.eventDispatch().unmount();
+  }
+
+  /**保存地址 */
+  handleSaveAddress = () => {
+    this.gameHandle?.game.current?.core.AddressModal.showModal((address) => {
+      console.log(address);
+    });
+  };
+
+  /**
+   * 抽奖前置Api, 用于检查是否满足抽奖条件
+   * */
+  apiBeforeStart = async () => {
+    const apiArguments = this.props.api?.find(
+      (item) => item.apiId === 'beforeStart',
     );
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments && apiArguments.url && apiArguments.method) {
+      try {
+        return requester(apiArguments || {});
+      } catch (error) {
+        throw error;
+      }
+    }
+  };
 
-    const [prizes, setPrizes] = useState<Prize[]>([]);
-    const [phoneAndRCardId, setPhoneAndRCardId] = useState<AnyObjectType>();
-    const [receiverInfo, setReceiverInfo] = useState<AnyObjectType>(
-        mock.receiverInfo
+  /**
+   * 抽奖Api, 用于抽奖
+   */
+  apiStart = async () => {
+    const apiArguments = this.props.api?.find(
+      (item) => item.apiId === 'lottery',
     );
-    const [successmodalParams, setSuccessmodalParams] = useState<AnyObjectType>(
-        {}
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments && apiArguments.url && apiArguments.method) {
+      return requester(apiArguments || {});
+    }
+  };
+
+  apiSaveAddress = async (data: saveAddressParames) => {
+    const oprationData = {
+      winId: 'winInfo.current.id',
+      ...data,
+    };
+    // 这里不需要api设置参数
+    const apiArguments = this.props.api?.find(
+      (item) => item.apiId === 'saveAddress',
     );
-
-    const [type, setType] = useState<keyof GameMap>('redenvelope');
-    const [displayRecord, setDisplayRecord] = useState<boolean>(false);
-    const [displayRule, setDisplayRule] = useState<boolean>(false);
-    const [ruleText, setRuleText] = useState<any[]>([]);
-    const winInfo = useRef<Prize>();
-
-    // 禁用抽奖
-    const checked = useRef<{
-        /**禁用信息 */
-        message?: string;
-        /**是否禁用 */
-        enabled: boolean;
-    }>({ enabled: true });
-
-    // 确定数据是否准备就是，没有准备好时会启用模拟数据
-    const prizesIsReadyRef = useRef<boolean>();
-    // 此ref用于存储useLifeCycle组件暴露的事件
-    const dispatchEventRef = useRef<{
-        mount: () => void;
-        unmount: () => void;
-        onStart: () => void;
-        onEnd: () => void;
-        onCancel: () => void;
-        onEnsure: () => void;
-        onShowSuccess: () => void;
-        onShowFailed: () => void;
-        onShowAddress: () => void;
-    }>();
-
-    const gameHandle = useRef<GameHandle<typeof Game>>(null);
-
-
-    // 页面api
-    const { api } = props;
-
-    // 皮肤设置样式
-    const MId = `gametarget${moduleId}_${type}`;
-    useStyles(MId, style, type);
-    
-    /**保存地址 */
-    const handleSaveAddress = useCallback(() => {
-        const handlers = gameHandle.current;
-        handlers?.game.current?.core.AddressModal.showModal((address) => {
-            console.log(address);
-        });
-    }, [gameHandle]);
-
-    // ===========================================组件Api============================================
-    //#region
-    /**
-     * 抽奖前置Api, 用于检查是否满足抽奖条件
-     * */
-    const apiBeforeStart = useCallback(async () => {
-        const apiArguments = api?.find((item) => item.apiId === 'beforeStart');
-        // 获取抽奖结果数据， 将结果数据中转到全局数据中
-        if (apiArguments && apiArguments.url && apiArguments.method) {
-            try {
-                return requester(apiArguments || {});
-            } catch (error) {
-                throw error;
-            }
-        }
-    }, [api]);
-
-    /**
-     * 抽奖Api, 用于抽奖
-     */
-    const apiStart = useCallback(async () => {
-        const apiArguments = api?.find((item) => item.apiId === 'lottery');
-        // 获取抽奖结果数据， 将结果数据中转到全局数据中
-        if (apiArguments && apiArguments.url && apiArguments.method) {
-            return requester(apiArguments || {});
-        }
-    }, [api]);
-
-    /**
-     * 保存地址Api, 用于实物奖品保存地址信息
-     */
-    const apiSaveAddress = useCallback(
-        async (data: saveAddressParames) => {
-            const oprationData = {
-                winId: 'winInfo.current.id',
-                ...data,
-            };
-            // 这里不需要api设置参数
-            const apiArguments = api?.find(
-                (item) => item.apiId === 'saveAddress'
-            );
-            // 获取抽奖结果数据， 将结果数据中转到全局数据中
-            if (apiArguments) {
-                apiArguments.body = [
-                    {
-                        type: 'object',
-                        fieldName: 'addressData',
-                        data: oprationData,
-                    },
-                ];
-                return requester(apiArguments || {});
-            }
-            // 处理收货地址
-            message.warning('没有设置保存地址Api, 当前不可保存！');
-        },
-        [api]
-    );
-
-    /**
-     * 检查手机验证码
-     * */
-    const checkVerificationCode = useCallback(
-        async (data) => {
-            // 这里不需要api设置参数
-            const apiArguments = api?.find(
-                (item) => item.apiId === 'getVerificationCode'
-            );
-            // 获取抽奖结果数据， 将结果数据中转到全局数据中
-            if (apiArguments) {
-                apiArguments.body = [
-                    { type: 'object', fieldName: 'addressData', data },
-                ];
-                return requester(apiArguments || {});
-            }
-            // 处理收货地址
-
-            message.warning('没有设置获取验证码Api！');
-        },
-        [api]
-    );
-
-    const apiGetRecord = useCallback(async () => {
-        const apiArguments = api?.find((item) => item.apiId === 'getRecord');
-        // 获取抽奖结果数据， 将结果数据中转到全局数据中
-        if (apiArguments && apiArguments.url && apiArguments.method) {
-            return requester(apiArguments || {});
-        }
-    }, [api]);
-
-    //#endregion
-    // ===========================================组件方法============================================ //
-    //#region
-    /**
-     * 修改抽奖类型
-     */
-    const setGameType = useCallback((type: ArgumentsString) => {
-        const argOptType = getArgumentsItem(type) as keyof GameMap;
-        if (gametypes.includes(argOptType)) {
-            setType(argOptType);
-        }
-    }, []);
-
-    // 设置文本
-    const setRules = useCallback((rules: ArgumentsItem) => {
-        const rulesTexts = getArgumentsItem(rules) as any[];
-        setRuleText(rulesTexts);
-    }, []);
-
-    /**
-     * 设置奖品数据, 无数据时使用mock
-     */
-    const setRunningPrizes = useCallback((prizes) => {
-        const prizesArg = getArgumentsItem(prizes) as any[];
-        if (Array.isArray(prizesArg) && prizesArg.length) {
-            setPrizes(prizesArg);
-            prizesIsReadyRef.current = true;
-        }
-        // 没有准备过数据会使用mock数据
-        if (!prizesIsReadyRef.current) {
-            setPrizes(mock.prizes);
-        }
-    }, []);
-
-    /**
-     * 设置中奖记录
-     */
-    const [records, setRecords] = useState<RecordsType[]>(mock.records);
-    const [disablePullDown, setDisablePullDown] = useState(false);
-    const [disablePullUp, setDisablePullUp] = useState(false);
-    const onSaveAddress = useCallback(
-        (item) => () => {
-            console.log(item);
-            return handleSaveAddress();
-        },
-        [handleSaveAddress]
-    );
-    /**
-     * 设置运行时中奖记录
-     */
-    const setRunningRecords = useCallback(
-        (
-            records: ArgumentsArray,
-            disablePullDown: ArgumentsString,
-            disablePullUp: ArgumentsString
-        ) => {
-            // 中奖记录
-            const recordArg = getArgumentsItem(records) as any[];
-            const disablePullDownArg = getArgumentsItem(
-                disablePullDown
-            ) as string;
-            const disablePullUpArg = getArgumentsItem(disablePullUp) as string;
-
-            if (Array.isArray(recordArg) && recordArg.length) {
-                setRecords(recordArg);
-            }
-
-            setDisablePullDown(disablePullDownArg === '0');
-            setDisablePullUp(disablePullUpArg === '0');
-        },
-        []
-    );
-    /**
-     * 渲染中奖记录
-     */
-    const renderRecords = useCallback(
-        () =>
-            records?.length ? (
-                <ul className={classNames(s.recordwrap, `${MId}_records_list`)}>
-                    {records.map((item, index) => {
-                        return (
-                            <li key={index} className={ classNames(s.recorditem, `${MId}_records_list_item`)}>
-                                <div className={classNames(s.prizeimg, `${MId}_records_list_item_prizeimg_wrap`)}>
-                                    <img
-                                        className={`${MId}_records_list_item_prizeimg`}
-                                        src={item.prizeImg}
-                                        alt={item.prizeName}
-                                    />
-                                </div>
-                                <div className={classNames(s.recordstr, `${MId}_records_list_item_text`)}>
-                                    <div className={classNames(s.prizename, `${MId}_records_list_item_prizename`)}>
-                                        {item.prizeName}
-                                    </div>
-                                    <div className={s.timeandbutton}>
-                                        <div className={classNames(s.wintime, `${MId}_records_list_item_wintime`)}>
-                                            {item.winTime}
-                                        </div>
-                                        {item.receiveType === 2 &&
-                                        !item.receiverAddress ? (
-                                            <button
-                                                onClick={onSaveAddress(item)}
-                                                className={`${MId}_records_list_item_saveaddress`}
-                                            >
-                                                填写地址
-                                            </button>
-                                        ) : null}
-                                    </div>
-                                    {item.receiverAddress ? (
-                                        <div className={classNames(s.receiveraddress, `${MId}_records_list_item_address`)}>
-                                            收货地址:{item.receiverAddress}
-                                        </div>
-                                    ) : null}
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
-            ) : (
-                <div>暂无中奖记录</div>
-            ),
-        [MId, onSaveAddress, records]
-    );
-
-    /**
-     * 设置玩家基本信息
-     * @param phone 设置玩家手机号码
-     * @param cardIdRequest 设置领取奖品时是否需要填写身份证1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证
-     */
-    const useConfig = useCallback(
-        (phone: ArgumentsString, cardIdRequest: ArgumentsNumber) => {
-            const argOptPhone = getArgumentsItem(phone);
-            const argCardIdRequest = getArgumentsItem(cardIdRequest);
-            setPhoneAndRCardId({
-                phone: argOptPhone,
-                cardIdRequest: argCardIdRequest,
-            });
-        },
-        []
-    );
-
-    /**
-     * 设置中奖弹窗
-     * @param title 中奖弹窗标题
-     * @param animation 中奖弹窗动画
-     */
-    const setSuccessModal = useCallback(
-        (title: ArgumentsString, animation: ArgumentsString) => {
-            setSuccessmodalParams({
-                title: getArgumentsItem(title),
-                animation: getArgumentsItem(animation),
-            });
-        },
-        []
-    );
-
-    /**
-     * 检查抽奖
-     * @param
-     */
-    const checkedLottery = useCallback(
-        (enabled: ArgumentsBoolean, message: ArgumentsString) => {
-            const argEnabled = getArgumentsItem(enabled) as boolean;
-            const argMessage = getArgumentsItem(message) as string;
-            checked.current = {
-                enabled: argEnabled,
-                message: argMessage,
-            };
-        },
-        []
-    );
-    // hank 等待
-    const setDelayStart = useCallback(
-        () =>
-            new Promise((res) =>
-                setTimeout(() => {
-                    dispatchEventRef.current?.onStart();
-                    res(null);
-                })
-            ),
-        []
-    );
-
-    /**
-     * 开始抽奖
-     * */
-    const startLottery = useCallback(async () => {
-        // step1、执行前置api 用于抽奖前检查是否满足抽奖条件
-        await apiBeforeStart();
-
-        // step2 执行抽奖事件
-        await setDelayStart();
-        // step3、检查状态是否可以抽奖
-        if (!checked.current.enabled) {
-            console.log('没有权限，请勿抽奖！');
-            message.error(checked.current?.message || '暂无抽奖权限！');
-            throw checked.current?.message;
-        }
-
-        // step4、返回抽奖接口
-        const settedApi = (await apiStart()) as AnyObjectType;
-
-        // step5、执行结束事件，可用于重置数据
-        dispatchEventRef.current?.onEnd();
-        if (settedApi?.response?.prizeId !== undefined) {
-            let currentPrize = getPrizeById(settedApi.response.prizeId, prizes);
-            // 回填当前操作奖品
-            winInfo.current = currentPrize;
-            return currentPrize;
-        }
-
-        // 没有设置Api时启用mock数据
-        if (!settedApi) {
-            message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
-            const winData =
-                prizes[Math.floor(Math.random() * prizes.length - 1)];
-            // 回填当前操作奖品
-            winInfo.current = winData;
-            return winData;
-        }
-    }, [apiBeforeStart, apiStart, checked, prizes, setDelayStart]);
-
-    /**
-     * 设置默认实物奖品邮寄地址，用于地址填写时回填信息
-     * @param receiverPhone 收货电话
-     * @param regionName 收货姓名
-     * @param region 收货人省市区
-     * @param address 收货人详细地址
-     * @param idCard 人身份证id
-     */
-    const setDefaultReceiveInfo = useCallback(
-        (
-            receiverPhone: ArgumentsString,
-            regionName: ArgumentsString,
-            region: ArgumentsString,
-            address: ArgumentsString,
-            idCard: ArgumentsString
-        ) => {
-            const handlers = gameHandle.current!;
-
-            const argReceiverPhone = getArgumentsItem(receiverPhone);
-            let argRegionName: any = getArgumentsItem(regionName);
-            let argRegion: any = getArgumentsItem(region);
-            const argAddress = getArgumentsItem(address);
-            const argIdCard = getArgumentsItem(idCard);
-            argRegionName = argRegionName
-                ?.replace(/，/g, ',')
-                ?.split(',')
-                ?.filter(Boolean);
-            argRegion = argRegion?.replace(/，/g, ',')?.split(',');
-            const parames = {
-                receiverPhone: argReceiverPhone,
-                address: argAddress,
-                region: argRegion,
-                idCard: argIdCard,
-            };
-
-            if (!!argRegionName.length) {
-                (parames as any).regionName = argRegionName;
-            }
-            handlers.game.current?.core.AddressModal.updateParams(
-                parames as any
-            );
-            setReceiverInfo(parames);
-        },
-        [gameHandle]
-    );
-
-    /**通过其他事件关联抽奖 */
-    const lottery = useCallback(() => {
-        const handlers = gameHandle.current!;
-        handlers.game.current?.core.lottery();
-    }, [gameHandle]);
-
-    /**显示中奖记录 */
-    const showRecord = useCallback(async () => {
-        await apiGetRecord();
-        setDisplayRecord(true);
-    }, [apiGetRecord]);
-
-    /**显示活动规则 */
-    const showRules = useCallback(() => {
-        setDisplayRule(true);
-    }, []);
-
-    //#endregion
-    //=========================================end=================================================//
-    /**
-     * 编辑弹窗样式时可视化弹窗
-     * 做高频编辑防抖处理
-     */
-    const onChangeDebounce = useMemo(
-        () =>
-            debounce(() => {
-                if (
-                    currentEditorStylePath?.length
-                ) {
-                    const { game } = gameHandle.current!;
-                    const path = currentEditorStylePath?.map(
-                        (item) => item.value
-                    );
-                    // 显示通用弹窗
-                    if (path.includes('dialog_overlay') || path.includes('rules_content')) {
-                        showRules();
-                    }
-                    // 显示中奖弹窗
-                    if (path.includes('successmodal_article_content')) {
-                        game.current?.core.showSuccessModal(
-                            prizes[0]
-                        );
-                    }
-                    // 显示未中奖弹窗
-                    if (path.includes('failedmodal_article_content')) {
-                        game.current?.core.showFailedModal(
-                            prizes[1]
-                        );
-                    }
-                    // 显示地址弹窗
-                    if (path.includes('addressmodal_addressbox')) {
-                        game.current?.core.showAddressModal();
-                    }
-                    // 显示中奖记录
-                    if (path.includes('records_content')) {
-                        showRecord();
-                    }
-                }
-            }, 1000),
-        [currentEditorStylePath, prizes, showRecord, showRules]
-    );
-
-    const editorShow = useCallback(() => {
-        onChangeDebounce();
-    }, [onChangeDebounce]);
-
-    useEffect(() => {
-        editorShow();
-    }, [editorShow, gameHandle]);
-
-    // lifeCycle
-    const [dispatchEvent] = useLifeCycle(
-        moduleId,
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments) {
+      apiArguments.body = [
         {
-            mount: '初始化',
-            unmount: '卸载',
-            onStart: '抽奖',
-            onEnd: '抽奖结束',
-            onCancel: '放弃中奖/关闭弹窗',
-            onEnsure: '确认中奖结果',
-            onShowSuccess: '显示中奖',
-            onShowFailed: '显示未中奖',
-            onShowAddress: '显示地址',
+          type: 'object',
+          fieldName: 'addressData',
+          data: oprationData,
         },
-        {
-            setGameType,
-            setRunningPrizes,
-            setRules,
-            setRunningRecords,
-            lottery,
-            checkedLottery,
-            useConfig,
-            setDefaultReceiveInfo,
-            setSuccessModal,
-            showRecord,
-            showRules,
-        },
-        api?.find((item) => item.apiId === 'init')
-    );
-    // ref存储
-    dispatchEventRef.current = dispatchEvent;
+      ];
+      return requester(apiArguments || {});
+    }
+    // 处理收货地址
+    message.warning('没有设置保存地址Api, 当前不可保存！');
+  };
 
+  /**
+   * 检查手机验证码
+   * */
+  checkVerificationCode = async (data: { [keys: string]: any }) => {
+    // 这里不需要api设置参数
+    const apiArguments = this.props.api?.find(
+      (item) => item.apiId === 'getVerificationCode',
+    );
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments) {
+      apiArguments.body = [{ type: 'object', fieldName: 'addressData', data }];
+      return requester(apiArguments || {});
+    }
+    // 处理收货地址
+    message.warning('没有设置获取验证码Api！');
+  };
+
+  apiGetRecord = async () => {
+    const apiArguments = this.props.api?.find(
+      (item) => item.apiId === 'getRecord',
+    );
+    // 获取抽奖结果数据， 将结果数据中转到全局数据中
+    if (apiArguments && apiArguments.url && apiArguments.method) {
+      return requester(apiArguments || {});
+    }
+  };
+
+  /**
+   * 修改抽奖类型
+   */
+  setGameType = (type: ArgumentsString) => {
+    const argOptType = getArgumentsItem(type) as keyof GameMap;
+    if (gametypes.includes(argOptType)) {
+      this.setState({
+        type: argOptType,
+      });
+    }
+  };
+
+  /**
+   * 设置规则文本
+   */
+  setRules = (rules: ArgumentsItem) => {
+    const rulesTexts = getArgumentsItem(rules) as any[];
+    this.setState({
+      ruleText: rulesTexts,
+    });
+  };
+
+  /**
+   * 设置奖品数据, 无数据时使用mock
+   */
+  setRunningPrizes = (prizes: ArgumentsItem) => {
+    let prizesArg = getArgumentsItem(prizes) as any[];
+    if (Array.isArray(prizesArg) && prizesArg.length) {
+      this.prizesIsReadyRef = true;
+    }
+    // 没有准备过数据会使用mock数据
+    if (!this.prizesIsReadyRef) {
+      prizesArg = mock.prizes;
+    }
+    this.setState({
+      prizes: prizesArg,
+    });
+  };
+
+  onSaveAddress = (item: any) => () => {
+    console.log(item);
+    return this.handleSaveAddress();
+  };
+
+  /**
+   * 设置运行时中奖记录
+   */
+  setRunningRecords = (...args: ArgumentsItem[]) => {
+    // 中奖记录
+    const { records, disablePullDown, disablePullUp } = getArguments(args) as {
+      records: RecordsType[];
+      disablePullDown: string;
+      disablePullUp: string;
+    };
+
+    const data: any = {
+      disablePullDown: disablePullDown === '0',
+      disablePullUp: disablePullUp === '0',
+    };
+
+    if (Array.isArray(records) && records.length) {
+      data.records = records;
+    }
+
+    this.setState(data);
+  };
+
+  /**
+   * 渲染中奖记录
+   */
+  renderRecords = () =>
+    this.state.records?.length ? (
+      <ul className={classNames(s.recordwrap, `${this.MId}_records_list`)}>
+        {this.state.records.map((item, index) => {
+          return (
+            <li
+              key={index}
+              className={classNames(
+                s.recorditem,
+                `${this.MId}_records_list_item`,
+              )}
+            >
+              <div
+                className={classNames(
+                  s.prizeimg,
+                  `${this.MId}_records_list_item_prizeimg_wrap`,
+                )}
+              >
+                <img
+                  className={`${this.MId}_records_list_item_prizeimg`}
+                  src={item.prizeImg}
+                  alt={item.prizeName}
+                />
+              </div>
+              <div
+                className={classNames(
+                  s.recordstr,
+                  `${this.MId}_records_list_item_text`,
+                )}
+              >
+                <div
+                  className={classNames(
+                    s.prizename,
+                    `${this.MId}_records_list_item_prizename`,
+                  )}
+                >
+                  {item.prizeName}
+                </div>
+                <div className={s.timeandbutton}>
+                  <div
+                    className={classNames(
+                      s.wintime,
+                      `${this.MId}_records_list_item_wintime`,
+                    )}
+                  >
+                    {item.winTime}
+                  </div>
+                  {item.receiveType === 2 && !item.receiverAddress ? (
+                    <button
+                      onClick={this.onSaveAddress(item)}
+                      className={`${this.MId}_records_list_item_saveaddress`}
+                    >
+                      填写地址
+                    </button>
+                  ) : null}
+                </div>
+                {item.receiverAddress ? (
+                  <div
+                    className={classNames(
+                      s.receiveraddress,
+                      `${this.MId}_records_list_item_address`,
+                    )}
+                  >
+                    收货地址:{item.receiverAddress}
+                  </div>
+                ) : null}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <div>暂无中奖记录</div>
+    );
+
+  /**
+   * 设置玩家基本信息
+   * @param phone 设置玩家手机号码
+   * @param cardIdRequest 设置领取奖品时是否需要填写身份证1 隐藏，2 验证，3 为空时不验证有填写时验证，4 不验证
+   */
+  useConfig = (...args: ArgumentsItem[]) => {
+    const { phone, cardIdRequest } = getArguments(args);
+    this.setState({
+      phoneAndRCardId: {
+        phone,
+        cardIdRequest,
+      },
+    });
+  };
+
+  /**
+   * 设置中奖弹窗
+   * @param title 中奖弹窗标题
+   * @param animation 中奖弹窗动画
+   */
+
+  setSuccessModal = (...args: ArgumentsItem[]) => {
+    const { title, animation } = getArguments(args);
+    this.setState({
+      successmodalParams: { title, animation },
+    });
+  };
+
+  /**
+   * 检查抽奖
+   * @param enabled
+   * @param message
+   */
+  checkedLottery = (...args: ArgumentsItem[]) => {
+    const { enabled, message } = getArguments(args);
+    this.checked = { enabled, message };
+  };
+
+  // hank 等待
+  setDelayStart = () =>
+    new Promise((res) =>
+      setTimeout(() => {
+        this.props.eventDispatch().onStart();
+        res(null);
+      }),
+    );
+
+  /**
+   * 开始抽奖
+   * */
+  startLottery = async () => {
+    // step1、执行前置api 用于抽奖前检查是否满足抽奖条件
+    await this.apiBeforeStart();
+
+    // step2 执行抽奖事件
+    await this.setDelayStart();
+    // step3、检查状态是否可以抽奖
+    if (!this.checked.enabled) {
+      console.log('没有权限，请勿抽奖！');
+      message.error(this.checked?.message || '暂无抽奖权限！');
+      throw this.checked?.message;
+    }
+
+    // step4、返回抽奖接口
+    const settedApi = (await this.apiStart()) as AnyObjectType;
+
+    // step5、执行结束事件，可用于重置数据
+    this.props.eventDispatch()?.onEnd();
+    if (settedApi?.response?.prizeId !== undefined) {
+      let currentPrize = getPrizeById(
+        settedApi.response.prizeId,
+        this.state.prizes,
+      );
+      // 回填当前操作奖品
+      this.winInfo = currentPrize;
+      return currentPrize;
+    }
+
+    // 没有设置Api时启用mock数据
+    if (!settedApi) {
+      message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
+      const winData =
+        this.state.prizes[
+          Math.floor(Math.random() * this.state.prizes.length - 1)
+        ];
+      // 回填当前操作奖品
+      this.winInfo = winData;
+      return winData;
+    }
+  };
+
+  /**
+   *
+   * @param receiverPhone 收货人电话
+   * @param regionName 收货地址名称
+   * @param region 收获地区
+   * @param address 收货地址
+   * @param idCard 身份证
+   */
+  setDefaultReceiveInfo = (...args: ArgumentsItem[]) => {
+    const { receiverPhone, regionName, region, address, idCard } =
+      getArguments(args);
+    let argRegionName: any = regionName
+      ?.replace(/，/g, ',')
+      ?.split(',')
+      ?.filter(Boolean);
+    const parames = {
+      receiverPhone,
+      address,
+      region: region?.replace(/，/g, ',')?.split(','),
+      idCard,
+    };
+    if (!!argRegionName.length) {
+      (parames as any).regionName = argRegionName;
+    }
+
+    this.gameHandle?.game.current?.core.AddressModal.updateParams(
+      parames as any,
+    );
+    this.setState({
+      receiverInfo: parames,
+    });
+  };
+
+  /**通过其他事件关联抽奖 */
+  lottery = () => this.gameHandle?.game.current?.core.lottery();
+
+  /**显示中奖记录 */
+  showRecord = async () => {
+    await this.apiGetRecord();
+    this.setState({ displayRecord: true });
+  };
+
+  /**显示活动规则 */
+  showRules = () => this.setState({ displayRule: true });
+
+  render() {
+    const { moduleId } = this.props;
+    const { 
+      phoneAndRCardId, 
+      successmodalParams, 
+      type, 
+      prizes, 
+      receiverInfo,
+      displayRecord,
+      disablePullUp,
+      disablePullDown,
+      displayRule,
+      ruleText
+    } = this.state;
     return (
-        <Wrapper {...props}>
-            <Game
-                parentId={`${MId}_wrap`}
-                className={`gametarget${moduleId}_gameroot`}
-                targetId={MId}
-                playerPhone={phoneAndRCardId?.phone}
-                successModalTitle={successmodalParams.title || '恭喜您，获得'}
-                successModalAnimation={{
-                    form: successmodalParams.animation || 'flipInY',
-                }}
-                type={type}
-                cardIdRequest={phoneAndRCardId?.cardIdRequest}
-                ref={gameHandle}
-                start={startLottery}
-                prizes={prizes}
-                saveAddress={apiSaveAddress}
-                receiverInfo={receiverInfo}
-                onCancel={dispatchEventRef.current?.onCancel}
-                onEnsure={dispatchEventRef.current?.onEnsure}
-                checkVerificationCode={checkVerificationCode}
-                onShowSuccess={() => {
-                    dispatchEventRef.current?.onShowSuccess();
-                }}
-                onShowFailed={() => {
-                    dispatchEventRef.current?.onShowFailed();
-                }}
-                onShowAddress={() => {
-                    dispatchEventRef.current?.onShowAddress();
-                }}
-            />
-            <GameRecords
-                id={`${MId}_records`}
-                visible={displayRecord}
-                onCancel={() => setDisplayRecord(false)}
-                disablePullUp={disablePullUp}
-                disablePullDown={disablePullDown}
-                onPullDown={async () => console.log()}
-                onPullUp={async () => console.log()}
-            >
-                {renderRecords()}
-            </GameRecords>
-            <GameModal
-                id={`${MId}_rules`}
-                visible={displayRule}
-                title="活动规则"
-                okText="返回抽奖"
-                onOk={() => setDisplayRule(false)}
-                onCancel={() => setDisplayRule(false)}
-            >
-                <ol className={classNames(s.rule, `${MId}_rules_list`)}>
-                    {ruleText.map((item, key) => (
-                        <li className={`${MId}_rules_list_item`} key={key}>{item}</li>
-                    ))}
-                </ol>
-            </GameModal>
-        </Wrapper>
+      <Wrapper {...this.props}>
+        <Game
+          parentId={`${this.MId}_wrap`}
+          className={`gametarget${moduleId}_gameroot`}
+          targetId={this.MId}
+          playerPhone={phoneAndRCardId?.phone}
+          successModalTitle={successmodalParams.title || '恭喜您，获得'}
+          successModalAnimation={{
+            form: successmodalParams.animation || 'flipInY',
+          }}
+          type={type}
+          cardIdRequest={phoneAndRCardId?.cardIdRequest}
+          ref={(ref) => this.gameHandle = ref}
+          start={this.startLottery}
+          prizes={prizes}
+          saveAddress={this.apiSaveAddress}
+          receiverInfo={receiverInfo}
+          onCancel={() => this.props.eventDispatch().onCancel()}
+          onEnsure={() => this.props.eventDispatch().onEnsure()}
+          checkVerificationCode={this.checkVerificationCode}
+          onShowSuccess={() => this.props.eventDispatch()?.onShowSuccess()}
+          onShowFailed={() => this.props.eventDispatch()?.onShowFailed()}
+          onShowAddress={() => this.props.eventDispatch()?.onShowAddress()}
+        />
+        <GameRecords
+          id={`${this.MId}_records`}
+          visible={displayRecord}
+          onCancel={() => this.setState({displayRecord: false})}
+          disablePullUp={disablePullUp}
+          disablePullDown={disablePullDown}
+          onPullDown={async () => console.log()}
+          onPullUp={async () => console.log()}
+        >
+          {this.renderRecords()}
+        </GameRecords>
+        <GameModal
+          id={`${this.MId}_rules`}
+          visible={displayRule}
+          title="活动规则"
+          okText="返回抽奖"
+          onOk={() => this.setState({ displayRule: false})}
+          onCancel={() => this.setState({ displayRule: false})}
+        >
+          <ol className={classNames(s.rule, `${this.MId}_rules_list`)}>
+            {ruleText.map((item, key) => (
+              <li className={`${this.MId}_rules_list_item`} key={key}>
+                {item}
+              </li>
+            ))}
+          </ol>
+        </GameModal>
+      </Wrapper>
     );
+  }
+}
+
+const mapState = (state: RootState) => ({
+  runningTimes: state.runningTimes,
+  currentEditorStylePath: state.controller.currentEditorStylePath,
+});
+
+const mapDispatch = (dispatch: Dispatch) => ({
+  setRunningTimes: dispatch.runningTimes.setRunningTimes,
+});
+
+// typeof State
+type State = {
+  /** 奖品 */
+  prizes: Prize[];
+  /** 电话与身份证id */
+  phoneAndRCardId: AnyObjectType;
+  /** 收货人信息 */
+  receiverInfo: AnyObjectType;
+  /** 成功弹窗参数 */
+  successmodalParams: AnyObjectType;
+  /** 游戏类型 */
+  type: keyof GameMap;
+  /** 显示中奖记录 */
+  displayRecord: boolean;
+  /** 显示规则 */
+  displayRule: boolean;
+  /** 规则内容 */
+  ruleText: string[];
+  /** 中奖记录内容 */
+  records: RecordsType[];
+  /** 禁用下拉 */
+  disablePullDown: boolean;
+  /** 禁用上拉 */
+  disablePullUp: boolean;
+  text: string;
 };
 
-// bind static
-for (const key in config) {
-    if (Object.prototype.hasOwnProperty.call(config, key)) {
-        Lottery[key] = config[key];
-    }
-}
+// typeof Props
+type StateProps = ReturnType<typeof mapState>;
+type DispatchProps = ReturnType<typeof mapDispatch>;
 
-export default Lottery;
+export type LotteryProps = ClassModuleBaseProps<
+  {},
+  { [keys in ExposeEventsKeys]: Function }
+> &
+  StateProps &
+  DispatchProps;
+
+export default connect(
+  mapState,
+  mapDispatch,
+)(PresetModule<LotteryProps>(Lottery, config));

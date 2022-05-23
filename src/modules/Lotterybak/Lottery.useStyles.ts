@@ -200,8 +200,6 @@ const getParames = (id: string, style: any, type: keyof GameMap) => ({
   
 });
 
-
-
 const headDom = document.head;
 
 const useStyles = (id: string, style: any, type: keyof GameMap) => {

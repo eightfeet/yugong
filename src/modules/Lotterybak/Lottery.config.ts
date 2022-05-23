@@ -1,9 +1,17 @@
 import {
-  ModulesStatic,
-} from "~/types/modules";
-import { style, styleDescription } from "./style";
+    ExposeFunctions,
+    ComExposeEvents,
+    ExposeDefaultProps,
+    ExposeApi,
+} from '~/types/modules';
+import { style, styleDescription } from './style';
 
-const config: ModulesStatic = {
+const config: {
+    exposeFunctions: ExposeFunctions[];
+    exposeEvents: ComExposeEvents;
+    exposeDefaultProps: ExposeDefaultProps;
+    exposeApi: ExposeApi[];
+} = {
     /**
      * 注册方法的静态描述与默认参数定义
      */
@@ -244,7 +252,7 @@ const config: ModulesStatic = {
             presettable: false,
         },
     ],
-  
+
     /**
      * 发布事件的静态描述
      */
@@ -294,7 +302,7 @@ const config: ModulesStatic = {
         style,
         styleDescription,
     },
-  
+
     /**
      * 发布默认Api
      */
@@ -362,19 +370,6 @@ const config: ModulesStatic = {
             enterDescription: `获取中奖记录`,
         },
     ],
-  };
-  
-  // export type key of events list
-  export type ExposeEventsKeys = 
-    'mount' | 
-    'unmount' | 
-    'onStart' | 
-    'onEnd' | 
-    'onCancel' | 
-    'onEnsure' | 
-    'onShowSuccess' |
-    'onShowFailed' |
-    'onShowAddress';
-  
-  export default config;
-  
+};
+
+export default config;
