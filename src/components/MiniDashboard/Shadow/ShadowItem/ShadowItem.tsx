@@ -38,7 +38,8 @@ const ShadowItem:React.FC<Props> = ({data, type, onMinus, onToggleShow, onChange
               <div className={s.menu}>
                 <Button
                   size="small"
-                  icon={<MinusOutlined onClick={onMinus} />}
+                  onClick={onMinus}
+                  icon={<MinusOutlined />}
                 >删除</Button>
               </div>
             </div>
