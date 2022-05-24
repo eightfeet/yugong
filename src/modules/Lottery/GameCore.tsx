@@ -28,9 +28,7 @@ interface Props extends GameProps {
 
 const GameCore: React.FC<Props> = (props) => {
   const { MId, game, records, rules, styles, type } = props;
-  const classes = useStyles(MId, styles, type);
-
-  console.log('classes', classes);
+  useStyles(MId, styles, type);
   
   return (
     <>
