@@ -10,18 +10,18 @@ import {
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Lottery.config';
-import createStyles, { ClassesKey } from './Lottery.createStyles';
 import { Prize } from '@byhealth/lottery/dist/types/core';
 import * as mock from './mockData';
 import { GameHandle, GameMap } from '~/components/Game/useGame';
-import Game, { GameModal, GameRecords } from '~/components/Game';
+import Game from '~/components/Game';
 import requester from '~/core/fetch';
-import { saveAddressParames } from '~/components/Game/GameType';
+import { GameRef, saveAddressParames } from '~/components/Game/GameType';
 import message from '~/components/Message';
 import { gametypes } from '~/components/Game/Game';
 import s from './Lottery.module.less';
 import classNames from 'classnames';
 import { getPrizeById } from './helper';
+import GameCore from './GameCore';
 
 export interface RecordsType extends Prize {
   /**中奖id */
@@ -202,6 +202,8 @@ class Lottery extends Component<LotteryProps, State> {
     if (gametypes.includes(argOptType)) {
       this.setState({
         type: argOptType,
+      }, () => {
+        this.MId = `gametarget${this.props.moduleId}_${this.state.type}`
       });
     }
   };
@@ -476,7 +478,6 @@ class Lottery extends Component<LotteryProps, State> {
   showRules = () => this.setState({ displayRule: true });
 
   render() {
-    const { moduleId } = this.props;
     const { 
       phoneAndRCardId, 
       successmodalParams, 
@@ -487,60 +488,51 @@ class Lottery extends Component<LotteryProps, State> {
       disablePullUp,
       disablePullDown,
       displayRule,
-      ruleText
+      ruleText,
     } = this.state;
     return (
       <Wrapper {...this.props}>
-        <Game
-          parentId={`${this.MId}_wrap`}
-          className={`gametarget${moduleId}_gameroot`}
-          targetId={this.MId}
-          playerPhone={phoneAndRCardId?.phone}
-          successModalTitle={successmodalParams.title || '恭喜您，获得'}
-          successModalAnimation={{
-            form: successmodalParams.animation || 'flipInY',
-          }}
+        <GameCore
+          MId={this.MId}
+          styles={this.props.style}
           type={type}
-          cardIdRequest={phoneAndRCardId?.cardIdRequest}
-          ref={(ref) => this.gameHandle = ref}
-          start={this.startLottery}
-          prizes={prizes}
-          saveAddress={this.apiSaveAddress}
-          receiverInfo={receiverInfo}
-          onCancel={() => this.props.eventDispatch().onCancel()}
-          onEnsure={() => this.props.eventDispatch().onEnsure()}
-          checkVerificationCode={this.checkVerificationCode}
-          onShowSuccess={() => this.props.eventDispatch()?.onShowSuccess()}
-          onShowFailed={() => this.props.eventDispatch()?.onShowFailed()}
-          onShowAddress={() => this.props.eventDispatch()?.onShowAddress()}
+          game={{
+            className:`gametarget${this.props.moduleId}_gameroot`,
+            playerPhone:phoneAndRCardId?.phone,
+            successModalTitle:successmodalParams.title || '恭喜您，获得',
+            successModalAnimation: {
+              form: successmodalParams.animation || 'flipInY',
+            },
+            type:type,
+            cardIdRequest:phoneAndRCardId?.cardIdRequest,
+            ref: (ref: GameRef | null) => this.gameHandle = ref,
+            start:this.startLottery,
+            prizes:prizes,
+            saveAddress:this.apiSaveAddress,
+            receiverInfo:receiverInfo,
+            onCancel:() => this.props.eventDispatch().onCancel(),
+            onEnsure:() => this.props.eventDispatch().onEnsure(),
+            checkVerificationCode:this.checkVerificationCode,
+            onShowSuccess:() => this.props.eventDispatch()?.onShowSuccess(),
+            onShowFailed:() => this.props.eventDispatch()?.onShowFailed(),
+            onShowAddress:() => this.props.eventDispatch()?.onShowAddress(),
+          }}
+          records={{
+            visible:displayRecord,
+            onCancel:() => this.setState({displayRecord: false}),
+            disablePullUp:disablePullUp,
+            disablePullDown:disablePullDown,
+            onPullDown:async () => console.log(),
+            onPullUp:async () => console.log(),
+            children: this.renderRecords()
+          }}
+          rules={{
+            ruleText,
+            visible: displayRule,
+            onOk:() => this.setState({ displayRule: false}),
+            onCancel:() => this.setState({ displayRule: false})
+          }}
         />
-        <GameRecords
-          id={`${this.MId}_records`}
-          visible={displayRecord}
-          onCancel={() => this.setState({displayRecord: false})}
-          disablePullUp={disablePullUp}
-          disablePullDown={disablePullDown}
-          onPullDown={async () => console.log()}
-          onPullUp={async () => console.log()}
-        >
-          {this.renderRecords()}
-        </GameRecords>
-        <GameModal
-          id={`${this.MId}_rules`}
-          visible={displayRule}
-          title="活动规则"
-          okText="返回抽奖"
-          onOk={() => this.setState({ displayRule: false})}
-          onCancel={() => this.setState({ displayRule: false})}
-        >
-          <ol className={classNames(s.rule, `${this.MId}_rules_list`)}>
-            {ruleText.map((item, key) => (
-              <li className={`${this.MId}_rules_list_item`} key={key}>
-                {item}
-              </li>
-            ))}
-          </ol>
-        </GameModal>
       </Wrapper>
     );
   }
