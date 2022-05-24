@@ -1,62 +1,60 @@
-import React, { createRef } from 'react';
-import ReactDOM from 'react-dom';
-import MessageAlert from './MessageAlert';
+import Msg from '@eightfeet/message';
+
+const msgBuilder = (color?: string) => new Msg({
+  style: {
+    main: {
+      backgroundColor: color,
+      textAlign: 'left'
+    },
+  },
+});
 
 class Message {
-    MessageNode: HTMLDivElement;
-    msgRef: React.RefObject<any>;
-    constructor() {
-        this.MessageNode = document.createElement('div');
-        document.body.appendChild(this.MessageNode);
-        this.msgRef = createRef();
-        ReactDOM.render(<MessageAlert ref={this.msgRef} />, this.MessageNode);
-    }
+  successMsg: Msg;
+  defaultMsg: Msg;
+  errorMsg: Msg;
+  warningMsg: Msg;
+  constructor() {
+    this.errorMsg = msgBuilder('red');
+    this.successMsg = msgBuilder('#52c41a');
+    this.defaultMsg = msgBuilder();
+    this.warningMsg = msgBuilder('#faad14');
+  }
 
-    /**
-     * Default
-     */
-    public default(message: JSX.Element | string) {
-        this.msgRef.current?.show(message, { 
-            variant: 'default'
-        })
-    }
+  /**
+   * Default
+   */
+  public default(message: string) {
+    this.defaultMsg.create(message);
+  }
 
-    /**
-     * Success
-     */
-     public success(message: JSX.Element | string) {
-        this.msgRef.current?.show(message, { 
-            variant: 'success'
-        })
-    }
+  /**
+   * Success
+   */
+  public success(message: string) {
+    this.successMsg.create(message);
+  }
 
-    /**
-     * Error
-     */
-     public error(message: JSX.Element | string) {
-        this.msgRef.current?.show(message, { 
-            variant: 'error'
-        })
-    }
+  /**
+   * Error
+   */
+  public error(message: string) {
+    this.errorMsg.create(message);
+  }
 
-    /**
-     * Warning
-     */
-     public warning(message: JSX.Element | string) {
-        this.msgRef.current?.show(message, { 
-            variant: 'warning'
-        })
-    }
+  /**
+   * Warning
+   */
+  public warning(message: string) {
+    this.warningMsg.create(message);
+  }
 
-    /**
-     * Info
-     */
-     public info(message: JSX.Element | string) {
-        this.msgRef.current?.show(message, { 
-            variant: 'info'
-        })
-    }
-
+  /**
+   * Info
+   */
+  public info(message: string) {
+    this.defaultMsg.create(message);
+  }
 }
 
 export default new Message();
