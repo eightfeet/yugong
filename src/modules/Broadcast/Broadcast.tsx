@@ -38,6 +38,8 @@ const Broadcast: React.FC<BroadcastProps> = (props) => {
     useRefState<number>(0);
   const currentItem = useRef(0);
 
+  const [ready, setReady] = useState(false);
+
   const setMessages = useCallback(
     ( ...args) => {
       const { messages, counter, interval } = getArguments(args) as {
@@ -115,14 +117,21 @@ const Broadcast: React.FC<BroadcastProps> = (props) => {
       }
       refTimerId.current = setTimeout(loop, currentInterval, interval);
     },
-    [list.length, setListItemHeight, setListWrapStyle, wrapStyle]
+    [list.length, setListItemHeight, wrapStyle]
   );
 
   // 运行
   useEffect(() => {
     loop(interval);
-  }, [loop, interval]);
+  }, [loop, interval, ready]);
 
+  // 等待样式准备
+  useEffect(() => {
+    if (!ready) {
+      setTimeout(() => setReady(true), interval)
+    }
+  }, [interval, ready])
+  
   useEffect(() => {
     return () => {
       if (refTimerId.current) {
@@ -161,7 +170,7 @@ const Broadcast: React.FC<BroadcastProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth itemAlign="bottom">
       <div
-        className={s.display}
+        className={classNames(s.display, !ready ? s.disappear : null)}
         style={{ height: listItemHeight * intersection }}
       >
         <div className={s.listwrap} style={listWrapStyle}>
