@@ -106,6 +106,45 @@ class Lottery extends Component<LotteryProps, State> {
     this.props.eventDispatch().unmount();
   }
 
+  componentDidUpdate(oldProps: LotteryProps) {
+    const { currentEditorStylePath } = this.props;
+    const { prizes } = this.state;
+    if (oldProps.currentEditorStylePath !== currentEditorStylePath) {
+      if (
+        currentEditorStylePath?.length
+      ) {
+        const { game } = this.gameHandle!;
+        const path = currentEditorStylePath?.map(
+          (item) => item.value
+        );
+        // 显示通用弹窗
+        if (path.includes('dialog_overlay') || path.includes('rules_content')) {
+          this.showRules();
+        }
+        // 显示中奖弹窗
+        if (path.includes('successmodal_article_content')) {
+          game.current?.core.showSuccessModal(
+            prizes[0]
+          );
+        }
+        // 显示未中奖弹窗
+        if (path.includes('failedmodal_article_content')) {
+          game.current?.core.showFailedModal(
+            prizes[1]
+          );
+        }
+        // 显示地址弹窗
+        if (path.includes('addressmodal_addressbox')) {
+          game.current?.core.showAddressModal();
+        }
+        // 显示中奖记录
+        if (path.includes('records_content')) {
+          this.showRecord();
+        }
+      }
+    }
+  }
+
   /**保存地址 */
   handleSaveAddress = () => {
     this.gameHandle?.game.current?.core.AddressModal.showModal((address) => {
@@ -394,7 +433,6 @@ class Lottery extends Component<LotteryProps, State> {
   startLottery = async () => {
     // step1、执行前置api 用于抽奖前检查是否满足抽奖条件
     await this.apiBeforeStart();
-
     // step2 执行抽奖事件
     await this.setDelayStart();
     // step3、检查状态是否可以抽奖
@@ -424,7 +462,7 @@ class Lottery extends Component<LotteryProps, State> {
       message.warning('活动奖品或抽奖Api未设置正确, 当前使用模拟抽奖！');
       const winData =
         this.state.prizes[
-          Math.floor(Math.random() * this.state.prizes.length - 1)
+        Math.floor(Math.random() * this.state.prizes.length - 1)
         ];
       // 回填当前操作奖品
       this.winInfo = winData;
@@ -478,11 +516,11 @@ class Lottery extends Component<LotteryProps, State> {
   showRules = () => this.setState({ displayRule: true });
 
   render() {
-    const { 
-      phoneAndRCardId, 
-      successmodalParams, 
-      type, 
-      prizes, 
+    const {
+      phoneAndRCardId,
+      successmodalParams,
+      type,
+      prizes,
       receiverInfo,
       displayRecord,
       disablePullUp,
@@ -497,40 +535,40 @@ class Lottery extends Component<LotteryProps, State> {
           styles={this.props.style}
           type={type}
           game={{
-            className:`gametarget${this.props.moduleId}_gameroot`,
-            playerPhone:phoneAndRCardId?.phone,
-            successModalTitle:successmodalParams.title || '恭喜您，获得',
+            className: `gametarget${this.props.moduleId}_gameroot`,
+            playerPhone: phoneAndRCardId?.phone,
+            successModalTitle: successmodalParams.title || '恭喜您，获得',
             successModalAnimation: {
               form: successmodalParams.animation || 'flipInY',
             },
-            type:type,
-            cardIdRequest:phoneAndRCardId?.cardIdRequest,
+            type: type,
+            cardIdRequest: phoneAndRCardId?.cardIdRequest,
             ref: (ref: GameRef | null) => this.gameHandle = ref,
-            start:this.startLottery,
-            prizes:prizes,
-            saveAddress:this.apiSaveAddress,
-            receiverInfo:receiverInfo,
-            onCancel:() => this.props.eventDispatch().onCancel(),
-            onEnsure:() => this.props.eventDispatch().onEnsure(),
-            checkVerificationCode:this.checkVerificationCode,
-            onShowSuccess:() => this.props.eventDispatch()?.onShowSuccess(),
-            onShowFailed:() => this.props.eventDispatch()?.onShowFailed(),
-            onShowAddress:() => this.props.eventDispatch()?.onShowAddress(),
+            start: this.startLottery,
+            prizes: prizes,
+            saveAddress: this.apiSaveAddress,
+            receiverInfo: receiverInfo,
+            onCancel: () => this.props.eventDispatch().onCancel(),
+            onEnsure: () => this.props.eventDispatch().onEnsure(),
+            checkVerificationCode: this.checkVerificationCode,
+            onShowSuccess: () => this.props.eventDispatch()?.onShowSuccess(),
+            onShowFailed: () => this.props.eventDispatch()?.onShowFailed(),
+            onShowAddress: () => this.props.eventDispatch()?.onShowAddress(),
           }}
           records={{
-            visible:displayRecord,
-            onCancel:() => this.setState({displayRecord: false}),
-            disablePullUp:disablePullUp,
-            disablePullDown:disablePullDown,
-            onPullDown:async () => console.log(),
-            onPullUp:async () => console.log(),
+            visible: displayRecord,
+            onCancel: () => this.setState({ displayRecord: false }),
+            disablePullUp: disablePullUp,
+            disablePullDown: disablePullDown,
+            onPullDown: async () => console.log(),
+            onPullUp: async () => console.log(),
             children: this.renderRecords()
           }}
           rules={{
             ruleText,
             visible: displayRule,
-            onOk:() => this.setState({ displayRule: false}),
-            onCancel:() => this.setState({ displayRule: false})
+            onOk: () => this.setState({ displayRule: false }),
+            onCancel: () => this.setState({ displayRule: false })
           }}
         />
       </Wrapper>
