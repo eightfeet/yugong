@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import Game, { GameRecords, GameModal } from '~/components/Game';
 import { GameProps, GameRef } from '~/components/Game/GameType';
 import { RecordsProps } from '~/components/Game/Records/Records';
@@ -29,14 +29,48 @@ interface Props extends GameProps {
 const GameCore: React.FC<Props> = (props) => {
   const { MId, game, records, rules, styles, type } = props;
   useStyles(MId, styles, type);
+  const { 
+    prizes, 
+    start, 
+    saveAddress, 
+    playerPhone, 
+    checkVerificationCode, 
+    receiverInfo, 
+    cardIdRequest, 
+    failedModalTitle,
+    submitFailedText,
+    successModalTitle,
+    submitSuccessText,
+    submitAddressText,
+    className  } = game;
+
+  const memoGame = useMemo(() => {
+    return <Game
+      parentId={`${MId}_wrap`}
+      targetId={MId}
+      {...game}
+    />
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    MId, 
+    prizes, 
+    start, 
+    saveAddress, 
+    playerPhone, 
+    checkVerificationCode, 
+    receiverInfo, 
+    cardIdRequest, 
+    failedModalTitle,
+    submitFailedText,
+    successModalTitle,
+    submitSuccessText,
+    submitAddressText,
+    className,
+  ])
   
   return (
     <>
-      <Game
-        parentId={`${MId}_wrap`}
-        targetId={MId}
-        {...game}
-      />
+      {memoGame}
       <GameRecords id={`${MId}_records`} {...records} />
       <GameModal
         id={`${MId}_rules`}
