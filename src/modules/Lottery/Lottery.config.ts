@@ -201,6 +201,19 @@ const config: ModulesStatic = {
                     type: 'string',
                     name: '动画',
                     fieldName: 'animation',
+                    select: {
+                      flipInY: 'flipInY',
+                      flipInX: 'flipInX',
+                      fadeInUp: 'fadeInUp',
+                      fadeInDown: 'fadeInDown',
+                      fadeInLeft: 'fadeInLeft',
+                      fadeInRight: 'fadeInRight',
+                      zoomIn: 'zoomIn',
+                      zoomInUp: 'zoomInUp',
+                      zoomInDown: 'zoomInDown',
+                      zoomInLeft: 'zoomInLeft',
+                      zoomInRight: 'zoomInRight'
+                  },
                     describe: `中奖弹窗动画
                   flipInY | flipInX | fadeInUp | fadeInDown | fadeInLeft 
                   | fadeInRight | zoomIn | zoomInUp | zoomInDown | zoomInLeft | zoomInRight`,
