@@ -34,9 +34,12 @@ const subClassName = (
  */
 const Header: SubProps = ({ children, className, align, ...other }) => {
   return (
-    <header className={subClassName(className, align)} {...other}>
-      {children}
-    </header>
+    <>
+      {children ?
+      <header className={subClassName(className, align)} {...other}>
+        {children}
+      </header> : null}
+    </>
   );
 };
 
@@ -48,9 +51,12 @@ Header.displayName = 'ModalHeader';
  */
 const Footer: SubProps = ({ children, className, align, ...other }) => {
   return (
-    <footer className={subClassName(className, align)} {...other}>
-      {children}
-    </footer>
+    <>
+      {children ?
+      <footer className={subClassName(className, align)} {...other}>
+        {children}
+      </footer> : null}
+    </>
   );
 };
 Footer.displayName = 'ModalFooter';
@@ -108,7 +114,6 @@ const Modal: StaticType = ({
   onCancel,
   onOk,
   shouldCloseOnOverlayClick,
-  className,
   ...other
 }) => {
   // 创建初始化
@@ -179,10 +184,10 @@ const Modal: StaticType = ({
     if (visible) {
       !dialogBox.state.display &&
         dialogBox.create({
-          article: `<div class="${classNames(s.root, className)}"></div>`,
+          article: `<div class="${classNames(s.root)}"></div>`,
         });
       const dom = document.getElementById(dialogBox.state.id || '');
-
+      dom?.classList.add()
       if (shouldCloseOnOverlayClick && dom) {
         const overDom: any = dom.querySelector(
           `.${dialogBox.state.id}_overlay`,
@@ -199,7 +204,7 @@ const Modal: StaticType = ({
     } else {
       dialogBox.state.display && dialogBox.hide(false);
     }
-  }, [className, visible, shouldCloseOnOverlayClick]);
+  }, [visible, shouldCloseOnOverlayClick]);
 
   useEffect(() => {
     const dialogBox = MDRef.current;

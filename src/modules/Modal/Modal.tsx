@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsItem, ArgumentsString } from '~/types/appData';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
-import { Dispatch, RootState } from '~/redux/store';
+import { ArgumentsItem } from '~/types/appData';
+import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { RootState } from '~/redux/store';
 import MD from "~/components/Modal";
 import Wrapper from '../Wrapper';
 import requester from "~/core/fetch";
@@ -12,6 +12,7 @@ import config, { ExposeEventsKeys } from './Modal.config';
 import createStyles, { ClassesKey } from './Modal.createStyles';
 import classNames from 'classnames';
 import Cancel from "~/components/Icon/Cancel";
+import { boolean } from 'yup';
 
 export type ModalProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
@@ -20,7 +21,7 @@ export type ModalProps = ClassModuleBaseProps<
 
 const Modal: React.FC<ModalProps> = (props) => {
   const { editingId, currentEditorStylePath } = useSelector((state: RootState) => state.controller);
-  const { api, moduleId, style } = props;
+  const { api, moduleId } = props;
   const MId = `MD${moduleId}`;
   const {
     registersFunction,
@@ -44,17 +45,19 @@ const Modal: React.FC<ModalProps> = (props) => {
    * 配置弹窗
    */
   const config = useCallback(
-    (title: ArgumentsItem, content: ArgumentsItem, ok: ArgumentsItem, cancel: ArgumentsItem, coveclose: ArgumentsItem) => {
-      const orgTitle = getArgumentsItem(title) as string;
-      const orgContent = getArgumentsItem(content) as string;
-      const orgOk = getArgumentsItem(ok) as string;
-      const orgCancel = getArgumentsItem(cancel) as string;
-      const orgCoveclose = getArgumentsItem(coveclose) as boolean;
-      setTitle(orgTitle);
-      setContent(orgContent);
-      setOk(orgOk);
-      setCancel(orgCancel);
-      setShouldCloseOnOverlayClick(orgCoveclose);
+    (...args: ArgumentsItem[]) => {
+      const { title, content, ok, cancel, coveclose } = getArguments(args) as { 
+        title: string, 
+        content: string, 
+        ok: string, 
+        cancel: string, 
+        coveclose: boolean 
+      }
+      setTitle(title?.length ? title : undefined);
+      setContent(content);
+      setOk(ok);
+      setCancel(cancel);
+      setShouldCloseOnOverlayClick(coveclose);
     },
     [],
   )
@@ -78,7 +81,7 @@ const Modal: React.FC<ModalProps> = (props) => {
   // First setup registers
   useEffect(() => {
     registersFunction({
-      config, show, hide 
+      config, show, hide
     })
   }, [config, hide, registersFunction, show])
 
@@ -98,38 +101,37 @@ const Modal: React.FC<ModalProps> = (props) => {
     // api 参数交由requester自行处理
     await requester(apiArguments || {});
     props.eventDispatch().ok();
-}, [api, props]);
+  }, [api, props]);
 
   useEffect(() => {
     if (editingId === moduleId && !visible) {
       show();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingId, moduleId, show, currentEditorStylePath])
 
   return (
-    <Wrapper {...props}  maxHeight maxWidth>
+    <Wrapper {...props} maxHeight maxWidth>
       <MD
         id={MId}
         visible={visible}
         shouldCloseOnOverlayClick={!!shouldCloseOnOverlayClick}
         onCancel={hide}
-        className={classes.root}
-        modifyStyle={[{fontSize: '0'}]}
+        className={classes[`MD${props.moduleId}`]}
+        modifyStyle={[{ fontSize: '0' },{ fontSize: '0' }]}
       >
+        {title ? <MD.Header className={classes.header}>{title}</MD.Header>: null}
         <div className={classes.container}>
-          <div className={classes.close} onClick={hide}>
-            <Cancel />
-          </div>
           <div className={classes.content} onClick={e => e.stopPropagation()}>
-            {title && <header className={classes.header}>{title}</header>}
             {content && <div className={classes.article}>{content}</div>}
-            <footer className={classes.footer}>
-              {ok?.length ? <button className={classNames(classes.button, classes.okButton)} onClick={onClickOk}> {ok} </button> : null}{" "}
-              {cancel?.length ? <button onClick={hide} className={classNames(classes.button, classes.cancelButton)}> {cancel} </button> : null}
-            </footer>
           </div>
         </div>
+        {
+          (ok?.length || cancel?.length) ? <MD.Footer className={classes.footer}>
+            {ok?.length ? <button className={classNames(classes.button, classes.okButton)} onClick={onClickOk}> {ok} </button> : null}{" "}
+              {cancel?.length ? <button onClick={hide} className={classNames(classes.button, classes.cancelButton)}> {cancel} </button> : null}
+          </MD.Footer> : null
+        }
       </MD>
     </Wrapper>
   )

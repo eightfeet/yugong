@@ -6,7 +6,7 @@
     "@ant-design/icons": "^4.4.0",
     "@ant-design/pro-form": "^1.67.1",
     "@byhealth/lottery": "^1.2.38",
-    "@eightfeet/modal": "^2.2.29",
+    "@eightfeet/modal": "^2.2.30",
     "@hookform/resolvers": "^2.4.0",
     "@rematch/core": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",

@@ -1,7 +1,7 @@
 import React from 'react';
 
-function rem(pixel: number) {
-  return `${pixel / 31.25}rem`;
+function em(pixel: number) {
+  return `${pixel / 31.25}em`;
 }
 
 export interface ThemeItem {
@@ -20,8 +20,8 @@ export const overlay: React.CSSProperties = {
 };
 /**弹窗内容 */
 export const content: React.CSSProperties = {
-  borderRadius: rem(20),
-  width: rem(613),
+  borderRadius: em(20),
+  width: em(613),
   marginBottom: '20vh',
 };
 /**关闭按钮 */
@@ -30,16 +30,8 @@ export const close: React.CSSProperties = {
   backgroundImage:
     'url(https://upload-yyj.by-health.com/upload/images/1102102650905.png)',
   backgroundSize: '100% 100%',
-  height: rem(55),
-  width: rem(55),
-  zIndex: 101,
-  position: 'absolute',
-  left: '50% !important',
-  marginLeft: `${rem(-28)} !important`,
-  top: 'unset !important',
-  bottom: `${rem(-99)} !important`,
-  // hack ios
-  marginBottom: '20vh',
+  height: em(55),
+  width: em(55),
 };
 
 /**loading */
@@ -55,7 +47,7 @@ export const LoadingTheme = {
     borderRadius: '1em',
     backgroundColor: 'rgba(0,0,0,0.5)',
     animationDuration: 'green', // 动画周期
-    size: '1.5rem',
+    size: '1.5em',
   },
 };
 /**消息弹窗 */
