@@ -1,0 +1,16 @@
+{
+  "pageTitle": "页面标题",
+  "style": {},
+  "unit": "px",
+  "toUnit": "rem",
+  "onLoadApi": [],
+  "mountEnvents": [],
+  "unmountEnvents": [],
+  "cols": "24",
+  "rowHeight": "{{unit.rem}}",
+  "space": 0,
+  "windowWidth": 414,
+  "windowHeight": 736,
+  "UIWidth": 750,
+  "baseFont": 31.25
+}
