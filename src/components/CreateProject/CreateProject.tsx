@@ -72,8 +72,26 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
 
   const createMobile = useCallback((width: number) => {
     setShowMobile(false);
-    console.log(width/24);
-  }, []);
+    /**初始化 */
+    initData();
+    trackEvent('点击', '创建移动端');
+     /**重置记录 */
+     dispatch.record.initRecord();
+     /**序列化模板数据 */
+     const parsePageData: PageData = {
+      "unit": "px",
+      "toUnit": "rem",
+      "cols": width < 2048 ? 24 : 48,
+      "rowHeight": width < 2048 ? "{{unit.rem}}" : "{{unit.rem/2}}",
+      "space": 0,
+      "windowWidth": width < 2048 ? 414 : 768,
+      "UIWidth": width,
+      "baseFont": width/24
+     };
+     setLocalPageData(parsePageData);
+     dispatch.pageData.updatePage(parsePageData);
+     goBack();
+  }, [dispatch.pageData, dispatch.record, goBack, initData, setLocalPageData]);
 
   const confirmModal = useCallback(
     (type: 'mobile' | 'blank') => {
@@ -84,11 +102,11 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
       }
       confirm({
         content: (
-          <div>当前有历史页面正在编辑，创建空白模板将清除历史数据！</div>
+          <div>当前有历史页面正在编辑，创建模板将清除历史数据！</div>
         ),
         okText: '确定',
         cancelText: '取消',
-        onCancel: () => {},
+        onCancel: () => { },
         onOk: () => {
           if (type === 'blank') createBlank();
           if (type === 'mobile') setShowMobile(true);
@@ -146,7 +164,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         ),
         okText: '确定',
         cancelText: '取消',
-        onCancel: () => {},
+        onCancel: () => { },
         onOk: fn,
       });
     },
@@ -215,25 +233,25 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
       <TemplateList onSelectedTemplate={onSelectedTemplate} />
       <Modal onCancel={() => setShowMobile(false)} width={800} className={s.mobileplan} footer={null} visible={showMobile} title="请选择设计稿宽度">
         <div className={s.uiwrap}>
-        {mobileData.map((item) => (
-          <Card
-            key={item.width}
-            className={s.mobilecard}
-            hoverable
-            onClick={() => createMobile(item.width)}
-          >
-            <div className={s.mobilecove}>
-              <span className={s.mobileiconwrap}>
-                <Mobile />
-              </span>
-              <Meta
-                className={s.mobilemate}
-                title={`UI宽度: ${item.width}px`}
-                description={item.name}
-              />
-            </div>
-          </Card>
-        ))}
+          {mobileData.map((item) => (
+            <Card
+              key={item.width}
+              className={s.mobilecard}
+              hoverable
+              onClick={() => createMobile(item.width)}
+            >
+              <div className={s.mobilecove}>
+                <span className={s.mobileiconwrap}>
+                  <Mobile />
+                </span>
+                <Meta
+                  className={s.mobilemate}
+                  title={`UI宽度: ${item.width}px`}
+                  description={item.name}
+                />
+              </div>
+            </Card>
+          ))}
         </div>
       </Modal>
     </div>
