@@ -1,4 +1,4 @@
-import { CopyOutlined, DeleteOutlined, EditOutlined, QrcodeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, QrcodeOutlined } from "@ant-design/icons";
 import { Card, Tag, Tabs, Button, Modal, Pagination } from "antd";
 import Meta from "antd/lib/card/Meta";
 import classNames from "classnames";

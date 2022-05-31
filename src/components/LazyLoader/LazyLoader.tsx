@@ -16,6 +16,7 @@ const LazyLoader: React.FC<Props> = ({ path, ...other }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const LazyComponent = useMemo(
     () => lazy(() => import(`~/modules/${path}/index.ts`)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [path, rootFontsize],
   );
   return (

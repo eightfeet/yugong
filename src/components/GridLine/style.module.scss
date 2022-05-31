@@ -1,6 +1,9 @@
 .canvas{
     background-color: #fff;
 }
+.wrap {
+  position: relative;
+}
 .cwrap {
     position: absolute;
     opacity: 0.1;
@@ -27,4 +30,15 @@
         margin: 0;
         box-sizing: border-box;
     }
+}
+.pagelinewrap {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+.pageline {
+  box-sizing: border-box;
+  border-bottom: 1px dashed rgba(255, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
 }

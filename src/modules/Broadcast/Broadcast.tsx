@@ -1,23 +1,25 @@
-import EventEmitter from "~/core/EventEmitter";
-import { AppDataElementsTypes, ArgumentsItem } from "~/types/appData";
-import { Modules } from "~/types/modules";
-import config from "./Broadcast.config";
-import Wrapper from "../Wrapper";
-import useLifeCycle from "~/hooks/useLifeCycle";
-import useStyles from "./Broadcast.useStyles";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
+import Wrapper from '../Wrapper';
+import config, { ExposeEventsKeys } from './Broadcast.config';
+import createStyles, { ClassesKey } from './Broadcast.createStyles';
+import useRefState from '~/hooks/useRefState';
+import classNames from 'classnames';
 import s from "./Broadcast.module.scss";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
-import useRefState from "~/hooks/useRefState";
-import classNames from "classnames";
 
-export interface BroadcastProps extends AppDataElementsTypes {
-  id: string;
-  eventEmitter: EventEmitter;
-}
+export type BroadcastProps = ClassModuleBaseProps<
+  { [keys in ClassesKey]: string; },
+  { [keys in ExposeEventsKeys]: Function; }
+>
 
-const Broadcast: Modules<BroadcastProps> = (props) => {
-  const { style, moduleId } = props;
+const Broadcast: React.FC<BroadcastProps> = (props) => {
+  const {
+    registersFunction,
+    eventDispatch,
+    classes,
+  } = props;
   // 列表
   const [list, setList, listRef] = useRefState<
     ({ message: string } | string)[]
@@ -36,45 +38,42 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
     useRefState<number>(0);
   const currentItem = useRef(0);
 
-  const setMessages = useCallback(
-    (
-      messages: ArgumentsItem,
-      counter: ArgumentsItem,
-      interval: ArgumentsItem
-    ) => {
-      const argMessages = getArgumentsItem(messages) as (
-        | { message: string }
-        | string
-      )[];
+  const [ready, setReady] = useState(false);
 
-      const argCounter = getArgumentsItem(counter) as number;
-      let argInterval = getArgumentsItem(interval) as number;
-      if (argInterval < 300) argInterval = 300;
-      setList(argMessages);
+  const setMessages = useCallback(
+    ( ...args) => {
+      const { messages, counter, interval } = getArguments(args) as {
+        messages: ({ message: string } | string) [];
+        counter: number;
+        interval: number;
+      };
+      setList(messages);
       // setInterval 间隔时长
-      if (argInterval) setInterval(argInterval);
+      if (interval) setInterval(interval < 300 ? 300 : interval);
       // setIntersection 限制交叉条目
-      if (argCounter)
+      if (counter)
         setIntersection(
-          argMessages.length < argCounter ? argMessages.length : argCounter
+          messages.length < counter ? messages.length : counter
         );
     },
     [setIntersection, setList]
   );
 
-  // inject class from jss
-  const userClass = useStyles(style);
-  // Register events and publish functions
-  useLifeCycle(
-    moduleId,
-    // register events
-    {
-      mount: "初始化",
-      unmount: "卸载",
-    },
-    // publish functions
-    { setMessages }
-  );
+  // First setup registers
+  useEffect(() => {
+    registersFunction({
+      setMessages
+    })
+  }, [setMessages, registersFunction])
+
+  // Second, distributing events
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refTimerId = useRef<any>(undefined);
 
@@ -94,6 +93,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
     [listRef, listItemHeightRef]
   );
 
+  
   const loop = useCallback(
     (interval) => {
       if (refTimerId.current) {
@@ -117,14 +117,21 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
       }
       refTimerId.current = setTimeout(loop, currentInterval, interval);
     },
-    [list.length, setListItemHeight, setListWrapStyle, wrapStyle]
+    [list.length, setListItemHeight, wrapStyle]
   );
 
   // 运行
   useEffect(() => {
     loop(interval);
-  }, [loop, interval]);
+  }, [loop, interval, ready]);
 
+  // 等待样式准备
+  useEffect(() => {
+    if (!ready) {
+      setTimeout(() => setReady(true), interval)
+    }
+  }, [interval, ready])
+  
   useEffect(() => {
     return () => {
       if (refTimerId.current) {
@@ -163,7 +170,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
   return (
     <Wrapper {...props} maxWidth itemAlign="bottom">
       <div
-        className={s.display}
+        className={classNames(s.display, !ready ? s.disappear : null)}
         style={{ height: listItemHeight * intersection }}
       >
         <div className={s.listwrap} style={listWrapStyle}>
@@ -172,7 +179,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
               <li key={`top${index}`} style={{ opacity: setItemAlph(index) }}>
                 <div>
                   <div
-                    className={classNames(userClass.item, s.item)}
+                    className={classNames(classes.item, s.item)}
                     style={{ maxWidth: listWrapRef.current?.offsetWidth }}
                   >
                     {typeof item === "string" ? item : item.message}
@@ -189,7 +196,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
               >
                 <div>
                   <div
-                    className={classNames(userClass.item, s.item)}
+                    className={classNames(classes.item, s.item)}
                     style={{ maxWidth: listWrapRef.current?.offsetWidth }}
                   >
                     {typeof item === "string" ? item : item.message}
@@ -201,14 +208,7 @@ const Broadcast: Modules<BroadcastProps> = (props) => {
         </div>
       </div>
     </Wrapper>
-  );
-};
-
-// bind static
-for (const key in config) {
-  if (Object.prototype.hasOwnProperty.call(config, key)) {
-    Broadcast[key] = config[key];
-  }
+  )
 }
 
-export default Broadcast;
+export default PresetModule<BroadcastProps>(Broadcast, config, createStyles);

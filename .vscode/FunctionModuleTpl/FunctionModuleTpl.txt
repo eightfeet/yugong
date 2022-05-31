@@ -1,0 +1,80 @@
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ArgumentsString } from '~/types/appData';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { Dispatch, RootState } from '~/redux/store';
+import Wrapper from '../Wrapper';
+import config, { ExposeEventsKeys } from './FunctionModuleTpl.config';
+import createStyles, { ClassesKey } from './FunctionModuleTpl.createStyles';
+
+export type FunctionModuleTplProps = ClassModuleBaseProps<
+  { [keys in ClassesKey]: string; },
+  { [keys in ExposeEventsKeys]: Function; }
+>
+
+const FunctionModuleTpl: React.FC<FunctionModuleTplProps> = (props) => {
+  const {
+    registersFunction,
+    eventDispatch,
+    classes,
+  } = props;
+  const { runningTimes } = useSelector((state: RootState) => state);
+  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    setRunningTimes({ text: 'runningTimeData' });
+  }, [setRunningTimes])
+
+  const handleClick = useCallback(
+    (text: ArgumentsString) => {
+      const getState = getArgumentsItem(text);
+      setText(getState as string)
+    },
+    [],
+  )
+
+  // First setup registers
+  useEffect(() => {
+    registersFunction({
+      handleClick
+    })
+  }, [handleClick, registersFunction])
+
+  // Second, distributing events
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <Wrapper {...props}>
+      <div onClick={() => eventDispatch().click()}>
+        <br />
+        &nbsp;
+        <span style={{ display: 'inline-block' }} className={classes.style1}>
+          style1<br />
+          &nbsp;
+          <span style={{ display: 'inline-block' }} className={classes.style2}>
+            style2
+          </span>
+          &nbsp;
+          <br />
+          &nbsp;{runningTimes.text}&nbsp;
+          <br />
+          {text}
+          <br />
+          &nbsp;
+        </span>
+        &nbsp;
+      </div>
+    </Wrapper>
+  )
+}
+
+export default PresetModule<FunctionModuleTplProps>(FunctionModuleTpl, config, createStyles);

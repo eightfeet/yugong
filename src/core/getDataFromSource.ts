@@ -13,10 +13,15 @@ const regexspace = /(^\s*)|(\s*$)/g;
 // 规则:强制runningTime
 const regexforceRT = /^\*\.+/;
 
-const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObjectType, isJs?: boolean ) => {
+const matchRule = (
+  ruleList: string[] | null, 
+  target: string, 
+  dataSource?: AnyObjectType, 
+  isJs?: boolean, 
+  effect?: (data: any) => string) => {
   let result = target as any;
   if (typeof result !== 'string') {
-      return result
+    return result
   }
   ruleList?.forEach((item) => {
     // 是否是完整数据
@@ -39,7 +44,7 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
       try {
         // 将"this"字符转化为"data"
         key = key.replace(/this/g, 'data');
-        value = saferEval(key, {data, runningTimes, dayjs})
+        value = saferEval(key, { data, runningTimes, dayjs })
       } catch (error) {
         console.log(error);
         // 无法输入时直接使用key
@@ -53,7 +58,7 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
 
       keyArray.some((element, index) => {
         // 元素：移除首尾空格
-        let el =  element.replace(regexspace,"");
+        let el = element.replace(regexspace, "");
         // force global 强制从运行时取值
         if (!!el.match(regexforceRT)?.length) {
           data = runningTimes;
@@ -61,10 +66,12 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
         }
         // 取值
         value = get(data, el);
+        if(typeof effect === 'function') value = effect(value);
+        
         if (!!value || value === 0) {
           return true
         } else {
-          if (index === (keyArray.length - 1)) {value = element}
+          if (index === (keyArray.length - 1)) { value = element }
           return false
         }
       })
@@ -74,8 +81,8 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
     if (type === '[object Object]' || type === '[object Array]' || isCompleteData) {
       result = value;
     } else {
-      result = result.replace(item, (value || value === 0) ? value : '');
-    }    
+      result = result.toString().replace(item, (value || value === 0) ? value : '');
+    }
   });
   return result;
 }
@@ -88,28 +95,27 @@ const matchRule = (ruleList: string[] | null, target:string, dataSource?: AnyObj
  * 3、强制从运行时取值，通过标示*.来识别
  * @param {string} operationStr 操作字符
  * @param {AnyObjectType} [dataSource] 数据源，默认runningTime
+ * @param {Function} effect 对数据结果做处理
  * @return {string} 返回编译结果
  */
-export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType): any => {
+export const compilePlaceholderFromDataSource = (data: string, dataSource?: AnyObjectType, effect?: (data: any) => string): any => {
   if (typeof data !== "string") {
     return data || '';
   }
 
   // 匹配运行时
   let result: any = data;
-
   const ruleJsList = data.match(regexjswrap);
   if (ruleJsList?.length) {
-    result = matchRule(ruleJsList, result, dataSource, true);
+    result = matchRule(ruleJsList, result, dataSource, true, effect);
   }
 
   const ruleList = data.match(regexwrap);
-  result = matchRule(ruleList, result, dataSource);
-
+  result = matchRule(ruleList, result, dataSource, false, effect);
   return result;
 };
 
-export const runningTimeToResult = (value: any, defaultValue: number) : number => {
+export const runningTimeToResult = (value: any, defaultValue: number): number => {
   const data = parseInt(`${compilePlaceholderFromDataSource(value)}`) || defaultValue;
   return data;
 }

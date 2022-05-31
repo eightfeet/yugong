@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import s from "./style.module.scss";
 
 interface GridLineProps {
@@ -30,6 +30,7 @@ export default function GridLine({
 }: GridLineProps) {
   const [xl, setxl] = useState<any>([]);
   const [yl, setyl] = useState<any>([]);
+  const WH = window.innerHeight;
   useEffect(() => {
     const xdata = [];
     const ydata = [];
@@ -48,17 +49,30 @@ export default function GridLine({
 
     setxl(xdata);
     setyl(ydata);
-    return () => {};
+    return () => { };
   }, [cols, height, rowHeight, space, width]);
 
+  const renderPageLine = useCallback(
+    () => {
+      return <div className={s.pagelinewrap}>
+        <div className={s.pageline} style={{ height: WH }} />
+      </div>
+    },
+    [WH],
+  )
+
+
   return (
-    <div className={s.cwrap} style={{ minHeight: window.innerHeight }}>
-      {xl.map(({ top }: any, index: number) => (
-        <div key={index} className={s.x} style={{ top }} />
-      ))}
-      {yl.map(({ left }: any, index: number) => (
-        <div key={index} className={s.y} style={{ left }} />
-      ))}
-    </div>
+    <>
+      {renderPageLine()}
+      <div className={s.cwrap} style={{ minHeight: WH }}>
+        {xl.map(({ top }: any, index: number) => (
+          <div key={index} className={s.x} style={{ top }} />
+        ))}
+        {yl.map(({ left }: any, index: number) => (
+          <div key={index} className={s.y} style={{ left }} />
+        ))}
+      </div>
+    </>
   );
 }

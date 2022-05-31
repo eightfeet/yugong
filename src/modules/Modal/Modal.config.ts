@@ -111,6 +111,7 @@ const config: ModulesStatic = {
           top: [-25, ""],
         },
       },
+      modules: {},
       container: {},
       content:{},
       header: {},
@@ -118,7 +119,8 @@ const config: ModulesStatic = {
       button: {},
       okButton: {},
       cancelButton: {},
-      modify: {},
+      modifya: {},
+      modifyb: {}
     },
     styleDescription: [
       {
@@ -134,48 +136,57 @@ const config: ModulesStatic = {
             value: "close",
           },
           {
-            title: "弹窗容器",
-            value: "container",
-            children: [
-              {
-                title: "弹窗",
-                value: "content",
-                children: [
-                  {
-                    title: "头部",
-                    value: "header",
-                  },
-                  {
-                    title: "内容",
-                    value: "article",
-                  },
-                  {
-                    title: "脚部",
-                    value: "footer",
-                    children: [
-                      {
-                        title: "按钮",
-                        value: "button",
-                        children: [
-                          {
-                            title: "确定按钮",
-                            value: "okButton",
-                          },
-                          {
-                            title: "取消按钮",
-                            value: "cancelButton",
-                          },
-                        ],
-                      },
-                    ]
-                  },
-                ],
-              },
-            ],
+            title: "弹窗",
+            value: "modules",
+            children: [{
+              title: "弹窗容器",
+              value: "container",
+              children: [
+                {
+                  title: "头部",
+                  value: "header",
+                },
+                {
+                  title: "内容容器",
+                  value: "content",
+                  children: [
+                    {
+                      title: "内容",
+                      value: "article",
+                      
+                    },
+                  ],
+                },
+                {
+                  title: "脚部",
+                  value: "footer",
+                  children: [
+                    {
+                      title: "按钮",
+                      value: "button",
+                      children: [
+                        {
+                          title: "确定按钮",
+                          value: "okButton",
+                        },
+                        {
+                          title: "取消按钮",
+                          value: "cancelButton",
+                        },
+                      ],
+                    },
+                  ]
+                },
+              ],
+            }]
           },
           {
-            title: "修饰层",
-            value: "modify",
+            title: "修饰层一",
+            value: "modifya",
+          },
+          {
+            title: "修饰层二",
+            value: "modifyb",
           },
         ],
       },
@@ -193,5 +204,8 @@ const config: ModulesStatic = {
     }
   ],
 };
+
+// export type key of events list
+export type ExposeEventsKeys = 'mount' | 'unmount' | 'ok' | 'cancel';
 
 export default config;

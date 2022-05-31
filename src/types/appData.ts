@@ -336,10 +336,11 @@ export interface BackgroundCommonTypesOfStyleItems {
   repeat?: string;
 }
 
-export interface AppDataElementsStyleTypes {
+export type AppDataElementsStyleTypes<T = {[key: string]: any}> = {
+  [keys in keyof T]?: StyleItemsTypes;
+} & {
   basic: StyleItemsTypes;
-  [keys: string]: StyleItemsTypes;
-}
+};
 
 export type AppDataListTypes = AppDataLayoutItemTypes[];
 

@@ -1,10 +1,10 @@
 import getDefaultArgumentsByEventName from "./helper/getDefaultArgumentsByEventName";
 
-interface EventEmitterEvents {
+export interface EventEmitterEvents {
   [key: string]: Function;
 }
 
-interface EventEmitterEmitArgs {
+export interface EventEmitterEmitArgs {
   /**
    * 事件名称 EventEmitterEvents[key]
    */
@@ -87,5 +87,7 @@ class EventEmitter {
   }
 }
 
-export const eventEmitter = new EventEmitter();
+const e = new EventEmitter();
+(window as any).EventC = e;
+export const eventEmitter = e;
 export default EventEmitter;

@@ -1,0 +1,74 @@
+.root {
+  background-size: 100% auto;
+  background-position: 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 0.5em;
+
+  header,
+  footer {
+    margin: 0;
+    padding: 0.48em 0;
+    display: flex;
+    flex-direction: row;
+    min-height: 3.456em;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  header {
+    font-weight: bold;
+  }
+
+  footer {
+    padding-bottom: 1.728em;
+    width: 100%;
+  }
+
+  .jc-space-between {
+    justify-content: space-between;
+  }
+  .jc-center {
+    justify-content: center;
+  }
+
+  .message,
+  .content {
+    flex: auto;
+    padding: 0.96em;
+    text-align: center;
+    line-height: 1.2;
+    max-height: 65vh;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+
+  .offsetbottom {
+    padding-bottom: 2.56em;
+  }
+}
+
+/**
+   * 全局弹窗按钮样式
+   */
+.submit {
+  background-color: rgb(255, 120, 61);
+  display: block;
+  margin: 0 0.96em;
+  height: 2.432em;
+  color: #fff;
+  border: none;
+  font-size: 1em;
+  border-radius: 37px;
+  padding: 0 0.96em;
+  min-width: 17.28em;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
+}

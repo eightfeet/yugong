@@ -8,7 +8,7 @@ import { store } from '~/redux/store';
 import { compilePlaceholderFromDataSource as getResult } from './getDataFromSource';
 import loading from './loading';
 import message from '~/components/Message';
-import lodash from 'lodash';
+import lodash, { get } from 'lodash';
 
 const requester = async (
     apiArguments: Api,
@@ -62,14 +62,17 @@ const requester = async (
         }
     }
 
+    const mapedBodyData = {};
     // 映射转换
     if (enterMap?.length) {
         const maps = enterMap[0].map?.data || {};
         for (const key in maps) {
             if (Object.prototype.hasOwnProperty.call(maps, key)) {
-                const targetKey = maps[key];
-                if (bodyData[key]) {
-                    bodyData[targetKey] = bodyData[key];
+                const path = maps[key];
+                const value = get(bodyData, path)
+                // 有值时
+                if (value) {
+                  mapedBodyData[key] = value;
                 }
             }
         }
@@ -77,7 +80,7 @@ const requester = async (
 
     return await fetchApi(
         url,
-        { method, headers: headersData, body: bodyData, mode, credentials },
+        { method, headers: headersData, body: Object.keys(mapedBodyData).length ? mapedBodyData : bodyData, mode, credentials },
         dataMap
     );
 };

@@ -81,4 +81,7 @@ const config: ModulesStatic = {
     },
 };
 
+// export type key of events list
+export type ExposeEventsKeys = 'mount' | 'unmount' | 'click';
+
 export default config;

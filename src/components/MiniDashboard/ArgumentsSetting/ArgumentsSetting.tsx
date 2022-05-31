@@ -2,9 +2,10 @@ import { ClusterOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
 import { Button, Card, Input, Select, Tooltip } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
-import React, { useEffect, useState, useMemo, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { Dispatch, RootState } from '~/redux/store';
 import {
   ArgumentsItem,
@@ -57,6 +58,10 @@ interface Props {
    * forceUpdate
    */
   forceUpdate?: boolean;
+  /**
+   * showRunningTime
+   */
+  visiableRunningTimeIcon?: boolean;
 }
 
 const ArgumentsSetting: React.FC<Props> = ({
@@ -69,6 +74,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   dataFlexible = false,
   headerFlexible = false,
   forceUpdate,
+  visiableRunningTimeIcon = true,
 }) => {
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const [argumentState, setArgumentState] = useState<ArgumentsItem[]>([]);
@@ -99,7 +105,7 @@ const ArgumentsSetting: React.FC<Props> = ({
   // number
   const onChangeInput = useCallback(
     (index: number, isSelect?: boolean) => (e: any) => {
-      const result = [...argumentState];
+      const result = cloneDeep(argumentState);
       result[index].data = isSelect ? e : e.target.value;
       setArgumentState(result);
     },
@@ -247,7 +253,7 @@ const ArgumentsSetting: React.FC<Props> = ({
           <div className={s.title}>
             <h4>
               {title}{' '}
-              <Button
+              {visiableRunningTimeIcon ? <Button
                 type="text"
                 onClick={onClickShowGloabVar}
                 icon={
@@ -257,7 +263,7 @@ const ArgumentsSetting: React.FC<Props> = ({
                     />
                   </Tooltip>
                 }
-              />
+              /> : null}
             </h4>
             <div className={s.right}>
               {headerFlexible ? (

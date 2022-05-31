@@ -1,82 +1,34 @@
+.wrap {
+  text-align: left;
+  height: 100%;
+  overflow-y: auto;
+}
 
-.root {
+.form {
+  width: 100%;
+}
 
-    /* Change the white to any color */
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active
+:global {
+  @media only screen and (max-device-width: 640px) {
+    /* Styles */
+    .ant-picker-datetime-panel, .ant-picker-panel-container .ant-picker-panels {
+      flex-wrap: wrap !important;
+      width: 100% !important;
+    }
+    .ant-picker-date-panel .ant-picker-content, 
+    .ant-picker-dropdown,
+    .ant-picker-decade-panel, 
+    .ant-picker-year-panel, 
+    .ant-picker-quarter-panel, 
+    .ant-picker-month-panel, 
+    .ant-picker-week-panel, 
+    .ant-picker-date-panel, 
+    .ant-picker-time-panel
     {
-      transition: background-color 5000s;
-      -webkit-text-fill-color: #fff !important;
+      width: 100% !important;
     }
-
-    box-sizing: border-box;
-
-    .container, .header, .footer {
-        margin: 0;
-        padding: 0;
-        box-sizing: content-box;
+    .ant-picker-dropdown {
+      left: 0 !important;
     }
-}
-
-.button {
-  -webkit-appearance: none;
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  border: none;
-  position: relative;
-  min-height: 50px;
-  user-select: none;
-  &:hover {
-    outline: 0;
   }
-
-  &:focus {
-    outline: 0;
-  }
-
-  &:active {
-    outline: 0;
-  }
-
-  &:disabled {
-    pointer-events: none;
-  }
-}
-
-
-.root :global {
-  .MuiGrid-container {
-      margin: 0;
-      width: 100%;
-  }
-
-  input:-internal-autofill-selected {
-    background-color: transparent !important;
-  }
-
-  ::-webkit-calendar-picker-indicator{
-    opacity: 0.3;
-  }
-
-  .MuiScopedCssBaseline-root {
-      background-color:transparent;
-      color: inherit;
-  }
-
-  .MuiInputBase-root, .MuiScopedCssBaseline-root, .MuiSvgIcon-root, .MuiRadio-root, .MuiCheckbox-root, .MuiFormLabel-root {
-      color: inherit;
-  }
-
-  .MuiSvgIcon-root, .MuiIconButton-root, .MuiTypography-body1, .MuiInputBase-root {
-    font-size: inherit;
-  }
-
-  .MuiFormLabel-root.Mui-focused {
-    color: inherit;
-  }
-  
 }

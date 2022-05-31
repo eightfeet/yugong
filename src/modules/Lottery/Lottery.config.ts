@@ -1,17 +1,9 @@
 import {
-    ExposeFunctions,
-    ComExposeEvents,
-    ExposeDefaultProps,
-    ExposeApi,
-} from '~/types/modules';
-import { style, styleDescription } from './style';
+  ModulesStatic,
+} from "~/types/modules";
+import { style, styleDescription } from "./style";
 
-const config: {
-    exposeFunctions: ExposeFunctions[];
-    exposeEvents: ComExposeEvents;
-    exposeDefaultProps: ExposeDefaultProps;
-    exposeApi: ExposeApi[];
-} = {
+const config: ModulesStatic = {
     /**
      * 注册方法的静态描述与默认参数定义
      */
@@ -209,6 +201,19 @@ const config: {
                     type: 'string',
                     name: '动画',
                     fieldName: 'animation',
+                    select: {
+                      flipInY: 'flipInY',
+                      flipInX: 'flipInX',
+                      fadeInUp: 'fadeInUp',
+                      fadeInDown: 'fadeInDown',
+                      fadeInLeft: 'fadeInLeft',
+                      fadeInRight: 'fadeInRight',
+                      zoomIn: 'zoomIn',
+                      zoomInUp: 'zoomInUp',
+                      zoomInDown: 'zoomInDown',
+                      zoomInLeft: 'zoomInLeft',
+                      zoomInRight: 'zoomInRight'
+                  },
                     describe: `中奖弹窗动画
                   flipInY | flipInX | fadeInUp | fadeInDown | fadeInLeft 
                   | fadeInRight | zoomIn | zoomInUp | zoomInDown | zoomInLeft | zoomInRight`,
@@ -252,7 +257,7 @@ const config: {
             presettable: false,
         },
     ],
-
+  
     /**
      * 发布事件的静态描述
      */
@@ -302,7 +307,7 @@ const config: {
         style,
         styleDescription,
     },
-
+  
     /**
      * 发布默认Api
      */
@@ -370,6 +375,19 @@ const config: {
             enterDescription: `获取中奖记录`,
         },
     ],
-};
-
-export default config;
+  };
+  
+  // export type key of events list
+  export type ExposeEventsKeys = 
+    'mount' | 
+    'unmount' | 
+    'onStart' | 
+    'onEnd' | 
+    'onCancel' | 
+    'onEnsure' | 
+    'onShowSuccess' |
+    'onShowFailed' |
+    'onShowAddress';
+  
+  export default config;
+  

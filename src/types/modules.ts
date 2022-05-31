@@ -91,7 +91,9 @@ export interface ExposeDefaultProps {
     api?: Api[];
     styleDescription?: {
       [keys: string]: string
-    } | StyleDescItem[]
+    } | StyleDescItem[];
+    /**模块自定义预设 */
+    preset?: boolean;
 }
 
 export interface StyleDescItem {

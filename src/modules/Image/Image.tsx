@@ -1,63 +1,77 @@
-import { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
-import { getArgumentsItem } from "~/core/getArgumentsTypeDataFromDataSource";
-import useLifeCycle from "~/hooks/useLifeCycle";
-import { RootState } from "~/redux/store";
-import { AppDataElementsTypes, ArgumentsObject } from "~/types/appData";
-import { Modules } from "~/types/modules";
-import Wrapper from "../Wrapper";
-import config from './Image.config';
-import useStyles from "./Image.useStyle";
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import PresetModule from '~/components/PresetModule';
+import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ArgumentsObject } from '~/types/appData';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { RootState } from '~/redux/store';
+import Wrapper from '../Wrapper';
+import config, { ExposeEventsKeys } from './Image.config';
+import createStyles, { ClassesKey } from './Image.createStyles';
+import DefaultImg from '~/components/Icon/DefaultImg';
 
-export interface ImageProps extends AppDataElementsTypes {
-}
+export type ImageProps = ClassModuleBaseProps<
+  { [keys in ClassesKey]: string },
+  { [keys in ExposeEventsKeys]: Function }
+>;
 
 interface ImgUrl {
-  url: string,
-  alt: string,
-  linkUrl: string
+  url: string;
+  alt: string;
+  linkUrl: string;
 }
 
-const Image: Modules<ImageProps> = (props) => {
-  const { style, moduleId } = props;
+const Image: React.FC<ImageProps> = (props) => {
+  const { registersFunction, eventDispatch, classes } = props;
+  const isEditing = useSelector(
+    (state: RootState) => state.controller.isEditing,
+  );
   const [imgurl, setImgUrl] = useState<ImgUrl>();
-  const userClass = useStyles(style);
-  const isEditing = useSelector((state: RootState) => state.controller.isEditing)
+
   // 设置图片地址
   const setImg = useCallback((img: ArgumentsObject) => {
-    const data = getArgumentsItem(img)
+    const data = getArgumentsItem(img);
+    console.log(data);
     setImgUrl(data as ImgUrl);
   }, []);
 
-  useLifeCycle(moduleId, {mount: "初始化", unmount: "卸载"}, {setImg})
+  const handleClick = useCallback(() => {
+    eventDispatch().click();
+    if (imgurl?.linkUrl && !isEditing) {
+      window.location.href = imgurl.linkUrl;
+    }
+  }, [eventDispatch, imgurl?.linkUrl, isEditing]);
 
-  const onClick = useCallback(
-    () => {
-      if (imgurl?.linkUrl && !isEditing) {
-        window.location.href = imgurl.linkUrl;
-      }
-    },
-    [imgurl?.linkUrl, isEditing],
-  )
+  useEffect(() => {
+    registersFunction({
+      setImg,
+    });
+  }, [registersFunction, setImg]);
+
+  useEffect(() => {
+    eventDispatch().mount();
+    return () => {
+      eventDispatch().unmount();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Wrapper {...props} maxWidth maxHeight>
-      <img
+      {imgurl?.url ? <img
         src={imgurl?.url}
-        onClick={onClick}
-        className={userClass.image}
-        style={{ maxWidth: "100%", maxHeight: "100%", pointerEvents: isEditing ? 'none' : 'auto'}}
-        alt={imgurl?.alt || "设置图片url"}
+        onClick={handleClick}
+        className={classes.image}
+        style={{
+          maxWidth: '100%',
+          maxHeight: '100%',
+          pointerEvents: isEditing ? 'none' : 'auto',
+        }}
+        alt={imgurl?.alt || '设置图片url'}
       />
+      :<DefaultImg className={classes.image} />}
     </Wrapper>
   );
 };
 
-// bind static
-for (const key in config) {
-  if (Object.prototype.hasOwnProperty.call(config, key)) {
-    Image[key] = config[key];
-  }
-}
-
-export default Image;
+export default PresetModule<ImageProps>(Image, config, createStyles);

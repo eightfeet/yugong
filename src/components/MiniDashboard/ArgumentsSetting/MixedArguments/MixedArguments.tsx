@@ -9,14 +9,16 @@ import { CopyOutlined, FormOutlined, SaveOutlined } from '@ant-design/icons';
 import Button from 'antd/lib/button';
 import { AppDataLayoutItemTypes, ArgumentsItem } from '~/types/appData';
 import cloneDeep from 'lodash/cloneDeep';
+import classNames from 'classnames';
 
 interface Props {
   onChange: (data: ArgumentsItem) => void;
   typeArguments: ArgumentsItem;
   flexible: boolean;
+  className?: string;
 }
 
-const Mixedarguments: React.FC<Props> = ({ typeArguments, onChange }) => {
+const Mixedarguments: React.FC<Props> = ({ typeArguments, onChange, className }) => {
   const [jsonData, setJsonData] = useState<AppDataLayoutItemTypes>();
   const [jsonMode, setJsonMode] = useState<'view' | 'code'>('view');
 
@@ -74,8 +76,8 @@ const Mixedarguments: React.FC<Props> = ({ typeArguments, onChange }) => {
   }, []);
 
   return (
-    <>
-      <div className={s.toolbar}>
+    <div className={classNames(className)}>
+      <div className={s.toolbar} >
         <div>
           &nbsp;
           <CopyToClipboard
@@ -111,7 +113,7 @@ const Mixedarguments: React.FC<Props> = ({ typeArguments, onChange }) => {
         </div>
       </div>
       <div className={s.wrap} ref={container} />
-    </>
+    </div>
   );
 };
 

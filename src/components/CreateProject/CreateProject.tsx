@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Card, PageHeader, Modal } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import CreateEditIcon from './CreateEditIcon';
 import s from './CreateProject.module.less';
 import useLocalStorage from '~/hooks/useLocalStorage';
@@ -18,6 +18,9 @@ import {
   DEFAULT_PAGE_WIDTH,
   DEFAULT_PAGE_HEIGHT,
 } from '~/core/constants';
+import CreateMobile from '../Icon/CreateMobile';
+import Mobile from '../Icon/Mobile';
+import mobileData from './mobile.json';
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -31,6 +34,7 @@ interface Props {
 const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
   const [localAppData, setLocalAppData] = useLocalStorage('appData', null);
   const [localPageData, setLocalPageData] = useLocalStorage('pageData', null);
+  const [showMobile, setShowMobile] = useState(false);
   const dispatch = useDispatch<Dispatch>();
 
   const initData = useCallback(() => {
@@ -66,19 +70,51 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
     goBack();
   }, [dispatch.record, goBack, initData]);
 
-  const confirmModal = useCallback(() => {
-    if (!localAppData?.length && !localPageData) {
-      createBlank();
-      return;
-    }
-    confirm({
-      content: <div>当前有历史页面正在编辑，创建空白模板将清除历史数据！</div>,
-      okText: '确定',
-      cancelText: '取消',
-      onCancel: () => {},
-      onOk: createBlank,
-    });
-  }, [createBlank, localAppData?.length, localPageData]);
+  const createMobile = useCallback((width: number) => {
+    setShowMobile(false);
+    /**初始化 */
+    initData();
+    trackEvent('点击', '创建移动端');
+     /**重置记录 */
+     dispatch.record.initRecord();
+     /**序列化模板数据 */
+     const parsePageData: PageData = {
+      "unit": "px",
+      "toUnit": "rem",
+      "cols": width < 2048 ? 24 : 48,
+      "rowHeight": width < 2048 ? "{{unit.rem}}" : "{{unit.rem/2}}",
+      "space": 0,
+      "windowWidth": width < 2048 ? 414 : 768,
+      "UIWidth": width,
+      "baseFont": width/24
+     };
+     setLocalPageData(parsePageData);
+     dispatch.pageData.updatePage(parsePageData);
+     goBack();
+  }, [dispatch.pageData, dispatch.record, goBack, initData, setLocalPageData]);
+
+  const confirmModal = useCallback(
+    (type: 'mobile' | 'blank') => {
+      if (!localAppData?.length && !localPageData) {
+        if (type === 'blank') createBlank();
+        if (type === 'mobile') setShowMobile(true);
+        return;
+      }
+      confirm({
+        content: (
+          <div>当前有历史页面正在编辑，创建模板将清除历史数据！</div>
+        ),
+        okText: '确定',
+        cancelText: '取消',
+        onCancel: () => { },
+        onOk: () => {
+          if (type === 'blank') createBlank();
+          if (type === 'mobile') setShowMobile(true);
+        },
+      });
+    },
+    [createBlank, localAppData?.length, localPageData],
+  );
 
   const getTemplate = useCallback((id) => {
     return queryTemplateById(id);
@@ -90,7 +126,7 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         /**根据id查找模板 */
         const data = await getTemplate(id);
         /**
-         * 从模板中获取 
+         * 从模板中获取
          * 分为三块内容页面pageData、组件数据appData、与当前页面的模板信息templateArg
          * */
         const { appData, pageData, ...templateArg } = data;
@@ -128,11 +164,22 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         ),
         okText: '确定',
         cancelText: '取消',
-        onCancel: () => {},
+        onCancel: () => { },
         onOk: fn,
       });
     },
-    [dispatch.appData, dispatch.pageData, dispatch.record, getTemplate, goBack, initData, localAppData?.length, localPageData, setLocalAppData, setLocalPageData],
+    [
+      dispatch.appData,
+      dispatch.pageData,
+      dispatch.record,
+      getTemplate,
+      goBack,
+      initData,
+      localAppData?.length,
+      localPageData,
+      setLocalAppData,
+      setLocalPageData,
+    ],
   );
 
   return (
@@ -161,17 +208,52 @@ const Createproject: React.FC<Props> = ({ goBack, onCreating }) => {
         <Card
           className={s.card}
           hoverable
-          onClick={confirmModal}
+          onClick={() => confirmModal('mobile')}
+          cover={
+            <div className={s.projectcove}>
+              <CreateMobile className={s.addicon} />
+            </div>
+          }
+        >
+          <Meta className={s.mate} title="创建移动端页面" />
+        </Card>
+        <Card
+          className={s.card}
+          hoverable
+          onClick={() => confirmModal('blank')}
           cover={
             <div className={s.projectcove}>
               <PlusOutlined className={s.addicon} />
             </div>
           }
         >
-          <Meta className={s.mate} title="创建空白模板" />
+          <Meta className={s.mate} title="创建空白页面" />
         </Card>
       </div>
       <TemplateList onSelectedTemplate={onSelectedTemplate} />
+      <Modal onCancel={() => setShowMobile(false)} width={800} className={s.mobileplan} footer={null} visible={showMobile} title="请选择设计稿宽度">
+        <div className={s.uiwrap}>
+          {mobileData.map((item) => (
+            <Card
+              key={item.width}
+              className={s.mobilecard}
+              hoverable
+              onClick={() => createMobile(item.width)}
+            >
+              <div className={s.mobilecove}>
+                <span className={s.mobileiconwrap}>
+                  <Mobile />
+                </span>
+                <Meta
+                  className={s.mobilemate}
+                  title={`UI宽度: ${item.width}px`}
+                  description={item.name}
+                />
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 };

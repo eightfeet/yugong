@@ -121,7 +121,7 @@ const Upload: React.FC<UploadProps> = ({ label, defaultImg, onChange }) => {
         createTempImg(url);
       }
     },
-    [onChange],
+    [createTempImg, onChange],
   );
 
   return (
