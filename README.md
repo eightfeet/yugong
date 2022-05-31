@@ -31,18 +31,21 @@
 
   <div>模拟项目(请手机扫描访问): </div>
 
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/form.gif)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/baoming.png)
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/form.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/baoming.png" width="149" height="122" />
+</div>
+<br/>
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/game.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png" width="149" height="122" />
+</div>
+<br/>
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua.png" width="149" height="122" />
+</div>
 
-  <br />
-
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/game.gif)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png)
-
-  <br />
-
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/animate.gif)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/donghua.png)
 
 ## Documents
 
@@ -92,6 +95,6 @@ yugong是一套更倾向于前端项目,允许通过api配置化去对接中台�
 
 ## 支持我
 
-一个人写代码不易，产品、设计、前端、后台一把梭😂，求赏杯咖啡☕解解困，或者 **加个 star 万分感激**；
+求赏杯咖啡☕解解困，或者 **加个 star 万分感激**；
 
 ![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/zf.jpg)
