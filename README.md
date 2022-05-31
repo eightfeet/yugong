@@ -29,20 +29,27 @@
   [本地预览地址](https://yugong.dawenxi.art)
 
 
-  <div>模拟项目(请手机扫描访问): </div>
+>模拟项目(请手机扫描访问):
+
+### 表单报名或调查问卷
 
 <div style="display: flex">
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/form.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/form.gif" width="320" />
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/baoming.png" width="149" height="122" />
 </div>
-<br/>
+
+### 抽奖活动
+
 <div style="display: flex">
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/game.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/game.gif" width="320" />
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png" width="149" height="122" />
 </div>
 <br/>
+
+### 动画宣导
+
 <div style="display: flex">
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="200" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="320" />
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua.png" width="149" height="122" />
 </div>
 
