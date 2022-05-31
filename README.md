@@ -35,14 +35,14 @@
 
 <div style="display: flex">
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/form.gif" width="320" />
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/baoming.png" width="149" height="122" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/baoming1.png" width="149" height="122" />
 </div>
 
 ### 抽奖活动
 
 <div style="display: flex">
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/game.gif" width="320" />
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png" width="149" height="122" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/choujiang1.png" width="149" height="122" />
 </div>
 <br/>
 
@@ -50,7 +50,7 @@
 
 <div style="display: flex">
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="320" />
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua.png" width="149" height="122" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua1.png" width="149" height="122" />
 </div>
 
 
