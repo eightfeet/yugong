@@ -5,10 +5,11 @@
 ## CodingFarmes
 愚公码农😄
 
-这是一个纯粹的前端的低代码解决方案，帮助解决页面可视化配置，涉及极少部分独立后台发布、保存模板等相关功能；
-
-通过定义模板，灵活配置基础组件或[开发业务组件](./documents/component/README.md)，与中台或底层业务对接；
-
+1. 用于构建活动推广等消费型页面的低代码开源项目；
+2. 专注于前端视觉设计，可以应用基础组件，也可以封装[业务组件](./documents/component/README.md)，然后对其组合以构成复杂的推广落地页；
+3. Api对接方式灵活，无论你现在使用什么技术栈后台，无需动到任何后台代码即可便捷的对接到编辑器；
+4. 栅格化布局，让页面设计变得有规律，减少因设计布局而造成的决策成本；
+5. 模版化项目管理，可高度复用项目的业务逻辑，又可快速便捷的更改皮肤界面得到不一样的视觉与交互效果；
 
 功能:
 
@@ -24,16 +25,34 @@
 
   用户名：test，密码：123456 
   
-  > 服务器数据将定期被清理
   
   [本地预览地址](https://yugong.dawenxi.art)
 
-模拟项目(请手机扫描访问): 
 
+>模拟项目(请手机扫描访问):
 
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/baoming.png)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/choujiang.png)
-  ![Minion](https://www.eightfeet.cn/yugong/images/documents/template/donghua.png)
+### 表单报名或调查问卷
+
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/form.gif" width="320" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/baoming1.png" width="149" height="122" />
+</div>
+
+### 抽奖活动
+
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/game.gif" width="320" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/choujiang1.png" width="149" height="122" />
+</div>
+<br/>
+
+### 动画宣导
+
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="320" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua1.png" width="149" height="122" />
+</div>
+
 
 ## Documents
 
@@ -83,6 +102,6 @@ yugong是一套更倾向于前端项目,允许通过api配置化去对接中台�
 
 ## 支持我
 
-一个人写代码不易，产品、设计、前端、后台一把梭😂，求赏杯咖啡☕解解困，或者 **加个 star 万分感激**；
+求赏杯咖啡☕解解困，或者 **加个 star 万分感激**；
 
 ![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/zf.jpg)
