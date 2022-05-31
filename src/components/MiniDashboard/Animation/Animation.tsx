@@ -15,7 +15,7 @@ import produce from '~/core/helper/produce';
 
 interface Props {}
 
-const Animation: React.FC<Props> = ({}) => {
+const Animation: React.FC<Props> = () => {
   const context = useContext(StyleContext);
   const [animation, setAnimation] = useState<AnimationTypesOfStyleItems>({});
   const moduleId = useSelector(

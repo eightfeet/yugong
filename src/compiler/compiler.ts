@@ -829,17 +829,6 @@ export const transform = function (styleObj: objType): resultType {
 };
 
 export const animation = function (styleObj: objType): resultType {
-  const position: objType = {
-    animationName: 0,
-    animationDuration: 1,
-    animationTimingFunction: 2,
-    animationDelay: 3,
-    animationIterationCount: 4,
-    animationDirection: 5,
-    animationFillMode: 6,
-  };
-
-  const rules: any[] = [];
   const result = {};
   if (styleObj?.animationName) {
     for (const key in styleObj) {

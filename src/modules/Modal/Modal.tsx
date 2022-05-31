@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
 import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsItem } from '~/types/appData';
-import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import { RootState } from '~/redux/store';
 import MD from "~/components/Modal";
 import Wrapper from '../Wrapper';
@@ -11,8 +11,6 @@ import requester from "~/core/fetch";
 import config, { ExposeEventsKeys } from './Modal.config';
 import createStyles, { ClassesKey } from './Modal.createStyles';
 import classNames from 'classnames';
-import Cancel from "~/components/Icon/Cancel";
-import { boolean } from 'yup';
 
 export type ModalProps = ClassModuleBaseProps<
   { [keys in ClassesKey]: string; },

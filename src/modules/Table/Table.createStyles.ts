@@ -23,7 +23,7 @@ function createStyles(props: TableProps) {
       thcolodd={},
       thcoloddfirst={},
       thcolevenlast={},
-    }) => {
+    }: Style) => {
       return {
         // 表格
         ...toStyle(table),

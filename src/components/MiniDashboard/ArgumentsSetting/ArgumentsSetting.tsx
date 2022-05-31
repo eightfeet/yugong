@@ -2,7 +2,7 @@ import { ClusterOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
 import { Button, Card, Input, Select, Tooltip } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
-import React, { useEffect, useState, useMemo, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cloneDeep } from 'lodash';

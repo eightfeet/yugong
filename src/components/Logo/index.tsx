@@ -113,11 +113,6 @@ const DefaultLogo = (fill: string) => (
   </svg>
 );
 
-const style = {
-  display: 'block',
-  height: '100%',
-};
-
 interface Props {
   fill?: string;
   text?: boolean;

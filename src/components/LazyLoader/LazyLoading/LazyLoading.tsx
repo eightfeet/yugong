@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { HTMLAttributes, HtmlHTMLAttributes } from 'react';
+import React, { HTMLAttributes } from 'react';
 import s from './LazyLoading.module.less';
 
 interface Props {}

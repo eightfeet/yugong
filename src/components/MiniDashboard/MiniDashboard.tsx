@@ -10,6 +10,7 @@ const MiniDashboard: React.FC = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const LazyComponent = useMemo(
     () => lazy(() => import('~/components/MiniDashboard/Dashboard/index')),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [rootFontsize],
   );
   return (
