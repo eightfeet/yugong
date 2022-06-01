@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ClassClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsObject } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { RootState } from '~/redux/store';
@@ -10,7 +10,7 @@ import config, { ExposeEventsKeys } from './Image.config';
 import createStyles, { ClassesKey } from './Image.createStyles';
 import DefaultImg from '~/components/Icon/DefaultImg';
 
-export type ImageProps = ClassModuleBaseProps<
+export type ImageProps = ClassClassModuleBaseProps<
   { [keys in ClassesKey]: string },
   { [keys in ExposeEventsKeys]: Function }
 >;

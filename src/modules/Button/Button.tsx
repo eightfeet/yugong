@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ClassClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsItem, ArgumentsString } from '~/types/appData';
 import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import requester from '~/core/fetch';
@@ -11,7 +11,7 @@ import createStyles, { ClassesKey } from './Button.createStyles';
 import s from './Button.module.less';
 import { useLongPress } from 'react-use';
 
-export type ButtonProps = ClassModuleBaseProps<
+export type ButtonProps = ClassClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >

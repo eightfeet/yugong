@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ClassClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsItem } from '~/types/appData';
 import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import { RootState } from '~/redux/store';
@@ -12,7 +12,7 @@ import config, { ExposeEventsKeys } from './Modal.config';
 import createStyles, { ClassesKey } from './Modal.createStyles';
 import classNames from 'classnames';
 
-export type ModalProps = ClassModuleBaseProps<
+export type ModalProps = ClassClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >

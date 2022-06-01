@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ClassClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Broadcast.config';
@@ -9,7 +9,7 @@ import useRefState from '~/hooks/useRefState';
 import classNames from 'classnames';
 import s from "./Broadcast.module.scss";
 
-export type BroadcastProps = ClassModuleBaseProps<
+export type BroadcastProps = ClassClassModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >
