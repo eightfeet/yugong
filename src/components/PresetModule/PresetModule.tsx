@@ -112,7 +112,7 @@ export default function PresetModule<T extends PresetModuleProps = PresetModuleP
   return ComponentPresetModule;
 }
 
-export interface ClassClassModuleBaseProps<Classes = anyObj, Evevnts = FunObj> extends AppDataElementsTypes {
+export interface ModuleBaseProps<Classes = anyObj, Evevnts = FunObj> extends AppDataElementsTypes {
   classes: Classes;
   eventDispatch: () => EventsDispatch & Evevnts;
   eventEmitter: CurrentEventEmitter;

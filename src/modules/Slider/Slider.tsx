@@ -19,7 +19,7 @@ import 'swiper/swiper.min.css';
 
 
 import PresetModule from '~/components/PresetModule';
-import { ClassClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import config, { ExposeEventsKeys } from './Slider.config';
 import createStyles, { ClassesKey } from './Slider.createStyles';
 import classNames from 'classnames';
@@ -217,7 +217,7 @@ type State = {
   direction: string,
 }
 
-export type SliderProps = ClassClassModuleBaseProps<
+export type SliderProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >
