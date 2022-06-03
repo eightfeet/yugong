@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsItem } from '~/types/appData';
 import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import Wrapper from '../Wrapper';
@@ -9,7 +9,7 @@ import createStyles, { ClassesKey } from './Text.createStyles';
 import classNames from 'classnames';
 import s from './Text.module.less';
 
-export type TextProps = ClassModuleBaseProps<
+export type TextProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >

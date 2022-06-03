@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { AnyObjectType, ArgumentsItem, ArgumentsString } from '~/types/appData';
 import {
   getArguments,
@@ -616,7 +616,7 @@ type State = {
 type StateProps = ReturnType<typeof mapState>;
 type DispatchProps = ReturnType<typeof mapDispatch>;
 
-export type LotteryProps = ClassModuleBaseProps<
+export type LotteryProps = ModuleBaseProps<
   {},
   { [keys in ExposeEventsKeys]: Function }
 > &

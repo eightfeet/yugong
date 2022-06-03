@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import requester from '~/core/fetch';
 import { BetaSchemaForm } from '@ant-design/pro-form';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { AnyObjectType, ArgumentsMixed, ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
@@ -22,7 +22,7 @@ import moment from 'moment';
 
 const zhCn = require('moment/locale/zh-cn').default;
 
-export type FormProps = ClassModuleBaseProps<
+export type FormProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >

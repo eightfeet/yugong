@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import PresetModule from '~/components/PresetModule';
 import requester from '~/core/fetch';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import {
   AnyObjectType,
   ArgumentsArray,
@@ -346,7 +346,7 @@ type State = {
 type StateProps = ReturnType<typeof mapState>;
 type DispatchProps = ReturnType<typeof mapDispatch>;
 
-export type TableProps = ClassModuleBaseProps<
+export type TableProps = ModuleBaseProps<
   { [keys in ClassesKey]: string },
   { [keys in ExposeEventsKeys]: Function }
 > &
