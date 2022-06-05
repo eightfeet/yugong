@@ -5,8 +5,8 @@ import { createUseStyles } from "react-jss";
 import { GameMap } from "~/components/Game/useGame";
 import { buildGamesStyle, buildPublicModalStyle } from "./helper";
 
-const getParames = (id: string, style: any, type: keyof GameMap) => ({
-  [`& .${id.split('_')[0]}_gameroot`]: styleCompiler(style.gameroot).style || {},
+const getParames = (id: string, moduleId: string, style: any, type: keyof GameMap) => ({
+  [`& .${moduleId}_gameroot`]: styleCompiler(style.gameroot).style || {},
   ...buildPublicModalStyle(id, "successmodal", style),
   ...buildPublicModalStyle(id, "failedmodal", style),
   ...buildPublicModalStyle(id, "addressmodal", style),
@@ -17,12 +17,14 @@ const getParames = (id: string, style: any, type: keyof GameMap) => ({
 
 const headDom = document.head;
 
-const useStyles = (id: string, style: any, type: keyof GameMap) => {
+const useStyles = (moduleId: string, style: any, type: keyof GameMap) => {
+  const target = `gametarget${moduleId}_`;
+  const id = `gametarget${moduleId}_${type}`;
   const createStyleParames = useCallback(() => {
     return {
-      [id]: getParames(id, style, type),
+      [id]: getParames(id, moduleId, style, type),
     };
-  }, [id, style, type]);
+  }, [id, moduleId, style, type]);
 
   const setDom = useCallback(() => {
     let style = headDom?.querySelector(`#${id}_style`);
@@ -31,10 +33,19 @@ const useStyles = (id: string, style: any, type: keyof GameMap) => {
       style.id = `${id}_style`;
       document.head.appendChild(style);
     }
-    const data = jss.createStyleSheet<string>(createStyleParames());
+    const data = jss.createStyleSheet<string>(createStyleParames(), { generateId: () => id });
     style.innerHTML = data.toString();
-    document.body.classList.add(data.classes[Object.keys(data.classes)[0]]);
-  }, [createStyleParames, id]);
+    const classArr = [
+      `${target}boxroulette`,
+      `${target}roulette`,
+      `${target}flipcard`,
+      `${target}slotmachine`,
+      `${target}dice`,
+      `${target}case`,
+      `${target}redenvelope`];
+    document.body.classList.remove(...classArr);
+    document.body.classList.add(id);
+  }, [createStyleParames, id, target]);
 
   const removeDom = useCallback(() => {
     let style = headDom?.querySelector(`#${id}_style`);

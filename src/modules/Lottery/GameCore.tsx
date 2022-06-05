@@ -23,12 +23,13 @@ interface Props extends GameProps {
   styles: {
     [key: string]: any;
   };
-  type: keyof GameMap
+  type: keyof GameMap;
+  moduleId: string;
 }
 
 const GameCore: React.FC<Props> = (props) => {
-  const { MId, game, records, rules, styles, type } = props;
-  useStyles(MId, styles, type);
+  const { moduleId, MId, game, records, rules, styles, type } = props;
+  useStyles(moduleId, styles, type);
   const { 
     prizes, 
     start, 
@@ -71,9 +72,10 @@ const GameCore: React.FC<Props> = (props) => {
   return (
     <>
       {memoGame}
-      <GameRecords id={`${MId}_records`} {...records} />
+      <GameRecords className={`${MId}_records`} id={`${MId}_records`} {...records} />
       <GameModal
         id={`${MId}_rules`}
+        className={`${MId}_rules`} 
         title="活动规则"
         okText="返回抽奖"
         visible={rules.visible}

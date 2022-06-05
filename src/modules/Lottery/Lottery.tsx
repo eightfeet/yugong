@@ -533,6 +533,7 @@ class Lottery extends Component<LotteryProps, State> {
         <GameCore
           MId={this.MId}
           styles={this.props.style}
+          moduleId={this.props.moduleId}
           type={type}
           game={{
             className: `gametarget${this.props.moduleId}_gameroot`,
