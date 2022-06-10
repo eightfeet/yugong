@@ -91,8 +91,8 @@ const config: ModulesStatic = {
    */
   exposeDefaultProps: {
     layout: {
-      w: 0,
-      h: 0,
+      w: 2,
+      h: 2,
       x: 0,
       y: 0,
     },
@@ -104,11 +104,11 @@ const config: ModulesStatic = {
           color: "#eee",
         },
         display: {
-          width: [15, ""],
-          height: [15, ""],
+          width: [1.5, "em"],
+          height: [1.5, "em"],
           position: "absolute",
           right: [0, ""],
-          top: [-25, ""],
+          top: [-2, "em"],
         },
       },
       modules: {},
