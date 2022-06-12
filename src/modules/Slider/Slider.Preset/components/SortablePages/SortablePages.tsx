@@ -1,9 +1,8 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import arrayMove from 'array-move';
-import { cloneDeep, get, set } from 'lodash';
+import { cloneDeep, set } from 'lodash';
 import React, { useCallback, useContext } from 'react';
-import { mockData } from '~/modules/Slider/mock';
 import { SliderDataItem } from '~/modules/Slider/type';
 import { PagesContext } from '../../PagesContext';
 import { SliderContext } from '../../SliderContext';

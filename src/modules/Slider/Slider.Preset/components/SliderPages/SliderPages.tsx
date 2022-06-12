@@ -6,7 +6,7 @@ interface Props {
   pages: any[];
 }
 
-const SliderPages:React.FC<Props> = ({pages}) => {
+const SliderPages:React.FC<Props> = ({pages}) => {  
   return (
     <div>
       {

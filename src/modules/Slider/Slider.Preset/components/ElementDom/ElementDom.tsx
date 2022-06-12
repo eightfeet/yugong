@@ -1,10 +1,10 @@
-import { CloseCircleOutlined, CloseOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Input, Popconfirm, Tag } from 'antd';
+import { CloseOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { Input, message, Popconfirm, Tag } from 'antd';
 import classNames from 'classnames';
 import { cloneDeep, set } from 'lodash';
 import { TweenOneGroup } from 'rc-tween-one';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ChildrenItem, SliderDataItem } from '~/modules/Slider/type';
+import { ChildrenItem } from '~/modules/Slider/type';
 import { PagesContext } from '../../PagesContext';
 import { SliderContext } from '../../SliderContext';
 import s from './ElementDom.module.scss'
@@ -16,7 +16,7 @@ interface Props {
 
 const ElementDom: React.FC<Props> = ({ eleList, current }) => {
   const { runningData, setRunningData } = useContext(SliderContext);
-  const { path, pages, } = useContext(PagesContext);
+  const { path, setPageAndElement } = useContext(PagesContext);
 
   const [inputVisible, setInputVisible] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState('');
@@ -53,6 +53,9 @@ const ElementDom: React.FC<Props> = ({ eleList, current }) => {
       set(newRunningData, `${path}[${current}].childrens`, newChild);
       setRunningData?.(newRunningData);
     }
+    if (existence) {
+      message.error('元素名已存在')
+    }
     setInputVisible(false);
     setInputValue('');
   };
@@ -63,7 +66,7 @@ const ElementDom: React.FC<Props> = ({ eleList, current }) => {
         <span>
           {tag.name}
         </span>
-        &nbsp;<SettingOutlined onClick={() => console.log('点击我编辑元素')} />
+        &nbsp;<SettingOutlined onClick={() => setPageAndElement?.(current, index)} />
         &nbsp;
         <Popconfirm
           placement="topRight"
@@ -77,7 +80,6 @@ const ElementDom: React.FC<Props> = ({ eleList, current }) => {
         >
           <CloseOutlined />
         </Popconfirm>
-
       </Tag>
     );
     return (

@@ -6,6 +6,8 @@ interface PagesContextType {
   pages?: SliderDataItem[];
   /** 修改结果 */
   path?: string;
+  /** 更改页面或元素配置 */
+  setPageAndElement?: (pageIndex: number, elementIndex?: number ) => void;
 }
 
 export const PagesContext = React.createContext<PagesContextType>({});
