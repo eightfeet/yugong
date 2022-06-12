@@ -6,25 +6,73 @@ const config: ModulesStatic = {
   /**
    * 注册方法的静态描述与默认参数定义
    */
-   exposeFunctions: [
+  exposeFunctions: [
     {
       name: "setData",
       description: "数据源",
       arguments: [
         {
-          type: "array",
+          type: "mixed",
           name: "内容",
           describe: "填写图片地址",
-          html: true,
-          data: [],
           fieldName: "imageUrls",
-        },
-        {
-          type: "array",
-          name: "跳转",
-          describe: "与图片地址保持索引一致，为空时图片不可点击",
-          data: [],
-          fieldName: "imageLinks",
+          data: [
+            {
+              "background": "#fff",
+              "childrens": [
+                {
+                  "content": "这是P1元素1",
+                  "style": {},
+                  "parallax": {
+                    "x": "100",
+                    "y": "100",
+                    "scale": "1.5",
+                    "opacity": "0",
+                    "duration": "0"
+                  },
+                  "link": "2"
+                },
+                {
+                  "content": "这是P1元素2",
+                  "style": {},
+                  "parallax": {
+                    "x": "100",
+                    "y": "100",
+                    "scale": "1.5",
+                    "opacity": "0",
+                    "duration": "1000"
+                  }
+                }
+              ]
+            },
+            {
+              "background": "#fff",
+              "childrens": [
+                {
+                  "content": "这是P2元素1",
+                  "style": {},
+                  "parallax": {
+                    "x": "100",
+                    "y": "100",
+                    "scale": "1.5",
+                    "opacity": "0",
+                    "duration": "0"
+                  }
+                },
+                {
+                  "content": "这是P2元素2",
+                  "style": {},
+                  "parallax": {
+                    "x": "100",
+                    "y": "100",
+                    "scale": "1.5",
+                    "opacity": "0",
+                    "duration": "1000"
+                  }
+                }
+              ]
+            }
+          ]
         },
       ],
     },
@@ -37,8 +85,8 @@ const config: ModulesStatic = {
           name: "转场效果",
           describe: "滚动时转场效果,slider1 - slider10",
           select: {
-            slider1: "转场1",slider2: "转场2",slider3: "转场3",slider4: "转场4",slider5: "转场5",
-            slider6: "转场6",slider7: "转场7",slider8: "转场8",slider9: "转场9",slider10: "转场10",
+            slider1: "转场1", slider2: "转场2", slider3: "转场3", slider4: "转场4", slider5: "转场5",
+            slider6: "转场6", slider7: "转场7", slider8: "转场8", slider9: "转场9", slider10: "转场10",
           },
           data: "slider1",
           fieldName: "effect",
@@ -49,7 +97,7 @@ const config: ModulesStatic = {
           name: "方向",
           describe: "手势的方向,horizontal: 横向; vertical: 纵向",
           select: {
-            horizontal: "横向",vertical: "纵向"
+            horizontal: "横向", vertical: "纵向"
           },
           data: "horizontal",
           fieldName: "direction",
@@ -221,7 +269,8 @@ const config: ModulesStatic = {
           },
         ],
       },
-    ]
+    ],
+    preset: true
   },
 
   /**

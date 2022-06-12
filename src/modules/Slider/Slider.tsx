@@ -28,14 +28,11 @@ import Wrapper from '../Wrapper';
 import isUrl from '~/core/helper/isUrl';
 import { ArgumentsItem } from '~/types/appData';
 import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
+import { mockData } from './mock';
+import { ChildrenItem, SliderDataItem } from './type';
 
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
-
-interface Datas {
-  data?: string;
-  link?: string;
-}
 
 class Slider extends Component<SliderProps, State> {
   swiper: SwiperCore | undefined;
@@ -74,16 +71,9 @@ class Slider extends Component<SliderProps, State> {
 
   setData =
     (...args: ArgumentsItem[]) => {
-      const datas: Datas[] = [];
-      const { imageUrls, imageLinks } = getArguments(args);
-      (imageUrls as any[])?.forEach((element: any, index: number) => {
-        datas.push({
-          data: element,
-          link: imageLinks[index],
-        });
-      });
+      const { imageUrls = mockData() } = getArguments(args);
       this.setState({
-        datas
+        datas: imageUrls
       });
     }
 
@@ -113,41 +103,41 @@ class Slider extends Component<SliderProps, State> {
     this.setState(data, () => this.setState({ reSetSW: true }))
   }
 
-  onClickImg = (item: Datas, index: number) => () => {
+  onClickImg = (item: any, index: number) => () => {
     if (item.link && isUrl(item.link) && this.swiper?.activeIndex === index + 1) {
       window.location.href = item.link;
     }
   }
 
-  getPageDatas: () => ({ pageDatas: Datas[], style: any }) = () => {
-    let pageDatas = this.state.datas;
-    let style = () => ({});
-    const array = ['P', 'a', 'r', 'a', 'l', 'l', 'a', 'x'];
-    if (!pageDatas.length) {
-      pageDatas = [{ data: '1' }, { data: '2' }, { data: '3' }, { data: '4' }, {
-        data: <>
-          {array.map((item, index) => <div
-            key={index}
-            data-swiper-parallax-x="800"
-            data-swiper-parallax-y="800"
-            data-swiper-parallax-opacity="0"
-            data-swiper-parallax-duration={`${(index + 1) * 200}`}
-          >
-            {item}
-          </div>)}
-        </> as any,
-      }];
-      style = () => ({
-        background: `rgb(${Math.random() * 255} ${Math.random() * 255} ${Math.random() * 255})`,
-        borderRadius: '10px',
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#fff'
-      })
-    };
+  // getPageDatas: () => ({ pageDatas: SliderDataItem[], style: any }) = () => {
+  //   let pageDatas = this.state.datas;
+  //   let style = () => ({});
+  //   const array = ['P', 'a', 'r', 'a', 'l', 'l', 'a', 'x'];
+  //   if (!pageDatas.length) {
+  //     pageDatas = [{ data: '1' }, { data: '2' }, { data: '3' }, { data: '4' }, {
+  //       data: <>
+  //         {array.map((item, index) => <div
+  //           key={index}
+  //           data-swiper-parallax-x="800"
+  //           data-swiper-parallax-y="800"
+  //           data-swiper-parallax-opacity="0"
+  //           data-swiper-parallax-duration={`${(index + 1) * 200}`}
+  //         >
+  //           {item}
+  //         </div>)}
+  //       </> as any,
+  //     }];
+  //     style = () => ({
+  //       background: `rgb(${Math.random() * 255} ${Math.random() * 255} ${Math.random() * 255})`,
+  //       borderRadius: '10px',
+  //       fontSize: 22,
+  //       fontWeight: 'bold',
+  //       color: '#fff'
+  //     })
+  //   };
 
-    return { pageDatas, style };
-  }
+  //   return { pageDatas, style };
+  // }
 
 
   onStart = (e: any) => {
@@ -156,13 +146,23 @@ class Slider extends Component<SliderProps, State> {
     }
   }
 
+  renderElement = ({ content, parallax, style, link }: ChildrenItem) => {
+    const parallaxData = {};
+    for (const key in parallax) {
+      if (Object.prototype.hasOwnProperty.call(parallax, key)) {
+        const element = parallax[key];
+        if (element) parallaxData[`data-swiper-parallax-${key}`] = element;
+      }
+    }
+    return <div {...parallaxData}>{content}</div>
+  }
+
   render() {
     if (!this.state.reSetSW) return null;
     const { classes } = this.props;
-    const { hideNav, hidePage, autoplay, breakInterface, loop, delay, speed, effect, direction } = this.state;
+    const { hideNav, hidePage, autoplay, breakInterface, loop, delay, speed, effect, direction, datas } = this.state;
     const nav = hideNav ? { navigation: false } : {};
     const page = hidePage ? { pagination: false } : {};
-    const { pageDatas, style } = this.getPageDatas();
 
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
@@ -183,18 +183,17 @@ class Slider extends Component<SliderProps, State> {
           {...page}
           onInit={(e) => this.swiper = e}
         >
-          {pageDatas.map((item, index) =>
+          {datas.map((item, index) =>
             <SwiperSlide
               key={index}
               className={classNames(s.swiperslide, classes.slideItem)}
-              style={style()}
-              onClick={this.onClickImg(item, index)}
+              style={{
+                background: item.background
+              }}
             >
-              {
-                isUrl(item.data || '') ?
-                  <img className={classNames(s.content, classes.content)} src={item.data} alt={`slide${index}`} /> :
-                  <div className={classNames(s.content, classes.content)}>{item.data}</div>
-              }
+              <div className={classNames(s.content, classes.content)}>{
+                item.childrens?.map(this.renderElement)
+              }</div>
             </SwiperSlide>)}
         </Swiper>
       </Wrapper>
@@ -204,7 +203,7 @@ class Slider extends Component<SliderProps, State> {
 
 // typeof State
 type State = {
-  datas: Datas[];
+  datas: SliderDataItem[];
   delay: number,
   hideNav: boolean,
   hidePage: boolean,

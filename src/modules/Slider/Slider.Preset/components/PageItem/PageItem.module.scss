@@ -1,0 +1,21 @@
+.root {
+  position: relative;
+  z-index: 100;
+}
+
+.pagespace {
+  height: 30px;
+}
+
+.drag {
+  display: inline-block;
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+}
+
+.dragwrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
