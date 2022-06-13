@@ -128,7 +128,7 @@ const config: ModulesStatic = {
           type: "number",
           name: "自动播放间隔",
           describe: "切换之间的延迟(毫秒),未指定此参数时将禁用自动播放!",
-          data: "5000",
+          data: "500000000",
           fieldName: "delay",
         },
         {

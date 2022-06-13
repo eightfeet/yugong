@@ -10,7 +10,7 @@ const SliderPages:React.FC<Props> = ({pages}) => {
   return (
     <div>
       {
-        pages.map((item, index) => <PageItem index={index} pageIndex={index} />)
+        pages.map((item, index) => <PageItem key={index} index={index} pageIndex={index} />)
       }
     </div>
   )
