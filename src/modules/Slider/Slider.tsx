@@ -46,7 +46,7 @@ class Slider extends Component<SliderProps, State> {
       hideNav: false,
       hidePage: false,
       breakInterface: false,
-      autoplay: true,
+      autoplay: false,
       loop: true,
       speed: 600,
       effect: effects.slider1,
