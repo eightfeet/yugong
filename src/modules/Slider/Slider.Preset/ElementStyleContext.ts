@@ -13,7 +13,7 @@ export type StyleType =
 interface ElementStyleContextType {
   unit?: string;
   onChange?: (result: any, type: StyleType) => void;
-  getDefaultData?: (type: StyleType) => any;
+  style?: any;
   path?: string;
 }
 

@@ -2,13 +2,11 @@ import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Row, Col } from "antd";
 import s from "./Display.module.scss";
 import { DisplayTypesOfStyleItems } from "types/appData";
-import { useSelector } from "react-redux";
-import { RootState } from "~/redux/store";
 import UnitInput from "~/components/MiniDashboard/UnitInput";
 import Select from "~/components/MiniDashboard/Select";
 import NumberInput from "~/components/MiniDashboard/NumberInput";
 import Spacing from "~/components/MiniDashboard/Spacing";
-import { ElementStyleContext } from "../../ElementStyleContext";
+import { ElementStyleContext } from "../../../ElementStyleContext";
 
 interface Props {
 }
@@ -31,9 +29,6 @@ const Display: React.FC<Props> = () => {
   const context = useContext(ElementStyleContext);
 
   const [displayData, setDisplayData] = useState<DisplayTypesOfStyleItems>({});
-  const moduleId = useSelector(
-    (state: RootState) => state.activationItem.moduleId
-  );
   const {
     width,
     height,
@@ -52,8 +47,8 @@ const Display: React.FC<Props> = () => {
   } = displayData;
 
   useEffect(() => {
-    setDisplayData(context.getDefaultData?.("display") || {});
-  }, [context, moduleId]);
+    setDisplayData(context.style?.display || {});
+  }, [context]);
 
   const onChangeDisplay = useCallback(
     (type: ChangeType) => (data: any) => {
