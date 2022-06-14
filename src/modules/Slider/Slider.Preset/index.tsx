@@ -2,7 +2,7 @@ import { Drawer, Input } from 'antd';
 import { get, set } from 'lodash';
 import React, { useCallback, useRef, useState } from 'react';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
-import { AnyObjectType } from '~/types/appData';
+import { AnyObjectType, UnitType } from '~/types/appData';
 import { ChildrenItem } from '../type';
 import ElementSetter from './components/ElementSetter';
 import SortablePages from './components/SortablePages';
@@ -46,7 +46,7 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange }) => {
 
   /** 设置当前视觉差 */
   const setParallax = useCallback(
-    (type: ParallaxTypeKey, value: number) => {
+    (type: ParallaxTypeKey, value: UnitType | string) => {
       const { page, element } = pageAndElement.current;
       if (page === undefined || element === undefined) return;
       updateCurrentElementData();
