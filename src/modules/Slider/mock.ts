@@ -9,8 +9,8 @@ export const mockData = () => {
       childrens: index < 5 ? [{ content: `${index + 1}`}] : last.map((item, i) => ({
         content: item,
         parallax: {
-          x: [800, ''],
-          y: [800, ''],
+          x: 800,
+          y: 800,
           opacity: 0,
           duration: (i + 1) * 200,
           scale: 1

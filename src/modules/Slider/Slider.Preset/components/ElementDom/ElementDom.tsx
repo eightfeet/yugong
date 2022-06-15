@@ -62,7 +62,7 @@ const ElementDom: React.FC<Props> = ({ eleList, current }) => {
 
   const forMap = (tag: ChildrenItem, index: number) => {
     const tagElem = (
-      <Tag className={s.tag}>
+      <Tag className={s.tag} key={index}>
         <span>
           {tag.name}
         </span>

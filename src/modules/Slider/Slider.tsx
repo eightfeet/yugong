@@ -30,6 +30,7 @@ import { ArgumentsItem } from '~/types/appData';
 import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import { mockData } from './mock';
 import { ChildrenItem, SliderDataItem } from './type';
+import { toStyle } from '~/core/helper/toStyles';
 
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
@@ -71,9 +72,9 @@ class Slider extends Component<SliderProps, State> {
 
   setData =
     (...args: ArgumentsItem[]) => {
-      const { imageUrls = mockData() } = getArguments(args);
+      const { datas = mockData() } = getArguments(args);
       this.setState({
-        datas: imageUrls
+        datas
       });
     }
 
@@ -146,15 +147,21 @@ class Slider extends Component<SliderProps, State> {
     }
   }
 
-  renderElement = ({ content, parallax, style, link }: ChildrenItem) => {
+  renderElement = ({ content, parallax, style, link }: ChildrenItem, index: number) => {
     const parallaxData = {};
+    
+    const newStyle = toStyle(style);
+    
+    
     for (const key in parallax) {
       if (Object.prototype.hasOwnProperty.call(parallax, key)) {
         const element = parallax[key];
-        if (element) parallaxData[`data-swiper-parallax-${key}`] = element;
+        if (element && key !== 'delay') {
+          parallaxData[`data-swiper-parallax-${key}`] = element;
+        }
       }
     }
-    return <div {...parallaxData}>{content}</div>
+    return <div {...parallaxData} style={{...newStyle, ...(parallax?.delay ? {transitionDelay: `${parallax?.delay}ms`} : {})}} key={index}>{content}</div>
   }
 
   render() {
@@ -222,3 +229,7 @@ export type SliderProps = ModuleBaseProps<
 >
 
 export default PresetModule<SliderProps>(Slider, config, createStyles)
+function styleCompiler(style: any) {
+  throw new Error('Function not implemented.');
+}
+

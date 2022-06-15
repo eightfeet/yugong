@@ -2,7 +2,7 @@ import React from 'react';
 import { UnitType } from '~/types/appData';
 import { ChildrenItem } from '../type';
 
-export type ParallaxTypeKey = 'x' | 'y' | 'scale' | 'opacity' | 'duration';
+export type ParallaxTypeKey = 'x' | 'y' | 'scale' | 'opacity' | 'duration' | 'delay';
 
 interface ParallaxConfigType {
   /** 修改结果 */

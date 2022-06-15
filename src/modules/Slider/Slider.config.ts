@@ -15,12 +15,13 @@ const config: ModulesStatic = {
           type: "mixed",
           name: "内容",
           describe: "填写图片地址",
-          fieldName: "imageUrls",
+          fieldName: "datas",
           data: [
             {
               "background": "#fff",
               "childrens": [
                 {
+                  "name": "元素1",
                   "content": "这是P1元素1",
                   "style": {},
                   "parallax": {
@@ -33,6 +34,7 @@ const config: ModulesStatic = {
                   "link": "2"
                 },
                 {
+                  "name": "元素2",
                   "content": "这是P1元素2",
                   "style": {},
                   "parallax": {
@@ -49,6 +51,7 @@ const config: ModulesStatic = {
               "background": "#fff",
               "childrens": [
                 {
+                  "name": "元素1",
                   "content": "这是P2元素1",
                   "style": {},
                   "parallax": {
@@ -60,6 +63,7 @@ const config: ModulesStatic = {
                   }
                 },
                 {
+                  "name": "元素2",
                   "content": "这是P2元素2",
                   "style": {},
                   "parallax": {

@@ -43,10 +43,22 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
           <PageHeader className={s.header} title="视觉差" />
         </Col>
         <Col span={12}>
-          <UnitInput min={0} label="X方向" defaultValue={parallax?.x} onChange={e => setParallax?.('x', e)} />
+          <NumberInput
+            label="X方向"
+            placeholder="X方向"
+            unit="-"
+            defaultValue={parallax?.x}
+            onChange={(e: any) => setParallax?.('x', e)}
+          />
         </Col>
         <Col span={12}>
-          <UnitInput min={0} label="Y方向" defaultValue={parallax?.y} onChange={e => setParallax?.('y', e)} />
+          <NumberInput
+            label="Y方向"
+            placeholder="Y方向"
+            unit="-"
+            defaultValue={parallax?.y}
+            onChange={(e: any) => setParallax?.('y', e)}
+          />
         </Col>
       </Row>
       <Row className={s.row}>
@@ -71,15 +83,24 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       <Row className={s.row}>
         <Col span={12}>
           <NumberInput
-            label="延时"
-            placeholder="延时时长(ms)"
+            label="持续时长"
+            placeholder="持续时长(ms)"
             unit="毫秒"
             min={0}
             defaultValue={parallax?.duration}
             onChange={(e: any) => setParallax?.('duration', e)}
           />
         </Col>
-        <Col span={12} />
+        <Col span={12} >
+          <NumberInput
+              label="延时"
+              placeholder="延时时长(ms)"
+              unit="毫秒"
+              min={0}
+              defaultValue={parallax?.delay}
+              onChange={(e: any) => setParallax?.('delay', e)}
+            />
+        </Col>
       </Row>
 
       <Row className={s.row}>

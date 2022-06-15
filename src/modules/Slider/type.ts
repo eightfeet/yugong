@@ -1,11 +1,11 @@
-import { UnitType } from "~/types/appData"
 
 export interface Parallax {
-  x?: UnitType,
-  y?: UnitType,
+  x?: number,
+  y?: number,
   scale?: number,
   opacity?: number,
-  duration?: number
+  duration?: number,
+  delay?: number
 }
 
 export interface ChildrenItem {
