@@ -16,10 +16,9 @@ import s from './ElementStyleSheetPanel.module.scss';
 const { Panel } = Collapse;
 
 interface Props {
-  path: string;
 }
 
-const ElementStyleSheetPanel: React.FC<Props> = ({ path }) => {
+const ElementStyleSheetPanel: React.FC<Props> = () => {
   const { style, setContentAndStyle } = useContext(ContentAndStyleContext)
   const unit = useSelector((state: RootState) => state.pageData.unit);
 
@@ -40,11 +39,10 @@ const ElementStyleSheetPanel: React.FC<Props> = ({ path }) => {
         unit,
         onChange,
         style,
-        path,
       }}
     >
       <div className={s.root}>
-        {path ? (
+        {style ? (
           <Collapse accordion bordered={false}>
             <Panel header="布局" key="display">
               <Display />

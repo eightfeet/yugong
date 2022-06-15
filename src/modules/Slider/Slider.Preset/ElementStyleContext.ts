@@ -14,7 +14,6 @@ interface ElementStyleContextType {
   unit?: string;
   onChange?: (result: any, type: StyleType) => void;
   style?: any;
-  path?: string;
 }
 
 export const ElementStyleContext = React.createContext<ElementStyleContextType>({});

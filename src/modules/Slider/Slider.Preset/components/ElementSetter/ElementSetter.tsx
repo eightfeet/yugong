@@ -51,10 +51,15 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       </Row>
       <Row className={s.row}>
         <Col span={12}>
-          <Row gutter={4}>
-            <Col className={s.label} span={7}>缩放</Col>
-            <Col span={17}><Input value={parallax?.scale} type={'number'} onChange={e => setParallax?.('scale', e.target.value)} /></Col>
-          </Row>
+          <NumberInput
+            label="缩放"
+            placeholder="缩放倍数"
+            unit="倍"
+            min={-12}
+            max={12}
+            defaultValue={parallax?.scale}
+            onChange={(e: any) => setParallax?.('scale', e)}
+          />
         </Col>
         <Col span={12}>
           <Row gutter={4}>
@@ -80,7 +85,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       <Row className={s.row}>
         <PageHeader className={s.header} title="元素样式" />
       </Row>
-      <ElementStyleSheetPanel path='sss' />
+      <ElementStyleSheetPanel />
 
     </Drawer>
   );
