@@ -60,8 +60,8 @@ const PageItem:React.FC<Props> = ({pageIndex}) => {
             <DeleteOutlined />
           </Popconfirm>
         </Space>
-        <ElementDom current={pageIndex} eleList={eleList?.childrens || []} />
       </LineItem>
+      <ElementDom current={pageIndex} eleList={eleList?.childrens || []} />
     </div>
   )
 }

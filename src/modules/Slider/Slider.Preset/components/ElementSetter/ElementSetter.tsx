@@ -1,3 +1,4 @@
+import { ArrowLeftOutlined, BackwardFilled, BackwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
 import { Col, Drawer, Input, Row, PageHeader } from 'antd';
 import React, { useContext } from 'react';
 import NumberInput from '~/components/MiniDashboard/NumberInput';
@@ -30,17 +31,19 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       maskClosable
       onClose={onClose}
       visible={visible}
+      closeIcon={<><ArrowLeftOutlined />返回</>}
     >
       <Row className={s.row}>
-        <PageHeader className={s.header} title="文本内容" />
+        <PageHeader className={s.header} title="内容" />
         <Input.TextArea
+          placeholder='输入文本或HTML'
           value={content}
           onChange={(e) => setContentAndStyle?.('content', e.target.value)}
         />
       </Row>
       <Row className={s.row}>
         <Col span={24}>
-          <PageHeader className={s.header} title="视觉差" />
+          <PageHeader className={s.header} title="视差初始值" />
         </Col>
         <Col span={12}>
           <NumberInput
@@ -67,17 +70,20 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
             label="缩放"
             placeholder="缩放倍数"
             unit="倍"
-            min={-12}
-            max={12}
             defaultValue={parallax?.scale}
             onChange={(e: any) => setParallax?.('scale', e)}
           />
         </Col>
         <Col span={12}>
-          <Row gutter={4}>
-            <Col className={s.label} span={7}>透明度</Col>
-            <Col span={17}><Input value={parallax?.opacity} type={'number'} min={0} max={1} onChange={e => setParallax?.('opacity', e.target.value)} /></Col>
-          </Row>
+          <NumberInput
+            label="透明度"
+            placeholder="透明度"
+            unit="0-1"
+            min={0}
+            max={1}
+            defaultValue={parallax?.opacity}
+            onChange={(e: any) => setParallax?.('opacity', e)}
+          />
         </Col>
       </Row>
       <Row className={s.row}>

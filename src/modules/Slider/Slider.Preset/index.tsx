@@ -19,8 +19,6 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange }) => {
   const pageAndElement = useRef<{ page?: number, element?: number }>({});
   const [showConfig, setShowConfig] = useState(false);
   const [currentElementData, setCurrentElementData] = useState<ChildrenItem>();
-
-
   const updateCurrentElementData = useCallback(
     () => {
       const {page, element} = pageAndElement.current;
@@ -30,7 +28,6 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange }) => {
     },
     [runningData],
   )
-  
 
   /** 开启设置面板 */
   const setPageAndElement = useCallback(
@@ -97,7 +94,7 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange }) => {
             }}>
               <SortablePages />
               <ElementSetter 
-                title={`第${pageAndElement.current.page! + 1}页元素${currentElementData?.name}`}  
+                title={`第${pageAndElement.current.page! + 1}页-${currentElementData?.name}`}  
                 onClose={() => setShowConfig(false)} visible={showConfig}
               />
             </ContentAndStyleContext.Provider>

@@ -1,12 +1,14 @@
 
 import { Component } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import parser from 'html-react-parser';
 import SwiperCore, {
   Navigation,
   Pagination,
   Scrollbar,
   Autoplay,
   Lazy,
+  Keyboard,
 } from 'swiper';
 
 import * as effects from './effect';
@@ -33,7 +35,7 @@ import { ChildrenItem, SliderDataItem } from './type';
 import { toStyle } from '~/core/helper/toStyles';
 
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay, Keyboard]);
 
 class Slider extends Component<SliderProps, State> {
   swiper: SwiperCore | undefined;
@@ -110,37 +112,6 @@ class Slider extends Component<SliderProps, State> {
     }
   }
 
-  // getPageDatas: () => ({ pageDatas: SliderDataItem[], style: any }) = () => {
-  //   let pageDatas = this.state.datas;
-  //   let style = () => ({});
-  //   const array = ['P', 'a', 'r', 'a', 'l', 'l', 'a', 'x'];
-  //   if (!pageDatas.length) {
-  //     pageDatas = [{ data: '1' }, { data: '2' }, { data: '3' }, { data: '4' }, {
-  //       data: <>
-  //         {array.map((item, index) => <div
-  //           key={index}
-  //           data-swiper-parallax-x="800"
-  //           data-swiper-parallax-y="800"
-  //           data-swiper-parallax-opacity="0"
-  //           data-swiper-parallax-duration={`${(index + 1) * 200}`}
-  //         >
-  //           {item}
-  //         </div>)}
-  //       </> as any,
-  //     }];
-  //     style = () => ({
-  //       background: `rgb(${Math.random() * 255} ${Math.random() * 255} ${Math.random() * 255})`,
-  //       borderRadius: '10px',
-  //       fontSize: 22,
-  //       fontWeight: 'bold',
-  //       color: '#fff'
-  //     })
-  //   };
-
-  //   return { pageDatas, style };
-  // }
-
-
   onStart = (e: any) => {
     if (e.activeIndex === this.state.datas.length) {
       this.props.eventDispatch().onLastOneStart();
@@ -149,10 +120,10 @@ class Slider extends Component<SliderProps, State> {
 
   renderElement = ({ content, parallax, style, link }: ChildrenItem, index: number) => {
     const parallaxData = {};
-    
+
     const newStyle = toStyle(style);
-    
-    
+
+
     for (const key in parallax) {
       if (Object.prototype.hasOwnProperty.call(parallax, key)) {
         const element = parallax[key];
@@ -161,7 +132,11 @@ class Slider extends Component<SliderProps, State> {
         }
       }
     }
-    return <div {...parallaxData} style={{...newStyle, ...(parallax?.delay ? {transitionDelay: `${parallax?.delay}ms`} : {})}} key={index}>{content}</div>
+    return <div
+      {...parallaxData}
+      style={{ ...newStyle, ...(parallax?.delay ? { transitionDelay: `${parallax?.delay}ms` } : {}) }}
+      key={index}
+    >{parser(content || '')}</div>
   }
 
   render() {
@@ -180,6 +155,7 @@ class Slider extends Component<SliderProps, State> {
           direction={direction}
           speed={speed}
           onSlideNextTransitionStart={this.onStart}
+          keyboard
           autoplay={autoplay ? {
             delay: delay,
             disableOnInteraction: breakInterface,
@@ -229,7 +205,4 @@ export type SliderProps = ModuleBaseProps<
 >
 
 export default PresetModule<SliderProps>(Slider, config, createStyles)
-function styleCompiler(style: any) {
-  throw new Error('Function not implemented.');
-}
 
