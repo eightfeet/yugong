@@ -1,6 +1,7 @@
 
 import { Component } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 import parser from 'html-react-parser';
 import SwiperCore, {
   Navigation,
@@ -123,6 +124,7 @@ class Slider extends Component<SliderProps, State> {
 
     const newStyle = toStyle(style);
 
+    const con = getResult(content || '')
 
     for (const key in parallax) {
       if (Object.prototype.hasOwnProperty.call(parallax, key)) {
@@ -132,11 +134,12 @@ class Slider extends Component<SliderProps, State> {
         }
       }
     }
+    
     return <div
       {...parallaxData}
       style={{ ...newStyle, ...(parallax?.delay ? { transitionDelay: `${parallax?.delay}ms` } : {}) }}
       key={index}
-    >{parser(content || '')}</div>
+    >{parser(con)}</div>
   }
 
   render() {
