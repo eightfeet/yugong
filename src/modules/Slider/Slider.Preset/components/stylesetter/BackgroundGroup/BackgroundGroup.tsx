@@ -4,16 +4,16 @@ import React, { useCallback, useEffect, useState, useContext } from "react";
 import { BackgroundGroupListTypesOfStyleItems } from "~/types/appData";
 import s from "./BackgroundGroup.module.less";
 import arrayMove from "array-move";
-import { StyleContext } from "~/context/StyleContext";
 import Color from "~/components/MiniDashboard/Color";
 import BackgroundListHoc from "~/components/MiniDashboard/BackgroundGroup/BackgroundListHoc";
+import { ElementStyleContext } from "../../../ElementStyleContext";
 
 interface Props {
   updateKey?: string;
 }
 
 const Backgroundgroup: React.FC<Props> = () => {
-  const context = useContext(StyleContext);
+  const context = useContext(ElementStyleContext);
 
   const [backgroundList, setBackgroundList] = useState<
     BackgroundGroupListTypesOfStyleItems[] | undefined
@@ -21,7 +21,7 @@ const Backgroundgroup: React.FC<Props> = () => {
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>();
 
   useEffect(() => {
-    const defaultData = context.getDefaultData?.("backgroundGroup") || {};
+    const defaultData = context.style?.backgroundGroup || {};
     setBackgroundList(defaultData.backgroundList);
     setBackgroundColor(defaultData.backgroundColor);
   }, [context]);

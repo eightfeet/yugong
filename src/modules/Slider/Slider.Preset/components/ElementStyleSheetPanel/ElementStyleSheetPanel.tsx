@@ -1,17 +1,17 @@
 import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
 import { Collapse } from 'antd';
-import s from './ElementStyleSheetPanel.module.scss';
-import Transform from '~/components/MiniDashboard/Transfrom';
+import { RootState } from '~/redux/store';
 import Display from '../stylesetter/Display';
 import Font from '../stylesetter/Font';
-import BackgroundGroup from '~/components/MiniDashboard/BackgroundGroup';
-import Border from '~/components/MiniDashboard/Border';
-import Animation from '~/components/MiniDashboard/Animation';
-import Shadow from '~/components/MiniDashboard/Shadow';
+import BackgroundGroup from '../stylesetter/BackgroundGroup';
+import Border from '../stylesetter/Border';
+import Transform from '../stylesetter/Transfrom';
+import Animation from '../stylesetter/Animation';
+import Shadow from '../stylesetter/Shadow';
 import { ElementStyleContext, StyleType } from '../../ElementStyleContext';
 import { ContentAndStyleContext } from '../../ContentAndStyleContext';
+import s from './ElementStyleSheetPanel.module.scss';
 
 const { Panel } = Collapse;
 
@@ -20,14 +20,18 @@ interface Props {
 }
 
 const ElementStyleSheetPanel: React.FC<Props> = ({ path }) => {
-  const { style } = useContext(ContentAndStyleContext)
+  const { style, setContentAndStyle } = useContext(ContentAndStyleContext)
   const unit = useSelector((state: RootState) => state.pageData.unit);
 
   const onChange = useCallback(
     (result: any, type: StyleType) => {
-      console.log(result, type);
+      const currentStyle = {
+        ...style,
+        [type]: result
+      }
+      setContentAndStyle?.('style', currentStyle);
     },
-    [],
+    [setContentAndStyle, style],
   );
 
   return (
@@ -45,10 +49,10 @@ const ElementStyleSheetPanel: React.FC<Props> = ({ path }) => {
             <Panel header="布局" key="display">
               <Display />
             </Panel>
-            <Panel style={{position:'relative'}} header="文字" key="font">
+            <Panel header="文字" key="font">
               <Font />
             </Panel>
-            <Panel style={{position:'relative'}} header="背景" key="backgroundGroup">
+            <Panel header="背景" key="backgroundGroup">
               <BackgroundGroup />
             </Panel>
             <Panel header="圆角与描边" key="border">
