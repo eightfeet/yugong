@@ -42,31 +42,29 @@ const ElementStyleSheetPanel: React.FC<Props> = () => {
       }}
     >
       <div className={s.root}>
-        {style ? (
-          <Collapse accordion bordered={false}>
-            <Panel header="布局" key="display">
-              <Display />
-            </Panel>
-            <Panel header="文字" key="font">
-              <Font />
-            </Panel>
-            <Panel header="背景" key="backgroundGroup">
-              <BackgroundGroup />
-            </Panel>
-            <Panel header="圆角与描边" key="border">
-              <Border />
-            </Panel>
-            <Panel header="投影" key="textShadow_boxShadow">
-              <Shadow />
-            </Panel>
-            <Panel header="变换" key="transform">
-              <Transform />
-            </Panel>
-            <Panel header="动画" key="animate">
-              <Animation />
-            </Panel>
-          </Collapse>
-        ) : null}
+        <Collapse accordion bordered={false}>
+          <Panel header="布局" key="display">
+            <Display />
+          </Panel>
+          <Panel header="文字" key="font">
+            <Font />
+          </Panel>
+          <Panel header="背景" key="backgroundGroup">
+            <BackgroundGroup />
+          </Panel>
+          <Panel header="圆角与描边" key="border">
+            <Border />
+          </Panel>
+          <Panel header="投影" key="textShadow_boxShadow">
+            <Shadow />
+          </Panel>
+          <Panel header="变换" key="transform">
+            <Transform />
+          </Panel>
+          <Panel header="动画" key="animate">
+            <Animation />
+          </Panel>
+        </Collapse>
       </div>
     </ElementStyleContext.Provider>
   );

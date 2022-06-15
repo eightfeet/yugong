@@ -25,8 +25,8 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
         padding: 0,
         backgroundColor: '#fafafa'
       }}
+      maskStyle={{ backgroundColor: 'transparent' }}
       width={580}
-      mask={false}
       maskClosable
       onClose={onClose}
       visible={visible}
