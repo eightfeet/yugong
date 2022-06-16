@@ -7,7 +7,13 @@ interface PagesContextType {
   /** 修改结果 */
   path?: string;
   /** 更改页面或元素配置 */
-  setPageAndElement?: (pageIndex: number, elementIndex?: number ) => void;
+  setSliderElement?: (pageIndex: number, elementIndex?: number ) => void;
+  /** 更改页面元素 */
+  setSliderPage?: (pageIndex: number ) => void;
+  /** 当前页面 */
+  currentPage?: SliderDataItem;
+  /** 修改背景 */
+  onChangeCurrentPageBackground?: (result: any) => void;
 }
 
 export const PagesContext = React.createContext<PagesContextType>({});

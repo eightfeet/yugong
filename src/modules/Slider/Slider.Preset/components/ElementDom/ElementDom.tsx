@@ -16,7 +16,7 @@ interface Props {
 
 const ElementDom: React.FC<Props> = ({ eleList, current }) => {
   const { runningData, setRunningData } = useContext(SliderContext);
-  const { path, setPageAndElement } = useContext(PagesContext);
+  const { path, setSliderElement } = useContext(PagesContext);
 
   const [inputVisible, setInputVisible] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState('');
@@ -66,7 +66,7 @@ const ElementDom: React.FC<Props> = ({ eleList, current }) => {
         <span>
           {tag.name}
         </span>
-        &nbsp;<SettingOutlined onClick={() => setPageAndElement?.(current, index)} />
+        &nbsp;<SettingOutlined onClick={() => setSliderElement?.(current, index)} />
         &nbsp;
         <Popconfirm
           placement="topRight"

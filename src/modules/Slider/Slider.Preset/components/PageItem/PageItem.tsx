@@ -22,7 +22,7 @@ const DragHandle = SortableHandle(() => (
 
 const PageItem:React.FC<Props> = ({pageIndex}) => {
   const { runningData, setRunningData} = useContext(SliderContext);
-  const { pages, path } = useContext(PagesContext);
+  const { pages, path, setSliderPage } = useContext(PagesContext);
   
   const onMinus = useCallback(
     (index) => {
@@ -46,7 +46,7 @@ const PageItem:React.FC<Props> = ({pageIndex}) => {
         </div>
       }>
         <Space className={s.pagespace}>
-          <SettingOutlined onClick={() => console.log('点击我编辑页面')} />
+          <SettingOutlined onClick={() => setSliderPage?.(pageIndex)} />
           <Popconfirm
             placement="topRight"
             title={`确定删除页面？`}

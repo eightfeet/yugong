@@ -18,5 +18,6 @@ export interface ChildrenItem {
 
 export interface SliderDataItem {
   background?: string,
+  backgroundGroup?: any,
   childrens?: ChildrenItem[]
 }

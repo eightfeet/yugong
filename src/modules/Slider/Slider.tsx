@@ -34,6 +34,7 @@ import { getArguments } from '~/core/getArgumentsTypeDataFromDataSource';
 import { mockData } from './mock';
 import { ChildrenItem, SliderDataItem } from './type';
 import { toStyle } from '~/core/helper/toStyles';
+import { backgroundGroup } from '~/compiler/compiler';
 
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay, Keyboard]);
@@ -148,7 +149,8 @@ class Slider extends Component<SliderProps, State> {
     const { hideNav, hidePage, autoplay, breakInterface, loop, delay, speed, effect, direction, datas } = this.state;
     const nav = hideNav ? { navigation: false } : {};
     const page = hidePage ? { pagination: false } : {};
-
+    const pageStyle = (data: any) => backgroundGroup(data || {}).result;
+    
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
         <Swiper
@@ -173,13 +175,13 @@ class Slider extends Component<SliderProps, State> {
             <SwiperSlide
               key={index}
               className={classNames(s.swiperslide, classes.slideItem)}
-              style={{
-                background: item.background
-              }}
+              style={pageStyle(item.backgroundGroup)}
             >
-              <div className={classNames(s.content, classes.content)}>{
-                item.childrens?.map(this.renderElement)
-              }</div>
+              <div className={classNames(s.content, classes.content)}>
+                {
+                  item.childrens?.map(this.renderElement)
+                }
+              </div>
             </SwiperSlide>)}
         </Swiper>
       </Wrapper>
