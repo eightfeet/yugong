@@ -21,9 +21,8 @@ const PageSetter:React.FC<Props> = ({ onClose, visible, title, data={}}) => {
         padding: 0,
         backgroundColor: '#fafafa'
       }}
-      maskStyle={{ backgroundColor: 'transparent' }}
       width={580}
-      maskClosable
+      mask={false}
       onClose={onClose}
       visible={visible}
       closeIcon={<><ArrowLeftOutlined />返回</>}

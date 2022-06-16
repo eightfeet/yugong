@@ -16,67 +16,7 @@ const config: ModulesStatic = {
           name: "内容",
           describe: "填写图片地址",
           fieldName: "datas",
-          data: [
-            {
-              "background": "#fff",
-              "childrens": [
-                {
-                  "name": "元素1",
-                  "content": "这是P1元素1",
-                  "style": {},
-                  "parallax": {
-                    "x": "100",
-                    "y": "100",
-                    "scale": "1.5",
-                    "opacity": "0",
-                    "duration": "0"
-                  },
-                  "link": "2"
-                },
-                {
-                  "name": "元素2",
-                  "content": "这是P1元素2",
-                  "style": {},
-                  "parallax": {
-                    "x": "100",
-                    "y": "100",
-                    "scale": "1.5",
-                    "opacity": "0",
-                    "duration": "1000"
-                  }
-                }
-              ]
-            },
-            {
-              "background": "#fff",
-              "childrens": [
-                {
-                  "name": "元素1",
-                  "content": "这是P2元素1",
-                  "style": {},
-                  "parallax": {
-                    "x": "100",
-                    "y": "100",
-                    "scale": "1.5",
-                    "opacity": "0",
-                    "duration": "0"
-                  }
-                },
-                {
-                  "name": "元素2",
-                  "content": "这是P2元素2",
-                  "style": {},
-                  "parallax": {
-                    "x": "100",
-                    "y": "100",
-                    "scale": "1.5",
-                    "opacity": "0",
-                    "duration": "1000"
-                  }
-                }
-              ]
-            }
-          ]
+          data: []
         },
       ],
     },
@@ -87,7 +27,7 @@ const config: ModulesStatic = {
         {
           type: "string",
           name: "转场效果",
-          describe: "滚动时转场效果,slider1 - slider10",
+          describe: "滚动时转场效果",
           select: {
             slider1: "转场1", slider2: "转场2", slider3: "转场3", slider4: "转场4", slider5: "转场5",
             slider6: "转场6", slider7: "转场7", slider8: "转场8", slider9: "转场9", slider10: "转场10",
@@ -95,7 +35,6 @@ const config: ModulesStatic = {
           data: "slider1",
           fieldName: "effect",
         },
-
         {
           type: "string",
           name: "方向",

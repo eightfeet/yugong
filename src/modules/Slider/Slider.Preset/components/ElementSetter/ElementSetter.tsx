@@ -1,8 +1,7 @@
-import { ArrowLeftOutlined, BackwardFilled, BackwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Col, Drawer, Input, Row, PageHeader } from 'antd';
 import React, { useContext } from 'react';
 import NumberInput from '~/components/MiniDashboard/NumberInput';
-import UnitInput from '~/components/MiniDashboard/UnitInput';
 import { ContentAndStyleContext } from '../../ContentAndStyleContext';
 import { ParallaxConfig } from '../../ParallaxConfig';
 import ElementStyleSheetPanel from '../ElementStyleSheetPanel';
@@ -26,9 +25,8 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
         padding: 0,
         backgroundColor: '#fafafa'
       }}
-      maskStyle={{ backgroundColor: 'transparent' }}
       width={580}
-      maskClosable
+      mask={false}
       onClose={onClose}
       visible={visible}
       closeIcon={<><ArrowLeftOutlined />返回</>}
@@ -82,7 +80,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
             min={0}
             max={1}
             defaultValue={parallax?.opacity}
-            onChange={(e: any) => setParallax?.('opacity', e)}
+            onChange={(e: any) => setParallax?.('opacity', e || '0')}
           />
         </Col>
       </Row>
