@@ -77,10 +77,10 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
             label="透明度"
             placeholder="透明度"
             unit="0-1"
-            min={0}
+            min={0.001}
             max={1}
             defaultValue={parallax?.opacity}
-            onChange={(e: any) => setParallax?.('opacity', e || '0')}
+            onChange={(e: any) => setParallax?.('opacity', e || '0.001')}
           />
         </Col>
       </Row>

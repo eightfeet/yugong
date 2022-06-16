@@ -54,7 +54,7 @@ class Slider extends Component<SliderProps, State> {
       autoplay: false,
       loop: true,
       speed: 600,
-      effect: effects.slider1,
+      effect: effects.effect1,
       reSetSW: true,
       direction: 'horizontal'
     }
