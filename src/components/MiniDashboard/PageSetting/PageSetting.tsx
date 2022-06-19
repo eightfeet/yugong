@@ -32,6 +32,7 @@ import ReactJson from "react-json-view";
 import { StyleContext, StyleType } from "~/context/StyleContext";
 import produce from "~/core/helper/produce";
 import { createDesc } from '~/core/constants';
+import TotalControlHub from "../TotalControlHub";
 
 const Option = Select.Option;
 const { Panel } = Collapse;
@@ -445,6 +446,11 @@ const Pagesetting: React.FC<Props> = () => {
                 />
               ))}
             </>
+          </div>
+        </Panel>
+        <Panel header="线程" key="tch">
+          <div className={s.tch}>
+              <TotalControlHub updatePage={handleUpdatePage} />
           </div>
         </Panel>
         <Panel header="百度统计" key="pagecounter">

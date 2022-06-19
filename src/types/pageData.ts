@@ -1,5 +1,6 @@
 import {
   Api,
+  ArgumentsItem,
   BackgroundCommonTypesOfStyleItems,
   BackgroundGradientTypesOfStyleItems,
   BackgroundGroupTypesOfStyleItems,
@@ -62,4 +63,51 @@ export interface PageData {
   windowHeight?: number;
   /**模板信息 */
   template?: Template;
+  /** 页面线程集合 */
+  TCH?: {
+    /**线程名 */
+    [lineName: string]: PointItem[]
+  };
+}
+
+export interface PointItem {
+  point: string;
+  status: 'locked' | 'unlocked';
+  msg: string;
+}
+
+
+export interface TCHLinePoints {
+  /**节点 */
+  key: string;
+  /**节点条件 */
+  status: 'locked' | 'unlocked';
+  /**信息 */
+  msg: string;
+  /**执行者 */
+  executor: string,
+  /**参数 */
+  arguments: ArgumentsItem[]
+}
+
+/** 线程 */
+export interface TCHLine {
+  /**线程名称 */
+  name: string;
+  /**关键节点 */
+  points: TCHLinePoints[];
+}
+
+type TCHControl = ['locked' | 'unlocked', string];
+
+/** 运行时线程 */
+export interface TCHRunningTime {
+  /** 关键节点 */
+  controls: {
+    [point: string]: TCHControl
+  },
+  /** 当前节点状态 */
+  point: 'locked' | 'unlocked',
+  /** 当前节点 状态-信息 */
+  control: TCHControl,
 }
