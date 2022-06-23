@@ -26,6 +26,8 @@ export interface Template {
   isPublic?: 0 | 1;
 }
 
+export type TCHStatusType = 'locked' | 'unlocked';
+
 export interface PageData {
   /* *页面标题 */
   pageTitle?: string;
@@ -63,16 +65,30 @@ export interface PageData {
   windowHeight?: number;
   /**模板信息 */
   template?: Template;
-  /** 页面线程集合 */
+  /** 页面线程 */
   TCH?: {
     /**线程名 */
     [lineName: string]: PointItem[]
   };
+  /** 线程进程 */
+  TCHProcess?: {
+    /**线程 */
+    [lineName: string]: TCHProcessItemType[]
+  }
+}
+
+export interface TCHProcessItemType {
+  /**线程状态 */
+  status: TCHStatusType;
+  /**事件分发 模块名/方法名 */
+  dispatch: string,
+  /**事件执行参数 */
+  arguments: ArgumentsItem[]
 }
 
 export interface PointItem {
   point: string;
-  status: 'locked' | 'unlocked';
+  status: TCHStatusType;
   msg: string;
 }
 
@@ -81,7 +97,7 @@ export interface TCHLinePoints {
   /**节点 */
   key: string;
   /**节点条件 */
-  status: 'locked' | 'unlocked';
+  status: TCHStatusType;
   /**信息 */
   msg: string;
   /**执行者 */
@@ -98,7 +114,7 @@ export interface TCHLine {
   points: TCHLinePoints[];
 }
 
-type TCHControl = ['locked' | 'unlocked', string];
+type TCHControl = [TCHStatusType, string];
 
 /** 运行时线程 */
 export interface TCHRunningTime {
@@ -107,7 +123,7 @@ export interface TCHRunningTime {
     [point: string]: TCHControl
   },
   /** 当前节点状态 */
-  point: 'locked' | 'unlocked',
+  point: TCHStatusType,
   /** 当前节点 状态-信息 */
   control: TCHControl,
 }
