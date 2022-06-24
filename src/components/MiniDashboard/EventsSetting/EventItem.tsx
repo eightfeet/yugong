@@ -20,12 +20,12 @@ const DragHandle = SortableHandle(() => (
 /**
  * 事件描述
  */
-interface EventEmitterExpose {
+export interface EventEmitterExpose {
   name: string;
   description: string;
 }
 
-interface ModuleListItem {
+export interface ModuleListItem {
   type: string;
   name: string;
   uuid: string;

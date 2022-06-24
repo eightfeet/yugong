@@ -123,7 +123,7 @@ const EventListHoc = SortableContainer(
     const onChangeItem = useCallback(
       (index: number) => (data: string[]) => {
         const operateEvents = [...moduleEvents];
-        //   moduleUuid
+        // moduleUuid
         operateEvents[index] = {
           arguments: [],
           dispatchedFunctions: data[1],

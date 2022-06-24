@@ -19,7 +19,7 @@ const TotalControlHub: React.FC<Props> = ({
   updatePage
 }) => {
   const pageData = useSelector((state: RootState) => state.pageData);
-  const { TCH } = pageData;
+  const { TCH, TCHProcess } = pageData;
   const tchs = Object.keys(TCH || {});
   const [activeKey, setActiveKey] = useState(tchs[0]);
   const [tchview, setTchview] = useState(false);
@@ -111,7 +111,7 @@ const TotalControlHub: React.FC<Props> = ({
             <div className={s.main}>
               <Button size="small" icon={<PlusOutlined />} />
               {/** to do list */}
-              <TCHLineGroup points={TCH?.[pane] || []} line={pane} />
+              <TCHLineGroup points={TCH?.[pane] || []} process={TCHProcess?.[pane] || []} line={pane} onSetArg={() => {}} />
             </div>
           </TabPane>
         ))}
