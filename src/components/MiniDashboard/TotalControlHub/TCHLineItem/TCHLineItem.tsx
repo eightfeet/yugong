@@ -5,21 +5,23 @@ import { useSelector } from 'react-redux';
 import Output from '~/components/Output';
 import { RootState } from '~/redux/store';
 import { ExposeFunctions } from '~/types/modules';
+import { TCHProcessItemType } from '~/types/pageData';
 import {
   EventEmitterExpose,
   ModuleListItem,
 } from '../../EventsSetting/EventItem';
-import s from './TCHLineGroup.module.scss';
+import s from './TCHLineItem.module.scss';
 
 interface Props {
   /**TCH */
   points: any[];
-  process: any[];
+  process: TCHProcessItemType;
   line: string;
   onSetArg: () => void;
+  onChange: (data: any) => void;
 }
 
-const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
+const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChange }) => {
   const [selectItem, setSelectItem] = useState<any[]>([]);
   /**
    * 运行时可选模块清单
@@ -30,10 +32,32 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
    */
   const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
 
+  const [status, setStatus] = useState();
+  const [point, setPoint] = useState();
+
 
   const appData = useSelector((state: RootState) => state.appData);
 
-  console.log('points====', points);
+  const [module, setModule] = useState<string>();
+  const [dispatch, setDispatch] = useState<string>();
+
+  console.log('process====', process);
+
+  useEffect(() => {
+    if (process.arguments) {}
+    if (process.status) {}
+    if (process.dispatch) {
+      const [ module, dispatch ] = process.dispatch.split('/') || [];
+      if (module) {
+        setModule(module)
+      }
+
+      if (dispatch) {
+        setDispatch(dispatch)
+      }
+    }
+  }, [process])
+  
   
 
   /**
@@ -73,12 +97,14 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
       setSelectItem(operateData);
       // 获取被选模块的方法清单
       getFunctionOptionsList(data);
+      console.log('data', data);
+      
       // 数据变更
-      // if (onChange instanceof Function) {
-      //   onChange(operateData);
-      // }
+      if (onChange instanceof Function) {
+        onChange(operateData);
+      }
     },
-    [selectItem, getFunctionOptionsList],
+    [selectItem, getFunctionOptionsList, onChange],
   );
 
   /**
@@ -89,12 +115,29 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
       const operateData = [...selectItem];
       operateData[1] = data;
       setSelectItem(operateData);
-      // if (onChange instanceof Function) {
-      //   onChange(operateData);
-      // }
+      if (onChange instanceof Function) {
+        onChange(operateData);
+      }
     },
-    [selectItem]
+    [onChange, selectItem]
   );
+
+  const onChangeStatus = useCallback(
+    (e) => {
+      setStatus(e)
+    },
+    [],
+  )
+
+
+  const onChangePoint = useCallback(
+    (e) => {
+      setPoint(e)
+    },
+    [],
+  )
+  
+  
 
   /**
    * 初始化运行时模块清单，
@@ -160,7 +203,9 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
               style={{ width: '46%' }}
               showSearch
               placeholder="请选择"
-              suffixIcon={<div style={{ fontSize: 14 }}>状态</div>}
+              suffixIcon={<div style={{ fontSize: 14 }}>节点</div>}
+              value={point}
+              onChange={onChangePoint}
             >
               {points.map((item) => (
                 <Select.Option key={item.point} value={item.point}>
@@ -174,7 +219,9 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
             <Select
               style={{ width: '45%' }}
               placeholder="初始状态"
+              value={status}
               suffixIcon={<div style={{ fontSize: 14 }}>时</div>}
+              onChange={onChangeStatus}
             >
               <Select.Option value="locked">被锁定</Select.Option>
               <Select.Option value="unlocked">被解锁</Select.Option>
@@ -214,4 +261,4 @@ const TCHLineGroup: React.FC<Props> = ({ points, line, onSetArg }) => {
   );
 };
 
-export default TCHLineGroup;
+export default TCHLineItem;

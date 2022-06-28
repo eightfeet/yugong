@@ -83,7 +83,10 @@ export interface TCHProcessItemType {
   /**事件分发 模块名/方法名 */
   dispatch: string,
   /**事件执行参数 */
-  arguments: ArgumentsItem[]
+  arguments: ArgumentsItem[],
+  /**关键节点 */
+  point: string,
+
 }
 
 export interface PointItem {

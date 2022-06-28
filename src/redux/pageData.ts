@@ -67,6 +67,20 @@ const defaultData: PageData = {
         msg: '必须是店员'
       }
     ]
+  },
+  TCHProcess: {
+    featureA: [{
+      status: 'locked', 
+      dispatch: 'global/sleepFor', 
+      arguments: [{
+        type:"number",
+        name:"休眠时间",
+        fieldName:"sleepTime",
+        describe:"休眠时间(ms)",
+        data:"1000"
+      }],
+      point: 'featureA_login'
+    }]
   }
 };
 
