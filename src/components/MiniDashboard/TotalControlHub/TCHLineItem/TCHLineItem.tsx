@@ -22,50 +22,28 @@ interface Props {
 }
 
 const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChange }) => {
-  const [selectItem, setSelectItem] = useState<any[]>([]);
-  /**
-   * 运行时可选模块清单
-   */
-  const [moduleList, setModuleList] = useState<ModuleListItem[]>([]);
-  /**
-   * 运行时可选方法清单
-   */
-  const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
-
-  const [status, setStatus] = useState();
-  const [point, setPoint] = useState();
-
-
   const appData = useSelector((state: RootState) => state.appData);
-
+  // 运行时可选模块清单
+  const [moduleList, setModuleList] = useState<ModuleListItem[]>([]);
+  // 运行时可选方法清单
+  const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
+  // 节点状态 
+  const [status, setStatus] = useState<'locked' | 'unlocked' >();
+  // 节点名称 
+  const [point, setPoint] = useState<string>();
+  // 模块名
   const [module, setModule] = useState<string>();
+  // 模块方法
   const [dispatch, setDispatch] = useState<string>();
 
   console.log('process====', process);
-
-  useEffect(() => {
-    if (process.arguments) {}
-    if (process.status) {}
-    if (process.dispatch) {
-      const [ module, dispatch ] = process.dispatch.split('/') || [];
-      if (module) {
-        setModule(module)
-      }
-
-      if (dispatch) {
-        setDispatch(dispatch)
-      }
-    }
-  }, [process])
-  
-  
 
   /**
    * 通过所有运行时模块id
    * 找出包含有方法导出的模块
    * 保存到可选模块清单
    */
-  const getFunctionOptionsList = useCallback(
+   const getFunctionOptionsList = useCallback(
     // 根据被选模块获取模块方法清单
     (moduleUuid: string) => {
       // 获取模块type
@@ -85,41 +63,59 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
     [moduleList],
   );
 
+  /**首次数据回填 */
+  useEffect(() => {
+    if (process.arguments) {}
+    if (process.status) {
+      setStatus(process.status)
+    }
+    if (process.dispatch) {
+      const [ module, dispatch ] = process.dispatch.split('/') || [];
+      if (module) {
+        setModule(module)
+        // 获取被选模块的方法清单
+        getFunctionOptionsList(module);
+      }
+
+      if (dispatch) {
+        setDispatch(dispatch)
+      }
+    }
+
+    if (process.point) {
+      setPoint(process.point)
+    }
+  }, [getFunctionOptionsList, process])
+
   /**
    * 模块被修改时，模块对应的方法要做同步修改
    */
   const onChangemoduleUuid = useCallback(
-    (data: string) => {
+    (module: string) => {
       // 修改被选数据
-      const operateData = [...selectItem];
-      operateData[0] = data;
-      operateData[1] = '';
-      setSelectItem(operateData);
+      setModule(module);
       // 获取被选模块的方法清单
-      getFunctionOptionsList(data);
-      console.log('data', data);
+      getFunctionOptionsList(module);
       
       // 数据变更
       if (onChange instanceof Function) {
-        onChange(operateData);
+        // onChange(operateData);
       }
     },
-    [selectItem, getFunctionOptionsList, onChange],
+    [getFunctionOptionsList, onChange],
   );
 
   /**
    * 修改方法
    */
    const onChangeDispatchedFunctions = useCallback(
-    (data: string) => {
-      const operateData = [...selectItem];
-      operateData[1] = data;
-      setSelectItem(operateData);
+    (dispatch: string) => {
+      setDispatch(dispatch)
       if (onChange instanceof Function) {
-        onChange(operateData);
+        // onChange();
       }
     },
-    [onChange, selectItem]
+    [onChange]
   );
 
   const onChangeStatus = useCallback(
@@ -137,8 +133,6 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
     [],
   )
   
-  
-
   /**
    * 初始化运行时模块清单，
    * 仅包含有方法导出的模块
@@ -171,7 +165,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
   const renderModuleSelect = useCallback(() => {
     return (
       <Select
-        value={selectItem[0] || null}
+        value={module || null}
         style={{ width: '40%' }}
         showSearch
         placeholder="请选择"
@@ -191,7 +185,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
         ))}
       </Select>
     );
-  }, [moduleList, onChangemoduleUuid, selectItem]);
+  }, [module, moduleList, onChangemoduleUuid]);
 
   return (
     <div className={s.block}>
@@ -234,7 +228,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
           <Form.Item noStyle>{renderModuleSelect()}</Form.Item>
           <Form.Item noStyle>
             <Select
-              value={selectItem[1] || null}
+              value={dispatch || null}
               className={s.selecter}
               placeholder="请选择方法"
               onChange={onChangeDispatchedFunctions}
