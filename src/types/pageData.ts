@@ -80,7 +80,9 @@ export interface PageData {
 export interface TCHProcessItemType {
   /**线程状态 */
   status?: TCHStatusType;
-  /**事件分发 模块名/方法名 */
+  /**模块名 */
+  module?: string,
+  /**事件分发 方法名 */
   dispatch?: string,
   /**事件执行参数 */
   arguments?: ArgumentsItem[],

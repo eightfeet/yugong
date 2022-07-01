@@ -72,7 +72,8 @@ const defaultData: PageData = {
     featureA: [
       {
         status: 'locked',
-        dispatch: 'global/sleepFor',
+        dispatch: 'sleepFor',
+        module: 'global',
         arguments: [
           {
             type: 'number',

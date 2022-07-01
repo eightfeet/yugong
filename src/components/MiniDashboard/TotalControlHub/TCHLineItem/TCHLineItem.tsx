@@ -50,7 +50,8 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
     (data: TCHProcessItemType) => {
       const res = {
         status,
-        dispatch: `${module}/${dispatch}`,
+        dispatch,
+        module,
         point,
         arguments: currentFunctionArguments,
         ...data
@@ -91,30 +92,28 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
 
   /**首次数据回填 */
   useEffect(() => {
-    if (process.arguments) {
+    const { arguments: args, status, module, dispatch, point} = process;
+    if (args) {
+      setCurrentFunctionArguments(args)
     }
-    if (process.status) {
-      setStatus(process.status);
+    if (status) {
+      setStatus(status);
     }
-    if (process.dispatch) {
-      const [module, dispatch] = process.dispatch.split('/') || [];
-      if (module) {
-        setModule(module);
-        // 获取被选模块的方法清单
-        getFunctionOptionsList(module);
-      }
-
-      if (dispatch) {
-        setDispatch(dispatch);
-      }
-
-      if (process.arguments) {
-        setCurrentFunctionArguments(process.arguments);
-      }
+    if (module) {
+      setModule(module);
+      // 获取被选模块的方法清单
+      getFunctionOptionsList(module);
+    }
+    if (dispatch) {
+      setDispatch(dispatch);
     }
 
-    if (process.point) {
-      setPoint(process.point);
+    if (args) {
+      setCurrentFunctionArguments(args);
+    }
+
+    if (point) {
+      setPoint(point);
     }
   }, [getFunctionOptionsList, process]);
 
@@ -132,11 +131,13 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
       // 获取被选模块的方法清单
       getFunctionOptionsList(module);
       // 数据变更
-      if (onChange instanceof Function) {
-        // onChange(operateData);
-      }
+      handleChange({
+        module,
+        dispatch: undefined,
+        arguments: undefined
+      })
     },
-    [getFunctionOptionsList, onChange],
+    [getFunctionOptionsList, handleChange],
   );
 
   /**
@@ -214,7 +215,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
     return (
       <Select
         value={module || null}
-        style={{ width: '40%' }}
+        style={{ width: '162px' }}
         showSearch
         placeholder="请选择"
         onChange={onChangemoduleUuid}
@@ -245,10 +246,9 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
         <Input.Group compact>
           <Form.Item noStyle>
             <Select
-              style={{ width: '46%' }}
+              style={{ width: '190px' }}
               showSearch
               placeholder="请选择"
-              suffixIcon={<div style={{ fontSize: 14 }}>节点</div>}
               value={point}
               onChange={onChangePoint}
             >
@@ -262,11 +262,12 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
           <div className={s.bridge}>=</div>
           <Form.Item noStyle>
             <Select
-              style={{ width: '45%' }}
+              style={{ width: '190px' }}
               placeholder="初始状态"
               value={status}
               suffixIcon={<div style={{ fontSize: 14 }}>时</div>}
               onChange={onChangeStatus}
+              disabled={!point}
             >
               <Select.Option value="locked">被锁定</Select.Option>
               <Select.Option value="unlocked">被解锁</Select.Option>
@@ -283,6 +284,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
           <Form.Item noStyle>
             <Select
               value={dispatch || null}
+              style={{ width: '165px' }}
               className={s.selecter}
               placeholder="请选择方法"
               onChange={onChangeDispatchedFunctions}
