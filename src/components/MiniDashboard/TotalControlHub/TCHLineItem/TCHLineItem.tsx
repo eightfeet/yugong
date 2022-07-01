@@ -4,8 +4,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Output from '~/components/Output';
 import { RootState } from '~/redux/store';
+import { ArgumentsItem } from '~/types/appData';
 import { ExposeFunctions } from '~/types/modules';
 import { TCHProcessItemType } from '~/types/pageData';
+import ArgumentsSetting from '../../ArgumentsSetting';
 import {
   EventEmitterExpose,
   ModuleListItem,
@@ -17,33 +19,56 @@ interface Props {
   points: any[];
   process: TCHProcessItemType;
   line: string;
-  onSetArg: () => void;
   onChange: (data: any) => void;
+  onRemove?: () => void;
 }
 
-const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChange }) => {
+const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemove=()=>{} }) => {
   const appData = useSelector((state: RootState) => state.appData);
   // 运行时可选模块清单
   const [moduleList, setModuleList] = useState<ModuleListItem[]>([]);
   // 运行时可选方法清单
   const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
-  // 节点状态 
-  const [status, setStatus] = useState<'locked' | 'unlocked' >();
-  // 节点名称 
+  // 节点状态
+  const [status, setStatus] = useState<'locked' | 'unlocked'>();
+  // 节点名称
   const [point, setPoint] = useState<string>();
   // 模块名
   const [module, setModule] = useState<string>();
   // 模块方法
   const [dispatch, setDispatch] = useState<string>();
 
-  console.log('process====', process);
+  // 参数
+  const [argumentsVisible, setArgumentsVisible] = useState(false);
+  const [currentFunctionArguments, setCurrentFunctionArguments] =
+    useState<ArgumentsItem[]>();
+  const [currentFunctionStaticArguments, setCurrentFunctionStaticArguments] =
+    useState<ArgumentsItem[]>();
+
+  // 操作数据
+  const handleChange = useCallback(
+    (data: TCHProcessItemType) => {
+      const res = {
+        status,
+        dispatch: `${module}/${dispatch}`,
+        point,
+        arguments: currentFunctionArguments,
+        ...data
+      };
+
+      if (onChange instanceof Function) {
+        onChange(res);
+      }
+    },
+    [currentFunctionArguments, dispatch, module, onChange, point, status],
+  )
 
   /**
    * 通过所有运行时模块id
    * 找出包含有方法导出的模块
    * 保存到可选模块清单
    */
-   const getFunctionOptionsList = useCallback(
+  const getFunctionOptionsList = useCallback(
     // 根据被选模块获取模块方法清单
     (moduleUuid: string) => {
       // 获取模块type
@@ -51,6 +76,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
         (item) => item.uuid === moduleUuid,
       );
       if (!result) return;
+      
       let exposeFunctions: EventEmitterExpose[] = [];
       if (result.type !== 'global') {
         exposeFunctions = require(`~/modules/${result.type}`).default
@@ -65,27 +91,32 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
 
   /**首次数据回填 */
   useEffect(() => {
-    if (process.arguments) {}
+    if (process.arguments) {
+    }
     if (process.status) {
-      setStatus(process.status)
+      setStatus(process.status);
     }
     if (process.dispatch) {
-      const [ module, dispatch ] = process.dispatch.split('/') || [];
+      const [module, dispatch] = process.dispatch.split('/') || [];
       if (module) {
-        setModule(module)
+        setModule(module);
         // 获取被选模块的方法清单
         getFunctionOptionsList(module);
       }
 
       if (dispatch) {
-        setDispatch(dispatch)
+        setDispatch(dispatch);
+      }
+
+      if (process.arguments) {
+        setCurrentFunctionArguments(process.arguments);
       }
     }
 
     if (process.point) {
-      setPoint(process.point)
+      setPoint(process.point);
     }
-  }, [getFunctionOptionsList, process])
+  }, [getFunctionOptionsList, process]);
 
   /**
    * 模块被修改时，模块对应的方法要做同步修改
@@ -94,9 +125,12 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
     (module: string) => {
       // 修改被选数据
       setModule(module);
+      // 清理历史数据
+      setCurrentFunctionStaticArguments(undefined);
+      setDispatch(undefined);
+
       // 获取被选模块的方法清单
       getFunctionOptionsList(module);
-      
       // 数据变更
       if (onChange instanceof Function) {
         // onChange(operateData);
@@ -108,31 +142,45 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
   /**
    * 修改方法
    */
-   const onChangeDispatchedFunctions = useCallback(
+  const onChangeDispatchedFunctions = useCallback(
     (dispatch: string) => {
-      setDispatch(dispatch)
-      if (onChange instanceof Function) {
-        // onChange();
-      }
+      setDispatch(dispatch);
+      const currentArgs = functionList.find(item => item.name === dispatch)?.arguments;
+      if (currentArgs) setCurrentFunctionArguments(currentArgs);
+      
+      handleChange({
+        dispatch,
+        arguments: currentArgs
+      })
     },
-    [onChange]
+    [functionList, handleChange],
   );
 
-  const onChangeStatus = useCallback(
-    (e) => {
-      setStatus(e)
-    },
-    [],
-  )
+  const onChangeStatus = useCallback((e) => {
+    setStatus(e);
+    handleChange({
+      status: e
+    })
+  }, [handleChange]);
 
+  const onChangePoint = useCallback((e) => {
+    setPoint(e);
+    handleChange({
+      point: e
+    })
+  }, [handleChange]);
 
-  const onChangePoint = useCallback(
-    (e) => {
-      setPoint(e)
-    },
-    [],
-  )
-  
+  const onSaveArgs = useCallback((args: ArgumentsItem[]) => {
+    handleChange({
+      arguments: args
+    });
+    setArgumentsVisible(false);
+  }, [handleChange]);
+
+  const onSetArg = useCallback(() => {
+    setArgumentsVisible(true);
+  }, []);
+
   /**
    * 初始化运行时模块清单，
    * 仅包含有方法导出的模块
@@ -189,8 +237,11 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
 
   return (
     <div className={s.block}>
-      <CloseOutlined className={s.minus} />
-      <Form.Item label={<div className={s.label}>如果节点</div>} className={s.lineItem}>
+      <CloseOutlined className={s.minus} onClick={onRemove} />
+      <Form.Item
+        label={<div className={s.label}>如果节点</div>}
+        className={s.lineItem}
+      >
         <Input.Group compact>
           <Form.Item noStyle>
             <Select
@@ -223,7 +274,10 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
           </Form.Item>
         </Input.Group>
       </Form.Item>
-      <Form.Item label={<div className={s.label}>执行</div>} className={s.lineItem}>
+      <Form.Item
+        label={<div className={s.label}>执行</div>}
+        className={s.lineItem}
+      >
         <Input.Group compact>
           <Form.Item noStyle>{renderModuleSelect()}</Form.Item>
           <Form.Item noStyle>
@@ -232,6 +286,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
               className={s.selecter}
               placeholder="请选择方法"
               onChange={onChangeDispatchedFunctions}
+              disabled={!module}
             >
               {functionList.map((item) => (
                 <Select.Option key={item.name} value={item.name}>
@@ -242,15 +297,20 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onSetArg, onChang
           </Form.Item>
           <Form.Item noStyle>
             {/** 未选择方法时不可以编辑参数 */}
-            <Button
-              icon={<SettingOutlined />}
-              onClick={onSetArg}
-            >
+            <Button icon={<SettingOutlined />} disabled={!module || !dispatch} onClick={onSetArg}>
               参数
             </Button>
           </Form.Item>
         </Input.Group>
       </Form.Item>
+      <ArgumentsSetting
+        title="参数设置"
+        visible={argumentsVisible}
+        onOk={onSaveArgs}
+        argumentsData={currentFunctionArguments}
+        initArgumentData={currentFunctionStaticArguments}
+        onCancel={() => setArgumentsVisible(false)}
+      />
     </div>
   );
 };

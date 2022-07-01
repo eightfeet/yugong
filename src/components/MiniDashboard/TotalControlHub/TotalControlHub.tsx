@@ -2,8 +2,8 @@ import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Modal, Space, Tabs } from 'antd';
 import { cloneDeep } from 'lodash';
 import React, { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch, RootState } from '~/redux/store';
 import { PointItem } from '~/types/pageData';
 import SetLine from './SetLine';
 import TCHLineItem from './TCHLineItem';
@@ -23,7 +23,7 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
   const [tchview, setTchview] = useState(false);
   // 当勤操作线程
   const [handleLineName, setHandleLineName] = useState<string>();
-
+  const { updateTCHItem, removeTCHItem, resetTCHProcess } = useDispatch<Dispatch>().pageData;
   const onChange = (newActiveKey: string) => {
     setActiveKey(newActiveKey);
   };
@@ -35,9 +35,7 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
-          const newPageData = cloneDeep(pageData);
-          delete newPageData.TCH?.[targetKey];
-          updatePage(newPageData);
+          removeTCHItem(targetKey);
           setTchview(false);
           if (tchs?.length) {
             setActiveKey(tchs[0]);
@@ -45,9 +43,43 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
         },
       });
     },
-    [pageData, tchs, updatePage],
+    [removeTCHItem, tchs],
   );
 
+  const removeLinePointItem = useCallback(
+    (index, pane) => {
+      const data = cloneDeep(TCHProcess?.[pane]);
+      if (data) {
+        const result = data.filter((el, ind) => ind !== index);
+        
+        const newTCHProcess = {
+          ...TCHProcess,
+          [pane]: result
+        }
+        resetTCHProcess(newTCHProcess)
+      }
+    },
+    [TCHProcess, resetTCHProcess],
+  )
+
+  const addLinePointItem = useCallback(
+    (pane) => {
+      console.log(pane, '增加项内容');
+      const data = cloneDeep(TCHProcess?.[pane]) || [];
+      data.push({});
+      const newTCHProcess = {
+          ...TCHProcess,
+          [pane]: data
+      }
+
+      resetTCHProcess(newTCHProcess);
+
+      console.log('newTCHProcess', newTCHProcess);
+      
+    },
+    [TCHProcess, resetTCHProcess],
+  )
+  
   const onAddLine = useCallback((targetKey: any, action: 'add' | 'remove') => {
     if (action === 'add') {
       setHandleLineName(undefined);
@@ -93,6 +125,21 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
     [addLine, editLine, handleLineName],
   );
 
+  const onChangeProcessItem = useCallback(
+    (data, index, pane) => {
+      const TCHProcessCopy = cloneDeep(TCHProcess?.[pane]) || [];
+      TCHProcessCopy[index] = data;
+      const newTCHProcess = {
+          ...TCHProcess,
+          [pane]: TCHProcessCopy
+      }
+      resetTCHProcess(newTCHProcess)
+      console.log('最后数据', newTCHProcess);
+    },
+    [TCHProcess, resetTCHProcess],
+  )
+  
+
   return (
     <>
       <Tabs
@@ -114,7 +161,7 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
             }
           >
             <div className={s.main}>
-              <Button size="small" icon={<PlusOutlined />} />
+              <Button size="small" icon={<PlusOutlined />} onClick={() => addLinePointItem(pane)} />
               {/** to do list */}
               {
                 TCHProcess?.[pane]?.map((el, index) => <TCHLineItem
@@ -122,8 +169,8 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
                   points={TCH?.[pane] || []}
                   process={el}
                   line={pane}
-                  onSetArg={() => {}}
-                  onChange={(data) => console.log(data)}
+                  onChange={(data) => onChangeProcessItem(data, index, pane)}
+                  onRemove={() => removeLinePointItem(index, pane)}
                 />)
               }
             </div>

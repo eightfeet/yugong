@@ -79,14 +79,13 @@ export interface PageData {
 
 export interface TCHProcessItemType {
   /**线程状态 */
-  status: TCHStatusType;
+  status?: TCHStatusType;
   /**事件分发 模块名/方法名 */
-  dispatch: string,
+  dispatch?: string,
   /**事件执行参数 */
-  arguments: ArgumentsItem[],
+  arguments?: ArgumentsItem[],
   /**关键节点 */
-  point: string,
-
+  point?: string,
 }
 
 export interface PointItem {
