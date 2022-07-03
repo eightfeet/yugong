@@ -143,6 +143,16 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     );
   }, []);
 
+  // 全剧线程控制
+  const onProcess = useCallback(
+    (processname: ArgumentsItem) => {
+      const currentfns = getArgumentsItem(processname) as string;
+      const process = pageData.TCHProcess?.[currentfns];
+      console.log('process', process);
+    },
+    [pageData],
+  )
+
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   const [, eventEmitter] = useLifeCycle(
     'global',
@@ -154,6 +164,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       trackEventBD,
       sleepFor,
       globalMessage,
+      onProcess
     },
   );
 

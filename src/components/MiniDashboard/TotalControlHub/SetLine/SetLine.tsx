@@ -1,5 +1,5 @@
 import { MinusOutlined } from '@ant-design/icons/lib/icons';
-import { Button, Form, Input, Modal, Select, Space } from 'antd';
+import { Button, Form, Input, message, Modal, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback, useEffect, useState } from 'react';
 import { PointItem } from '~/types/pageData';
@@ -72,9 +72,22 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
 
   const minus = useCallback(
     (ind: number) => {
-      setCurrentPoint(currentPoint => {
-        return currentPoint.filter((_, index) => index !== ind);
-      })
+      Modal.confirm({
+        content: '当前线程节点将被删除！',
+        okText: '确定',
+        cancelText: '取消',
+        onOk: () => {
+          setCurrentPoint(currentPoint => {
+            return currentPoint.filter((item, index) => {
+              if (index === ind) {
+                message.warn(`请手动移除线程面板关联的${item.point}节点。`)
+              }
+              return index !== ind
+            });
+          })
+        },
+      });
+      
     },
     [],
   )
