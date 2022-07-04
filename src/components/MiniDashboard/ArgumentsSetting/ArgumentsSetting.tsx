@@ -217,8 +217,6 @@ const ArgumentsSetting: React.FC<Props> = ({
     if (item?.select) {
       const { select } = item;
       const keys = Object.keys(select);
-      console.log('select', select);
-      console.log('keys', keys);
       return (
         <Select
           onChange={onChangeInput(index, true)}

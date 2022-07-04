@@ -150,14 +150,45 @@
     },
     {
       "name": "onProcess",
-      "description": "运行线程",
+      "description": "执行线程",
       "arguments": [
         {
           "type": "string",
           "name": "线程名",
-          "fieldName": "processname",
+          "fieldName": "thread",
           "describe": "线程的名称，请在页面线程中定义",
           "data": ""
+        }
+      ]
+    },
+    {
+      "name": "updateProcess",
+      "description": "更新线程",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "线程名",
+          "fieldName": "thread",
+          "describe": "线程的名称，请在页面线程中定义",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "线程节点",
+          "fieldName": "point",
+          "describe": "线程节点名称，请在页面线程中定义",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "节点状态",
+          "fieldName": "status",
+          "describe": "线程节点状态，locked锁定，unlocked解锁",
+          "select": {
+            "locked": "锁定",
+            "unlocked": "解锁"
+          },
+          "data": "locked"
         }
       ]
     }

@@ -22,7 +22,7 @@ import {
   GRID_DEFAULT_SPACE,
   ROOT_FONTSIZE,
 } from '~/core/constants';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { initTrack, trackEvent, trackPageView } from '~/core/tracking';
 import usePostMessage from '~/hooks/usePostMessage';
 import useLifeCycle from '~/hooks/useLifeCycle';
@@ -35,6 +35,7 @@ interface Props {
 }
 
 const Output: OutputModules<Props> = ({ pageData }) => {
+  const sendMessage = usePostMessage(() => { });
   // 创建百度页面统计, 只做一次创建
   useEffect(() => {
     const { statisticsId } = pageData;
@@ -56,7 +57,9 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     document.title = getResult(pageData.pageTitle || '\u200E');
   }, [pageData.pageTitle]);
 
-  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const { setRunningTimes, setProcess } = useDispatch<Dispatch>().runningTimes;
+
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
 
   const injectGlobal = useCallback(
     (name, value) => {
@@ -143,14 +146,49 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     );
   }, []);
 
+
+  const updateProcess = useCallback(
+    (...args: ArgumentsItem[]) => {
+      const {thread, point, status} = getArguments(args) as {[keys: string]: any};
+      const { msg } = pageData.TCH?.[thread].filter(item => item.point === point)?.[0] || {};
+      const {process} = runningTimes;
+      
+      setProcess({
+        thread,
+        point,
+        msg: msg || '',
+        status
+      });
+
+      console.log('???????????', runningTimes);
+
+
+      // sendMessage(
+      //   {
+      //     tag: "updateRunningTimes",
+      //     value: runningTimes,
+      //   },
+      //   window.top
+      // );
+
+    },
+    [pageData.TCH, runningTimes, setProcess],
+  )
+  
+
   // 全剧线程控制
   const onProcess = useCallback(
     (processname: ArgumentsItem) => {
       const currentfns = getArgumentsItem(processname) as string;
       const process = pageData.TCHProcess?.[currentfns];
-      console.log('process', process);
+      // setProcess({
+      //   thread: 'xiancheng',
+      //   point: 'login',
+      //   msg: '请先登录',
+      //   status: 'unlocked'
+      // })
     },
-    [pageData],
+    [pageData.TCHProcess],
   )
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
@@ -164,7 +202,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       trackEventBD,
       sleepFor,
       globalMessage,
-      onProcess
+      onProcess,
+      updateProcess,
     },
   );
 

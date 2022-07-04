@@ -118,16 +118,26 @@ export interface TCHLine {
   points: TCHLinePoints[];
 }
 
-type TCHControl = [TCHStatusType, string];
+interface TCHPointControl {
+  // 节点状态
+  status: TCHStatusType;
+  // 错误信息
+  msg: string;
+};
 
 /** 运行时线程 */
 export interface TCHRunningTime {
-  /** 关键节点 */
-  controls: {
-    [point: string]: TCHControl
-  },
-  /** 当前节点状态 */
-  point: TCHStatusType,
-  /** 当前节点 状态-信息 */
-  control: TCHControl,
+  /**线程 */
+  [thread: string]: {
+    /** 关键节点 */
+    controls: {
+      [point: string]: TCHPointControl
+    },
+    /** 当前节点状态 */
+    currentPoint: {
+      point: string;
+      status: TCHStatusType;
+      msg: string;
+    }
+  }
 }
