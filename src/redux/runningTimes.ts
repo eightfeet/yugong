@@ -38,10 +38,10 @@ export const runningTimes = createModel<RootModel>()({
 
     reducers: {
         setRunningTimes: (state, payload: RunningTimesItem) => produce(state, draft => {
-          const {search, window, unit, process} = state;
+          const {search, window, unit} = state;
           Object.assign(draft, {
             ...payload,
-            search, window, unit, ...process?{process}:{}
+            search, window, unit
           })
         }),
         setRemSize({unit, ...other}, payload: number) {

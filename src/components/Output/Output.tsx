@@ -29,6 +29,8 @@ import useLifeCycle from '~/hooks/useLifeCycle';
 import config from './Output.config.json';
 import message from '~/components/Message';
 import { ArgumentsItem } from '~/types/appData';
+import { cloneDeep, get, set } from 'lodash';
+import { TCHRunningTime, TCHStatusType } from '~/types/pageData';
 
 interface Props {
   pageData: RootState['pageData'];
@@ -149,34 +151,83 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
   const updateProcess = useCallback(
     (...args: ArgumentsItem[]) => {
-      const {thread, point, status} = getArguments(args) as {[keys: string]: any};
-      const { msg } = pageData.TCH?.[thread].filter(item => item.point === point)?.[0] || {};
-      const {process} = runningTimes;
-      
-      setProcess({
-        thread,
-        point,
-        msg: msg || '',
-        status
-      });
 
-      console.log('???????????', runningTimes);
+      const {thread, point, status} = getArguments(args) as {
+        thread: string;
+        point: string;
+        status: TCHStatusType;
+      };
+      const { msg='' } = pageData.TCH?.[thread].filter(item => item.point === point)?.[0] || {};
 
+      const newRunningTimes = cloneDeep(runningTimes) as {
+        [keys: string]: any;
+        process?: TCHRunningTime;
+      };
 
-      // sendMessage(
-      //   {
-      //     tag: "updateRunningTimes",
-      //     value: runningTimes,
-      //   },
-      //   window.top
-      // );
+      if (!newRunningTimes.process) {
+        newRunningTimes.process = {}
+      }
+
+      if (!newRunningTimes.process[thread]) {
+        newRunningTimes.process[thread] = {
+          controls: {
+            [point]: {
+              status, msg
+            }
+          },
+          currentPoint: {
+            thread,
+            point,
+            status,
+            msg
+          }
+        }
+      } else {
+        set(newRunningTimes, `process.${thread}.controls.${point}`, { status, msg });
+        let currentPoint: {
+          thread: string;
+          point: string;
+          status: TCHStatusType;
+          msg: string;
+        } | undefined;
+
+        const controls = get(newRunningTimes, `process.${thread}.controls`);
+
+        for (const key in controls) {
+          if (Object.prototype.hasOwnProperty.call(controls, key)) {
+            const element = controls[key];
+            console.log('element', key, element,);
+            
+            currentPoint = {
+              thread,
+              point: key,
+              ...element
+            }
+            // 遇见unlocked流程打断
+            if (element.status === 'unlocked') {
+              break;
+            }
+          }
+        }
+        set(newRunningTimes, `process.${thread}.currentPoint`, currentPoint);
+      }
+
+      setRunningTimes(newRunningTimes);
+
+      sendMessage(
+        {
+          tag: "updateRunningTimes",
+          value: newRunningTimes,
+        },
+        window.top
+      );
 
     },
-    [pageData.TCH, runningTimes, setProcess],
+    [pageData.TCH, runningTimes, sendMessage, setRunningTimes],
   )
   
 
-  // 全剧线程控制
+  // 全局线程控制
   const onProcess = useCallback(
     (processname: ArgumentsItem) => {
       const currentfns = getArgumentsItem(processname) as string;

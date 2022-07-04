@@ -135,6 +135,7 @@ export interface TCHRunningTime {
     },
     /** 当前节点状态 */
     currentPoint: {
+      thread: string;
       point: string;
       status: TCHStatusType;
       msg: string;
