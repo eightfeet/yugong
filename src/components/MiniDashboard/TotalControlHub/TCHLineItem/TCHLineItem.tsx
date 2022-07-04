@@ -263,7 +263,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
           <Form.Item noStyle>
             <Select
               style={{ width: '190px' }}
-              placeholder="初始状态"
+              placeholder="状态"
               value={status}
               suffixIcon={<div style={{ fontSize: 14 }}>时</div>}
               onChange={onChangeStatus}

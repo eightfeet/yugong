@@ -42,51 +42,8 @@ const defaultData: PageData = {
   space: localPageData.space || GRID_DEFAULT_SPACE,
   windowWidth: localPageData.windowWidth || DEFAULT_PAGE_WIDTH,
   windowHeight: localPageData.windowHeight || DEFAULT_PAGE_HEIGHT,
-  TCH: {
-    featureA: [
-      {
-        point: 'featureA_login',
-        status: 'locked',
-        msg: '请先登录',
-      },
-      {
-        point: 'featureA_emplay',
-        status: 'locked',
-        msg: '必须是店员',
-      },
-    ],
-    featureB: [
-      {
-        point: 'featureB_login',
-        status: 'locked',
-        msg: '请先登录',
-      },
-      {
-        point: 'featureB_emplay',
-        status: 'locked',
-        msg: '必须是店员',
-      },
-    ],
-  },
-  TCHProcess: {
-    featureA: [
-      {
-        status: 'locked',
-        dispatch: 'sleepFor',
-        module: 'global',
-        arguments: [
-          {
-            type: 'number',
-            name: '休眠时间',
-            fieldName: 'sleepTime',
-            describe: '休眠时间(ms)',
-            data: '1000',
-          },
-        ],
-        point: 'featureA_login',
-      },
-    ],
-  },
+  TCH: {},
+  TCHProcess: {},
 };
 
 export const pageData = createModel<RootModel>()({

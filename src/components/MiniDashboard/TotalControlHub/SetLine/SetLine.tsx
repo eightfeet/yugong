@@ -6,7 +6,7 @@ import { PointItem } from '~/types/pageData';
 import s from './SetLine.module.scss';
 
 interface Props {
-  /**线程名称 */
+  /**线程名称, 没有时表示新增的线程 */
   name?: string,
   points: PointItem[],
   visible: boolean,
@@ -34,11 +34,13 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
   useEffect(() => {
     setCurrentPoint(points)
   }, [points]);
+
   const validatorName = useCallback(
     (_: any, value: any) => {
       if (/[^a-zA-Z0-9]/.test(value)) {
         return Promise.reject(new Error('请输入字母或数字'))
       }
+      
       if (!name && tchs.includes(form?.getFieldValue('name'))) {
         return Promise.reject(new Error(`线程名称${value}已存在`))
       }
@@ -47,20 +49,31 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
     [form, name, tchs],
   )
 
+  /**节点验证 */
   const validatorPoint = useCallback(
     (s: any, value: any) => {
       const ind = parseInt(s.field);
       if (/[^a-zA-Z0-9]/.test(value)) {
         return Promise.reject(new Error('请输入字母或数字'))
-      }
-      const data: PointItem[] = formToData()[name || ''];
-      const has = data?.some((item, index) => (index !== ind && item.point === value));
-      if (has) {
+      }      
+      const formData = form.getFieldsValue() as {[keys: string]: {
+        msg: string;
+        point: string;
+        status: "locked" | "unlocked"
+      }};
+      console.log(formData, value);
+
+      const hasFormData = Object.keys(formData)?.some((key, index) => {
+        const point = formData[key]?.point as string | undefined;
+        return (index !== ind && point === value)
+      });
+
+      if (hasFormData) {
         return Promise.reject(new Error(`节点名称${value}已存在`))
       }
       return Promise.resolve();
     },
-    [formToData, name],
+    [form],
   )
 
   const add = useCallback(
@@ -92,13 +105,21 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
     [],
   )
 
+  const handleChange = useCallback(
+    () => {
+      onChange(formToData());
+    },
+    [formToData, onChange],
+  )
+  
+
   useEffect(() => {
     form.resetFields()
   }, [form, visible, points]);
   
   return (
     <Modal visible={visible} title={`${name ? '修改' : '添加'}线程${name || ''}`} onCancel={onCancel} footer={null}>
-      <Form form={form} onFinish={() => onChange(formToData())}>
+      <Form form={form} onFinish={handleChange}>
         <Form.Item
           name={'name'}
           label="线程名"
@@ -124,9 +145,9 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
               rules={[{ required: true, message: '请选择节点初始状态' }]}
               initialValue={item.status}
             >
-              <Select style={{ width: '20%' }} placeholder="初始状态">
-                <Select.Option value="locked">锁定</Select.Option>
-                <Select.Option value="unlocked">解锁</Select.Option>
+              <Select disabled style={{ width: '20%' }} placeholder="初始状态">
+                <Select.Option value="locked">锁定时</Select.Option>
+                <Select.Option value="unlocked">解锁时</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item
