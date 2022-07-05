@@ -4,7 +4,7 @@ import { cloneDeep, set } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
-import { PointItem } from '~/types/pageData';
+import { PageData, PointItem } from '~/types/pageData';
 import SetLine from './SetLine';
 import TCHLineItem from './TCHLineItem';
 import s from './TotalControlHub.module.scss';
@@ -12,7 +12,7 @@ import s from './TotalControlHub.module.scss';
 const { TabPane } = Tabs;
 
 interface Props {
-  updatePage: (pageData: any) => void;
+  updatePage: (pageData: PageData) => void;
 }
 
 const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
@@ -27,6 +27,13 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
   const onChange = (newActiveKey: string) => {
     setActiveKey(newActiveKey);
   };
+
+  const handleUpdatePage = useCallback(
+    (pageData: PageData) => {
+      updatePage(pageData);
+    },
+    [updatePage],
+  )
 
   const removeLine = useCallback(
     (targetKey: string) => {
@@ -58,10 +65,10 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
       const data = newPageData.TCHProcess?.[pane];
       if (data) {
         newPageData.TCHProcess[pane] = newPageData.TCHProcess[pane].filter((el, ind) => ind !== index);
-        updatePage(newPageData)
+        handleUpdatePage(newPageData)
       }
     },
-    [pageData, updatePage],
+    [pageData, handleUpdatePage],
   )
 
   const addLinePointItem = useCallback(
@@ -74,9 +81,9 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
         newPageData.TCHProcess[pane] = [];
       }
       newPageData.TCHProcess[pane].push({});
-      updatePage(newPageData);
+      handleUpdatePage(newPageData);
     },
-    [pageData, updatePage],
+    [pageData, handleUpdatePage],
   )
   
   const onAddLine = useCallback((targetKey: any, action: 'add' | 'remove') => {
@@ -95,22 +102,22 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
     (e: { [key: string]: PointItem[] }) => {
       const newPageData = cloneDeep(pageData);
       newPageData.TCH = { ...newPageData.TCH, ...e };
-      updatePage(newPageData);
+      handleUpdatePage(newPageData);
       setTchview(false);
       setActiveKey(Object.keys(e)[0]);
     },
-    [pageData, updatePage],
+    [pageData, handleUpdatePage],
   );
 
   const addLine = useCallback(
     (e: any) => {
       const newPageData = cloneDeep(pageData);
       newPageData.TCH = { ...newPageData.TCH, ...e };
-      updatePage(newPageData);
+      handleUpdatePage(newPageData);
       setTchview(false);
       setActiveKey(Object.keys(e)[0]);
     },
-    [pageData, updatePage],
+    [pageData, handleUpdatePage],
   );
 
   const onSetLine = useCallback(
@@ -129,9 +136,9 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
       const newPageData = cloneDeep(pageData);
       // 数据变更
       set(newPageData, `TCHProcess[${pane}][${index}]`, data);
-      updatePage(newPageData);
+      handleUpdatePage(newPageData);
     },
-    [pageData, updatePage],
+    [pageData, handleUpdatePage],
   )
 
   return (

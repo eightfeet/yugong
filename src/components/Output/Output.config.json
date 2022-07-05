@@ -155,7 +155,7 @@
         {
           "type": "string",
           "name": "线程名",
-          "fieldName": "thread",
+          "fieldName": "threadName",
           "describe": "线程的名称，请在页面线程中定义",
           "data": ""
         }

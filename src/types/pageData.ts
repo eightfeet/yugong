@@ -68,12 +68,12 @@ export interface PageData {
   /** 页面线程 */
   TCH?: {
     /**线程名 */
-    [lineName: string]: PointItem[]
+    [threadName: string]: PointItem[]
   };
   /** 线程进程 */
   TCHProcess?: {
     /**线程 */
-    [lineName: string]: TCHProcessItemType[]
+    [threadName: string]: TCHProcessItemType[]
   }
 }
 
