@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 interface Result {
     tag: 'id' | 'updatePage' | 'updateAppData' | 'setIsEditing' | 'updateActivationItem' | 'updateRunningTimes' | 'removeActivationItem' | 'playEventEmit' | 'setCurrentEditorStylePath' | 'record';
@@ -22,17 +24,33 @@ export const sendMessage = ({tag, value}: Result, wind?: Window | null, origin =
  * @param fn Function
  */
 const usePostMessage = (fn: (result: Result) => void) => {
+    const { appData, pageData, controller, } = useSelector((state:RootState) => state);
     useEffect(() => {
         const handler = (event: { data: any; }) => {
           if (fn instanceof Function) {
-            fn(event.data)
+            const {tag, value} =  event.data;
+            let update = true;
+            switch (tag) {
+              case 'updatePage':
+                if (JSON.stringify(value) === JSON.stringify(pageData)) update = false;
+                break;
+              case 'updateAppData':
+                if (JSON.stringify(value) === JSON.stringify(appData)) update = false;
+                break;
+              default:
+                break;
+            }
+
+            if (update) {
+              fn(event.data)
+            }
           }
         }
         
         window.addEventListener("message", handler)
         // clean up
         return () => window.removeEventListener("message", handler)
-      }, [fn]) // empty array => run only once
+      }, [appData, fn, pageData]) // empty array => run only once
 
     return sendMessage
 }

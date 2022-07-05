@@ -341,7 +341,6 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     // 3、事件处理，等待组件和eventEmitter准备
     const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
     await eventEmitter.emit(emitList);
-
     // 4、准备就绪
     setIsMount(true);
   }, [eventEmitter, pageData.mountEnvents, pageData.onLoadApi]);
