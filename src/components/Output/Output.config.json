@@ -150,7 +150,7 @@
     },
     {
       "name": "onProcess",
-      "description": "执行线程",
+      "description": "运行线程",
       "arguments": [
         {
           "type": "string",
@@ -162,8 +162,8 @@
       ]
     },
     {
-      "name": "updateProcess",
-      "description": "更新线程",
+      "name": "updateThreadPointStatus",
+      "description": "更新线程节点状态",
       "arguments": [
         {
           "type": "string",

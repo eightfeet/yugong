@@ -23,6 +23,24 @@ export const TCH2Process = (
           };
         }
       });
+      for (let index = 0; index < element.length; index++) {
+        const { point } = element[index];
+        const item = newProcess[thread].controls[point];
+        if (item.status === 'locked') {
+          newProcess[thread].currentPoint = {
+            point,
+            thread,
+            ...item
+          }
+          break;
+        } else {
+          newProcess[thread].currentPoint = {
+            point,
+            thread,
+            ...item
+          }
+        }
+      }
     }
   }
   return newProcess;
