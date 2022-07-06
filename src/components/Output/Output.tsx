@@ -179,7 +179,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     [pageData.TCH, runningTimes, setRunningTimes],
   );
 
-  // 全局线程控制
+  /** 全局线程执行*/ 
   const onProcess = useCallback(
     (threadName: ArgumentsItem) => {
       // 当前线程名
@@ -187,13 +187,26 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       // 线程队列
       const pointQuery = pageData.TCH?.[name]?.map((item) => item.point);
       if (!pointQuery?.length) return;
-      // 运行时线程状态
+      const dispatchLib = pageData.TCHProcess?.[name];
+      if (!dispatchLib?.length) return;
+      // 运行时线程当前状态, 线程结束位
       const currentPoint = runningTimes.process?.[name]?.currentPoint;
+      // 运行时线程全部状态
+      const controls = runningTimes.process?.[name]?.controls;
+
       // 线程执行方法进程
       Promise.resolve().then(() => {
         for (let index = 0; index < pointQuery.length; index++) {
           // 节点
           const point = pointQuery[index];
+          // 运行时此节点状态
+          const currentPointStatus = controls?.[point]?.status;
+          // 摘取仅需运行的dispatchs数据
+          const dispatchs = dispatchLib.filter(item => 
+            (item.point === point && item.status === currentPointStatus));
+          // todo 从eventEmitter执行dispatchs
+          console.log('从eventEmitter运行队列', dispatchs);
+          
           if (point === currentPoint?.point) {
             // 到线程终点break结束
             break;
@@ -201,7 +214,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
         }
       });
     },
-    [pageData.TCH, runningTimes],
+    [pageData.TCH, pageData.TCHProcess, runningTimes.process],
   );
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
