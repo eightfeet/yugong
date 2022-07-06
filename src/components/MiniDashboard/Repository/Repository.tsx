@@ -13,6 +13,7 @@ import useKeyDown from '~/hooks/useKeyDown';
 import useLocalStorage from '~/hooks/useLocalStorage';
 import useMarked from '~/hooks/useMarked';
 import produce from '~/core/helper/produce';
+import useRem from '~/hooks/useRem';
 
 const { Panel } = Collapse;
 
@@ -33,6 +34,7 @@ const Repository: React.FC = () => {
   const [newModalName, setNewModalName] = useState<string>();
   const appData = useSelector((state: RootState) => state.appData);
   const pageData = useSelector((state: RootState) => state.pageData);
+  useRem();
   const updateAppData = useDispatch<Dispatch>().appData.updateAppData;
   // 缓存
   const [, setAppdataLocalStorage] = useLocalStorage('appData', null);
@@ -94,6 +96,7 @@ const Repository: React.FC = () => {
       // 行高
       let rowHeight = pageData.rowHeight || GRID_DEFAULT_ROWHEIGHT;
       if (typeof rowHeight === 'string') rowHeight = getResult(rowHeight);
+      
       // 滚动条高度
       const iframeNode = document.getElementById(
         'wrapiframe',
@@ -101,7 +104,7 @@ const Repository: React.FC = () => {
       const scrollTop =
         iframeNode?.contentDocument?.documentElement.scrollTop || 0;
       // 通过滚动条定位计算新增元素应该在当前视窗内
-      y = (scrollTop + 100) / (rowHeight as number);
+      y = ((scrollTop + 100) / (rowHeight as number)) || 0;
 
       // rowHeight : GRID_DEFAULT_ROWHEIGHT
       // console.log('iframeNode?.scrollTop', iframeNode?.contentDocument?.documentElement.scrollTop)

@@ -38,7 +38,10 @@ interface Props {
 }
 
 const Output: OutputModules<Props> = ({ pageData }) => {
-  const sendMessage = usePostMessage(() => { });
+  useEffect(() => {
+    console.log('页面pageData已经更新', pageData);
+  }, [pageData])
+
   // 创建百度页面统计, 只做一次创建
   useEffect(() => {
     const { statisticsId } = pageData;
@@ -65,21 +68,21 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
   const { TCH } = pageData;
 
-  const initRunningTimeProcess = useCallback(
-    () => {
-      const newRunningTimes = cloneDeep(runningTimes);
-      if (TCH) {
-        const process = TCH2Process(TCH, newRunningTimes.process);
-        newRunningTimes.process = process;
-      }
-      console.log('当前线程', newRunningTimes.process);
-    },
-    [TCH, runningTimes],
-  )
+  // const initRunningTimeProcess = useCallback(
+  //   () => {
+  //     const newRunningTimes = cloneDeep(runningTimes);
+  //     if (TCH) {
+  //       const process = TCH2Process(TCH, newRunningTimes.process);
+  //       newRunningTimes.process = process;
+  //     }
+  //     console.log('当前线程', newRunningTimes.process);
+  //   },
+  //   [TCH, runningTimes],
+  // )
 
-  useEffect(() => {
-    initRunningTimeProcess()
-  }, [initRunningTimeProcess])
+  // useEffect(() => {
+  //   initRunningTimeProcess()
+  // }, [initRunningTimeProcess])
 
   const injectGlobal = useCallback(
     (name, value) => {
@@ -236,16 +239,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
 
       // 同步数据
       setRunningTimes(newRunningTimes);
-      sendMessage(
-        {
-          tag: "updateRunningTimes",
-          value: newRunningTimes,
-        },
-        window.top
-      );
-
     },
-    [pageData.TCH, runningTimes, sendMessage, setRunningTimes],
+    [pageData.TCH, runningTimes, setRunningTimes],
   )
   
   // 全局线程控制

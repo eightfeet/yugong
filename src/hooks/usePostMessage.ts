@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "~/redux/store";
@@ -24,18 +25,22 @@ export const sendMessage = ({tag, value}: Result, wind?: Window | null, origin =
  * @param fn Function
  */
 const usePostMessage = (fn: (result: Result) => void) => {
-    const { appData, pageData, controller, } = useSelector((state:RootState) => state);
+    const { appData, pageData, controller, activationItem, record, runningTimes, } = useSelector((state:RootState) => state);
     useEffect(() => {
         const handler = (event: { data: any; }) => {
           if (fn instanceof Function) {
+            // 通信性能处理，避免重复更新渲染组件
             const {tag, value} =  event.data;
             let update = true;
             switch (tag) {
               case 'updatePage':
-                if (JSON.stringify(value) === JSON.stringify(pageData)) update = false;
+                if (isEqual(value, pageData)) update = false;
                 break;
               case 'updateAppData':
-                if (JSON.stringify(value) === JSON.stringify(appData)) update = false;
+                if (isEqual(value, appData)) update = false;
+                break;
+              case 'updateRunningTimes':
+                if (isEqual(value, runningTimes)) update = false;
                 break;
               default:
                 break;
@@ -50,7 +55,7 @@ const usePostMessage = (fn: (result: Result) => void) => {
         window.addEventListener("message", handler)
         // clean up
         return () => window.removeEventListener("message", handler)
-      }, [appData, fn, pageData]) // empty array => run only once
+      }, [appData, fn, pageData, runningTimes])
 
     return sendMessage
 }
