@@ -2,7 +2,6 @@ import { Row, Col, Select as AntSelect } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import s from './Animation.module.less';
 import animationDisc from './animationDisc.json';
-import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { AnimationTypesOfStyleItems } from '~/types/appData';
 import produce from '~/core/helper/produce';
 import NumberInput from '~/components/MiniDashboard/NumberInput';
