@@ -2,7 +2,7 @@
  * Output入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import OutputLayout from '~/components/Output/OutputLayout';
 import requester from '~/core/fetch';
@@ -36,6 +36,7 @@ import { cloneDeep } from 'lodash';
 import { TCHStatusType } from '~/types/pageData';
 import { TCH2Process } from './helper';
 import sleep from '~/core/helper/sleep';
+import EventEmitter from '~/core/EventEmitter';
 
 interface Props {
   pageData: RootState['pageData'];
@@ -43,6 +44,7 @@ interface Props {
 
 const Output: OutputModules<Props> = ({ pageData }) => {
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const eventRef = useRef<EventEmitter>();
   const runningTimes = useSelector((state: RootState) => state.runningTimes);
   // 创建百度页面统计, 只做一次创建
   useEffect(() => {
@@ -179,7 +181,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     [pageData.TCH, runningTimes, setRunningTimes],
   );
 
-  /** 全局线程执行*/ 
+  /** 全局线程执行*/
   const onProcess = useCallback(
     (threadName: ArgumentsItem) => {
       // 当前线程名
@@ -201,12 +203,18 @@ const Output: OutputModules<Props> = ({ pageData }) => {
           const point = pointQuery[index];
           // 运行时此节点状态
           const currentPointStatus = controls?.[point]?.status;
-          // 摘取仅需运行的dispatchs数据
-          const dispatchs = dispatchLib.filter(item => 
-            (item.point === point && item.status === currentPointStatus));
-          // todo 从eventEmitter执行dispatchs
-          console.log('从eventEmitter运行队列', dispatchs);
-          
+          // step1:摘取仅需运行的dispatchs数据; step2:转换为EventEmitterEmitArgs
+          const dispatchs = dispatchLib.filter(
+            (item) =>
+              item.point === point && item.status === currentPointStatus,
+          )?.map((item) => (
+            {name: `${item.module}/${item.dispatch}`, arguments: item.arguments}
+          ));
+          // 执行队列
+          if (eventRef.current && dispatchs) {
+            return eventRef.current.emit(dispatchs as any);
+          }
+          // 从eventEmitter执行dispatchs
           if (point === currentPoint?.point) {
             // 到线程终点break结束
             break;
@@ -232,6 +240,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       updateThreadPointStatus,
     },
   );
+  eventRef.current = eventEmitter;
 
   const onMount = useCallback(async () => {
     await sleep(200);
