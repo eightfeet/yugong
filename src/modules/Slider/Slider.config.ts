@@ -1,6 +1,4 @@
-import {
-  ModulesStatic,
-} from "~/types/modules";
+import { ModulesStatic } from '~/types/modules';
 
 const config: ModulesStatic = {
   /**
@@ -8,26 +6,26 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "setData",
-      description: "数据源",
+      name: 'setData',
+      description: '数据源',
       arguments: [
         {
-          type: "mixed",
-          name: "内容",
-          describe: "填写图片地址",
-          fieldName: "datas",
-          data: []
+          type: 'mixed',
+          name: '内容',
+          describe: '填写图片地址',
+          fieldName: 'datas',
+          data: [],
         },
       ],
     },
     {
-      name: "setSlider",
-      description: "设置",
+      name: 'setSlider',
+      description: '设置',
       arguments: [
         {
-          type: "string",
-          name: "转场效果",
-          describe: "滚动时转场效果",
+          type: 'string',
+          name: '转场效果',
+          describe: '滚动时转场效果',
           select: {
             effect1: 'Y轴移入/Z轴缩小移出',
             effect2: 'X轴移入/Z轴缩小移出',
@@ -44,78 +42,79 @@ const config: ModulesStatic = {
             effect13: '透视退出/进入',
             effect14: '卡牌切换（请将基础/内容溢出设为显示）',
             effect15: '缩小退出',
-            effect16: '隐退'
+            effect16: '隐退',
           },
-          data: "effect1",
-          fieldName: "effect",
+          data: 'effect1',
+          fieldName: 'effect',
         },
         {
-          type: "string",
-          name: "方向",
-          describe: "手势的方向,horizontal: 横向; vertical: 纵向",
+          type: 'string',
+          name: '方向',
+          describe: '手势的方向,horizontal: 横向; vertical: 纵向',
           select: {
-            horizontal: "横向", vertical: "纵向"
+            horizontal: '横向',
+            vertical: '纵向',
           },
-          data: "horizontal",
-          fieldName: "direction",
+          data: 'horizontal',
+          fieldName: 'direction',
         },
         {
-          type: "number",
-          name: "隐藏翻页箭头",
-          describe: "是否隐藏左右翻页箭头",
+          type: 'number',
+          name: '隐藏翻页箭头',
+          describe: '是否隐藏左右翻页箭头',
           select: {
-            1: "隐藏",
-            2: "不隐藏"
+            1: '隐藏',
+            2: '不隐藏',
           },
-          data: "2",
-          fieldName: "navigation",
+          data: '2',
+          fieldName: 'navigation',
         },
         {
-          type: "number",
-          name: "隐藏导航",
-          describe: "是否隐藏隐藏底部导航圆点",
+          type: 'number',
+          name: '隐藏导航',
+          describe: '是否隐藏隐藏底部导航圆点',
           select: {
-            1: "隐藏",
-            2: "不隐藏"
+            1: '隐藏',
+            2: '不隐藏',
           },
-          data: "2",
-          fieldName: "pagination",
+          data: '2',
+          fieldName: 'pagination',
         },
         {
-          type: "number",
-          name: "自动播放间隔",
-          describe: "切换之间的延迟(毫秒),未指定此参数时将禁用自动播放!",
-          data: "",
-          fieldName: "delay",
+          type: 'number',
+          name: '自动播放间隔',
+          describe: '切换之间的延迟(毫秒),未指定此参数时将禁用自动播放!',
+          data: '',
+          fieldName: 'delay',
         },
         {
-          type: "number",
-          name: "速度",
-          describe: "单页切换速度",
-          data: "500",
-          fieldName: "speed",
+          type: 'number',
+          name: '速度',
+          describe: '单页切换速度',
+          data: '500',
+          fieldName: 'speed',
         },
         {
-          type: "number",
-          name: "交互阻止播放",
-          describe: "交互时打断自动播放",
+          type: 'number',
+          name: '交互阻止播放',
+          describe: '交互时打断自动播放',
           select: {
-            1: "阻止",
-            2: "不阻止"
+            1: '阻止',
+            2: '不阻止',
           },
-          data: "1",
-          fieldName: "disableOnInteraction",
+          data: '1',
+          fieldName: 'disableOnInteraction',
         },
         {
-          type: "number",
-          name: "循环播放",
-          describe: "是否循环播放1:是,2:否",
+          type: 'number',
+          name: '循环播放',
+          describe: '是否循环播放1:是,2:否',
           select: {
-            1: "是",
-            2: "否"
+            1: '是',
+            2: '否',
           },
-          data: "1",
-          fieldName: "loop",
+          data: '1',
+          fieldName: 'loop',
         },
       ],
     },
@@ -126,17 +125,21 @@ const config: ModulesStatic = {
    */
   exposeEvents: [
     {
-      name: "mount",
-      description: "初始化",
+      name: 'mount',
+      description: '初始化',
     },
     {
-      name: "unmount",
-      description: "卸载",
+      name: 'unmount',
+      description: '卸载',
     },
     {
-      name: "onLastOneStart",
-      description: "进入最后一页",
-    }
+      name: 'afterChange',
+      description: '页面切换',
+    },
+    {
+      name: 'onLastOneStart',
+      description: '进入最后一页',
+    },
   ],
 
   /**
@@ -171,63 +174,63 @@ const config: ModulesStatic = {
     },
     styleDescription: [
       {
-        title: "基础",
-        value: "basic",
+        title: '基础',
+        value: 'basic',
         children: [
           {
-            title: "包裹器",
-            value: "sliderWrap",
+            title: '包裹器',
+            value: 'sliderWrap',
             children: [
               {
-                title: "滑动页",
-                value: "slideItem",
+                title: '滑动页',
+                value: 'slideItem',
                 children: [
                   {
-                    title: "页面内容",
-                    value: "content",
-                  }
-                ]
+                    title: '页面内容',
+                    value: 'content',
+                  },
+                ],
               },
               {
-                title: "导航条",
-                value: "pagination",
+                title: '导航条',
+                value: 'pagination',
                 children: [
                   {
-                    title: "导航标记",
-                    value: "paginationBullet",
+                    title: '导航标记',
+                    value: 'paginationBullet',
                   },
                   {
-                    title: "导航标记激活",
-                    value: "paginationBulletActive",
+                    title: '导航标记激活',
+                    value: 'paginationBulletActive',
                   },
-                ]
+                ],
               },
               {
-                title: "上一页",
-                value: "prev",
+                title: '上一页',
+                value: 'prev',
                 children: [
                   {
-                    title: "字符箭头",
-                    value: "prevarrow",
+                    title: '字符箭头',
+                    value: 'prevarrow',
                   },
-                ]
+                ],
               },
               {
-                title: "下一页",
-                value: "next",
+                title: '下一页',
+                value: 'next',
                 children: [
                   {
-                    title: "字符箭头",
-                    value: "nextarrow",
+                    title: '字符箭头',
+                    value: 'nextarrow',
                   },
-                ]
-              }
+                ],
+              },
             ],
           },
         ],
       },
     ],
-    preset: true
+    preset: true,
   },
 
   /**
@@ -235,12 +238,16 @@ const config: ModulesStatic = {
    */
   exposeApi: [
     {
-      apiId: "init",
-      name: "获取初始数据(将在初始化事件前调用)",
+      apiId: 'init',
+      name: '获取初始数据(将在初始化事件前调用)',
     },
   ],
 };
 // export type key of events list
-export type ExposeEventsKeys = 'mount' | 'unmount' | 'onLastOneStart';
+export type ExposeEventsKeys =
+  | 'mount'
+  | 'unmount'
+  | 'onLastOneStart'
+  | 'afterChange';
 
 export default config;
