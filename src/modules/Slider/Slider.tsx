@@ -148,7 +148,7 @@ class Slider extends Component<SliderProps, State> {
     const { classes } = this.props;
     const { hideNav, hidePage, autoplay, breakInterface, loop, delay, speed, effect, direction, datas } = this.state;
     const nav = hideNav ? { navigation: false } : {};
-    const page = hidePage ? { pagination: false } : {};
+    const page = hidePage ? { pagination: false } : { pagination: true };
     const pageStyle = (data: any) => backgroundGroup(data || {}).result;
     
     return (
