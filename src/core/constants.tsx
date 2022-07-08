@@ -10,6 +10,7 @@ import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
 // import IconListModal from "./icons/IconListModal";
 import IconChart from "./icons/IconChart";
+import IconVideo from "./icons/IconVideo";
 
 export const BASEMODULES = [
   {
@@ -41,6 +42,12 @@ export const BASEMODULES = [
     title: "Slider",
     discribe: "跑马灯",
     icon: <Icon component={IconSlider} />,
+  },
+  {
+    moduleName: "VideoPlayer",
+    title: "Video",
+    discribe: "视频",
+    icon: <Icon component={IconVideo} />,
   },
   {
     moduleName: "Form",
