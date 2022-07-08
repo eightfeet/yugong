@@ -10,6 +10,7 @@ import SwiperCore, {
   Autoplay,
   Lazy,
   Keyboard,
+  Mousewheel
 } from 'swiper';
 
 import * as effects from './effect';
@@ -37,7 +38,7 @@ import { toStyle } from '~/core/helper/toStyles';
 import { backgroundGroup } from '~/compiler/compiler';
 
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay, Keyboard]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, Lazy, Autoplay, Keyboard, Mousewheel]);
 
 class Slider extends Component<SliderProps, State> {
   swiper: SwiperCore | undefined;
@@ -161,6 +162,7 @@ class Slider extends Component<SliderProps, State> {
           speed={speed}
           onSlideNextTransitionStart={this.onStart}
           keyboard
+          
           autoplay={autoplay ? {
             delay: delay,
             disableOnInteraction: breakInterface,
