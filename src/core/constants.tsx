@@ -8,7 +8,6 @@ import IconForm from "./icons/IconForm";
 import IconModal from "./icons/IconModal";
 import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
-// import IconListModal from "./icons/IconListModal";
 import IconChart from "./icons/IconChart";
 import IconVideo from "./icons/IconVideo";
 
@@ -45,7 +44,7 @@ export const BASEMODULES = [
   },
   {
     moduleName: "VideoPlayer",
-    title: "Video",
+    title: "VideoPlayer",
     discribe: "视频",
     icon: <Icon component={IconVideo} />,
   },

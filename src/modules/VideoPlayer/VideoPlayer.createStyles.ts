@@ -4,11 +4,10 @@ import { VideoPlayerProps } from "./VideoPlayer";
 
 function createStyles(props: VideoPlayerProps) {
   return {
-    style1: (style: Style) => toStyle(style.style1),
-    style2: (style: Style) => toStyle(style.style2),
+    player: (style: Style) => toStyle(style.player),
   }
 };
 // export type key of classes list
-export type ClassesKey = 'style1' | 'style2';
+export type ClassesKey = 'player';
 type Style = { [keys in ClassesKey]: StyleItemsTypes };
 export default createStyles
