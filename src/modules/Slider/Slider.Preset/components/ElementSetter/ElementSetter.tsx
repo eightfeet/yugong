@@ -26,7 +26,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
   }>();
 
   const handleShowCode = useCallback(
-    (name, data={}) => {
+    (name, data = {}) => {
       setCurrentCode({
         name,
         data
@@ -38,14 +38,14 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
 
   const onChange = useCallback(
     (data: AnyObjectType) => {
-      if(currentCode?.name === 'style'){
+      if (currentCode?.name === 'style') {
         setContentAndStyle?.('style', data)
       }
-      if(currentCode?.name === 'parallax'){
+      if (currentCode?.name === 'parallax') {
         for (const key in data) {
           if (Object.prototype.hasOwnProperty.call(data, key)) {
             const element = data[key];
-            if(element){
+            if (element) {
               setParallax?.(key as any, element)
             }
           }
@@ -150,9 +150,14 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
         <Col span={24}><PageHeader className={s.header} title="元素样式" extra={<CodeOutlined onClick={() => handleShowCode('style', style)} />} /></Col>
       </Row>
       <ElementStyleSheetPanel />
-
-      <JsonDataEditor data={currentCode?.data} okText="确定" cancelText="取消" visible={hideCode} onConfirm={onChange} onCancel={() => setHideCode(false)} title="数据编辑" />
-
+      <JsonDataEditor
+        data={currentCode?.data}
+        okText="确定" 
+        cancelText="取消" 
+        visible={hideCode} 
+        onConfirm={onChange} 
+        onCancel={() => setHideCode(false)} 
+        title="数据编辑" />
     </Drawer>
   );
 };
