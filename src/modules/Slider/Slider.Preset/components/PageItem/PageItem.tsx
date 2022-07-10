@@ -1,4 +1,4 @@
-import { SettingOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SettingOutlined, CloseOutlined } from '@ant-design/icons';
 import { Space, Popconfirm } from 'antd';
 import { cloneDeep, set } from 'lodash';
 import React, { useCallback, useContext } from 'react';
@@ -57,7 +57,7 @@ const PageItem:React.FC<Props> = ({pageIndex}) => {
             okText="确定"
             cancelText="取消"
           >
-            <DeleteOutlined />
+            <CloseOutlined />
           </Popconfirm>
         </Space>
       </LineItem>
