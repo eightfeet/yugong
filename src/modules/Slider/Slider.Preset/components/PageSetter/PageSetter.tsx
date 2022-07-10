@@ -1,7 +1,9 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, CodeOutlined } from '@ant-design/icons';
 import { Drawer, PageHeader } from 'antd';
-import React from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { SliderDataItem } from '~/modules/Slider/type';
+import { PagesContext } from '../../PagesContext';
+import CodeEditor from '../CodeEditor';
 import BackgroundGroup from './BackgroundGroup';
 import s from './PageSetter.module.scss';
 
@@ -13,6 +15,8 @@ interface Props {
 }
 
 const PageSetter:React.FC<Props> = ({ onClose, visible, title, data={}}) => {
+  
+  
   return (
     <Drawer
       title={title}
@@ -27,7 +31,6 @@ const PageSetter:React.FC<Props> = ({ onClose, visible, title, data={}}) => {
       visible={visible}
       closeIcon={<><ArrowLeftOutlined />返回</>}
     >
-      <PageHeader className={s.header} title="背景设置" />
       <div className={s.wrap}>
         <BackgroundGroup />
       </div>

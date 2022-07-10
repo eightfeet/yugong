@@ -1,5 +1,5 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Row } from "antd";
+import { CodeOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Col, PageHeader, Row } from "antd";
 import React, { useCallback, useEffect, useState, useContext } from "react";
 import { BackgroundGroupListTypesOfStyleItems } from "~/types/appData";
 import s from "./BackgroundGroup.module.less";
@@ -7,6 +7,7 @@ import arrayMove from "array-move";
 import Color from "~/components/MiniDashboard/Color";
 import BackgroundListHoc from "~/components/MiniDashboard/BackgroundGroup/BackgroundListHoc";
 import { PagesContext } from "../../../PagesContext";
+import CodeEditor from "../../CodeEditor";
 
 interface Props {
   updateKey?: string;
@@ -18,6 +19,17 @@ const Backgroundgroup: React.FC<Props> = () => {
     BackgroundGroupListTypesOfStyleItems[] | undefined
   >();
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>();
+  const [showCode, setShowCode] = useState(false);
+  
+  const onChange = useCallback(
+    ({backgroundColor, backgroundList}) => {
+      context.onChangeCurrentPageBackground?.({
+        backgroundColor, backgroundList
+      })
+      setShowCode(false);
+    },
+    [context],
+  )
 
   useEffect(() => {
     const defaultData = context?.currentPage?.backgroundGroup || {};
@@ -99,6 +111,7 @@ const Backgroundgroup: React.FC<Props> = () => {
   );
   return (
     <>
+      <PageHeader className={s.header} title="背景设置" extra={<CodeOutlined onClick={() => setShowCode(true)} />} />
       <Row className={s.row}>
         <Col span={12}>
           <Color
@@ -120,6 +133,8 @@ const Backgroundgroup: React.FC<Props> = () => {
         onSortEnd={onSortEnd}
         useDragHandle
       />
+      <CodeEditor data={context?.currentPage?.backgroundGroup || {}} okText="确定" cancelText="取消" visible={showCode} onConfirm={onChange} onCancel={() => setShowCode(false)} title="数据编辑" />
+
     </>
   );
 };

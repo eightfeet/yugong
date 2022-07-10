@@ -1,9 +1,11 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, CodeOutlined } from '@ant-design/icons';
 import { Col, Drawer, Input, Row, PageHeader } from 'antd';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import NumberInput from '~/components/MiniDashboard/NumberInput';
+import { AnyObjectType } from '~/types/appData';
 import { ContentAndStyleContext } from '../../ContentAndStyleContext';
 import { ParallaxConfig } from '../../ParallaxConfig';
+import CodeEditor from '../CodeEditor';
 import ElementStyleSheetPanel from '../ElementStyleSheetPanel';
 import s from './ElementSetter.module.scss';
 
@@ -14,8 +16,45 @@ interface Props {
 }
 
 const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
-  const { content, setContentAndStyle } = useContext(ContentAndStyleContext);
+  const [hideCode, setHideCode] = useState(false);
+  const { content, style, setContentAndStyle } = useContext(ContentAndStyleContext);
   const { parallax, setParallax } = useContext(ParallaxConfig);
+
+  const [currentCode, setCurrentCode] = useState<{
+    name: string;
+    data: { [keys: string]: any };
+  }>();
+
+  const handleShowCode = useCallback(
+    (name, data={}) => {
+      setCurrentCode({
+        name,
+        data
+      });
+      setHideCode(true);
+    },
+    [],
+  )
+
+  const onChange = useCallback(
+    (data: AnyObjectType) => {
+      if(currentCode?.name === 'style'){
+        setContentAndStyle?.('style', data)
+      }
+      if(currentCode?.name === 'parallax'){
+        for (const key in data) {
+          if (Object.prototype.hasOwnProperty.call(data, key)) {
+            const element = data[key];
+            if(element){
+              setParallax?.(key as any, element)
+            }
+          }
+        }
+      }
+      setHideCode(false);
+    },
+    [currentCode?.name, setContentAndStyle, setParallax],
+  )
 
   return (
     <Drawer
@@ -41,7 +80,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       </Row>
       <Row className={s.row}>
         <Col span={24}>
-          <PageHeader className={s.header} title="视差初始值" />
+          <PageHeader className={s.header} title="视差初始值" extra={<CodeOutlined onClick={() => handleShowCode('parallax', parallax)} />} />
         </Col>
         <Col span={12}>
           <NumberInput
@@ -97,20 +136,22 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
         </Col>
         <Col span={12} >
           <NumberInput
-              label="延时"
-              placeholder="延时时长(ms)"
-              unit="毫秒"
-              min={0}
-              defaultValue={parallax?.delay}
-              onChange={(e: any) => setParallax?.('delay', e)}
-            />
+            label="延时"
+            placeholder="延时时长(ms)"
+            unit="毫秒"
+            min={0}
+            defaultValue={parallax?.delay}
+            onChange={(e: any) => setParallax?.('delay', e)}
+          />
         </Col>
       </Row>
 
       <Row className={s.row}>
-        <PageHeader className={s.header} title="元素样式" />
+        <Col span={24}><PageHeader className={s.header} title="元素样式" extra={<CodeOutlined onClick={() => handleShowCode('style', style)} />} /></Col>
       </Row>
       <ElementStyleSheetPanel />
+
+      <CodeEditor data={currentCode?.data} okText="确定" cancelText="取消" visible={hideCode} onConfirm={onChange} onCancel={() => setHideCode(false)} title="数据编辑" />
 
     </Drawer>
   );

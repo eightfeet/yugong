@@ -141,7 +141,6 @@ class Slider extends Component<SliderProps, State> {
       [`${type}-${moduleId}-activePage`]: e.realIndex + 1,
     });
     this.props.eventDispatch().afterChange();
-    console.log(e);
   };
 
   renderElement = (
