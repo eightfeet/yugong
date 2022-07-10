@@ -7,7 +7,7 @@ import arrayMove from "array-move";
 import Color from "~/components/MiniDashboard/Color";
 import BackgroundListHoc from "~/components/MiniDashboard/BackgroundGroup/BackgroundListHoc";
 import { PagesContext } from "../../../PagesContext";
-import CodeEditor from "../../CodeEditor";
+import JsonDataEditor from "~/components/MiniDashboard/JsonDataEditor";
 
 interface Props {
   updateKey?: string;
@@ -133,7 +133,7 @@ const Backgroundgroup: React.FC<Props> = () => {
         onSortEnd={onSortEnd}
         useDragHandle
       />
-      <CodeEditor data={context?.currentPage?.backgroundGroup || {}} okText="确定" cancelText="取消" visible={showCode} onConfirm={onChange} onCancel={() => setShowCode(false)} title="数据编辑" />
+      <JsonDataEditor data={context?.currentPage?.backgroundGroup || {}} okText="确定" cancelText="取消" visible={showCode} onConfirm={onChange} onCancel={() => setShowCode(false)} title="数据编辑" />
 
     </>
   );

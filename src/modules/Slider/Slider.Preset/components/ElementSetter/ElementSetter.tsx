@@ -5,7 +5,7 @@ import NumberInput from '~/components/MiniDashboard/NumberInput';
 import { AnyObjectType } from '~/types/appData';
 import { ContentAndStyleContext } from '../../ContentAndStyleContext';
 import { ParallaxConfig } from '../../ParallaxConfig';
-import CodeEditor from '../CodeEditor';
+import JsonDataEditor from '~/components/MiniDashboard/JsonDataEditor';
 import ElementStyleSheetPanel from '../ElementStyleSheetPanel';
 import s from './ElementSetter.module.scss';
 
@@ -151,7 +151,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
       </Row>
       <ElementStyleSheetPanel />
 
-      <CodeEditor data={currentCode?.data} okText="确定" cancelText="取消" visible={hideCode} onConfirm={onChange} onCancel={() => setHideCode(false)} title="数据编辑" />
+      <JsonDataEditor data={currentCode?.data} okText="确定" cancelText="取消" visible={hideCode} onConfirm={onChange} onCancel={() => setHideCode(false)} title="数据编辑" />
 
     </Drawer>
   );

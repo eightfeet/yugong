@@ -1,9 +1,7 @@
-import { ArrowLeftOutlined, CodeOutlined } from '@ant-design/icons';
-import { Drawer, PageHeader } from 'antd';
-import React, { useCallback, useContext, useState } from 'react';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Drawer } from 'antd';
+import React from 'react';
 import { SliderDataItem } from '~/modules/Slider/type';
-import { PagesContext } from '../../PagesContext';
-import CodeEditor from '../CodeEditor';
 import BackgroundGroup from './BackgroundGroup';
 import s from './PageSetter.module.scss';
 

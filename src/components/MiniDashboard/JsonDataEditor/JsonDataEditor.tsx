@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { Button, message, Modal, ModalProps } from 'antd';
 import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";
 
-import s from './CodeEditor.module.scss';
 import { CopyOutlined } from '@ant-design/icons';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { activationItem } from '~/redux/activationItem';
 
 
 type Props = {
@@ -19,7 +17,7 @@ type State = {
   disabled?: boolean;
 }
 
-export default class CodeEditor extends Component<Props & ModalProps, State> {
+export default class JsonDataEditor extends Component<Props & ModalProps, State> {
   [x: string]: any;
   jsoneditor?: JSONEditor;
   constructor(props: (Props & ModalProps) | Readonly<Props & ModalProps>) {
