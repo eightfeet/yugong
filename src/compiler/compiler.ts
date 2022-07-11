@@ -120,7 +120,7 @@ const conversionValue: (
 };
 
 // 获取全局单位
-const compileValue = (data: UnitType) => {
+export const compileValue = (data: UnitType) => {
   const [value, unit] = data || [];
   if (!value && value !== 0) {
     return undefined;

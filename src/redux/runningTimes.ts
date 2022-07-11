@@ -2,6 +2,8 @@ import { createModel } from '@rematch/core';
 import { RootModel } from './models';
 import queryString from 'query-string';
 import produce from '~/core/helper/produce';
+import { TCHRunningTime, TCHStatusType } from '~/types/pageData';
+import { cloneDeep } from 'lodash';
 
 const parsed = queryString.parse(window.location.search);
 const hash = window.location.hash.split('?')[1];
@@ -36,7 +38,11 @@ export const runningTimes = createModel<RootModel>()({
 
     reducers: {
         setRunningTimes: (state, payload: RunningTimesItem) => produce(state, draft => {
-          Object.assign(draft, payload)
+          const {search, window, unit} = state;
+          Object.assign(draft, {
+            ...payload,
+            search, window, unit
+          })
         }),
         setRemSize({unit, ...other}, payload: number) {
             const newUnit = Object.assign({rem: payload}, unit);
@@ -44,8 +50,66 @@ export const runningTimes = createModel<RootModel>()({
               draft.unit = newUnit
             })
         },
+        // 设置进程
+        setProcess(state, payload: {
+          thread: string;
+          point: string;
+          msg: string;
+          status: TCHStatusType;
+        }) {
+          const {process={}, ...other} = state;
+
+          const {thread, point, msg, status} = payload;
+          const newProcess:TCHRunningTime = cloneDeep(process) || {};
+          newProcess[thread] = newProcess[thread] || {};
+          const controls = newProcess[thread].controls = {
+            ...newProcess[thread].controls, 
+            [point]: {
+              status,
+              msg
+            }
+          };
+
+          let currentPoint: {
+            thread: string;
+            point: string;
+            status: TCHStatusType;
+            msg: string;
+          } | undefined;
+
+          for (const key in controls) {
+            if (Object.prototype.hasOwnProperty.call(controls, key)) {
+              const element = controls[key];
+              currentPoint = {
+                thread,
+                point: key,
+                ...element
+              }
+              // 遇见unlocked流程打断
+              if (element.status === 'unlocked') {
+                break;
+              }
+            }
+          }
+
+          if (currentPoint && controls) {
+            newProcess[thread] = {
+              controls,
+              currentPoint,
+            }
+          }
+
+          const res = produce(other, draft => {
+            draft.process = newProcess
+          });
+
+          return res
+        },
+
         initRunningTimes() {
             return defaultData
         }
     }
 });
+
+

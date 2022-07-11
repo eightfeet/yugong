@@ -14,7 +14,7 @@ import {
   BackgroundGradientTypesOfStyleItems,
 } from '~/types/appData';
 import { EventsType } from '~/types/modules';
-import { PageData } from '~/types/pageData';
+import { PageData, PointItem, TCHProcessItemType } from '~/types/pageData';
 import { RootModel } from './models';
 import produce from '~/core/helper/produce';
 
@@ -42,24 +42,84 @@ const defaultData: PageData = {
   space: localPageData.space || GRID_DEFAULT_SPACE,
   windowWidth: localPageData.windowWidth || DEFAULT_PAGE_WIDTH,
   windowHeight: localPageData.windowHeight || DEFAULT_PAGE_HEIGHT,
+  TCH: {},
+  TCHProcess: {},
 };
 
 export const pageData = createModel<RootModel>()({
   state: defaultData, // typed complex state
   reducers: {
-    updatePage: (state, payload: PageData) => produce(state, draft => {Object.assign(draft, payload)}),
+    updatePage: (state, payload: PageData) =>
+      produce(state, (draft) => {
+        Object.assign(draft, payload);
+      }),
     updatePageStyle: (
       state,
       payload: {
         backgroundCommon?: BackgroundCommonTypesOfStyleItems;
         backgroundGradient?: BackgroundGradientTypesOfStyleItems;
       },
-    ) => produce(state, draft => {draft.style = payload}),
-    updatePageApi: (state, payload: Api[]) => produce(state, draft => {draft.onLoadApi = payload}),
-    updatePageEvents: (state, payload: EventsType[]) => produce(state, draft => {(draft as any).onLoadEnvents = payload}),
-    initPageData: (state, payload?: PageData) => produce(defaultData, draft => {Object.assign(draft, payload || {})}),
-    setWindowWidth: (state, payload: number) => produce(state, draft => {draft.windowWidth = payload}),
-    setWindowHeight: (state, payload: number) => produce(state, draft => {draft.windowHeight = payload}),
+    ) =>
+      produce(state, (draft) => {
+        draft.style = payload;
+      }),
+    updatePageApi: (state, payload: Api[]) =>
+      produce(state, (draft) => {
+        draft.onLoadApi = payload;
+      }),
+    /**更新线程进程*/
+    resetTCHProcess: (
+      state,
+      payload: {
+        [lineName: string]: TCHProcessItemType[];
+      },
+    ) =>
+      produce(state, (draft) => {
+        draft.TCHProcess = payload;
+      }),
+    /**更新线程定义*/
+    updateTCHItem: (
+      state,
+      payload: {
+        [lineName: string]: PointItem[];
+      },
+    ) =>
+      produce(state, (draft) => {
+        draft.TCH = {
+          ...draft.TCH,
+          ...payload
+        };
+      }),
+    /**新增线程定义*/
+    removeTCHItem: (
+      state,
+      payload: string, 
+    ) =>
+      produce(state, (draft) => {
+        if (draft.TCH?.[payload]) {
+          delete draft.TCH?.[payload];
+        }
+        if (draft.TCHProcess?.[payload]) {
+          delete draft.TCHProcess?.[payload];
+        }
+      }),
+
+    updatePageEvents: (state, payload: EventsType[]) =>
+      produce(state, (draft) => {
+        (draft as any).onLoadEnvents = payload;
+      }),
+    initPageData: (state, payload?: PageData) =>
+      produce(defaultData, (draft) => {
+        Object.assign(draft, payload || {});
+      }),
+    setWindowWidth: (state, payload: number) =>
+      produce(state, (draft) => {
+        draft.windowWidth = payload;
+      }),
+    setWindowHeight: (state, payload: number) =>
+      produce(state, (draft) => {
+        draft.windowHeight = payload;
+      }),
   },
   effects: (dispach) => {
     const updatePage = dispach.pageData.updatePage;

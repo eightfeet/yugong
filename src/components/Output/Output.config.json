@@ -1,152 +1,196 @@
 {
-    "exposeApi": [],
-    "exposeEvents": [
-       {
-          "name": "mount",
-          "description": "初始化"
-       },
-       {
-          "name": "unmount",
-          "description": "卸载"
-       }
-    ],
-    "exposeEventsObj": {
-       "mount": "初始化",
-       "unmount": "卸载"
+  "exposeApi": [],
+  "exposeEvents": [
+    {
+      "name": "mount",
+      "description": "初始化"
     },
-    "exposeFunctions": [
-       {
-          "name": "injectGlobal",
-          "description": "注入自定义全局数据",
-          "arguments": [
-             {
-                "type": "string",
-                "name": "变量名",
-                "fieldName": "name",
-                "describe": "唯一(英文)全局变量名",
-                "data": ""
-             },
-             {
-                "type": "mixed",
-                "name": "变量值",
-                "fieldName": "value",
-                "describe": "请输入变量数据"
-             }
-          ]
-       },
-       {
-          "name": "sleepFor",
-          "description": "等待",
-          "arguments": [
-             {
-                "type": "number",
-                "name": "休眠时间",
-                "fieldName": "sleepTime",
-                "describe": "休眠时间(ms)",
-                "data": ""
-             }
-          ]
-       },
-       {
-          "name": "redirect",
-          "description": "页面重定向",
-          "arguments": [
-             {
-                "type": "string",
-                "name": "跳转(-1或跳转url)",
-                "fieldName": "url",
-                "describe": "等于-1时浏览器返回，等于url时页面跳转到url",
-                "data": ""
-             },
-             {
-                "type": "string",
-                "select": {
-                   "push": "前进(push)",
-                   "replace": "替换当前(replace)"
-                },
-                "name": "跳转方法",
-                "fieldName": "isReplace",
-                "describe": "是否使用replace重定向，浏览器将无法回退到当前页面",
-                "data": ""
-             }
-          ]
-       },
-       {
-          "name": "trackPageViewBD",
-          "description": "百度页面统计",
-          "arguments": [
-             {
-                "type": "string",
-                "name": "路径",
-                "fieldName": "url",
-                "describe": "必填，以\"/\"开头，访问当前页面时百度统计将以此路径作为统计标识",
-                "data": ""
-             }
-          ]
-       },
-       {
-          "name": "trackEventBD",
-          "description": "百度事件统计",
-          "arguments": [
-             {
-                "type": "string",
-                "name": "类型",
-                "fieldName": "category",
-                "describe": "要监控的目标的类型名称\t不填、填\"-\"的事件会被抛弃",
-                "data": ""
-             },
-             {
-                "type": "string",
-                "name": "动作",
-                "fieldName": "action",
-                "describe": "用户跟网页进行交互的动作名称\t不填、填\"-\"的事件会被抛弃",
-                "data": ""
-             },
-             {
-                "type": "string",
-                "name": "信息(可选)",
-                "fieldName": "optLabel",
-                "describe": "事件的一些额外信息\t不填、填\"-\"代表此项为空",
-                "data": ""
-             }
-          ]
-       },
-       {
-          "name": "globalMessage",
-          "description": "消息广播",
-          "arguments": [
-             {
-               "type": "boolean",
-               "name": "条件",
-               "fieldName": "condition",
-               "describe": "前置条件，条件成立时才显示信息",
-               "data":{
-                  "comparableAverageA":"0",
-                  "comparableAverageB":"0",
-                  "method":"==="
-               }
-             },
-             {
-                "type": "number",
-                "name": "类型",
-                "fieldName": "messageType",
-                "describe": "信息类型，1:消息，2:成功，3:警告，4:错误",
-                "select":{
-                  "1":"消息",
-                  "2":"成功",
-                  "3":"警告",
-                  "4":"错误"
-                },
-                "data": "1"
-             },
-             {
-                "type": "string",
-                "name": "消息",
-                "fieldName": "messageStr",
-                "describe": "弹窗信息",
-                "data": ""
-             }
-          ]
-       }
-    ]
- }
+    {
+      "name": "unmount",
+      "description": "卸载"
+    }
+  ],
+  "exposeEventsObj": {
+    "mount": "初始化",
+    "unmount": "卸载"
+  },
+  "exposeFunctions": [
+    {
+      "name": "injectGlobal",
+      "description": "注入自定义全局数据",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "变量名",
+          "fieldName": "name",
+          "describe": "唯一(英文)全局变量名",
+          "data": ""
+        },
+        {
+          "type": "mixed",
+          "name": "变量值",
+          "fieldName": "value",
+          "describe": "请输入变量数据"
+        }
+      ]
+    },
+    {
+      "name": "sleepFor",
+      "description": "等待",
+      "arguments": [
+        {
+          "type": "number",
+          "name": "休眠时间",
+          "fieldName": "sleepTime",
+          "describe": "休眠时间(ms)",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "redirect",
+      "description": "页面重定向",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "跳转(-1或跳转url)",
+          "fieldName": "url",
+          "describe": "等于-1时浏览器返回，等于url时页面跳转到url",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "select": {
+            "push": "前进(push)",
+            "replace": "替换当前(replace)"
+          },
+          "name": "跳转方法",
+          "fieldName": "isReplace",
+          "describe": "是否使用replace重定向，浏览器将无法回退到当前页面",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "trackPageViewBD",
+      "description": "百度页面统计",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "路径",
+          "fieldName": "url",
+          "describe": "必填，以\"/\"开头，访问当前页面时百度统计将以此路径作为统计标识",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "trackEventBD",
+      "description": "百度事件统计",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "类型",
+          "fieldName": "category",
+          "describe": "要监控的目标的类型名称\t不填、填\"-\"的事件会被抛弃",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "动作",
+          "fieldName": "action",
+          "describe": "用户跟网页进行交互的动作名称\t不填、填\"-\"的事件会被抛弃",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "信息(可选)",
+          "fieldName": "optLabel",
+          "describe": "事件的一些额外信息\t不填、填\"-\"代表此项为空",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "globalMessage",
+      "description": "消息广播",
+      "arguments": [
+        {
+          "type": "boolean",
+          "name": "条件",
+          "fieldName": "condition",
+          "describe": "前置条件，条件成立时才显示信息",
+          "data": {
+            "comparableAverageA": "0",
+            "comparableAverageB": "0",
+            "method": "==="
+          }
+        },
+        {
+          "type": "number",
+          "name": "类型",
+          "fieldName": "messageType",
+          "describe": "信息类型，1:消息，2:成功，3:警告，4:错误",
+          "select": {
+            "1": "消息",
+            "2": "成功",
+            "3": "警告",
+            "4": "错误"
+          },
+          "data": "1"
+        },
+        {
+          "type": "string",
+          "name": "消息",
+          "fieldName": "messageStr",
+          "describe": "弹窗信息",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "onProcess",
+      "description": "运行线程",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "线程名",
+          "fieldName": "threadName",
+          "describe": "线程的名称，请在页面线程中定义",
+          "data": ""
+        }
+      ]
+    },
+    {
+      "name": "updateThreadPointStatus",
+      "description": "更新线程节点状态",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "线程名",
+          "fieldName": "thread",
+          "describe": "线程的名称，请在页面线程中定义",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "线程节点",
+          "fieldName": "point",
+          "describe": "线程节点名称，请在页面线程中定义",
+          "data": ""
+        },
+        {
+          "type": "string",
+          "name": "节点状态",
+          "fieldName": "status",
+          "describe": "线程节点状态，locked锁定，unlocked解锁",
+          "select": {
+            "locked": "锁定",
+            "unlocked": "解锁"
+          },
+          "data": "locked"
+        }
+      ]
+    }
+  ]
+}

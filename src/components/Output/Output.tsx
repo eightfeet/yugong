@@ -2,7 +2,7 @@
  * Output入口，通过url的isEditing参数确定当前是否编辑模式，编辑模式下注意与dashbard的数据通信
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import OutputLayout from '~/components/Output/OutputLayout';
 import requester from '~/core/fetch';
@@ -22,24 +22,39 @@ import {
   GRID_DEFAULT_SPACE,
   ROOT_FONTSIZE,
 } from '~/core/constants';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import {
+  getArguments,
+  getArgumentsItem,
+} from '~/core/getArgumentsTypeDataFromDataSource';
 import { initTrack, trackEvent, trackPageView } from '~/core/tracking';
 import usePostMessage from '~/hooks/usePostMessage';
 import useLifeCycle from '~/hooks/useLifeCycle';
 import config from './Output.config.json';
 import message from '~/components/Message';
 import { ArgumentsItem } from '~/types/appData';
+import { cloneDeep } from 'lodash';
+import { TCHStatusType } from '~/types/pageData';
+import { TCH2Process } from './helper';
+import sleep from '~/core/helper/sleep';
+import EventEmitter from '~/core/EventEmitter';
 
 interface Props {
   pageData: RootState['pageData'];
 }
 
 const Output: OutputModules<Props> = ({ pageData }) => {
+  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const eventRef = useRef<EventEmitter>();
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   // 创建百度页面统计, 只做一次创建
   useEffect(() => {
-    const { statisticsId } = pageData;
+    const { statisticsId, TCH } = pageData;
     if (statisticsId) {
       initTrack(statisticsId);
+    }
+    if (TCH) {
+      const process = TCH2Process(TCH, runningTimes.process || {});
+      setRunningTimes({ process });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,8 +70,6 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   useEffect(() => {
     document.title = getResult(pageData.pageTitle || '\u200E');
   }, [pageData.pageTitle]);
-
-  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
 
   const injectGlobal = useCallback(
     (name, value) => {
@@ -143,6 +156,75 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     );
   }, []);
 
+  const updateThreadPointStatus = useCallback(
+    (...args: ArgumentsItem[]) => {
+      const { thread, point, status } = getArguments(args) as {
+        thread: string;
+        point: string;
+        status: TCHStatusType;
+      };
+
+      const newRunningTimes = cloneDeep(runningTimes);
+      // 线程节点路径
+      const TCH = pageData.TCH;
+      const msg = TCH?.[thread]?.find((item) => item.point === point)?.msg;
+
+      if (newRunningTimes?.process[thread]?.controls[point] && TCH) {
+        // 先赋值
+        newRunningTimes.process[thread].controls[point] = { status, msg };
+        // 计算结果
+        newRunningTimes.process = TCH2Process(TCH, newRunningTimes.process);
+        // 同步数据
+        setRunningTimes(newRunningTimes);
+      }
+    },
+    [pageData.TCH, runningTimes, setRunningTimes],
+  );
+
+  /** 全局线程执行*/
+  const onProcess = useCallback(
+    (threadName: ArgumentsItem) => {
+      // 当前线程名
+      const name = getArgumentsItem(threadName) as string;
+      // 线程队列
+      const pointQuery = pageData.TCH?.[name]?.map((item) => item.point);
+      if (!pointQuery?.length) return;
+      const dispatchLib = pageData.TCHProcess?.[name];
+      if (!dispatchLib?.length) return;
+      // 运行时线程当前状态, 线程结束位
+      const currentPoint = runningTimes.process?.[name]?.currentPoint;
+      // 运行时线程全部状态
+      const controls = runningTimes.process?.[name]?.controls;
+
+      // 线程执行方法进程
+      Promise.resolve().then(() => {
+        for (let index = 0; index < pointQuery.length; index++) {
+          // 节点
+          const point = pointQuery[index];
+          // 运行时此节点状态
+          const currentPointStatus = controls?.[point]?.status;
+          // step1:摘取仅需运行的dispatchs数据; step2:转换为EventEmitterEmitArgs
+          const dispatchs = dispatchLib.filter(
+            (item) =>
+              item.point === point && item.status === currentPointStatus,
+          )?.map((item) => (
+            {name: `${item.module}/${item.dispatch}`, arguments: item.arguments}
+          ));
+          // 执行队列
+          if (eventRef.current && dispatchs) {
+            return eventRef.current.emit(dispatchs as any);
+          }
+          // 从eventEmitter执行dispatchs
+          if (point === currentPoint?.point) {
+            // 到线程终点break结束
+            break;
+          }
+        }
+      });
+    },
+    [pageData.TCH, pageData.TCHProcess, runningTimes.process],
+  );
+
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   const [, eventEmitter] = useLifeCycle(
     'global',
@@ -154,16 +236,19 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       trackEventBD,
       sleepFor,
       globalMessage,
+      onProcess,
+      updateThreadPointStatus,
     },
   );
+  eventRef.current = eventEmitter;
 
   const onMount = useCallback(async () => {
+    await sleep(200);
     // 1、api处理 检查是不是http-url
     const apiArguments = pageData.onLoadApi?.filter(
       // isUrl(item.url || "") &&
       (item) => !!item.method,
     );
-
     // 2、事先准备数据。
     if (apiArguments?.length) {
       for (let index = 0; index < apiArguments.length; index++) {
@@ -171,11 +256,9 @@ const Output: OutputModules<Props> = ({ pageData }) => {
         await requester(item);
       }
     }
-
     // 3、事件处理，等待组件和eventEmitter准备
     const emitList: EventsTypeItem[] = pageData.mountEnvents || [];
     await eventEmitter.emit(emitList);
-
     // 4、准备就绪
     setIsMount(true);
   }, [eventEmitter, pageData.mountEnvents, pageData.onLoadApi]);

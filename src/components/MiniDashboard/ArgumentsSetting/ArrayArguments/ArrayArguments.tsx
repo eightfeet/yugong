@@ -129,8 +129,9 @@ const ArrayArguments: React.FC<Props> = ({
 
     const onChangeValue = useCallback(
         (index: number, value: any) => {
-            const result: anyObj = { ...argumentsState };
+            const result = cloneDeep(argumentsState) as anyObj;
             result.data[index] = value;
+            
             if (onChange instanceof Function) {
                 onChange(result as ArgumentsItem);
             }

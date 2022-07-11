@@ -1,0 +1,28 @@
+.space {
+  margin-bottom: 10px;
+}
+
+.bg {
+  text-align: left;
+  padding-left: 0;
+}
+
+.row {
+  margin-bottom: 10px;
+  .label {
+      text-align: right;
+      line-height: 30px;
+      word-break:keep-all;/* 不换行 */
+      white-space:nowrap;/* 不换行 */
+      overflow:hidden;
+      text-overflow:ellipsis;
+  }
+}
+
+.select {
+  width: 100%;
+}
+
+.header {
+  padding-left: 0;
+}

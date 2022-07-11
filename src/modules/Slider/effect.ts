@@ -4,6 +4,7 @@ import {
   Parallax, Pagination,
   EffectCoverflow,
   EffectFlip,
+  EffectFade,
   Navigation
 } from 'swiper'
 
@@ -16,8 +17,17 @@ const createEf = (creativeEffect: any) => ({
   pagination: true,
   modules: [EffectCreative, Parallax]
 })
-
-export const slider1 = createEf({
+/** Y轴移入/Z轴缩小移出 */
+export const effect1 = createEf({
+  prev: {
+    translate: [0, 0, -400],
+  },
+  next: {
+    translate: [0, "100%", 0],
+  },
+})
+/** X轴移入/Z轴缩小移出 */
+export const effect2 = createEf({
   prev: {
     translate: [0, 0, -400],
   },
@@ -25,8 +35,8 @@ export const slider1 = createEf({
     translate: ["100%", 0, 0],
   },
 })
-
-export const slider2 = createEf({
+/** X轴放大移入/X轴缩小移出 */
+export const effect3 = createEf({
   prev: {
     translate: ["-120%", 0, -500],
   },
@@ -35,7 +45,18 @@ export const slider2 = createEf({
   },
 })
 
-export const slider3 = createEf({
+/** Y轴放大移入/Y轴缩小移出 */
+export const effect4 = createEf({
+  prev: {
+    translate: [0, "-120%", -500],
+  },
+  next: {
+    translate: [0, "120%", -500],
+  },
+})
+
+/** X轴移入/X轴移出 */
+export const effect5 = createEf({
   prev: {
     translate: ["-20%", 0, -1],
   },
@@ -44,8 +65,18 @@ export const slider3 = createEf({
   },
 })
 
+/** Y轴移入/Y轴移出 */
+export const effect6 = createEf({
+  prev: {
+    translate: [0, "-20%", -1],
+  },
+  next: {
+    translate: [0, "100%", 0],
+  },
+})
 
-export const slider4 = createEf({
+/** X轴翻转进入/X轴翻转退出 */
+export const effect7 = createEf({
   prev: {
     translate: [0, 0, -800],
     rotate: [180, 0, 0],
@@ -56,18 +87,44 @@ export const slider4 = createEf({
   },
 })
 
-export const slider5 = createEf({
+/** Y轴翻转进入/Y轴翻转退出 */
+export const effect8 = createEf({
   prev: {
-    translate: ["-125%", 0, -800],
+    translate: [0, 0, -800],
+    rotate: [0, 180, 0],
+  },
+  next: {
+    translate: [0, 0, -800],
+    rotate: [0, -180, 0],
+  },
+})
+
+/** X方向翻滚进入/X方向翻滚退出 */
+export const effect9 = createEf({
+  prev: {
+    translate: ["-185%", 0, -800],
     rotate: [0, 0, -90],
   },
   next: {
-    translate: ["125%", 0, -800],
+    translate: ["185%", 0, -800],
     rotate: [0, 0, 90],
   },
 })
 
-export const slider6 = createEf({
+/** Y方向翻滚进入/Y方向翻滚退出 */
+export const effect10 = createEf({
+  prev: {
+    translate: [0, "-120%", -800],
+    rotate: [0, 0, -90],
+  },
+  next: {
+    translate: [0, "120%", -800],
+    rotate: [0, 0, 90],
+  },
+})
+
+/** X方向翻页进入/X方向翻页退出 */
+export const effect11 = createEf({
   prev: {
     origin: "left center",
     translate: ["-5%", 0, -200],
@@ -80,7 +137,8 @@ export const slider6 = createEf({
   },
 })
 
-export const slider7 = {
+/** 翻转退出/进入 */
+export const effect12 = {
   effect: "flip",
   grabCursor: true,
   pagination: true,
@@ -95,8 +153,8 @@ export const slider7 = {
   modules: [EffectFlip, Pagination, Navigation]
 }
 
-
-export const slider8 = {
+/** 透视退出/进入 */
+export const effect13 = {
   effect: "coverflow",
   parallax: true,
   grabCursor: true,
@@ -113,8 +171,8 @@ export const slider8 = {
   modules: [EffectCoverflow, Pagination, Parallax]
 }
 
-
-export const slider9 = {
+/** 卡牌切换（请将基础/内容溢出设为显示） */
+export const effect14 = {
   parallax: true,
   effect: "cards",
   cardsEffect: {
@@ -126,11 +184,20 @@ export const slider9 = {
   modules: [EffectCards, Parallax],
 }
 
-export const slider10 = {
+export const effect15 = {
   parallax: true,
   pagination: {
     clickable: true,
   },
   navigation: true,
   modules: [Parallax, Pagination, Navigation]
+}
+
+export const effect16 = {
+  effect: "fade",
+  pagination: {
+    clickable: true,
+  },
+  navigation: true,
+  modules: [EffectFade, Pagination, Navigation]
 }

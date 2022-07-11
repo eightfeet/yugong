@@ -8,6 +8,7 @@ import usePostMessage from '~/hooks/usePostMessage';
 import { Dispatch, RootState } from '~/redux/store';
 import { queryTemplateById } from '~/api';
 import isType from '~/core/helper/isType';
+import loading from '~/core/loading';
 
 interface Props {}
 
@@ -97,8 +98,13 @@ const BeforeOutput: React.FC<Props> = () => {
     setApp();
   }, [setApp]);
 
+  useEffect(() => {
+    loading.show();
+  }, [])
+  
   // 底层数据将完全准备就绪，再放行App！
   if (!isAppdataReady || !isPagedataReady || !pageData) {
+    loading.hide();
     return null;
   }
   return <Output pageData={pageData} />;
