@@ -19,7 +19,7 @@ interface Props {
 
 const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove, points, tchs }) => {
   const [form] = useForm();
-  const [currentPoint, setCurrentPoint] = useState<PointItem[]>([]);
+  const [currentPoint, setCurrentPoint] = useState<PointItem[]>(points);
   const formToData = useCallback(
     () => {
       const { name, ...other } = form.getFieldsValue();
@@ -32,7 +32,7 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
   );
 
   useEffect(() => {
-    setCurrentPoint(points)
+    setCurrentPoint(points);
   }, [points]);
 
   const validatorName = useCallback(
@@ -51,8 +51,7 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
 
   /**节点验证 */
   const validatorPoint = useCallback(
-    (s: any, value: any) => {
-      const ind = parseInt(s.field);
+    (s: any, value: any, ind) => {
       if (/[^a-zA-Z0-9]/.test(value)) {
         return Promise.reject(new Error('请输入字母或数字'))
       }      
@@ -61,12 +60,28 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
         point: string;
         status: "locked" | "unlocked"
       }};
-      console.log(formData, value);
 
-      const hasFormData = Object.keys(formData)?.some((key, index) => {
-        const point = formData[key]?.point as string | undefined;
-        return (index !== ind && point === value)
+      let hasFormData: boolean = false;
+
+      for (const key in formData) {
+        if (Object.prototype.hasOwnProperty.call(formData, key) && key !== 'name') {
+          const element = formData[key];
+          console.log(element);
+          
+        }
+      }
+
+      Object.keys(formData).some((key, index) => {
+        if (index !== ind && key !== 'name') {
+          console.log('比较', key);
+          console.log('被比较', value);
+          return false;
+        } else {
+          console.log('无需比较自己和name');
+          return false
+        }
       });
+
 
       if (hasFormData) {
         return Promise.reject(new Error(`节点名称${value}已存在`))
@@ -78,29 +93,19 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
 
   const add = useCallback(
     () => {
-      setCurrentPoint(currentPoint => [...currentPoint, { point: '', status: 'locked', msg: '' }])
+      setCurrentPoint(currentPoint => [...currentPoint, { point: `point${currentPoint.length + 1}`, status: 'locked', msg: '' }])
     },
     [],
   )
 
   const minus = useCallback(
     (ind: number) => {
-      Modal.confirm({
-        content: '当前线程节点将被删除！',
-        okText: '确定',
-        cancelText: '取消',
-        onOk: () => {
-          setCurrentPoint(currentPoint => {
-            return currentPoint.filter((item, index) => {
-              if (index === ind) {
-                message.warn(`请手动移除线程面板关联的${item.point}节点。`)
-              }
-              return index !== ind
-            });
-          })
-        },
+      setCurrentPoint(currentPoint => {
+        const res = currentPoint.filter((item, index) => {
+          return index !== ind
+        });
+        return res;
       });
-      
     },
     [],
   )
@@ -111,6 +116,10 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
     },
     [formToData, onChange],
   )
+
+  useEffect(() => {
+    console.log('当前', currentPoint);
+  }, [currentPoint])
   
 
   useEffect(() => {
@@ -129,18 +138,18 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
           <Input disabled={!!name} />
         </Form.Item>
         <Button className={s.add} onClick={add}>添加初始化节点</Button>
-        {currentPoint.map((item, index) => <Form.Item key={index}>
+        {currentPoint.map((item, index) => <Form.Item key={item.point}>
           <Input.Group compact >
             <Form.Item
-              name={[index, 'point']}
+              name={[item.point, 'point']}
               initialValue={item.point}
               noStyle
-              rules={[{ required: true, message: '请输入节点名' }, { validator: validatorPoint }]}
+              rules={[{ required: true, message: '请输入节点名' }, { validator: (s, v) => validatorPoint(s, v, index) }]}
             >
               <Input style={{ width: '25%' }} placeholder="节点名" />
             </Form.Item>
             <Form.Item
-              name={[index, 'status']}
+              name={[item.point, 'status']}
               noStyle
               rules={[{ required: true, message: '请选择节点初始状态' }]}
               initialValue={item.status}
@@ -152,7 +161,7 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
               </Select>
             </Form.Item>
             <Form.Item
-              name={[index, 'msg']}
+              name={[item.point, 'msg']}
               noStyle
               initialValue={item.msg}
               rules={[{ required: true, message: '请输入节点被锁定描述' }]}
