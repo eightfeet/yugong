@@ -63,25 +63,26 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
 
       let hasFormData: boolean = false;
 
-      for (const key in formData) {
-        if (Object.prototype.hasOwnProperty.call(formData, key) && key !== 'name') {
-          const element = formData[key];
-          console.log(element);
-          
-        }
+      const formDataKeys = Object.keys(formData);
+      for (let index = 0; index < formDataKeys.length; index++) {
+        const key = formDataKeys[index];
+        const element = formData[key];
+        console.log('for', key, element);
       }
 
-      Object.keys(formData).some((key, index) => {
+      console.log(Object.keys(formData));
+      hasFormData = Object.keys(formData).some((key, index) => {
+        console.log(key);
+        
         if (index !== ind && key !== 'name') {
-          console.log('比较', key);
-          console.log('被比较', value);
           return false;
         } else {
-          console.log('无需比较自己和name');
-          return false
+          // console.log('value===key', key, value);
+          return true
         }
       });
-
+      // console.log('结果', formData, hasFormData);
+      
 
       if (hasFormData) {
         return Promise.reject(new Error(`节点名称${value}已存在`))
