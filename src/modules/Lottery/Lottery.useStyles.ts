@@ -4,9 +4,10 @@ import styleCompiler from "~/compiler";
 import { createUseStyles } from "react-jss";
 import { GameMap } from "~/components/Game/useGame";
 import { buildGamesStyle, buildPublicModalStyle } from "./helper";
+import { addImportant } from "~/core/helper/toStyles";
 
 const getParames = (id: string, moduleId: string, style: any, type: keyof GameMap) => ({
-  [`& .${moduleId}_gameroot`]: styleCompiler(style.gameroot).style || {},
+  [`& .${moduleId}_gameroot`]: addImportant(styleCompiler(style.gameroot).style || {}),
   ...buildPublicModalStyle(id, "successmodal", style),
   ...buildPublicModalStyle(id, "failedmodal", style),
   ...buildPublicModalStyle(id, "addressmodal", style),
@@ -33,6 +34,8 @@ const useStyles = (moduleId: string, style: any, type: keyof GameMap) => {
       style.id = `${id}_style`;
       document.head.appendChild(style);
     }
+    console.log('createStyleParames()', createStyleParames());
+    
     const data = jss.createStyleSheet<string>(createStyleParames(), { generateId: () => id });
     style.innerHTML = data.toString();
     const classArr = [

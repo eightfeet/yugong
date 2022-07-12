@@ -48,7 +48,7 @@ export const getPrizeById = (
 export const buildGamesStyle = (MID: string, style: any, type: keyof GameMap) => {
   const prefix = `& .${MID}_`;
 
-  const compiler = (name: string) => toStyle(style[`${type}_${name}`]);
+  const compiler = (name: string) => toStyle(style[`${type}_${name}`], true);
   const buildStyle = (name: string, style: { [keys: string]: any }) => {
     style[`${prefix}${name}`] = compiler(name);
   };
@@ -148,7 +148,7 @@ export const buildGamesStyle = (MID: string, style: any, type: keyof GameMap) =>
 /**创建弹窗样式 */
 export const buildPublicModalStyle = (MID: string, modal: string, style: any) => {
   const prefix = `& .${MID}_${modal}_wrap .${MID}_${modal}_`;
-  const compiler = (block: string, name: string) => toStyle(style[`${block}_${name}`]);
+  const compiler = (block: string, name: string) => toStyle(style[`${block}_${name}`], true);
   const modalStyle = (name: string, style: { [keys: string]: any }) => {
     style[`${prefix}${name}`] = compiler(modal, name);
   };
@@ -222,7 +222,7 @@ export const buildPublicModalStyle = (MID: string, modal: string, style: any) =>
 
 /**创建组件样式  */
 export const buildModuleStyles = (id: string, style: any, type: keyof GameMap) => ({[id]: {
-  [`& .${id.split('_')[0]}_gameroot`]: toStyle(style.gameroot),
+  [`& .${id.split('_')[0]}_gameroot`]: toStyle(style.gameroot, true),
   ...buildPublicModalStyle(id, "successmodal", style),
   ...buildPublicModalStyle(id, "failedmodal", style),
   ...buildPublicModalStyle(id, "addressmodal", style),
