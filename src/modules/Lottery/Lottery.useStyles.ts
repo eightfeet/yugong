@@ -34,7 +34,6 @@ const useStyles = (moduleId: string, style: any, type: keyof GameMap) => {
       style.id = `${id}_style`;
       document.head.appendChild(style);
     }
-    console.log('createStyleParames()', createStyleParames());
     
     const data = jss.createStyleSheet<string>(createStyleParames(), { generateId: () => id });
     style.innerHTML = data.toString();
