@@ -128,7 +128,7 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
         >
           <Input disabled={!!name} />
         </Form.Item>
-        <Button className={s.add} onClick={add}>增加节点</Button>
+        <Button className={s.add} onClick={add}>添加初始化节点</Button>
         {currentPoint.map((item, index) => <Form.Item key={index}>
           <Input.Group compact >
             <Form.Item
@@ -137,26 +137,27 @@ const SetLine: React.FC<Props> = ({ visible, onCancel, onChange, name, onRemove,
               noStyle
               rules={[{ required: true, message: '请输入节点名' }, { validator: validatorPoint }]}
             >
-              <Input style={{ width: '30%' }} placeholder="节点名" />
+              <Input style={{ width: '25%' }} placeholder="节点名" />
             </Form.Item>
             <Form.Item
               name={[index, 'status']}
               noStyle
               rules={[{ required: true, message: '请选择节点初始状态' }]}
               initialValue={item.status}
+              prefixCls="初始化"
             >
-              <Select disabled style={{ width: '20%' }} placeholder="初始状态">
-                <Select.Option value="locked">锁定时</Select.Option>
-                <Select.Option value="unlocked">解锁时</Select.Option>
+              <Select style={{ width: '25%' }} placeholder="请选择初始状态" >
+                <Select.Option value="locked">锁定</Select.Option>
+                <Select.Option value="unlocked">解锁</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item
               name={[index, 'msg']}
               noStyle
               initialValue={item.msg}
-              rules={[{ required: true, message: '请输入节点描述' }]}
+              rules={[{ required: true, message: '请输入节点被锁定描述' }]}
             >
-              <Input style={{ width: '42%' }} placeholder="节点描述" />
+              <Input style={{ width: '42%' }} placeholder="节点被锁定描述" />
             </Form.Item>
             <Form.Item
               noStyle
