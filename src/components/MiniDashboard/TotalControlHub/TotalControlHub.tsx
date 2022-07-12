@@ -3,6 +3,7 @@ import { Button, Modal, Space, Tabs } from 'antd';
 import { cloneDeep, set } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { TCH2Process } from '~/components/Output/helper';
 import { Dispatch, RootState } from '~/redux/store';
 import { PageData, PointItem } from '~/types/pageData';
 import SetLine from './SetLine';
@@ -24,6 +25,8 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
   // 当勤操作线程
   const [handleLineName, setHandleLineName] = useState<string>();
   const { removeTCHItem } = useDispatch<Dispatch>().pageData;
+  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const runningTimes = useSelector((state: RootState) => state.runningTimes);
   const onChange = (newActiveKey: string) => {
     setActiveKey(newActiveKey);
   };
@@ -31,8 +34,13 @@ const TotalControlHub: React.FC<Props> = ({ updatePage }) => {
   const handleUpdatePage = useCallback(
     (pageData: PageData) => {
       updatePage(pageData);
+      const { TCH } = pageData;
+      if (TCH) {
+        const process = TCH2Process(TCH, runningTimes.process || {});
+        setRunningTimes({ process });
+      }
     },
-    [updatePage],
+    [runningTimes.process, setRunningTimes, updatePage],
   )
 
   const removeLine = useCallback(

@@ -56,8 +56,8 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       const process = TCH2Process(TCH, runningTimes.process || {});
       setRunningTimes({ process });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageData]);
   // rootFontsize当成配合windowResize更新时组件做页面更新的key值，暂无实质用途
   const rootFontsize =
     useSelector((state: RootState) => state.controller.bestFont) ||
