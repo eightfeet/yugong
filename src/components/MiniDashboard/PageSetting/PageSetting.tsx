@@ -173,7 +173,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onChangeApi = useCallback(
     (data) => {
       const optPageData = produce(pageData, draft => {
-        draft.onLoadApi = data;
+        draft.globalApi = data;
       }, createDesc('页面', '修改Api'));
       handleUpdatePage(optPageData);
     },
@@ -183,7 +183,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onRemoveApi = useCallback(
     (_, data: ApiType) => {
       const optPageData = produce(pageData, draft => {
-        draft.onLoadApi = reject(draft.onLoadApi, {
+        draft.globalApi = reject(draft.globalApi, {
           apiId: data.apiId,
         });
       }, createDesc('页面', '删除Api'));
@@ -194,11 +194,12 @@ const Pagesetting: React.FC<Props> = () => {
 
   const onPlus = useCallback(() => {
     const optPageData = produce(pageData, draft => {
-      draft.onLoadApi?.push({
-        name: `ApiBeforMounted`,
+      draft.globalApi?.push({
+        name: `ApiName`,
         apiId: nanoid(),
       });
     }, createDesc('页面', '新增Api'));
+    console.log(333, optPageData);
     handleUpdatePage(optPageData);
   }, [handleUpdatePage, pageData]);
 
@@ -414,16 +415,16 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
           </StyleContext.Provider>
         </Panel>
-        <Panel header="初始化Api" key="pagemount">
+        <Panel header="Api" key="pagemount">
           <div className={s.apiwrap}>
             <h4 className={s.apititle}>
               <Button size="small" icon={<PlusOutlined onClick={onPlus} />} />
             </h4>
             <ApiConfig
-              sortable
+              sortable={false}
               onRemove={onRemoveApi}
-              apiData={pageData.onLoadApi}
-              defaultApiData={cloneDeep(pageData.onLoadApi)}
+              apiData={pageData.globalApi}
+              defaultApiData={cloneDeep(pageData.globalApi)}
               onChange={onChangeApi}
             />
           </div>

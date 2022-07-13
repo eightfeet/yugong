@@ -225,6 +225,26 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     [pageData.TCH, pageData.TCHProcess, runningTimes.process],
   );
 
+  /**全局Api运行 */
+  const runApi = useCallback(
+    async (apiName: ArgumentsItem) => {
+      // 1、获取参数名
+      const api = getArgumentsItem(apiName);
+      // 2、找到要执行的Api
+      const apiItem = pageData.onLoadApi?.find(
+        // isUrl(item.url || "") &&
+        (item) => item.name === api,
+      );
+      // 3、执行。
+      if (apiItem && !!apiItem.method) {
+        await requester(apiItem);
+      } else {
+        message.error(`Api${api || ''}不存在，或参数配置异常，请检查`)
+      }
+    },
+    [pageData.onLoadApi],
+  )
+
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   const [, eventEmitter] = useLifeCycle(
     'global',
@@ -238,6 +258,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       globalMessage,
       onProcess,
       updateThreadPointStatus,
+      runApi
     },
   );
   eventRef.current = eventEmitter;

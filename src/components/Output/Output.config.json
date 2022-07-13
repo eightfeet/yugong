@@ -162,6 +162,19 @@
       ]
     },
     {
+      "name": "runApi",
+      "description": "运行Api",
+      "arguments": [
+        {
+          "type": "string",
+          "name": "Api名",
+          "fieldName": "apiName",
+          "describe": "api的名称，请在页面Api中定义",
+          "data": ""
+        }
+      ]
+    },
+    {
       "name": "updateThreadPointStatus",
       "description": "更新线程节点状态",
       "arguments": [

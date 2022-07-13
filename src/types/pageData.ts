@@ -47,6 +47,7 @@ export interface PageData {
   };
   /* api */
   onLoadApi?: Api[];
+  globalApi?: Api[];
   /* 挂载事件 */
   mountEnvents?: EventsTypeItem[];
   /* 卸载事件 */

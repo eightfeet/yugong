@@ -35,6 +35,7 @@ const defaultData: PageData = {
   unit: DEFAULT_UNIT,
   toUnit: DEFAULT_TO_UNIT,
   onLoadApi: [],
+  globalApi: [],
   mountEnvents: [],
   unmountEnvents: [],
   cols: localPageData.cols || GRID_DEFAULT_COLS,
