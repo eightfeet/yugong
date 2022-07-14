@@ -199,7 +199,6 @@ const Pagesetting: React.FC<Props> = () => {
         apiId: nanoid(),
       });
     }, createDesc('页面', '新增Api'));
-    console.log(333, optPageData);
     handleUpdatePage(optPageData);
   }, [handleUpdatePage, pageData]);
 
