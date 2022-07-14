@@ -195,7 +195,7 @@ const Pagesetting: React.FC<Props> = () => {
   const onPlus = useCallback(() => {
     const optPageData = produce(pageData, draft => {
       draft.globalApi?.push({
-        name: `ApiName`,
+        name: '',
         apiId: nanoid(),
       });
     }, createDesc('页面', '新增Api'));
