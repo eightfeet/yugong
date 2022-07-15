@@ -16,7 +16,7 @@ import { Api } from '~/types/appData';
 import MoveIcon from './MoveIcon';
 import s from './ApiConfig.module.less';
 import ApiDataMap from './ApiDataMap';
-import { FormEventHandler, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import sleep from '~/core/helper/sleep';
 import { useForm } from 'antd/lib/form/Form';
 
@@ -126,6 +126,16 @@ const ApiItem = SortableElement(
       inputRef.current?.focus({ cursor: 'end' });
     }, []);
 
+    const hanleEnter = useCallback(
+      (e) => {
+        if (e.key === "Enter") {
+          handleChangeName()
+        }
+      },
+      [handleChangeName],
+    )
+    
+
     return (
       <div className={classNames(s.item, 'apiitem')} key={item.apiId}>
         {sortable ? <DragHandle /> : null}
@@ -142,7 +152,7 @@ const ApiItem = SortableElement(
             {isEdit ? (
               <Row className={s.row}>
                 <Col span={24}>
-                  <Form form={form} onBlur={handleChangeName}>
+                  <Form form={form} onBlur={handleChangeName} onKeyDown={hanleEnter}>
                     <Form.Item
                       initialValue={item.name}
                       required
@@ -163,6 +173,7 @@ const ApiItem = SortableElement(
                         ref={inputRef}
                         type="text"
                         size="small"
+                        allowClear
                       />
                     </Form.Item>
                   </Form>
@@ -197,6 +208,7 @@ const ApiItem = SortableElement(
                 )}
                 value={item.url}
                 placeholder="请输入Url 接口地址"
+                allowClear
               />
             </Col>
           </Row>
