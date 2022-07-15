@@ -7,6 +7,8 @@ import s from "./RunningTimesModal.module.less";
 import ReactJson from "react-json-view";
 import { ExceptionOutlined } from "@ant-design/icons";
 import core from './core.drawio.svg'
+import { useSelector } from "react-redux";
+import { RootState } from "~/redux/store";
 
 const { Search } = Input;
 
@@ -38,7 +40,8 @@ const RunningTimesModal: React.FC<Props> = ({
 }) => {
   const [state, setstate] = useState<AnyObjectType>({});
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [runningPath, setRunningPath] = useState<string>()
+  const [runningPath, setRunningPath] = useState<string>();
+  const { TCH } = useSelector((state:RootState) => state.pageData);
   useEffect(() => {
     setstate(data);
   }, [data]);
@@ -88,7 +91,7 @@ const RunningTimesModal: React.FC<Props> = ({
         <div className={s.blank}>
           <Row>
             <Col>
-              <Search onChange={onChange} placeholder="查找全局发布变量" />
+              <Search onChange={onChange} placeholder="查找运行时变量" />
             </Col>
             <Col>
               <div className={s.help} onClick={() => setShowHelp(true)}><ExceptionOutlined />&nbsp;运行时与EventEmitter</div>
@@ -102,7 +105,7 @@ const RunningTimesModal: React.FC<Props> = ({
             enableClipboard={handleClipboard}
           />
           {runningPath ? <Row gutter={10}>
-            <Col>规则路径:</Col>
+            <Col>运行时规则路径:</Col>
             <Col>{`{{${runningPath}}}`}</Col>
             <Col className={s.icon}>
               <CopyToClipboard
@@ -113,7 +116,7 @@ const RunningTimesModal: React.FC<Props> = ({
               </CopyToClipboard>
             </Col></Row> : null}
           {runningPath ? <Row gutter={10}>
-            <Col>脚本路径:</Col>
+            <Col>运行时脚本路径:</Col>
             <Col>{`js{{runningTimes.${runningPath}}}`}</Col>
             <Col className={s.icon}>
               <CopyToClipboard
@@ -124,6 +127,15 @@ const RunningTimesModal: React.FC<Props> = ({
               </CopyToClipboard>
             </Col>
           </Row> : null}
+          {Object.keys(TCH!).length ? <>
+            <ReactJson
+              src={TCH!}
+              collapsed={1}
+              style={{ padding: "20px" }}
+              name="页面线程"
+              enableClipboard
+            />
+          </> : null}
         </div>
       </Modal>
       <Modal
