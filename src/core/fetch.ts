@@ -271,7 +271,7 @@ const bootstrap = async (apiArguments: Api, isDestructuring?: boolean) => {
             const errorPublicPublicResult = getArguments(errorPublic, error);
             setRunningTimes(errorPublicPublicResult);
         }
-        message.error(`${apiArguments.apiId}请求失败！`)
+        message.error(`接口 ${apiArguments.name || apiArguments.apiId} 请求失败！`)
         throw error;
     }
 };

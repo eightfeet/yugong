@@ -231,7 +231,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
       // 1、获取参数名
       const api = getArgumentsItem(apiName);
       // 2、找到要执行的Api
-      const apiItem = pageData.onLoadApi?.find(
+      const apiItem = pageData.globalApi?.find(
         // isUrl(item.url || "") &&
         (item) => item.name === api,
       );
@@ -242,7 +242,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
         message.error(`Api${api || ''}不存在，或参数配置异常，请检查`)
       }
     },
-    [pageData.onLoadApi],
+    [pageData.globalApi],
   )
 
   // 全局未做uuid前缀处理，这里需要手动加上global标签
