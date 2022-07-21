@@ -258,7 +258,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     <div className={s.layout} ref={ref} style={generateStyle()}>
       {isEditing ? (
         <GridLine
-          width={window.innerWidth}
+          width={window.document.body.offsetWidth}
           cols={cols}
           rowHeight={rowHeight}
           height={document.body.scrollHeight}
