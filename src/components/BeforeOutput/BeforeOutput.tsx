@@ -9,6 +9,7 @@ import { Dispatch, RootState } from '~/redux/store';
 import { queryTemplateById } from '~/api';
 import isType from '~/core/helper/isType';
 import loading from '~/core/loading';
+import s from './BeforeOutput.module.scss';
 
 interface Props {}
 
@@ -18,6 +19,7 @@ const BeforeOutput: React.FC<Props> = () => {
   const { setCurrentEditorStylePath } = useDispatch<Dispatch>().controller;
 
   const pageData = useSelector((state: RootState) => state.pageData);
+  const isEditing = useSelector((state: RootState) => state.controller);
 
   // 页面准备状态
   const [isAppdataReady, setIsAppdataReady] = useState(false);
@@ -101,6 +103,13 @@ const BeforeOutput: React.FC<Props> = () => {
   useEffect(() => {
     loading.show();
   }, [])
+
+  useEffect(() => {
+    if (isEditing) {
+      document.body.classList.add(s.scrollbar)
+    }
+  }, [isEditing])
+  
   
   // 底层数据将完全准备就绪，再放行App！
   if (!isAppdataReady || !isPagedataReady || !pageData) {

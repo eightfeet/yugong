@@ -93,6 +93,7 @@
    // 更新GridLine布局数据
    const onLayoutChange = useCallback(
      (layout: LayoutDataType[]) => {
+      
        appData.forEach((item) => {
          layout.forEach((element) => {
            if (item.moduleId === element.i) {

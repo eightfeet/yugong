@@ -112,11 +112,12 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       const optAppdata = cloneDeep(appData);
       // 检查是否需要更新
       let updates = false;
-      let currentName = undefined
+      let currentName = undefined;
+
       optAppdata.forEach((item) => {
-        layout.some((element) => {
-          if (item.moduleId === element.i && !isEqual(element, item.layout)) {
-            item.layout = element;
+        layout.some((newElement) => {
+          if (item.moduleId === newElement.i) {
+            item.layout = newElement;
             currentName = item.moduleName;
             updates = true;
             return updates;
@@ -126,7 +127,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       });
       // 无变更时不更新数据
       if(!updates) return;
-
+      
       // 通知父级窗口变更数据
       sendMessage(
         {
