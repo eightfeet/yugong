@@ -33,6 +33,7 @@ import { mockData } from './mock';
 import { ChildrenItem, SliderDataItem } from './type';
 import { toStyle } from '~/core/helper/toStyles';
 import { backgroundGroup } from '~/compiler/compiler';
+import isUrl from '~/core/helper/isUrl';
 
 SwiperCore.use([
   Navigation,
@@ -165,6 +166,7 @@ class Slider extends Component<SliderProps, State> {
     return (
       <div
         {...parallaxData}
+        {...isUrl(link)?{onClick: () => window.location.href = link}:{}}
         style={{
           ...newStyle,
           ...(parallax?.delay

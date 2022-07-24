@@ -17,7 +17,7 @@ interface Props {
 
 const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
   const [hideCode, setHideCode] = useState(false);
-  const { content, style, setContentAndStyle } = useContext(ContentAndStyleContext);
+  const { content, style, link, setContentAndStyle } = useContext(ContentAndStyleContext);
   const { parallax, setParallax } = useContext(ParallaxConfig);
 
   const [currentCode, setCurrentCode] = useState<{
@@ -145,7 +145,14 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
           />
         </Col>
       </Row>
-
+      <Row className={s.row}>
+        <PageHeader className={s.header} title="链接" />
+        <Input
+          placeholder='输入链接地址'
+          value={link}
+          onChange={(e) => setContentAndStyle?.('click', e.target.value)}
+        />
+      </Row>
       <Row className={s.row}>
         <Col span={24}><PageHeader className={s.header} title="元素样式" extra={<CodeOutlined onClick={() => handleShowCode('style', style)} />} /></Col>
       </Row>

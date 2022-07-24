@@ -10,7 +10,7 @@ interface ContentAndStyleContextType {
   /** 样式 */
   style?: {};
   /** 点击 */
-  link?: {};
+  link?: string;
   /** 更新内容 */
   setContentAndStyle?: (type: ContentAndStyleKeys, value: string | number | AnyObjectType) => void;
 }
