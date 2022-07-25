@@ -66,6 +66,12 @@ export const BASEMODULES = [
     title: "Broadcast",
     discribe: "滚动播报",
     icon: <Icon component={IconBroadcast} />,
+  },
+  {
+    moduleName: "Charts",
+    title: "Charts",
+    discribe: "统计图表",
+    icon: <Icon component={IconChart} />,
   }
 ];
 
