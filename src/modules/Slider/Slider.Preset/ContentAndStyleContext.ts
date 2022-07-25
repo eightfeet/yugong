@@ -1,7 +1,7 @@
 import React from 'react';
 import { AnyObjectType } from '~/types/appData';
 
-export type ContentAndStyleKeys = 'content' | 'style' | 'click';
+export type ContentAndStyleKeys = 'content' | 'style' | 'link';
 
 interface ContentAndStyleContextType {
   name?: string

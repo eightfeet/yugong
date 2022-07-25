@@ -144,6 +144,12 @@ class Slider extends Component<SliderProps, State> {
     this.props.eventDispatch().afterChange();
   };
 
+  handleElementClick = (link: string) => () => {
+    if (isUrl(link)) {
+      window.location.href = link;
+    }
+  }
+
   renderElement = (
     { content, parallax, style, link }: ChildrenItem,
     index: number,
@@ -166,7 +172,7 @@ class Slider extends Component<SliderProps, State> {
     return (
       <div
         {...parallaxData}
-        {...isUrl(link)?{onClick: () => window.location.href = link}:{}}
+        onClick={this.handleElementClick(link)}
         style={{
           ...newStyle,
           ...(parallax?.delay

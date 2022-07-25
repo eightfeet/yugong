@@ -150,7 +150,7 @@ const ElementSetter: React.FC<Props> = ({ title, visible, onClose }) => {
         <Input
           placeholder='输入链接地址'
           value={link}
-          onChange={(e) => setContentAndStyle?.('click', e.target.value)}
+          onChange={(e) => setContentAndStyle?.('link', e.target.value)}
         />
       </Row>
       <Row className={s.row}>
