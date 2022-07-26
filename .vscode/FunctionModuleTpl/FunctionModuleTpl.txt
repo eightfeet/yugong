@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PresetModule from '~/components/PresetModule';
-import { ClassModuleBaseProps } from '~/components/PresetModule/PresetModule';
+import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
@@ -9,7 +9,7 @@ import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './FunctionModuleTpl.config';
 import createStyles, { ClassesKey } from './FunctionModuleTpl.createStyles';
 
-export type FunctionModuleTplProps = ClassModuleBaseProps<
+export type FunctionModuleTplProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >

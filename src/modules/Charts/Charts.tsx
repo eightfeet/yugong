@@ -1,89 +1,126 @@
-
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsString } from '~/types/appData';
-import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
-import { Dispatch, RootState } from '~/redux/store';
+import { AxisOptions, Chart } from 'react-charts'
+
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Charts.config';
 import createStyles, { ClassesKey } from './Charts.createStyles';
-
-class Charts extends Component<ChartsProps, State> {
-  constructor(props: ChartsProps) {
-    super(props)
-    this.state = {
-      text: ''
-    }
-  }
-
-  componentDidMount() {
-    this.props.registersFunction({
-      handleClick: this.handleClick
-    })
-    this.props.eventDispatch().mount()
-    this.props.setRunningTimes({ text: 'runningTimeData' })
-
-  }
-
-  componentWillUnmount() {
-    this.props.eventDispatch().unmount();
-  }
-
-  handleClick = (text: ArgumentsString) => {
-    const getState = getArgumentsItem(text);
-    this.setState({ text: getState as string })
-  }
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <Wrapper {...this.props}>
-        <div onClick={() => this.props.eventDispatch().click()}>
-          <br />
-          &nbsp;
-          <span style={{ display: 'inline-block' }} className={classes.style1}>
-            style1<br />
-            &nbsp;
-            <span style={{ display: 'inline-block' }} className={classes.style2}>
-              style2
-            </span>
-            &nbsp;
-            <br />
-            &nbsp;{this.props.runningTimes.text}&nbsp;
-            <br />
-            {this.state.text}
-            <br />
-            &nbsp;
-          </span>
-          &nbsp;
-        </div>
-      </Wrapper>
-    )
-  }
-}
-
-const mapState = (state: RootState) => ({
-  runningTimes: state.runningTimes,
-})
-
-const mapDispatch = (dispatch: Dispatch) => ({
-  setRunningTimes: dispatch.runningTimes.setRunningTimes,
-})
-
-// typeof State
-type State = {
-  text: string
-}
-
-// typeof Props
-type StateProps = ReturnType<typeof mapState>
-type DispatchProps = ReturnType<typeof mapDispatch>
+import React from 'react';
+import dayjs from 'dayjs';
 
 export type ChartsProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
-> & StateProps & DispatchProps
+>
 
-export default connect(mapState, mapDispatch)(PresetModule<ChartsProps>(Charts, config, createStyles))
+type MyDatum = { date: Date | string, stars: number }
+
+const Charts: React.FC<ChartsProps> = (props) => {
+  const {
+    registersFunction,
+    eventDispatch,
+    classes,
+  } = props;
+
+  const data = [
+    {
+      label: 'React Charts',
+      data: [
+        {
+          date: dayjs('2022-01-04').format('DD年MM月YYYY'),
+          stars: 23467238,
+        },
+        {
+          date: dayjs('2022-02-04').format('DD年MM月YYYY'),
+          stars: 112344256,
+        },
+        {
+          date: dayjs('2022-03-04').format('DD年MM月YYYY'),
+          stars: 2003655,
+        },
+        {
+          date: dayjs('2022-04-04').format('DD年MM月YYYY'),
+          stars: 23467238,
+        },
+        {
+          date: dayjs('2022-05-04').format('DD年MM月YYYY'),
+          stars: 112344256,
+        },
+        {
+          date: dayjs('2022-06-04').format('DD年MM月YYYY'),
+          stars: 2003655,
+        },
+        {
+          date: dayjs('2022-07-04').format('DD年MM月YYYY'),
+          stars: 2003655,
+        },
+        {
+          date: dayjs('2022-08-04').format('DD年MM月YYYY'),
+          stars: 23467238,
+        },
+        {
+          date: dayjs('2022-09-04').format('DD年MM月YYYY'),
+          stars: 112344256,
+        },
+        {
+          date: dayjs('2022-10-04').format('DD年MM月YYYY'),
+          stars: 2003655,
+        },
+      ],
+    },
+  ]
+
+  const primaryAxis = React.useMemo(
+    (): AxisOptions<MyDatum> => ({
+      getValue: datum => datum.date,
+      formatters: {
+        
+      }
+    }),
+    []
+  )
+
+  const secondaryAxes = React.useMemo(
+    (): AxisOptions<MyDatum>[] => [
+      {
+        getValue: datum => datum.stars,
+        elementType: 'area'
+    },
+    ],
+    []
+  )
+
+  console.log(primaryAxis, secondaryAxes);
+  
+
+  // First setup registers
+  useEffect(() => {
+    registersFunction({
+      
+    })
+  }, [registersFunction])
+
+  // Second, distributing events
+  useEffect(() => {
+    eventDispatch().mount()
+    return () => {
+      eventDispatch().unmount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <Wrapper {...props} maxWidth maxHeight>
+      <Chart
+       options={{
+         data,
+         primaryAxis,
+         secondaryAxes,
+       }}
+     />
+    </Wrapper>
+  )
+}
+
+export default PresetModule<ChartsProps>(Charts, config, createStyles);
