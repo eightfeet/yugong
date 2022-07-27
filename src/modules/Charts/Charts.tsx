@@ -25,7 +25,7 @@ const Charts: React.FC<ChartsProps> = (props) => {
 
   const data = [
     {
-      label: 'React Charts',
+      label: '收入比',
       data: [
         {
           date: dayjs('2022-01-04').format('DD年MM月YYYY'),
