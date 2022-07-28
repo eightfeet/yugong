@@ -24,7 +24,7 @@
     "dayjs": "^1.10.7",
     "deep-equal": "^2.0.5",
     "echarts": "^5.2.1",
-    "echarts-for-react": "^3.0.1",
+    "echarts-for-react": "^3.0.2",
     "extend": "^3.0.2",
     "gh-pages": "^3.2.3",
     "highlight.js": "^11.1.0",

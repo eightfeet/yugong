@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactECharts from 'echarts-for-react';
 import PresetModule from '~/components/PresetModule';
@@ -23,6 +23,7 @@ const Charts: React.FC<ChartsProps> = (props) => {
   } = props;
   const { runningTimes } = useSelector((state: RootState) => state);
   const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const wrapRef = useRef<HTMLDivElement>(null)
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -76,16 +77,19 @@ const Charts: React.FC<ChartsProps> = (props) => {
           trigger: 'axis',
         },
       };
-    
-      return <ReactECharts option={options} />;
+
+      return <ReactECharts style={{width: '100%', height: '100%'}} option={options} />;
     },
     [],
   )
-  
+
 
   return (
     <Wrapper {...props} maxWidth maxHeight>
-      {renderCharts()}
+      <div ref={wrapRef} style={{ width: '100%', height: '100%', background: 'green' }}>
+        {renderCharts()}
+
+      </div>
     </Wrapper>
   )
 }
