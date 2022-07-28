@@ -1,4 +1,3 @@
-import ResizableBox from "../ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import { stackOffsetWiggle } from "d3-shape";
 import React from "react";
@@ -39,20 +38,18 @@ export default function Steam() {
       <button onClick={randomizeData}>Randomize Data</button>
       <br />
       <br />
-      <ResizableBox>
-        <Chart
-          options={{
-            data,
-            primaryAxis,
-            secondaryAxes,
+      <Chart
+        options={{
+          data,
+          primaryAxis,
+          secondaryAxes,
 
-            getSeriesStyle: () => ({
-              line: { opacity: 0 },
-              area: { opacity: 1 },
-            }),
-          }}
-        />
-      </ResizableBox>
+          getSeriesStyle: () => ({
+            line: { opacity: 0 },
+            area: { opacity: 1 },
+          }),
+        }}
+      />
     </>
   );
 }

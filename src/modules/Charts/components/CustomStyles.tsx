@@ -1,4 +1,3 @@
-import ResizableBox from "../ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
 import { AxisOptions, Chart } from "react-charts";
@@ -73,39 +72,38 @@ function MyChart({
       <button onClick={randomizeData}>Randomize Data</button>
       <br />
       <br />
-      <ResizableBox>
-        <Chart
-          options={{
-            data,
-            interactionMode,
-            primaryAxis,
-            secondaryAxes,
-            getDatumStyle: (datum, status) =>
-              (activeDatumIndex === datum.index &&
+      <Chart
+        options={{
+          data,
+          interactionMode,
+          primaryAxis,
+          secondaryAxes,
+          getDatumStyle: (datum, status) =>
+            (activeDatumIndex === datum.index &&
               activeSeriesIndex === datum.seriesIndex
+              ? {
+                opacity: 1,
+                circle: {
+                  r: 5,
+                },
+                rectangle: {
+                  stroke: "black",
+                  strokeWidth: 3,
+                },
+              }
+              : activeDatumIndex === datum.index
                 ? {
-                    opacity: 1,
-                    circle: {
-                      r: 5,
-                    },
-                    rectangle: {
-                      stroke: "black",
-                      strokeWidth: 3,
-                    },
-                  }
-                : activeDatumIndex === datum.index
-                ? {
-                    opacity: 1,
-                    circle: {
-                      r: 3,
-                    },
-                    rectangle: {
-                      stroke: "black",
-                      strokeWidth: 1,
-                    },
-                  }
+                  opacity: 1,
+                  circle: {
+                    r: 3,
+                  },
+                  rectangle: {
+                    stroke: "black",
+                    strokeWidth: 1,
+                  },
+                }
                 : datum.seriesIndex === activeSeriesIndex
-                ? {
+                  ? {
                     circle: {
                       r: 3,
                     },
@@ -114,65 +112,64 @@ function MyChart({
                       strokeWidth: 1,
                     },
                   }
-                : status === "groupFocused"
-                ? {
-                    circle: {
-                      r: 2,
-                    },
-                    rectangle: {
-                      stroke: "black",
-                      strokeWidth: 0,
-                    },
-                  }
-                : {
-                    circle: {
-                      r: 2,
-                    },
-                    rectangle: {
-                      stroke: "black",
-                      strokeWidth: 0,
-                    },
-                  }) as any,
-            getSeriesStyle: (series) => {
-              return {
-                color: `url(#${series.index % 4})`,
-                opacity:
-                  activeSeriesIndex > -1
-                    ? series.index === activeSeriesIndex
-                      ? 1
-                      : 0.3
-                    : 1,
-              };
-            },
-            onFocusDatum: (focused) =>
-              setState({
-                activeSeriesIndex: focused ? focused.seriesIndex : -1,
-                activeDatumIndex: focused ? focused.index : -1,
-              }),
+                  : status === "groupFocused"
+                    ? {
+                      circle: {
+                        r: 2,
+                      },
+                      rectangle: {
+                        stroke: "black",
+                        strokeWidth: 0,
+                      },
+                    }
+                    : {
+                      circle: {
+                        r: 2,
+                      },
+                      rectangle: {
+                        stroke: "black",
+                        strokeWidth: 0,
+                      },
+                    }) as any,
+          getSeriesStyle: (series) => {
+            return {
+              color: `url(#${series.index % 4})`,
+              opacity:
+                activeSeriesIndex > -1
+                  ? series.index === activeSeriesIndex
+                    ? 1
+                    : 0.3
+                  : 1,
+            };
+          },
+          onFocusDatum: (focused) =>
+            setState({
+              activeSeriesIndex: focused ? focused.seriesIndex : -1,
+              activeDatumIndex: focused ? focused.index : -1,
+            }),
 
-            renderSVG: () => (
-              <defs>
-                <linearGradient id="0" x1="0" x2="0" y1="1" y2="0">
-                  <stop offset="0%" stopColor="#17EAD9" />
-                  <stop offset="100%" stopColor="#6078EA" />
-                </linearGradient>
-                <linearGradient id="1" x1="0" x2="0" y1="1" y2="0">
-                  <stop offset="0%" stopColor="#ff8f10" />
-                  <stop offset="100%" stopColor="#ff3434" />
-                </linearGradient>
-                <linearGradient id="2" x1="0" x2="0" y1="1" y2="0">
-                  <stop offset="0%" stopColor="#42E695" />
-                  <stop offset="100%" stopColor="#3BB2B8" />
-                </linearGradient>
-                <linearGradient id="3" x1="0" x2="0" y1="1" y2="0">
-                  <stop offset="0%" stopColor="#ffb302" />
-                  <stop offset="100%" stopColor="#ead700" />
-                </linearGradient>
-              </defs>
-            ),
-          }}
-        />
-      </ResizableBox>
+          renderSVG: () => (
+            <defs>
+              <linearGradient id="0" x1="0" x2="0" y1="1" y2="0">
+                <stop offset="0%" stopColor="#17EAD9" />
+                <stop offset="100%" stopColor="#6078EA" />
+              </linearGradient>
+              <linearGradient id="1" x1="0" x2="0" y1="1" y2="0">
+                <stop offset="0%" stopColor="#ff8f10" />
+                <stop offset="100%" stopColor="#ff3434" />
+              </linearGradient>
+              <linearGradient id="2" x1="0" x2="0" y1="1" y2="0">
+                <stop offset="0%" stopColor="#42E695" />
+                <stop offset="100%" stopColor="#3BB2B8" />
+              </linearGradient>
+              <linearGradient id="3" x1="0" x2="0" y1="1" y2="0">
+                <stop offset="0%" stopColor="#ffb302" />
+                <stop offset="100%" stopColor="#ead700" />
+              </linearGradient>
+            </defs>
+          ),
+        }}
+      />
     </>
   );
 }

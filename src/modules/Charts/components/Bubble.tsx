@@ -1,4 +1,3 @@
-import ResizableBox from "../ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
 import { AxisOptions, Chart } from "react-charts";
@@ -36,20 +35,18 @@ export default function Bubble() {
       <button onClick={randomizeData}>Randomize Data</button>
       <br />
       <br />
-      <ResizableBox>
-        <Chart
-          options={{
-            data,
-            primaryAxis,
-            secondaryAxes,
-            interactionMode: "closest",
-            getDatumStyle: (datum) =>
-              ({
-                circle: { r: datum.originalDatum.radius },
-              } as any),
-          }}
-        />
-      </ResizableBox>
+      <Chart
+        options={{
+          data,
+          primaryAxis,
+          secondaryAxes,
+          interactionMode: "closest",
+          getDatumStyle: (datum) =>
+          ({
+            circle: { r: datum.originalDatum.radius },
+          } as any),
+        }}
+      />
     </>
   );
 }

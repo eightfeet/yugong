@@ -1,4 +1,3 @@
-import ResizableBox from "../ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
 import { AxisOptions, Chart } from "react-charts";
@@ -34,25 +33,15 @@ export default function DarkMode() {
       <button onClick={randomizeData}>Randomize Data</button>
       <br />
       <br />
-      <ResizableBox
-        style={{
-          background: "rgba(0, 27, 45, 0.9)",
-          padding: ".5rem",
-          borderRadius: "5px",
-        }}
-      >
-        <div style={{ width: "100%", height: "100%" }}>
-          <Chart
-            options={{
-              data,
-              primaryAxis,
-              secondaryAxes,
+      <Chart
+        options={{
+          data,
+          primaryAxis,
+          secondaryAxes,
 
-              dark: true,
-            }}
-          />
-        </div>
-      </ResizableBox>
+          dark: true,
+        }}
+      />
     </>
   );
 }

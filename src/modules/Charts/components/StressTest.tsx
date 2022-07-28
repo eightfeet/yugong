@@ -1,4 +1,3 @@
-import ResizableBox from "../ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
 import { AxisOptions, Chart } from "react-charts";
@@ -223,42 +222,40 @@ export default function StressTest() {
       <br />
       <br />
       {[...new Array(chartCount)].map((d, i) => (
-        <ResizableBox key={i} height={height}>
-          <Chart
-            options={{
-              data,
-              primaryAxis,
-              secondaryAxes,
-              memoizeSeries,
-              getSeriesStyle: (series) => ({
-                opacity:
-                  activeSeriesIndex > -1
-                    ? series.index === activeSeriesIndex
-                      ? 1
-                      : 0.1
-                    : 1,
-              }),
-              primaryCursor: {
-                value: primaryCursorValue,
-                onChange: (value) => {
-                  setPrimaryCursorValue(value);
-                },
+        <Chart
+          options={{
+            data,
+            primaryAxis,
+            secondaryAxes,
+            memoizeSeries,
+            getSeriesStyle: (series) => ({
+              opacity:
+                activeSeriesIndex > -1
+                  ? series.index === activeSeriesIndex
+                    ? 1
+                    : 0.1
+                  : 1,
+            }),
+            primaryCursor: {
+              value: primaryCursorValue,
+              onChange: (value) => {
+                setPrimaryCursorValue(value);
               },
-              secondaryCursor: {
-                value: secondaryCursorValue,
-                onChange: (value) => {
-                  setSecondaryCursorValue(value);
-                },
+            },
+            secondaryCursor: {
+              value: secondaryCursorValue,
+              onChange: (value) => {
+                setSecondaryCursorValue(value);
               },
-              onFocusDatum: (datum) => {
-                setState((old) => ({
-                  ...old,
-                  activeSeriesIndex: datum ? datum.seriesIndex : -1,
-                }));
-              },
-            }}
-          />
-        </ResizableBox>
+            },
+            onFocusDatum: (datum) => {
+              setState((old) => ({
+                ...old,
+                activeSeriesIndex: datum ? datum.seriesIndex : -1,
+              }));
+            },
+          }}
+        />
       ))}
     </>
   );
