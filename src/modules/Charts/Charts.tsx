@@ -1,20 +1,19 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ReactECharts from 'echarts-for-react';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { AxisOptions, Chart } from 'react-charts'
-
+import { ArgumentsString } from '~/types/appData';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Charts.config';
 import createStyles, { ClassesKey } from './Charts.createStyles';
-import React from 'react';
-import dayjs from 'dayjs';
 
 export type ChartsProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 >
-
-type MyDatum = { date: Date | string, stars: number }
 
 const Charts: React.FC<ChartsProps> = (props) => {
   const {
@@ -22,84 +21,28 @@ const Charts: React.FC<ChartsProps> = (props) => {
     eventDispatch,
     classes,
   } = props;
+  const { runningTimes } = useSelector((state: RootState) => state);
+  const { setRunningTimes } = useDispatch<Dispatch>().runningTimes;
+  const [text, setText] = useState('');
 
-  const data = [
-    {
-      label: '收入比',
-      data: [
-        {
-          date: dayjs('2022-01-04').format('DD年MM月YYYY'),
-          stars: 23467238,
-        },
-        {
-          date: dayjs('2022-02-04').format('DD年MM月YYYY'),
-          stars: 112344256,
-        },
-        {
-          date: dayjs('2022-03-04').format('DD年MM月YYYY'),
-          stars: 2003655,
-        },
-        {
-          date: dayjs('2022-04-04').format('DD年MM月YYYY'),
-          stars: 23467238,
-        },
-        {
-          date: dayjs('2022-05-04').format('DD年MM月YYYY'),
-          stars: 112344256,
-        },
-        {
-          date: dayjs('2022-06-04').format('DD年MM月YYYY'),
-          stars: 2003655,
-        },
-        {
-          date: dayjs('2022-07-04').format('DD年MM月YYYY'),
-          stars: 2003655,
-        },
-        {
-          date: dayjs('2022-08-04').format('DD年MM月YYYY'),
-          stars: 23467238,
-        },
-        {
-          date: dayjs('2022-09-04').format('DD年MM月YYYY'),
-          stars: 112344256,
-        },
-        {
-          date: dayjs('2022-10-04').format('DD年MM月YYYY'),
-          stars: 2003655,
-        },
-      ],
+  useEffect(() => {
+    setRunningTimes({ text: 'runningTimeData' });
+  }, [setRunningTimes])
+
+  const handleClick = useCallback(
+    (text: ArgumentsString) => {
+      const getState = getArgumentsItem(text);
+      setText(getState as string)
     },
-  ]
-
-  const primaryAxis = React.useMemo(
-    (): AxisOptions<MyDatum> => ({
-      getValue: datum => datum.date,
-      formatters: {
-        
-      }
-    }),
-    []
+    [],
   )
-
-  const secondaryAxes = React.useMemo(
-    (): AxisOptions<MyDatum>[] => [
-      {
-        getValue: datum => datum.stars,
-        elementType: 'area'
-    },
-    ],
-    []
-  )
-
-  console.log(primaryAxis, secondaryAxes);
-  
 
   // First setup registers
   useEffect(() => {
     registersFunction({
-      
+      handleClick
     })
-  }, [registersFunction])
+  }, [handleClick, registersFunction])
 
   // Second, distributing events
   useEffect(() => {
@@ -110,15 +53,39 @@ const Charts: React.FC<ChartsProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+
+  const renderCharts = useCallback(
+    () => {
+      const options = {
+        grid: { top: 8, right: 8, bottom: 24, left: 36 },
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [
+          {
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line',
+            smooth: true,
+          },
+        ],
+        tooltip: {
+          trigger: 'axis',
+        },
+      };
+    
+      return <ReactECharts option={options} />;
+    },
+    [],
+  )
+  
+
   return (
     <Wrapper {...props} maxWidth maxHeight>
-      <Chart
-       options={{
-         data,
-         primaryAxis,
-         secondaryAxes,
-       }}
-     />
+      {renderCharts()}
     </Wrapper>
   )
 }
