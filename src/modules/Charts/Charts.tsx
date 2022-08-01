@@ -1,7 +1,7 @@
 
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart, { ChartConfiguration } from 'chart.js/auto';
+import Chart, { ChartConfiguration, ChartData, ChartOptions } from 'chart.js/auto';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsString } from '~/types/appData';
@@ -17,7 +17,15 @@ class Charts extends Component<ChartsProps, State> {
   constructor(props: ChartsProps) {
     super(props)
     this.state = {
-      text: ''
+      labels: [
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
+        '星期日',
+      ]
     }
     this.canvas = null;
     this.chart = null;
@@ -42,23 +50,92 @@ class Charts extends Component<ChartsProps, State> {
       '星期六',
       '星期日',
     ];
-  
-    const data = {
+
+    const chartData: ChartData = {
       labels: labels,
       datasets: [{
         label: '生产量',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'yellow',
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'yellow',
+          'blue',
+        ],
+        borderColor: 'rgba(255, 255, 255)',
         data: [0, 10, 5, 2, 20, 30, 45],
-      }]
-    };
-  
-    const config: ChartConfiguration = {
-      type: 'bar',
-      data: data,
-      options: {
-        
+        showLine: true
+      },
+      {
+        label: '产值',
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'yellow',
+          'blue',
+        ],
+        borderColor: 'rgba(255, 255, 0)',
+        data: [5, 10, 15, 20, 20, 10, 15],
+        showLine: true
       }
+      ],
+
+    };
+
+    const chartOptopns: ChartOptions<'line'> = {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: '标题',
+          align: 'start'
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false,
+            color: 'green',
+            borderColor: 'yellow',
+            borderWidth: 1,
+            lineWidth: 2,
+            tickColor: 'red',
+            drawTicks: false,
+          },
+          ticks: {
+            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+            callback: function (val, index) {
+              // Hide every 2nd tick label
+              return index % 2 === 0 ? this.getLabelForValue(val as any) : '';
+            },
+            color: 'white',
+          },
+          title: {
+            display: true,
+            text: '年产值',
+            color: 'green',
+            font: {
+              size: 30
+            },
+          }
+        },
+        y: {
+          min: -10,
+          max: 50,
+          grid: {
+            display: false,
+            color: 'green',
+            borderColor: 'yellow',
+            borderWidth: 1,
+            lineWidth: 2,
+            tickColor: 'red',
+            drawTicks: false,
+          }
+        }
+      }
+    }
+
+    const config: ChartConfiguration = {
+      type: 'scatter',
+      data: chartData,
+      options: chartOptopns
     };
     this.chart?.destroy();
     this.chart = new Chart(
@@ -66,18 +143,18 @@ class Charts extends Component<ChartsProps, State> {
       config
     );
   }
-  
+
   componentDidUpdate() {
     this.buildChart();
   }
 
   componentWillUnmount() {
     this.props.eventDispatch().unmount();
+    this.chart?.destroy();
   }
 
   handleClick = (text: ArgumentsString) => {
     const getState = getArgumentsItem(text);
-    this.setState({ text: getState as string })
   }
 
   render() {
@@ -104,7 +181,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
 
 // typeof State
 type State = {
-  text: string
+  labels: number | string[]
 }
 
 // typeof Props
