@@ -79,14 +79,14 @@ class Charts extends Component<ChartsProps, State> {
 
     };
 
-    const chartOptopns: ChartOptions<'line'> = {
+    const chartOptopns: ChartOptions<'bubble'> = {
       responsive: true,
       plugins: {
         title: {
           display: true,
           text: '标题',
           align: 'start'
-        }
+        },
       },
       scales: {
         x: {
@@ -129,11 +129,18 @@ class Charts extends Component<ChartsProps, State> {
             drawTicks: false,
           }
         }
+      },
+      elements: {
+        line: {
+          fill: false,
+          backgroundColor: 'rgba(255,0,0,0.2)',
+          borderColor: 'rgba(255,0,0,0.2)',
+        },
       }
     }
 
     const config: ChartConfiguration = {
-      type: 'scatter',
+      type: 'line',
       data: chartData,
       options: chartOptopns
     };
