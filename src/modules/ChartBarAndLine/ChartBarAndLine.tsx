@@ -40,53 +40,60 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
 
   buildChart = () => {
     if (!this.canvas) return;
-    const labels = [
-      '星期一',
-      '星期二',
-      '星期三',
-      '星期四',
-      '星期五',
-      '星期六',
-      '星期日',
-    ];
-
+    const {labels} = this.state;
     const chartData: ChartData = {
-      labels: labels,
-      datasets: [{
-        label: '生产量',
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'yellow',
-          'blue',
-        ],
-        borderColor: 'rgba(255, 255, 255)',
-        data: [0, 10, 5, 2, 20, 30, 45],
-        type: 'bar'
-      },
-      {
-        label: '产值',
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'yellow',
-          'blue',
-        ],
-        borderColor: 'rgba(255, 255, 0)',
-        data: [5, 10, 15, 20, 20, 10, 15],
-        showLine: true
-      }
+      labels,
+      datasets: [
+        {
+          // 专属
+          type: 'bar',
+          borderRadius: 8,
+          // 公共
+          label: '生产量',
+          backgroundColor: 'rgba(255, 0, 0, 0.5)',
+          borderColor: 'rgba(255, 255, 255)',
+          borderWidth: 2,
+          data: [0, 20, 5, 8, 20, 30, 45],
+          pointStyle: 'rect',
+        },
+        {
+          type: 'line',
+          // 专属
+          borderDash: [5,5],
+          showLine: true,
+          fill: true,
+          // 公共
+          label: '产值',
+          backgroundColor: 'rgba(0, 255, 255, 0.5)',
+          borderColor: 'rgba(255, 255, 255)',
+          data: [5, 10, 15, 20, 20, 10, 15],
+          pointStyle: 'circle',
+          pointRadius: 10,
+          pointHoverRadius: 15
+        },
       ],
-
     };
 
-    const chartOptopns: ChartOptions<'bubble'> = {
+    const chartOptopns: ChartOptions<'line'> = {
+      // 数据方向
+      indexAxis: 'x',
       responsive: true,
       plugins: {
+        tooltip: {
+          backgroundColor: 'green'
+        },
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: 'white'
+          },
+        }
       },
       scales: {
         x: {
           grid: {
             display: false,
-            color: 'green',
+            color: 'white',
             borderColor: 'yellow',
             borderWidth: 1,
             lineWidth: 2,
@@ -97,20 +104,23 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
             // For a category axis, the val is the index so the lookup via getLabelForValue is needed
             callback: function (val, index) {
               // Hide every 2nd tick label
-              return index % 2 === 0 ? this.getLabelForValue(val as any) : '';
+              return index % 3 === 0 ? this.getLabelForValue(val as any) : '';
             },
             color: 'white',
           }
         },
         y: {
           grid: {
-            display: false,
-            color: 'green',
+            display: true,
+            color: 'white',
             borderColor: 'yellow',
             borderWidth: 1,
-            lineWidth: 2,
+            lineWidth: 1,
             tickColor: 'red',
             drawTicks: false,
+          },
+          ticks: {
+            color: 'white'
           }
         }
       },
