@@ -1,4 +1,3 @@
-
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import Chart, { ChartConfiguration, ChartData, ChartOptions } from 'chart.js/auto';
@@ -8,13 +7,13 @@ import { ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
-import config, { ExposeEventsKeys } from './Charts.config';
-import createStyles, { ClassesKey } from './Charts.createStyles';
+import config, { ExposeEventsKeys } from './ChartBarAndLine.config';
+import createStyles, { ClassesKey } from './ChartBarAndLine.createStyles';
 
-class Charts extends Component<ChartsProps, State> {
+class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   canvas: HTMLCanvasElement | null;
   chart: Chart | null;
-  constructor(props: ChartsProps) {
+  constructor(props: ChartBarAndLineProps) {
     super(props)
     this.state = {
       labels: [
@@ -62,7 +61,7 @@ class Charts extends Component<ChartsProps, State> {
         ],
         borderColor: 'rgba(255, 255, 255)',
         data: [0, 10, 5, 2, 20, 30, 45],
-        showLine: true
+        type: 'bar'
       },
       {
         label: '产值',
@@ -82,11 +81,6 @@ class Charts extends Component<ChartsProps, State> {
     const chartOptopns: ChartOptions<'bubble'> = {
       responsive: true,
       plugins: {
-        title: {
-          display: true,
-          text: '标题',
-          align: 'start'
-        },
       },
       scales: {
         x: {
@@ -106,19 +100,9 @@ class Charts extends Component<ChartsProps, State> {
               return index % 2 === 0 ? this.getLabelForValue(val as any) : '';
             },
             color: 'white',
-          },
-          title: {
-            display: true,
-            text: '年产值',
-            color: 'green',
-            font: {
-              size: 30
-            },
           }
         },
         y: {
-          min: -10,
-          max: 50,
           grid: {
             display: false,
             color: 'green',
@@ -166,13 +150,12 @@ class Charts extends Component<ChartsProps, State> {
 
   render() {
     const { classes, style } = this.props;
-    console.log('style', style);
     const canvasStyle = {
       width: '100%', height: '100%'
     }
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
-        <canvas style={canvasStyle} ref={ref => this.canvas = ref}></canvas>
+        <canvas width={canvasStyle.width} height={canvasStyle.height} ref={ref => this.canvas = ref}></canvas>
       </Wrapper>
     )
   }
@@ -188,16 +171,16 @@ const mapDispatch = (dispatch: Dispatch) => ({
 
 // typeof State
 type State = {
-  labels: number | string[]
+  labels: string[]
 }
 
 // typeof Props
 type StateProps = ReturnType<typeof mapState>
 type DispatchProps = ReturnType<typeof mapDispatch>
 
-export type ChartsProps = ModuleBaseProps<
+export type ChartBarAndLineProps = ModuleBaseProps<
   { [keys in ClassesKey]: string; },
   { [keys in ExposeEventsKeys]: Function; }
 > & StateProps & DispatchProps
 
-export default connect(mapState, mapDispatch)(PresetModule<ChartsProps>(Charts, config, createStyles))
+export default connect(mapState, mapDispatch)(PresetModule<ChartBarAndLineProps>(ChartBarAndLine, config, createStyles))

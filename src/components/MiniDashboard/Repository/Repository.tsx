@@ -181,7 +181,7 @@ const Repository: React.FC = () => {
                         title={
                           <>
                             <div className={s.iconwrap}>{item.icon}</div>
-                            <div>
+                            <div style={{fontSize: '12px'}}>
                               <Tooltip title={item.title}>{item.title}</Tooltip>
                             </div>
                           </>

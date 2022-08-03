@@ -52,15 +52,9 @@ const config: ModulesStatic = {
     },
     style: {
       basic: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 255, 34, 1)"
-        }
       },
-      style2: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 87, 34, 1)"
-        }
-      },
+      style1: {
+      }
     },
     styleDescription: [
       {
@@ -68,9 +62,9 @@ const config: ModulesStatic = {
         value: "basic",
         children: [
           {
-            title: "style2Name",
-            value: "style2",
-          },
+            title: "style1Name",
+            value: "style1",
+          }
         ]
       }
     ]

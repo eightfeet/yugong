@@ -66,12 +66,6 @@ export const BASEMODULES = [
     title: "Broadcast",
     discribe: "滚动播报",
     icon: <Icon component={IconBroadcast} />,
-  },
-  {
-    moduleName: "Charts",
-    title: "Charts",
-    discribe: "统计图表",
-    icon: <Icon component={IconChart} />,
   }
 ];
 
@@ -84,11 +78,11 @@ export const LOTTERY = [
   }
 ]
 
-export const CHART = [
+export const CHARTS = [
   {
-    moduleName: "Chart",
-    title: "Chart",
-    discribe: "数据展示",
+    moduleName: "ChartBarAndLine",
+    title: "ChartBarAndLine",
+    discribe: "折线/柱状",
     icon: <Icon component={IconChart} />,
   }
 ]
@@ -104,11 +98,11 @@ export const MODULES = [
     describe: "抽奖组件",
     modules: LOTTERY,
   },
-  // {
-  //   name: "chart",
-  //   describe: "数据展示组件",
-  //   modules: CHART,
-  // },
+  {
+    name: "chart",
+    describe: "统计图组件",
+    modules: CHARTS,
+  },
 ];
 
 // 默认字体大小
