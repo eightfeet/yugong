@@ -8,14 +8,14 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "handleClick",
-      description: '点击设置文字',
+      name: "setLabel",
+      description: '设置标签',
       arguments: [{
-        type: "string",
-        name: "文字",
-        fieldName: "testText",
-        describe: "测试点击设置文字",
-        data: "我被改变了",
+        type: "array",
+        name: "标签",
+        fieldName: "label",
+        describe: "设置标签",
+        data: [],
       }]
     }
   ],
@@ -30,11 +30,7 @@ const config: ModulesStatic = {
     {
       name: "unmount",
       description: "卸载",
-    },
-    {
-      name: "click",
-      description: "点击",
-    },
+    }
   ],
 
   /**
@@ -67,10 +63,11 @@ const config: ModulesStatic = {
           }
         ]
       }
-    ]
+    ],
+    preset: true,
   },
 };
 // export type key of events list
-export type ExposeEventsKeys = 'mount' | 'unmount' | 'click';
+export type ExposeEventsKeys = 'mount' | 'unmount';
 
 export default config;

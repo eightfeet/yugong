@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Chart, { ChartConfiguration, ChartData, ChartOptions } from 'chart.js/auto';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsString } from '~/types/appData';
+import { ArgumentsArray, ArgumentsString } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
@@ -16,15 +16,7 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   constructor(props: ChartBarAndLineProps) {
     super(props)
     this.state = {
-      labels: [
-        '星期一',
-        '星期二',
-        '星期三',
-        '星期四',
-        '星期五',
-        '星期六',
-        '星期日',
-      ]
+      labels: []
     }
     this.canvas = null;
     this.chart = null;
@@ -32,10 +24,17 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
 
   componentDidMount() {
     this.props.registersFunction({
-      handleClick: this.handleClick
+      setLabel: this.setLabel
     })
     this.props.eventDispatch().mount()
     this.props.setRunningTimes({ text: 'runningTimeData' })
+  }
+
+  setLabel = (label: ArgumentsArray) => {
+    const data = getArgumentsItem(label) as string[];
+    this.setState({
+      labels: data
+    });
   }
 
   buildChart = () => {
@@ -53,7 +52,7 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
           backgroundColor: 'rgba(255, 0, 0, 0.5)',
           borderColor: 'rgba(255, 255, 255)',
           borderWidth: 2,
-          data: [0, 20, 5, 8, 20, 30, 45],
+          data: [0, 20, 5, 8, 20, 30, 45, 30],
           pointStyle: 'rect',
         },
         {
@@ -66,7 +65,7 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
           label: '产值',
           backgroundColor: 'rgba(0, 255, 255, 0.5)',
           borderColor: 'rgba(255, 255, 255)',
-          data: [5, 10, 15, 20, 20, 10, 15],
+          data: [5, 10, 15, null, null, 10, 15],
           pointStyle: 'circle',
           pointRadius: 10,
           pointHoverRadius: 15
@@ -102,10 +101,10 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
           },
           ticks: {
             // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-            callback: function (val, index) {
-              // Hide every 2nd tick label
-              return index % 3 === 0 ? this.getLabelForValue(val as any) : '';
-            },
+            // callback: function (val, index) {
+            //   // Hide every 2nd tick label
+            //   return index % 3 === 0 ? this.getLabelForValue(val as any) : '';
+            // },
             color: 'white',
           }
         },
