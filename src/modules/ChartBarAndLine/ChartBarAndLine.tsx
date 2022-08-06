@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart, { ChartConfiguration, ChartData, ChartOptions } from 'chart.js/auto';
+import Chart, { ChartConfiguration, ChartData } from 'chart.js/auto';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { ArgumentsArray, ArgumentsString } from '~/types/appData';
+import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
@@ -16,18 +16,22 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   constructor(props: ChartBarAndLineProps) {
     super(props)
     this.state = {
-      labels: []
+      labels: [],
+      dataGroup: [],
+      options: {}
     }
     this.canvas = null;
     this.chart = null;
   }
 
   componentDidMount() {
+    const {setLabel, setDataGroup, setOptions} = this;
     this.props.registersFunction({
-      setLabel: this.setLabel
+      setLabel,
+      setDataGroup,
+      setOptions
     })
     this.props.eventDispatch().mount()
-    this.props.setRunningTimes({ text: 'runningTimeData' })
   }
 
   setLabel = (label: ArgumentsArray) => {
@@ -37,105 +41,31 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
     });
   }
 
+  setDataGroup = (dataGroup: ArgumentsMixed) => {
+    const data = getArgumentsItem(dataGroup) as any[];
+    this.setState({
+      dataGroup: data
+    });
+  }
+
+  setOptions = (options: ArgumentsMixed) => {
+    const data = getArgumentsItem(options) as any[];
+    this.setState({
+      options: data
+    });
+  }
+
   buildChart = () => {
     if (!this.canvas) return;
-    const {labels} = this.state;
+    const {labels, dataGroup, options} = this.state;
     const chartData: ChartData = {
       labels,
-      datasets: [
-        {
-          // 专属
-          type: 'bar',
-          borderRadius: 8,
-          // 公共
-          label: '生产量',
-          backgroundColor: 'rgba(255, 0, 0, 0.5)',
-          borderColor: 'rgba(255, 255, 255)',
-          borderWidth: 2,
-          data: [0, 20, 5, 8, 20, 30, 45, 30],
-          pointStyle: 'rect',
-        },
-        {
-          type: 'line',
-          // 专属
-          borderDash: [5,5],
-          showLine: true,
-          fill: true,
-          // 公共
-          label: '产值',
-          backgroundColor: 'rgba(0, 255, 255, 0.5)',
-          borderColor: 'rgba(255, 255, 255)',
-          data: [5, 10, 15, null, null, 10, 15],
-          pointStyle: 'circle',
-          pointRadius: 10,
-          pointHoverRadius: 15
-        },
-      ],
+      datasets: dataGroup,
     };
-
-    const chartOptopns: ChartOptions<'line'> = {
-      // 数据方向
-      indexAxis: 'x',
-      responsive: true,
-      plugins: {
-        tooltip: {
-          backgroundColor: 'green'
-        },
-        legend: {
-          labels: {
-            usePointStyle: true,
-            color: 'white'
-          },
-        }
-      },
-      scales: {
-        x: {
-          grid: {
-            display: false,
-            color: 'white',
-            borderColor: 'yellow',
-            borderWidth: 1,
-            lineWidth: 2,
-            tickColor: 'red',
-            drawTicks: false,
-          },
-          ticks: {
-            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-            // callback: function (val, index) {
-            //   // Hide every 2nd tick label
-            //   return index % 3 === 0 ? this.getLabelForValue(val as any) : '';
-            // },
-            color: 'white',
-          }
-        },
-        y: {
-          grid: {
-            display: true,
-            color: 'white',
-            borderColor: 'yellow',
-            borderWidth: 1,
-            lineWidth: 1,
-            tickColor: 'red',
-            drawTicks: false,
-          },
-          ticks: {
-            color: 'white'
-          }
-        }
-      },
-      elements: {
-        line: {
-          fill: false,
-          backgroundColor: 'rgba(255,0,0,0.2)',
-          borderColor: 'rgba(255,0,0,0.2)',
-        },
-      }
-    }
-
     const config: ChartConfiguration = {
       type: 'line',
       data: chartData,
-      options: chartOptopns
+      options: options
     };
     this.chart?.destroy();
     this.chart = new Chart(
@@ -153,12 +83,7 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
     this.chart?.destroy();
   }
 
-  handleClick = (text: ArgumentsString) => {
-    const getState = getArgumentsItem(text);
-  }
-
   render() {
-    const { classes, style } = this.props;
     const canvasStyle = {
       width: '100%', height: '100%'
     }
@@ -171,16 +96,16 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
 }
 
 const mapState = (state: RootState) => ({
-  runningTimes: state.runningTimes,
 })
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  setRunningTimes: dispatch.runningTimes.setRunningTimes,
 })
 
 // typeof State
 type State = {
-  labels: string[]
+  labels: string[];
+  dataGroup: any[];
+  options: {[keys: string]: any}
 }
 
 // typeof Props
