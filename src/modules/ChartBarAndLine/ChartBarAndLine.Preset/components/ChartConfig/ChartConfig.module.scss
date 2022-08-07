@@ -1,0 +1,18 @@
+.root {
+  background-color: #eee;
+  padding: 10px;
+  :global{
+    .ant-row{
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  > div {
+    flex-shrink: 0;
+  }
+  
+}

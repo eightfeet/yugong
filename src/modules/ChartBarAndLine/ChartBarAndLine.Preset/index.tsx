@@ -1,19 +1,20 @@
 import React from 'react';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
-import s from './ChartBarAndLine.Preset.module.scss';
+import DataGroups from './components/DataGroups';
+import Labels from './components/Labels';
 
 const path = {
-  labelPath: 'runningData[0]',
-  // dataPath:
+  labels: '[0].arguments[0]',
+  dataGroup: '[1].arguments[0]',
+  options: '[2].arguments[0]',
 }
 
-const Preset:React.FC<CustomPersetProps> = ({...props}) => {
-  console.log(props);
-  
+const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
   return (
-    <div>
-      预设
-    </div>
+    <>
+      <Labels runningData={runningData} onChange={onChange} />
+      <DataGroups />
+    </>
   )
 }
 
