@@ -1,5 +1,6 @@
-import { Form, Input, Radio, Select } from 'antd';
+import { Form, Input, Radio, Select, Checkbox, Switch } from 'antd';
 import React from 'react';
+import Color from '~/components/MiniDashboard/Color';
 import s from './ChartConfig.module.scss';
 
 interface Props {
@@ -16,25 +17,28 @@ const ChartConfig: React.FC<Props> = ({ }) => {
             <Radio.Button value="vertical">柱状</Radio.Button>
           </Radio.Group>
         </Form.Item>
+        <Form.Item name="layout">
+          <Checkbox>
+            显示连线
+          </Checkbox>
+        </Form.Item>
         <Form.Item label="背景" name="layout">
-          <Input.Group className={s.groups}>
+          <div className={s.itemlayout}>
             <Form.Item
-              name={['address', 'province']}
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 6 }}
               label="填充"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
             >
-              <Input size="small" placeholder="颜色" />
+              <Switch size="small" />
             </Form.Item>
             <Form.Item
-              name={['address', 'province']}
               label="颜色"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
+              labelCol={{ span: 11 }}
+              wrapperCol={{ span: 6 }}
             >
-              <Input size="small" placeholder="颜色" />
+              <Color onChange={() => { }} />
             </Form.Item>
-          </Input.Group>
+          </div>
         </Form.Item>
         <Form.Item label="描边">
           <Input.Group className={s.groups}>
