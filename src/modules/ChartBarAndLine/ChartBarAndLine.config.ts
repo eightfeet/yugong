@@ -76,6 +76,9 @@ const config: ModulesStatic = {
               backgroundColor: 'green'
             },
             legend: {
+              display: true,
+              // position top right bottom left
+              position: 'left',
               // 图例
               labels: {
                 usePointStyle: true,

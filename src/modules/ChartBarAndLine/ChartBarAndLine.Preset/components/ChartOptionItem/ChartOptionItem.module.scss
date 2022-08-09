@@ -4,7 +4,9 @@
       display: flex;
       flex-shrink: 0;
       flex-wrap: wrap;
-      padding: 0 10px;
+      .ant-form-item {
+        margin-bottom: 0;
+      }
       >div {
         width: 50%;
         margin-bottom: 10px;
