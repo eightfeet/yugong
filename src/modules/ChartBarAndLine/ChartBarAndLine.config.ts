@@ -72,17 +72,20 @@ const config: ModulesStatic = {
           responsive: true,
           plugins: {
             tooltip: {
+              // 提示框
               backgroundColor: 'green'
             },
             legend: {
+              // 图例
               labels: {
                 usePointStyle: true,
-                color: 'white'
+                color: 'red'
               },
             }
           },
           scales: {
             x: {
+              // 网格
               grid: {
                 display: false,
                 color: 'white',
@@ -92,6 +95,7 @@ const config: ModulesStatic = {
                 tickColor: 'red',
                 drawTicks: false,
               },
+              // 记号
               ticks: {
                 // For a category axis, the val is the index so the lookup via getLabelForValue is needed
                 // callback: function (val, index) {
