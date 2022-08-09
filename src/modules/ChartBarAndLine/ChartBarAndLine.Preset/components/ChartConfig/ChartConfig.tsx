@@ -3,11 +3,9 @@ import React from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import s from './ChartConfig.module.scss';
 
-interface Props {
+interface Props {}
 
-}
-
-const ChartConfig: React.FC<Props> = ({ }) => {
+const ChartConfig: React.FC<Props> = () => {
   return (
     <div className={s.root}>
       <Form>
@@ -18,88 +16,82 @@ const ChartConfig: React.FC<Props> = ({ }) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item name="layout">
-          <Checkbox>
-            显示连线
-          </Checkbox>
+          <Checkbox>显示连线</Checkbox>
         </Form.Item>
         <Form.Item label="背景" name="layout">
           <div className={s.itemlayout}>
             <Form.Item
-              labelCol={{ span: 14 }}
-              wrapperCol={{ span: 6 }}
+              labelCol={{ span: 10 }}
               label="填充"
+              style={{ width: '25%' }}
             >
-              <Switch size="small" />
+              <Switch size="small" checked disabled />
             </Form.Item>
             <Form.Item
               label="颜色"
-              labelCol={{ span: 11 }}
-              wrapperCol={{ span: 6 }}
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 2 }}
             >
-              <Color onChange={() => { }} />
+              <Color onChange={() => {}} />
             </Form.Item>
           </div>
         </Form.Item>
         <Form.Item label="描边">
-          <Input.Group className={s.groups}>
+          <div className={s.itemlayout}>
             <Form.Item
-              name={['address', 'province']}
-              label="粗细"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 17 }}
+              label="描边"
             >
               <Input size="small" placeholder="粗细" />
             </Form.Item>
             <Form.Item
-              name={['address', 'province']}
               label="颜色"
               labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
+              wrapperCol={{ span: 2 }}
             >
-              <Input size="small" placeholder="粗细" />
+              <Color onChange={() => {}} />
             </Form.Item>
+          </div>
+          <div className={s.itemlayout}>
             <Form.Item
-              name={['address', 'province']}
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 17 }}
               label="虚线"
+            >
+              <Input size="small" placeholder="虚线" min={0} type={'number'} />
+            </Form.Item>
+            <Form.Item label="间隙" 
               labelCol={{ span: 4 }}
               wrapperCol={{ span: 18 }}
             >
-              <Input size="small" placeholder="虚线" />
+              <Input size="small" placeholder="间隙" min={0} type={'number'} />
             </Form.Item>
-            <Form.Item
-              name={['address', 'province']}
-              label="间隙"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
-            >
-              <Input size="small" placeholder="虚线" />
-            </Form.Item>
-          </Input.Group>
+          </div>
         </Form.Item>
-
         <Form.Item label="节点" name="layout">
-          <Input.Group className={s.groups}>
+          <div className={s.itemlayout}>
             <Form.Item
-              name={['address', 'province']}
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 17 }}
               label="样式"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
             >
-              <Input size="small" placeholder="样式" />
+              <Select placeholder="请选择节点样式" size="small">
+                <Select.Option>asd</Select.Option>
+              </Select>
             </Form.Item>
             <Form.Item
-              name={['address', 'province']}
-              label="大小"
+              label="半径"
               labelCol={{ span: 4 }}
               wrapperCol={{ span: 18 }}
             >
-              <Input size="small" placeholder="样式" />
+              <Input size="small" placeholder="半径" min={0} type={'number'} />
             </Form.Item>
-          </Input.Group>
+          </div>
         </Form.Item>
       </Form>
     </div>
-  )
-}
+  );
+};
 
 export default ChartConfig;
