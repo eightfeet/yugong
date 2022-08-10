@@ -1,3 +1,4 @@
+import { Input } from 'antd';
 import React, { useCallback } from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
 import SortableItem from './SortableItem';
@@ -10,7 +11,7 @@ interface Props {
 const SortableList:React.FC<Props> = ({data}) => {
   return (
     <div>
-       {data.map((item, index) => <SortableItem index={index} >{item}</SortableItem>)}
+       {data.map((item, index) => <SortableItem index={index} ><Input addonAfter={<span style={{color: '#ddd'}}>label</span>} defaultValue="mysite" /></SortableItem>)}
     </div>
   )
 }
