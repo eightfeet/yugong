@@ -2,7 +2,6 @@ import {
   EditOutlined,
   MinusOutlined,
   PlusOutlined,
-  SettingOutlined,
 } from '@ant-design/icons';
 import {
   PageHeader,
@@ -10,16 +9,11 @@ import {
   Col,
   Tooltip,
   Button,
-  Divider,
-  List,
-  Form,
   Switch,
 } from 'antd';
 import Card from 'antd/lib/card/Card';
 import React from 'react';
-import MoveIcon from '~/components/Icon/MoveIcon';
-import ArrayArguments from '~/components/MiniDashboard/ArgumentsSetting/ArrayArguments';
-import ChartConfig from '../ChartConfig';
+import MoveIcon from '~/components/Icon/MoveIcon';import ChartConfig from '../ChartConfig';
 import DataGroupsContener from '../DataGroupsContener';
 import s from './DataGroups.module.scss';
 
