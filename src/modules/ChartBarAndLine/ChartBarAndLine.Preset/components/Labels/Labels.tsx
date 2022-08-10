@@ -36,7 +36,6 @@ const Labels: React.FC<Props> = ({ runningData, onChange }) => {
           <ArrayArguments
             typeArguments={labels}
             flexible
-            htmlInput
             onChange={onChangeLabels}
           />
         </Col>
