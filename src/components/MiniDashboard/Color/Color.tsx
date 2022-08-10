@@ -10,7 +10,7 @@ const parse = require('color-parse');
 interface Props {
     defaultColor?: string;
     label?: string;
-    onChange: (result: {
+    onChange?: (result: {
         name: 'color';
         value: ColorResult | undefined;
     }) => void;

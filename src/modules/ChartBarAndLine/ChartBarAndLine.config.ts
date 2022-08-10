@@ -73,7 +73,9 @@ const config: ModulesStatic = {
           plugins: {
             tooltip: {
               // 提示框
-              backgroundColor: 'green'
+              backgroundColor: 'red',
+              bodyColor: 'yellow',
+              usePointStyle: true,
             },
             legend: {
               display: true,
@@ -90,13 +92,13 @@ const config: ModulesStatic = {
             x: {
               // 网格
               grid: {
-                display: false,
-                color: 'white',
+                display: true,
+                color: 'blue',
                 borderColor: 'yellow',
-                borderWidth: 1,
-                lineWidth: 2,
+                borderWidth: 10,
+                lineWidth: 20,
                 tickColor: 'red',
-                drawTicks: false,
+                drawTicks: true,
               },
               // 记号
               ticks: {
@@ -163,6 +165,9 @@ const config: ModulesStatic = {
     },
     style: {
       basic: {
+        backgroundGroup: {
+          backgroundColor: "#000"
+        }
       },
       style1: {
       }
