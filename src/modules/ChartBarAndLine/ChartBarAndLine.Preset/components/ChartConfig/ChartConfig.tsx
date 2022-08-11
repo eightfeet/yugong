@@ -16,7 +16,7 @@ const ChartConfig: React.FC<Props> = () => {
           </Radio.Group>
         </Form.Item>
         <Form.Item name="layout">
-          <Checkbox>显示连线</Checkbox>
+          <Checkbox checked>显示连线</Checkbox>
         </Form.Item>
         <Form.Item label="背景" name="layout">
           <div className={s.itemlayout}>

@@ -1,6 +1,4 @@
 import {
-  EditOutlined,
-  MinusOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
 import {
@@ -9,13 +7,10 @@ import {
   Col,
   Tooltip,
   Button,
-  Switch,
 } from 'antd';
-import Card from 'antd/lib/card/Card';
 import React from 'react';
-import MoveIcon from '~/components/Icon/MoveIcon';import ChartConfig from '../ChartConfig';
-import DataGroupsContener from '../DataGroupsContener';
 import s from './DataGroups.module.scss';
+import SortableContener from './SortableContener';
 
 interface Props {}
 
@@ -39,39 +34,7 @@ const DataGroups: React.FC<Props> = ({}) => {
           </Row>
         </Col>
       </Row>
-      <Row>
-        <Col span={1}></Col>
-        <Col span={23}>
-          <Card
-            size="small"
-            bodyStyle={{ padding: 0 }}
-            title={
-              <div className={s.title}>
-                <MoveIcon />
-                数据组
-                <Button size="small" type="text" icon={<EditOutlined />} />
-              </div>
-            }
-            extra={
-              <>
-                <Switch
-                  checkedChildren={'设置'}
-                  unCheckedChildren={'设置'}
-                  defaultChecked
-                  size="small"
-                />
-                &nbsp;
-                <Button size="small" type="text">
-                  <MinusOutlined />
-                </Button>
-              </>
-            }
-          >
-            <ChartConfig />
-            <DataGroupsContener />
-          </Card>
-        </Col>
-      </Row>
+      <SortableContener items={[1,2,3,4,5,]} />
     </>
   );
 };
