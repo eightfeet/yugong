@@ -49,7 +49,7 @@ const ShadowItem:React.FC<Props> = ({data, type, onMinus, onToggleShow, onChange
                   <Color
                     label="投影颜色"
                     onChange={onChangeColor}
-                    defaultColor={data.color}
+                    defaultValue={data.color}
                   />
                 </Col>
                 <Col span={12}>

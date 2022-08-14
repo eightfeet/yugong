@@ -63,7 +63,7 @@ const Border: React.FC<Props> = () => {
       <Row className={s.row}>
         <Col span={6}>
           <Color
-            defaultColor={border.borderColor}
+            defaultValue={border.borderColor}
             label="描边颜色"
             onChange={onChangeBorder("borderColor")}
             span={{

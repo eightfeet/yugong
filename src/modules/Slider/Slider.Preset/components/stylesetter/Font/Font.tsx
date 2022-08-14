@@ -133,7 +133,7 @@ const Font: React.FC<Props> = () => {
           <Color
             label="字体颜色"
             onChange={onChangeFont("color")}
-            defaultColor={color}
+            defaultValue={color}
           />
         </Col>
         <Col span={12}>

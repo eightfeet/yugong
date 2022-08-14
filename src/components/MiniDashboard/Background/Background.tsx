@@ -256,7 +256,7 @@ const BackgroundCommon: React.FC<Props> = ({
           <Color
             label="背景颜色"
             onChange={onChangeBackgroundCommon("backgroundColor")}
-            defaultColor={backgroundColor}
+            defaultValue={backgroundColor}
           />
         </Col>
       </Row>

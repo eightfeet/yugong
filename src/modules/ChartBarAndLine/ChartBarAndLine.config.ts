@@ -41,17 +41,18 @@ const config: ModulesStatic = {
           },
           {
             type: 'line',
-            // 专属
-            borderDash: [5, 5],
             showLine: true,
             fill: true,
+            backgroundColor: 'rgba(0, 255, 255, 0.5)',
+            borderWidth: 1,
+            borderColor: 'rgba(255, 255, 255)',
+            // 专属
+            borderDash: [5, 5],
+            
             // 公共
             label: '产值',
-            backgroundColor: 'rgba(0, 255, 255, 0.5)',
-            borderColor: 'rgba(255, 255, 255)',
             pointStyle: 'circle',
             pointRadius: 30,
-            borderWidth: 1,
             pointHoverRadius: 15,
             data: [5, 10, 15, null, null, 10, 15],
           },
@@ -124,13 +125,6 @@ const config: ModulesStatic = {
                 color: 'white'
               }
             }
-          },
-          elements: {
-            line: {
-              fill: false,
-              backgroundColor: 'rgba(255,0,0,0.2)',
-              borderColor: 'rgba(255,0,0,0.2)',
-            },
           }
         },
       }]

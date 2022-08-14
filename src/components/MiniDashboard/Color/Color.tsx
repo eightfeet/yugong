@@ -8,7 +8,8 @@ import { throttle } from 'lodash';
 import useSafeCallback from '~/hooks/useSafeCallback';
 const parse = require('color-parse');
 interface Props {
-    defaultColor?: string;
+    defaultValue?: string;
+    value?: string;
     label?: string;
     onChange?: (result: {
         name: 'color';
@@ -21,7 +22,8 @@ interface Props {
 }
 
 const Color: React.FC<Props> = ({
-    defaultColor,
+    defaultValue,
+    value,
     label,
     onChange,
     children,
@@ -34,9 +36,10 @@ const Color: React.FC<Props> = ({
     const picker = useRef(null);
 
     useEffect(() => {
-        if (defaultColor) {
+      const defvalue = defaultValue || value;
+        if (defvalue) {
             const optColor: any = {};
-            const temp = parse(defaultColor);
+            const temp = parse(defvalue);
             if (temp.space) {
                 optColor.r = temp.values[0];
                 optColor.g = temp.values[1];
@@ -47,7 +50,8 @@ const Color: React.FC<Props> = ({
         } else {
             setColor(undefined);
         }
-    }, [defaultColor]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleClick = useCallback(
         (e) => {

@@ -34,7 +34,7 @@ const DataGroups: React.FC<Props> = ({}) => {
           </Row>
         </Col>
       </Row>
-      <SortableContener items={[1,2,3,4,5,]} />
+      <SortableContener items={[1]} />
     </>
   );
 };

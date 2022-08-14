@@ -117,7 +117,7 @@ const Backgroundgroup: React.FC<Props> = () => {
           <Color
             label="背景颜色"
             onChange={onChangeBackgroundColor}
-            defaultColor={backgroundColor}
+            defaultValue={backgroundColor}
           />
         </Col>
         <Col span={12} className={s.add}>

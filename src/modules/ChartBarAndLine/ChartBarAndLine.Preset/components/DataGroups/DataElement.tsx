@@ -10,7 +10,7 @@ interface Props {
 }
 
 const DataElement:React.FC<Props> = ({}) => {
-  const [openSetting, setOpenSetting] = useState(false);
+  const [openSetting, setOpenSetting] = useState(true);
   return (
     <Row className={s.root}>
             <Col span={1}></Col>

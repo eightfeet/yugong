@@ -12,7 +12,7 @@ const DataGroupsContener: React.FC<Props> = ({}) => {
       <Button size="small" className={s.add} type="text" icon={<PlusOutlined />}>
         增加数据
       </Button>
-      <SortableContener items={[1,2,3,4,5,]} />
+      <SortableContener items={[1]} />
     </div>
   );
 };
