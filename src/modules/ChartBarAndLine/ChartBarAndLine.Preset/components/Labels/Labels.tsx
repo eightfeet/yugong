@@ -8,17 +8,17 @@ import s from './Labels.module.scss';
 
 interface Props {
   runningData: ExposeFunctions[],
-  onChange: (copyRunningData: ExposeFunctions[]) => void
+  onChange: (copyRunningData: ExposeFunctions[]) => void,
+  path: string;
 }
-const labelsPath = '[0].arguments[0]';
-const Labels: React.FC<Props> = ({ runningData, onChange }) => {
-  const labels = get(runningData, labelsPath) as ArgumentsArray;
+const Labels: React.FC<Props> = ({ runningData, onChange, path }) => {
+  const labels = get(runningData, path) as ArgumentsArray;
   const onChangeLabels = useCallback(
     (value) => {
-      const newData = set(runningData, labelsPath, value);
+      const newData = set(runningData, path, value);
       onChange(newData);
     },
-    [onChange, runningData],
+    [onChange, path, runningData],
   )
   return (
     <>

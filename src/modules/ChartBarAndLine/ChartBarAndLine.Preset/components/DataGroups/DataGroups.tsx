@@ -9,10 +9,15 @@ import {
   Button,
 } from 'antd';
 import React from 'react';
+import { ExposeFunctions } from '~/types/modules';
 import s from './DataGroups.module.scss';
 import SortableContener from './SortableContener';
 
-interface Props {}
+interface Props {
+  runningData: ExposeFunctions[],
+  onChange: (copyRunningData: ExposeFunctions[]) => void,
+  path: string;
+}
 
 const DataGroups: React.FC<Props> = ({}) => {
   return (

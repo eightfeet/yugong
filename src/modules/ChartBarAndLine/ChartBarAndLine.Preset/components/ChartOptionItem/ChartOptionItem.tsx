@@ -1,4 +1,4 @@
-import { Form, Input, Select, Switch } from 'antd';
+import { Form, Input, Switch } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback } from 'react';
 import Color from '~/components/MiniDashboard/Color';
@@ -59,7 +59,7 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
           <Color />
         </Form.Item>
         {/* options.scales[scaleId].grid.lineWidth */}
-        <Form.Item label="网格粗细" wrapperCol={{ span: 11 }} className={s.item} valuePropName="checked" name="lineWidth">
+        <Form.Item label="网格粗细" wrapperCol={{ span: 11 }} className={s.item} name="lineWidth">
           <Input size="small" type="number" min={0} />
         </Form.Item>
         {/* options.scales[scaleId].grid.color */}
