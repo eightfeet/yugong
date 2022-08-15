@@ -8,7 +8,7 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
   return (
     <>
       <Labels runningData={runningData} onChange={onChange} path="[0].arguments[0]"/>
-      <DataGroups runningData={runningData} onChange={onChange} path="[0].arguments[0]"/>
+      <DataGroups path="[1].arguments[0]"/>
       <ChartOptions runningData={runningData} onChange={onChange}  path="[2].arguments[0]" />
     </>
   )

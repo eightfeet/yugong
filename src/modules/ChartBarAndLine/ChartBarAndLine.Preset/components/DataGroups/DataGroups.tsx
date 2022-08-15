@@ -8,18 +8,30 @@ import {
   Tooltip,
   Button,
 } from 'antd';
-import React from 'react';
-import { ExposeFunctions } from '~/types/modules';
+import { cloneDeep, get, set } from 'lodash';
+import React, { useCallback, useContext } from 'react';
+import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import s from './DataGroups.module.scss';
 import SortableContener from './SortableContener';
 
 interface Props {
-  runningData: ExposeFunctions[],
-  onChange: (copyRunningData: ExposeFunctions[]) => void,
   path: string;
 }
 
-const DataGroups: React.FC<Props> = ({}) => {
+const DataGroups: React.FC<Props> = ({ path }) => {
+  const  {runningData, onChange} = useContext(CustomPresettingContext);
+  const groups = get(runningData, path)
+  
+  const onPlus = useCallback(
+    () => {
+      const copyData = cloneDeep(runningData);
+      groups.data.push({});
+      set(copyData, path, groups);
+      onChange(copyData);
+    },
+    [groups, onChange, path, runningData],
+  )
+  
   return (
     <>
       <PageHeader title="设置数据" />
@@ -32,14 +44,14 @@ const DataGroups: React.FC<Props> = ({}) => {
         <Col span={19}>
           <Row className={s.toolbar} gutter={4}>
             <Col span={4}>
-              <Button icon={<PlusOutlined />}>
+              <Button icon={<PlusOutlined />} onClick={onPlus}>
                 增加数据组
               </Button>
             </Col>
           </Row>
         </Col>
       </Row>
-      <SortableContener items={[1]} />
+      <SortableContener items={groups.data} />
     </>
   );
 };

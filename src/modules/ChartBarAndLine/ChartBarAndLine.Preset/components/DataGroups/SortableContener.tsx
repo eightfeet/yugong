@@ -6,17 +6,13 @@ interface Props {
   items: any[]
 }
 
-class SortableContener extends Component<any, Props> {
-  state = {
-    items: ['Item 1'],
-  };
+class SortableContener extends Component<Props> {
   onSortEnd = ({oldIndex, newIndex}: any) => {
-    this.setState(({items}) => ({
-      items: arrayMove(items, oldIndex, newIndex),
-    }));
+    console.log(arrayMove(this.props.items, oldIndex, newIndex),);
   };
   render() {
-    return <SortableList data={this.state.items} onSortEnd={this.onSortEnd} useDragHandle />;
+    const {items, ...other} = this.props;
+    return <SortableList data={this.props.items} onSortEnd={this.onSortEnd} {...other} useDragHandle />;
   }
 }
 

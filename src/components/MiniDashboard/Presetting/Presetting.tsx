@@ -16,6 +16,7 @@ import BooleanArguments from '../ArgumentsSetting/BooleanArguments';
 import HtmlSuffix from '../ArgumentsSetting/HtmlSuffix';
 import MixedArguments from '../ArgumentsSetting/MixedArguments';
 import ObjectArguments from '../ArgumentsSetting/ObjectArguments';
+import { CustomPresettingContext } from './CustomPresettingContext';
 import s from './Presetting.module.less';
 
 interface Props { custom: boolean }
@@ -187,7 +188,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
       mount.forEach(mountItem => {
         copyRunningData.forEach(runningDataItem => {
           if (mountItem.name === `${moduleId}/${runningDataItem.name}`) {
-            if(runningDataItem.arguments) mountItem.arguments = runningDataItem.arguments;
+            if (runningDataItem.arguments) mountItem.arguments = runningDataItem.arguments;
           }
         })
       })
@@ -303,7 +304,11 @@ const Presetting: React.FC<Props> = ({ custom }) => {
     } catch (error) {
       console.warn('找不到自定义预设组件')
     }
-    if (CComp) return <CComp activationItem={activationItem} runningData={runningData} onChange={updateRunningDataToActivationItem} />
+    if (CComp) {
+      return <CustomPresettingContext.Provider value={{ activationItem, runningData, onChange: updateRunningDataToActivationItem }}>
+        <CComp activationItem={activationItem} runningData={runningData} onChange={updateRunningDataToActivationItem} />
+      </CustomPresettingContext.Provider>
+    }
   }
 
   return (
