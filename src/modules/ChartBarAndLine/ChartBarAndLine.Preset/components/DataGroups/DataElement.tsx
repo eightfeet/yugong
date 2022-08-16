@@ -1,16 +1,41 @@
 import { EditOutlined, MinusOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Button, Switch } from 'antd';
-import React, { useState } from 'react';
+import { get, set } from 'lodash';
+import React, { useCallback, useContext, useState } from 'react';
+import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import ChartConfig from '../ChartConfig';
 import DataGroupsContener from '../DataGroupsContener';
 import s from './DataElement.module.scss';
 
 interface Props {
-  
+  index: number;
+  item: any;
 }
 
-const DataElement:React.FC<Props> = ({}) => {
+const DataElement:React.FC<Props> = ({index, item}) => {
   const [openSetting, setOpenSetting] = useState(true);
+  const  {runningData, onChange} = useContext(CustomPresettingContext);
+  const onMinus = useCallback(
+    () => {
+      const data = get(runningData, '[1].arguments[0].data');
+      const fliterData = data.filter((item: any, ind: number) => ind !== index);
+      const res = set(runningData, '[1].arguments[0].data', fliterData);
+      onChange(res)
+    },
+    [index, onChange, runningData],
+  )
+
+  const onChangeConfig = useCallback(
+    (e) => {
+      const data = get(runningData, `[1].arguments[0].data[${index}]`);
+      const itemRes = {...data, ...e};
+      const res = set(runningData, `[1].arguments[0].data[${index}]`, itemRes);
+      onChange(res)
+    },
+    [index, onChange, runningData],
+  )
+  
+  const { data, ...config } = item;
   return (
     <Row className={s.root}>
             <Col span={1}></Col>
@@ -34,13 +59,13 @@ const DataElement:React.FC<Props> = ({}) => {
                       size="small"
                     />
                     &nbsp;
-                    <Button size="small" type="text">
+                    <Button size="small" type="text" onClick={onMinus}>
                       <MinusOutlined />
                     </Button>
                   </>
                 }
               >
-                {openSetting ? <ChartConfig /> : null}
+                {openSetting ? <ChartConfig onChange={onChangeConfig}  defaultValue={config} /> : null}
                 <DataGroupsContener />
               </Card>
             </Col>

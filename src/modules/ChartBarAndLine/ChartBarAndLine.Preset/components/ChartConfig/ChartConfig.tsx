@@ -27,7 +27,7 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
   const handleChange = useCallback(
     () => {
       const values = fliterValues(form.getFieldsValue());
-      values.borderDash = [Number(values.borderDash.width), Number(values.borderDash.space)];
+      values.borderDash = [Number(values.borderDash.width) || undefined, Number(values.borderDash.space) || undefined];
       onChange?.(values);
     },
     [form, onChange],
@@ -57,7 +57,7 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
               style={{ width: '25%' }}
               name="fill"
             >
-              <Switch size="small" checked disabled />
+              <Switch size="small" checked />
             </Form.Item>
             <Form.Item
               label="颜色"

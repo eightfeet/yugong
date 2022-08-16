@@ -25,7 +25,12 @@ const DataGroups: React.FC<Props> = ({ path }) => {
   const onPlus = useCallback(
     () => {
       const copyData = cloneDeep(runningData);
-      groups.data.push({});
+      groups.data.push({
+        // 专属
+        type: 'bar',
+        // 公共
+        label: '标签名',
+      });
       set(copyData, path, groups);
       onChange(copyData);
     },

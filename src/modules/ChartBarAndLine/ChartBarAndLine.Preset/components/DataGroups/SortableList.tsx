@@ -12,7 +12,7 @@ const SortableList: React.FC<Props> = ({ data }) => {
     <div>
       {data.map((item, index) => (
         <SortableItem key={index} index={index}>
-          <DataElement />
+          <DataElement index={index} item={item} />
         </SortableItem>
       ))}
     </div>
