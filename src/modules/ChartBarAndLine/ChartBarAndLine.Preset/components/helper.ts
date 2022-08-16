@@ -12,8 +12,9 @@ export const fliterValues = (oldValue: { [keys: string]: any }) => {
         }
         continue;
       }
-      if (typeof element === 'string' && Number(element)) {
-        results[key] = Number(element);
+      
+      if (typeof element === 'string' && (Number(element) || Number(element) === 0) ) {
+        results[key] = Number(element) || undefined;
         continue;
       }
       results[key] = element;

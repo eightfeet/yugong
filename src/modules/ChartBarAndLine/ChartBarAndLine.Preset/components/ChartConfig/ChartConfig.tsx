@@ -1,6 +1,6 @@
 import { Form, Input, Radio, Select, Checkbox, Switch } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { fliterValues } from '../helper';
 import s from './ChartConfig.module.scss';
@@ -23,10 +23,12 @@ interface Props {
 
 const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
   const [form] = useForm();
+  const [chartType, setChartType] = useState<string>()
 
   const handleChange = useCallback(
     () => {
       const values = fliterValues(form.getFieldsValue());
+      setChartType(values.type)
       values.borderDash = [Number(values.borderDash.width) || undefined, Number(values.borderDash.space) || undefined];
       onChange?.(values);
     },
@@ -46,9 +48,9 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
             <Radio.Button value="bar">柱状</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="showLine">
-          <Checkbox checked>显示连线</Checkbox>
-        </Form.Item>
+        {chartType === 'line' ? <Form.Item name="showLine" valuePropName="checked">
+          <Checkbox>显示连线</Checkbox>
+        </Form.Item> : null}
         <Form.Item label="背景">
           <div className={s.itemlayout}>
             <Form.Item
@@ -56,8 +58,9 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
               label="填充"
               style={{ width: '25%' }}
               name="fill"
+              valuePropName="checked"
             >
-              <Switch size="small" checked />
+              <Switch size="small" disabled={chartType === 'bar'} />
             </Form.Item>
             <Form.Item
               label="颜色"
