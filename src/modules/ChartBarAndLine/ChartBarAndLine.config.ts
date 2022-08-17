@@ -160,7 +160,7 @@ const config: ModulesStatic = {
     style: {
       basic: {
         backgroundGroup: {
-          backgroundColor: "#000"
+          backgroundColor: "rgba(0,0,0,1)"
         }
       },
       style1: {

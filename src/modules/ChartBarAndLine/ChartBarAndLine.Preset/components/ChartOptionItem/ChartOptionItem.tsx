@@ -67,7 +67,7 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
           <Color />
         </Form.Item>
         {/* options.scales[scaleId].grid.drawTicks */}
-        <Form.Item label="显示刻度" className={s.item} name="drawTicks">
+        <Form.Item label="显示刻度" className={s.item} name="drawTicks" valuePropName="checked">
           <Switch size="small" />
         </Form.Item>
         {/* options.scales[scaleId].grid.tickColor */}

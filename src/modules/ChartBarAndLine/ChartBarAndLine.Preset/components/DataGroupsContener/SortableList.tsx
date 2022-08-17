@@ -38,7 +38,7 @@ const SortableList: React.FC<Props> = ({ data, dataGroup }) => {
   
   return (
     <div>
-      {data?.map((item, index) => <SortableItem index={index} >
+      {data?.map((item, index) => <SortableItem index={index} key={index}>
         <Input
           onChange={(e) => handleChange(e.target.value, index)}
           addonAfter={labelArr.data[index] ? <span style={{ color: '#ddd' }}>
