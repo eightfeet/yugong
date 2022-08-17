@@ -1,27 +1,25 @@
 import { Col, PageHeader, Row, Select, Tooltip } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import ChartTooltip from '../Tooltip';
 import ChartOptionItem from '../ChartOptionItem';
 import Legend from '../Legend';
+import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import s from './ChartOptions.module.scss';
-import { ExposeFunctions } from '~/types/modules';
 import { get, set } from 'lodash';
+import { runningDataPath } from '../..';
 
-interface Props {
-  runningData: ExposeFunctions[],
-  onChange: (copyRunningData: ExposeFunctions[]) => void,
-  path: string;
-}
+interface Props {}
 
-const ChartOptions: React.FC<Props> = ({ runningData, onChange, path }) => {
-  const optionsData = get(runningData, path);
+const ChartOptions: React.FC<Props> = () => {
+  const { runningData, onChange } = useContext(CustomPresettingContext)
+  const optionsData = get(runningData, runningDataPath.chartOptions);
 
   const handleChange = useCallback(
     (value) => {
-      const result = set(runningData, path, value);
+      const result = set(runningData, runningDataPath.chartOptions, value);
       onChange(result);
     },
-    [onChange, path, runningData],
+    [onChange, runningData],
   )
   
 

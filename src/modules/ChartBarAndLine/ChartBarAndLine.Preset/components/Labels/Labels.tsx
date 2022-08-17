@@ -1,24 +1,22 @@
 import { PageHeader, Row, Col, Tooltip } from 'antd';
 import { get, set } from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
+import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import ArrayArguments from '~/components/MiniDashboard/ArgumentsSetting/ArrayArguments';
 import { ArgumentsArray } from '~/types/appData';
-import { ExposeFunctions } from '~/types/modules';
 import s from './Labels.module.scss';
+import { runningDataPath } from '../..';
 
-interface Props {
-  runningData: ExposeFunctions[],
-  onChange: (copyRunningData: ExposeFunctions[]) => void,
-  path: string;
-}
-const Labels: React.FC<Props> = ({ runningData, onChange, path }) => {
-  const labels = get(runningData, path) as ArgumentsArray;
+interface Props {}
+const Labels: React.FC<Props> = () => {
+  const { runningData, onChange } = useContext(CustomPresettingContext)
+  const labels = get(runningData, runningDataPath.labels) as ArgumentsArray;
   const onChangeLabels = useCallback(
     (value) => {
-      const newData = set(runningData, path, value);
+      const newData = set(runningData, runningDataPath.labels, value);
       onChange(newData);
     },
-    [onChange, path, runningData],
+    [onChange, runningData],
   )
   return (
     <>

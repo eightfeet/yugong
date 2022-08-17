@@ -11,7 +11,7 @@ interface Props {
 const SortableList:React.FC<Props> = ({data}) => {
   return (
     <div>
-       {data.map((item, index) => <SortableItem index={index} ><Input addonAfter={<span style={{color: '#ddd'}}>label</span>} defaultValue="mysite" /></SortableItem>)}
+       {data.map((item, index) => <SortableItem index={index} ><Input addonAfter={<span style={{color: '#ddd'}}>label</span>} value={item} /></SortableItem>)}
     </div>
   )
 }

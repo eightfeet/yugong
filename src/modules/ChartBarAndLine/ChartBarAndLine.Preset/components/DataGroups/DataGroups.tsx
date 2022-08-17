@@ -11,16 +11,16 @@ import {
 import { cloneDeep, get, set } from 'lodash';
 import React, { useCallback, useContext } from 'react';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
+import { runningDataPath } from '../..';
 import s from './DataGroups.module.scss';
 import SortableContener from './SortableContener';
 
 interface Props {
-  path: string;
 }
 
-const DataGroups: React.FC<Props> = ({ path }) => {
+const DataGroups: React.FC<Props> = () => {
   const  {runningData, onChange} = useContext(CustomPresettingContext);
-  const groups = get(runningData, path)
+  const groups = get(runningData, runningDataPath.dataGroups)
   
   const onPlus = useCallback(
     () => {
@@ -31,10 +31,10 @@ const DataGroups: React.FC<Props> = ({ path }) => {
         // 公共
         label: '标签名',
       });
-      set(copyData, path, groups);
+      set(copyData, runningDataPath.dataGroups, groups);
       onChange(copyData);
     },
-    [groups, onChange, path, runningData],
+    [groups, onChange, runningData],
   )
   
   return (

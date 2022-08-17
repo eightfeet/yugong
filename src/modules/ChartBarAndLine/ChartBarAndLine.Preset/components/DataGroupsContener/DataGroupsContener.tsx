@@ -1,18 +1,33 @@
 import { PlusOutlined } from '@ant-design/icons';
+import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import { Button, Input } from 'antd';
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import s from './DataGroupsContener.module.scss';
 import SortableContener from './SortableContener';
 
-interface Props {}
+interface Props {
+  items: any[],
+  index: number,
+}
 
-const DataGroupsContener: React.FC<Props> = ({}) => {
+const DataGroupsContener: React.FC<Props> = ({items}) => {
+  const { runningData } = useContext(CustomPresettingContext);
+
+  const onPlus = useCallback(
+    () => {
+      
+    },
+    [],
+  )
+  
+  console.log(runningData);
+  
   return (
     <div className={s.root}>
-      <Button size="small" className={s.add} type="text" icon={<PlusOutlined />}>
+      <Button size="small" className={s.add} type="text" onClick={onPlus} icon={<PlusOutlined />}>
         增加数据
       </Button>
-      <SortableContener items={[1]} />
+      <SortableContener items={items} />
     </div>
   );
 };

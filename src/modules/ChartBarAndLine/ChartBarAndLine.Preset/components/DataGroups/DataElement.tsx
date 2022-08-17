@@ -3,6 +3,7 @@ import { Row, Col, Card, Button, Switch } from 'antd';
 import { get, set } from 'lodash';
 import React, { useCallback, useContext, useState } from 'react';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
+import { runningDataPath } from '../..';
 import ChartConfig from '../ChartConfig';
 import DataGroupsContener from '../DataGroupsContener';
 import s from './DataElement.module.scss';
@@ -17,9 +18,9 @@ const DataElement:React.FC<Props> = ({index, item}) => {
   const  {runningData, onChange} = useContext(CustomPresettingContext);
   const onMinus = useCallback(
     () => {
-      const data = get(runningData, '[1].arguments[0].data');
+      const data = get(runningData, runningDataPath.dataGroups_data);
       const fliterData = data.filter((item: any, ind: number) => ind !== index);
-      const res = set(runningData, '[1].arguments[0].data', fliterData);
+      const res = set(runningData, runningDataPath.dataGroups_data, fliterData);
       onChange(res)
     },
     [index, onChange, runningData],
@@ -27,9 +28,9 @@ const DataElement:React.FC<Props> = ({index, item}) => {
 
   const onChangeConfig = useCallback(
     (e) => {
-      const data = get(runningData, `[1].arguments[0].data[${index}]`);
+      const data = get(runningData, `${runningDataPath.dataGroups_data}[${index}]`);
       const itemRes = {...data, ...e};
-      const res = set(runningData, `[1].arguments[0].data[${index}]`, itemRes);
+      const res = set(runningData, `${runningDataPath.dataGroups_data}[${index}]`, itemRes);
       onChange(res)
     },
     [index, onChange, runningData],
@@ -66,7 +67,7 @@ const DataElement:React.FC<Props> = ({index, item}) => {
                 }
               >
                 {openSetting ? <ChartConfig onChange={onChangeConfig}  defaultValue={config} /> : null}
-                <DataGroupsContener />
+                <DataGroupsContener index={index} items={data} />
               </Card>
             </Col>
           </Row>
