@@ -18,16 +18,12 @@ const DataGroupsContener: React.FC<Props> = ({items, index}) => {
   const onPlus = useCallback(
     () => {
       const res = get(runningData, `${runningDataPath.dataGroups_data}[${index}].data`);
-      console.log(res);
-      
       res?.push('');
       set(runningData, `${runningDataPath.dataGroups_data}[${index}].data`, res);
       onChange(runningData);
     },
     [index, onChange, runningData],
   )
-  
-  console.log(runningData);
   
   return (
     <div className={s.root}>

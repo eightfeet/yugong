@@ -30,6 +30,9 @@ const DataGroups: React.FC<Props> = () => {
         type: 'bar',
         // 公共
         label: '标签名',
+        backgroundColor: '#06BCFF',
+        // 数据
+        data: []
       });
       set(copyData, runningDataPath.dataGroups, groups);
       onChange(copyData);

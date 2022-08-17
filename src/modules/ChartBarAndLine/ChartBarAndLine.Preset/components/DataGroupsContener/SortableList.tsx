@@ -16,7 +16,7 @@ interface Props {
 const SortableList: React.FC<Props> = ({ data, dataGroup }) => {
   const path = `${runningDataPath.dataGroups_data}[${dataGroup}]`;
   const { runningData, onChange } = useContext(CustomPresettingContext);
-  const group = get(runningData, path);
+  const labelArr = get(runningData, runningDataPath.labels);
   const handleChange = useCallback(
     (value: string, ind: number) => {
       const res = [...data];
@@ -41,9 +41,9 @@ const SortableList: React.FC<Props> = ({ data, dataGroup }) => {
       {data?.map((item, index) => <SortableItem index={index} >
         <Input
           onChange={(e) => handleChange(e.target.value, index)}
-          addonAfter={<span style={{ color: '#ddd' }}>
-            {group.label}
-          </span>} value={item} />
+          addonAfter={labelArr.data[index] ? <span style={{ color: '#ddd' }}>
+            {labelArr.data[index]}
+          </span> : null} value={item} />
           <Button onClick={() => handleMinus(index)} className={s.btn} size="small" icon={<MinusOutlined />} />
       </SortableItem>)}
     </div>
