@@ -4,6 +4,8 @@ import { Button, Input } from 'antd';
 import React, { useCallback, useContext } from 'react';
 import s from './DataGroupsContener.module.scss';
 import SortableContener from './SortableContener';
+import { get, set } from 'lodash';
+import { runningDataPath } from '../..';
 
 interface Props {
   items: any[],
@@ -11,13 +13,18 @@ interface Props {
 }
 
 const DataGroupsContener: React.FC<Props> = ({items, index}) => {
-  const { runningData } = useContext(CustomPresettingContext);
+  const { runningData, onChange } = useContext(CustomPresettingContext);
 
   const onPlus = useCallback(
     () => {
+      const res = get(runningData, `${runningDataPath.dataGroups_data}[${index}].data`);
+      console.log(res);
       
+      res?.push('');
+      set(runningData, `${runningDataPath.dataGroups_data}[${index}].data`, res);
+      onChange(runningData);
     },
-    [],
+    [index, onChange, runningData],
   )
   
   console.log(runningData);

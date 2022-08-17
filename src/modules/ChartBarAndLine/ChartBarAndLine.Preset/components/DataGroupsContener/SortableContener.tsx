@@ -17,7 +17,7 @@ class SortableContener extends Component<{items: any[], index: number}> {
   };
   
   render() {
-    return <SortableList data={this.props.items} dataGroup={this.props.index} onSortEnd={this.onSortEnd} />;
+    return <SortableList data={this.props.items} dataGroup={this.props.index} onSortEnd={this.onSortEnd} useDragHandle />;
   }
 }
 
