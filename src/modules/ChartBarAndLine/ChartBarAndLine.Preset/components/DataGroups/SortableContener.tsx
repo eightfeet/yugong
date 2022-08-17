@@ -4,6 +4,7 @@ import SortableList from './SortableList';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import React from 'react';
 import { set } from 'lodash';
+import { runningDataPath } from '../..';
 
 interface Props {
   items: any[]
@@ -14,7 +15,7 @@ class SortableContener extends Component<Props> {
   onSortEnd = ({oldIndex, newIndex}: any) => {
     const data = arrayMove(this.props.items, oldIndex, newIndex);
     const { runningData, onChange } = this.context;
-    set(runningData, '[1].arguments[0].data', data);
+    set(runningData, runningDataPath.dataGroups_data, data);
     onChange(runningData);
   };
   render() {

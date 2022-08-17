@@ -11,7 +11,9 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-interface Props {}
+interface Props {
+  dataGroup: number;
+}
 
 const SortableItem: React.FC<Props> = ({ children }) => {
   return (

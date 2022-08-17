@@ -10,7 +10,7 @@ interface Props {
   index: number,
 }
 
-const DataGroupsContener: React.FC<Props> = ({items}) => {
+const DataGroupsContener: React.FC<Props> = ({items, index}) => {
   const { runningData } = useContext(CustomPresettingContext);
 
   const onPlus = useCallback(
@@ -27,7 +27,7 @@ const DataGroupsContener: React.FC<Props> = ({items}) => {
       <Button size="small" className={s.add} type="text" onClick={onPlus} icon={<PlusOutlined />}>
         增加数据
       </Button>
-      <SortableContener items={items} />
+      <SortableContener items={items} index={index} />
     </div>
   );
 };

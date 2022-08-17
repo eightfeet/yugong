@@ -14,7 +14,7 @@ interface Props {
 }
 
 const DataElement:React.FC<Props> = ({index, item}) => {
-  const [openSetting, setOpenSetting] = useState(true);
+  const [openSetting, setOpenSetting] = useState(false);
   const  {runningData, onChange} = useContext(CustomPresettingContext);
   const onMinus = useCallback(
     () => {
