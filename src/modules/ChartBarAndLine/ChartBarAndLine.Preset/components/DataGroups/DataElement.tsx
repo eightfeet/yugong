@@ -66,6 +66,7 @@ const DataElement: React.FC<Props> = ({ index, item }) => {
               </> : <>
                 <Input
                   autoFocus
+                  defaultValue={config.label}
                   size="small"
                   onBlur={onChangeLabel}
                   onPressEnter={onChangeLabel}

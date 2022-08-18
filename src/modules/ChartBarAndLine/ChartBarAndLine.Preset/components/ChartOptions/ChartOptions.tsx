@@ -48,8 +48,8 @@ const ChartOptions: React.FC<Props> = () => {
   )
 
   const onChangeScales= useCallback(
-    (grid, dire) => {
-      optionsData.data.scales[dire].grid= grid;
+    (data, dire) => {
+      optionsData.data.scales[dire] = data;
       handleChange(optionsData)
     },
     [handleChange, optionsData],
@@ -96,7 +96,7 @@ const ChartOptions: React.FC<Props> = () => {
             placement="topRight"
             title={'设置工具'}
           >
-            工具
+           悬浮提示
           </Tooltip>
         </Col>
         <Col span={19}>
@@ -116,7 +116,7 @@ const ChartOptions: React.FC<Props> = () => {
           </Tooltip>
         </Col>
         <Col span={19}>
-          <ChartOptionItem onChange={grid=>onChangeScales(grid, 'x')} defaultValue={optionsData.data.scales.x.grid} />
+          <ChartOptionItem onChange={data=>onChangeScales(data, 'x')} defaultValue={optionsData.data.scales.x} />
         </Col>
       </Row>
       <Row className={s.row} gutter={10}>
@@ -129,7 +129,7 @@ const ChartOptions: React.FC<Props> = () => {
           </Tooltip>
         </Col>
         <Col span={19}>
-          <ChartOptionItem onChange={grid=>onChangeScales(grid, 'y')} defaultValue={optionsData.data.scales.y.grid} />
+          <ChartOptionItem onChange={data=>onChangeScales(data, 'y')} defaultValue={optionsData.data.scales.y} />
         </Col>
       </Row>
     </>
