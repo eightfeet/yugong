@@ -9,6 +9,7 @@ import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './ChartBarAndLine.config';
 import createStyles, { ClassesKey } from './ChartBarAndLine.createStyles';
+import { isEqual } from 'lodash';
 
 class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   canvas: HTMLCanvasElement | null;
@@ -74,8 +75,10 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
     );
   }
 
-  componentDidUpdate() {
-    this.buildChart();
+  componentDidUpdate(prevProps: any) {
+    if(isEqual(prevProps, this.props)) {
+      this.buildChart();
+    }
   }
 
   componentWillUnmount() {
