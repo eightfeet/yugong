@@ -77,8 +77,9 @@ const Presetting: React.FC<Props> = ({ custom }) => {
     [type]
   );
   // 获取当前运行时模块已配置的内置方法
-  const setFunctions = useMemo(() => events?.mount || [], [events?.mount]);
-  // 获取当前模块类导出的内置方法，
+  const runningFunctions = useMemo(() => events?.mount || [], [events?.mount]);
+  
+  // 获取当前模块内导出的内置方法，
   const exposeFunctions: ExposeFunctions[] = useMemo(
     () => module.exposeFunctions || [],
     [module.exposeFunctions]
@@ -120,13 +121,13 @@ const Presetting: React.FC<Props> = ({ custom }) => {
     const copyExposeFunctions = cloneDeep(exposeFunctions).filter(
       (item) => item.presettable !== false
     );
-    const copySetFunctions = cloneDeep(setFunctions);
+    const copyRunningFunctions = cloneDeep(runningFunctions);
 
     const result: ExposeFunctions[] =
       copyExposeFunctions.map((staticItem) => {
         // copyExposeFunctions是用于即将预设的静态方法
         // 断言运行时方法是否有维护当前方法关联的数据，这里使用倒序从后至依次断言，如果有数据，将最后一条数据收集给预设数据
-        copySetFunctions.reverse().some((setItem) => {
+        copyRunningFunctions.reverse().some((setItem) => {
           const [, funName] = setItem.name.split('/');
           if (
             funName === staticItem.name &&
@@ -141,11 +142,10 @@ const Presetting: React.FC<Props> = ({ custom }) => {
       }) || [];
 
     return result;
-  }, [exposeFunctions, setFunctions]);
+  }, [exposeFunctions, runningFunctions]);
 
   // step2、获取预设数据 保存预设面板数据，用于页面render
   const runningData = getData();
-
 
   const updateRunningDataToActivationItem = useCallback((copyRunningData: ExposeFunctions[]) => {
     // 从编辑器预设面板获取当前已设置的值copyRunningData；
@@ -233,8 +233,7 @@ const Presetting: React.FC<Props> = ({ custom }) => {
       }
       updateRunningDataToActivationItem(copyRunningData)
     }, [runningData, updateRunningDataToActivationItem])
-
-
+  
   if (!moduleId) {
     return null;
   }
