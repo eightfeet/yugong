@@ -14,6 +14,7 @@ import useLocalStorage from '~/hooks/useLocalStorage';
 import useMarked from '~/hooks/useMarked';
 import produce from '~/core/helper/produce';
 import useRem from '~/hooks/useRem';
+import { EventsTypeItem, ModulesStatic } from '~/types/modules';
 
 const { Panel } = Collapse;
 
@@ -117,10 +118,24 @@ const Repository: React.FC = () => {
       //   }
       // }
       // get module's static Options
-      const module = require(`~/modules/${moduleType}`).default;
-      const { exposeDefaultProps } = module;
+      const module = require(`~/modules/${moduleType}`).default as ModulesStatic;
+      const { exposeDefaultProps, exposeFunctions } = module;
+      console.log('exposeFunctions', exposeFunctions);
+      const mount:EventsTypeItem[] = [];
+      
       const { style } = exposeDefaultProps || {};
       const moduleId: string = nanoid();
+
+      exposeFunctions?.forEach(item => {
+        if (item.presettable !== false) {
+          const element: EventsTypeItem = {
+            name: `${moduleId}/${item.name}`,
+            arguments: item.arguments || []
+          }
+          mount.push(element);
+        }
+      })
+
       // Add a new item. It must have a unique key!
       const layout = {
         i: moduleId,
@@ -139,6 +154,9 @@ const Repository: React.FC = () => {
         layout,
         style: style || { basic: {} }, // merge style
         type: moduleType,
+        events: {
+          mount
+        }
       };
       onAddItem(result);
       setAddedModal(undefined);
