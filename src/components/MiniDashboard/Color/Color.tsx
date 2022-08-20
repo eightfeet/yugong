@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ColorResult, RGBColor, SketchPicker } from 'react-color';
 import { Row, Col } from 'antd';
 import { BgColorsOutlined } from '@ant-design/icons';
@@ -55,13 +55,15 @@ const Color: React.FC<Props> = ({
 
   const handleClick = useCallback(
     (e) => {
+      console.log(e);
+      
       setDisplayColorPicker(!displayColorPicker);
-      const style: any = {
+      let style: CSSProperties = {
         position: 'absolute',
       };
 
-      const width = document.body.offsetWidth,
-        height = document.body.offsetHeight,
+      const width = window.innerWidth,
+        height = window.innerHeight,
         sWidth = 270,
         sHeight = 350,
         X = e.screenX,
@@ -70,15 +72,21 @@ const Color: React.FC<Props> = ({
       // 1、判断拾色器的宽度小于窗口宽度
       if (width > sWidth) {
         if (X + sWidth > width) {
-          style.position = 'fixed';
-          style.right = `10px`;
+          style = {
+            ...style,
+            width: sWidth,
+            height: sHeight,
+            left: 'unset',
+            right: -27
+          }
         }
       }
       // 2、判断拾色器的高度大于窗口高度
       if (height > sHeight) {
         if (Y + sHeight > height) {
-          style.position = 'fixed';
-          style.bottom = `10px`;
+          style = {
+            ...style,
+          }
         }
       }
       setPickWrapStyle(style);
@@ -87,6 +95,7 @@ const Color: React.FC<Props> = ({
   );
 
   const handleClose = useCallback(() => {
+    setPickWrapStyle({});
     setDisplayColorPicker(false);
   }, []);
 
