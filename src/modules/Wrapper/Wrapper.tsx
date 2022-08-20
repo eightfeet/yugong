@@ -24,7 +24,6 @@ const Wrapper: React.FC<Props> = ({
   moduleId,
   itemAlign = 'center',
   visible = true,
-  ...other
 }) => {
   // Wrapper 自身的样式
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
@@ -34,10 +33,6 @@ const Wrapper: React.FC<Props> = ({
   const currentLayout = useSelector((state: RootState) => state.appData).filter(
     (item) => item.moduleId === actId,
   )?.[0]?.layout;
-
-  console.log('other', other);
-  
-
   const refWrap = useRef<HTMLDivElement>(null);
   const [ref, inView] = useInView({
     threshold: 0,
