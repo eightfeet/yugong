@@ -137,9 +137,10 @@ class Slider extends Component<SliderProps, State> {
   };
 
   onChangeEnd = (e: SwiperCore) => {
-    const { moduleId, type, setRunningTimes } = this.props;
+    // 是否一直操作runningTimes？
+    const { setRunningTimes } = this.props;
     setRunningTimes({
-      [`${type}-${moduleId}-activePage`]: e.realIndex + 1,
+      [`${this.prefix}-activePage`]: e.realIndex + 1,
     });
     this.props.eventDispatch().afterChange();
   };
