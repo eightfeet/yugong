@@ -107,7 +107,7 @@ yugong是一套更倾向于前端项目,允许通过api配置化去对接中台�
 
 ![Minion](https://www.eightfeet.cn/yugong/images/documents/introduce/jl.jpg)
 
-## 支持我
+## 赞助
 
 求赏杯咖啡☕解解困，或者 **加个 star 万分感激**；
 
