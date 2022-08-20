@@ -15,7 +15,12 @@ const config: ModulesStatic = {
         name: "标签",
         fieldName: "label",
         describe: "设置标签",
-        data: [],
+        data: [
+          "一季度",
+          "二季度",
+          "三季度",
+          "四季度"
+        ],
       }]
     },
     {
@@ -28,34 +33,34 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            // 专属
-            type: 'bar',
-            borderRadius: 8,
-            // 公共
-            label: '生产量',
-            backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            borderColor: 'rgba(255, 255, 255)',
-            borderWidth: 1,
-            pointStyle: 'circle',
-            data: [0, 20, 5, 8, 20, 30, 45, 30],
+            "type": "line",
+            "label": "标签名",
+            "backgroundColor": "#06BCFF",
+            "data": [
+              "2",
+              "4",
+              "1.5",
+              "4"
+            ],
+            "showLine": true,
+            "borderColor": "rgba(129,103,255,1)",
+            "tension": 0.3
           },
           {
-            type: 'line',
-            showLine: true,
-            fill: true,
-            backgroundColor: 'rgba(0, 255, 255, 0.5)',
-            borderWidth: 1,
-            borderColor: 'rgba(255, 255, 255)',
-            // 专属
-            borderDash: [5, 5],
-            
-            // 公共
-            label: '产值',
-            pointStyle: 'circle',
-            pointRadius: 30,
-            pointHoverRadius: 15,
-            data: [5, 10, 15, null, null, 10, 15],
-          },
+            "type": "bar",
+            "borderRadius": 8,
+            "label": "生产量",
+            "backgroundColor": "rgba(255, 0, 0, 0.5)",
+            "borderColor": "rgba(255, 255, 255)",
+            "borderWidth": 1,
+            "pointStyle": "circle",
+            "data": [
+              "1",
+              "3",
+              "5",
+              "8"
+            ]
+          }
         ],
       }]
     },
@@ -68,62 +73,55 @@ const config: ModulesStatic = {
         fieldName: "options",
         describe: "设置坐标轴属性",
         data: {
-          // 数据方向
-          indexAxis: 'x',
-          responsive: true,
-          plugins: {
-            tooltip: {
-              // 提示框
-              backgroundColor: 'red',
-              bodyColor: 'yellow',
-              usePointStyle: true,
+          "indexAxis": "x",
+          "responsive": true,
+          "plugins": {
+            "tooltip": {
+              "backgroundColor": "rgba(1,66,86,1)",
+              "bodyColor": "rgba(255,255,255,1)",
+              "usePointStyle": true
             },
-            legend: {
-              display: true,
-              // position top right bottom left
-              position: 'left',
-              // 图例
-              labels: {
-                usePointStyle: true,
-                color: 'red'
-              },
+            "legend": {
+              "display": true,
+              "position": "top",
+              "labels": {
+                "color": "rgba(170,170,170,1)",
+                "usePointStyle": false
+              }
             }
           },
-          scales: {
-            x: {
-              // 网格
-              grid: {
-                display: true,
-                color: 'blue',
-                borderColor: 'yellow',
-                borderWidth: 10,
-                lineWidth: 20,
-                tickColor: 'red',
-                drawTicks: true,
+          "scales": {
+            "x": {
+              "ticks": {
+                "color": "rgba(170,170,170,1)"
               },
-              // 记号
-              ticks: {
-                // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-                // callback: function (val, index) {
-                //   // Hide every 2nd tick label
-                //   return index % 3 === 0 ? this.getLabelForValue(val as any) : '';
-                // },
-                color: 'white',
-              }
+              "grid": {
+                "display": true,
+                "borderWidth": 1,
+                "borderColor": "rgba(170,170,170,1)",
+                "lineWidth": 1,
+                "color": "rgba(170,170,170,1)",
+                "drawTicks": true,
+                "tickColor": "rgba(170,170,170,1)"
+              },
+              "min": null,
+              "max": null
             },
-            y: {
-              grid: {
-                display: true,
-                color: 'white',
-                borderColor: 'yellow',
-                borderWidth: 1,
-                lineWidth: 1,
-                tickColor: 'red',
-                drawTicks: false,
+            "y": {
+              "ticks": {
+                "color": "rgba(170,170,170,1)"
               },
-              ticks: {
-                color: 'white'
-              }
+              "grid": {
+                "display": true,
+                "borderWidth": 1,
+                "borderColor": "rgba(170,170,170,1)",
+                "lineWidth": 1,
+                "color": "rgba(170,170,170,1)",
+                "drawTicks": false,
+                "tickColor": "rgba(170,170,170,1)"
+              },
+              "min": null,
+              "max": null
             }
           }
         },
@@ -159,9 +157,7 @@ const config: ModulesStatic = {
     },
     style: {
       basic: {
-        backgroundGroup: {
-          backgroundColor: "rgba(0,0,0,1)"
-        }
+        backgroundGroup: {}
       },
       style1: {
       }
