@@ -6,7 +6,7 @@ export const fliterValues = (oldValue: { [keys: string]: any }) => {
       const element = oldValue[key];
       if (element === undefined) continue;
       if (typeof element === "object" && element?.name === 'color') {
-        const color = Object.keys(element?.value?.rgb).map(key => element?.value?.rgb[key]);
+        const color = Object.keys(element?.value?.rgb).map(key => element?.value?.rgb?.[key]);
         if (color.length) {
           results[key] = `rgba(${color.join(',')})`;
         }

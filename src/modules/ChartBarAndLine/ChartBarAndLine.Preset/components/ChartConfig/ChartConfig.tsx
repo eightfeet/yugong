@@ -3,6 +3,7 @@ import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback, useEffect, useState } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { fliterValues } from '../helper';
+import BorderDash from './BorderDash';
 import s from './ChartConfig.module.scss';
 
 interface Value {
@@ -146,14 +147,14 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
                 </Select>
               </Form.Item>
               <Form.Item label="折点悬停样式" name="hoverBorderJoinStyle" >
-                <Select placeholder="连线折点悬停样式" size="small">
+                <Select placeholder="悬停样式" size="small">
                   <Select.Option value="butt">斜切</Select.Option>
                   <Select.Option value="round">圆角</Select.Option>
                   <Select.Option value="square">方角</Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item label="虚线" name="borderDash" >
-                <Input size="small" placeholder="borderDash" />
+                <BorderDash />
               </Form.Item>
               <Form.Item label="虚线偏移" name="borderDashOffset" >
                 <Input size="small" placeholder="虚线偏移" type={'number'} />
