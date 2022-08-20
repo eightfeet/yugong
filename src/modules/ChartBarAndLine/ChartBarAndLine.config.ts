@@ -34,13 +34,13 @@ const config: ModulesStatic = {
         data: [
           {
             "type": "line",
-            "label": "标签名",
+            "label": "产值（万元）",
             "backgroundColor": "#06BCFF",
             "data": [
-              "2",
-              "4",
-              "1.5",
-              "4"
+              "200",
+              "403",
+              "150",
+              "380"
             ],
             "showLine": true,
             "borderColor": "rgba(129,103,255,1)",
@@ -49,16 +49,16 @@ const config: ModulesStatic = {
           {
             "type": "bar",
             "borderRadius": 8,
-            "label": "生产量",
+            "label": "生产量（万吨）",
             "backgroundColor": "rgba(255, 0, 0, 0.5)",
             "borderColor": "rgba(255, 255, 255)",
             "borderWidth": 1,
             "pointStyle": "circle",
             "data": [
-              "1",
-              "3",
-              "5",
-              "8"
+              "280",
+              "300",
+              "500",
+              "430"
             ]
           }
         ],
@@ -121,7 +121,7 @@ const config: ModulesStatic = {
                 "tickColor": "rgba(170,170,170,1)"
               },
               "min": null,
-              "max": null
+              "max": 600
             }
           }
         },
@@ -156,22 +156,13 @@ const config: ModulesStatic = {
       h: 5, // height
     },
     style: {
-      basic: {
-        backgroundGroup: {}
-      },
-      style1: {
-      }
+      basic: {}
     },
     styleDescription: [
       {
         title: "基础",
         value: "basic",
-        children: [
-          {
-            title: "style1Name",
-            value: "style1",
-          }
-        ]
+        children: []
       }
     ],
     preset: true,
