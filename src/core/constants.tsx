@@ -10,6 +10,8 @@ import IconRoulette from "./icons/IconRoulette";
 import IconBroadcast from "./icons/IconBroadcast";
 import IconChart from "./icons/IconChart";
 import IconVideo from "./icons/IconVideo";
+import IconChartPie from "./icons/IconChartPie";
+import IconChartRadar from "./icons/IconChartRadar";
 
 export const BASEMODULES = [
   {
@@ -84,6 +86,18 @@ export const CHARTS = [
     title: "ChartBarAndLine",
     discribe: "折线/柱状",
     icon: <Icon component={IconChart} />,
+  },
+  {
+    moduleName: "ChartDoughnutAndPie",
+    title: "ChartDoughnutAndPie",
+    discribe: "环状/饼状",
+    icon: <Icon component={IconChartPie} />,
+  },
+  {
+    moduleName: "ChartRadar",
+    title: "ChartRadar",
+    discribe: "雷达",
+    icon: <Icon component={IconChartRadar} />,
   }
 ]
 
