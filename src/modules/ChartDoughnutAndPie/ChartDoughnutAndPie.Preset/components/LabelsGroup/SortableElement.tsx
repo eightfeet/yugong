@@ -6,14 +6,14 @@ import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/C
 import { runningDataPath } from '../..';
 import ChartConfig from '../ChartConfig';
 import DataGroupsContener from '../DataGroupsContener';
-import s from './DataElement.module.scss';
+import s from './SortableElement.module.scss';
 
 interface Props {
   index: number;
   item: any;
 }
 
-const DataElement: React.FC<Props> = ({ index, item }) => {
+const SortableElement: React.FC<Props> = ({ index, item }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const { runningData, onChange } = useContext(CustomPresettingContext);
   const onMinus = useCallback(
@@ -59,4 +59,4 @@ const DataElement: React.FC<Props> = ({ index, item }) => {
   )
 }
 
-export default DataElement;
+export default SortableElement;

@@ -1,8 +1,8 @@
+import React from 'react';
 import arrayMove from 'array-move';
 import { Component } from 'react';
 import SortableList from './SortableList';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
-import React from 'react';
 import { set } from 'lodash';
 import { runningDataPath } from '../..';
 

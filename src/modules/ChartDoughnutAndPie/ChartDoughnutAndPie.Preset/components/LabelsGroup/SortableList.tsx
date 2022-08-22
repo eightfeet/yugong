@@ -1,6 +1,6 @@
 import React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
-import DataElement from './DataElement';
+import SortableElement from './SortableElement';
 import SortableItem from './SortableItem';
 
 interface Props {
@@ -12,7 +12,7 @@ const SortableList: React.FC<Props> = ({ data }) => {
     <div>
       {data.map((item, index) => (
         <SortableItem key={index} index={index}>
-          <DataElement index={index} item={item} />
+          <SortableElement index={index} item={item} />
         </SortableItem>
       ))}
     </div>

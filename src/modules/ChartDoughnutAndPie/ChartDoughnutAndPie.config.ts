@@ -11,15 +11,31 @@ const config: ModulesStatic = {
       name: "setLabel",
       description: '设置标签',
       arguments: [{
-        type: "array",
+        type: "mixed",
         name: "标签",
         fieldName: "label",
         describe: "设置标签",
         data: [
-          "一季度",
-          "二季度",
-          "三季度",
-          "四季度"
+          {
+            label: '红',
+            backgroundColor: '#FB3640',
+            hoverBackgroundColor: '#FB3640'
+          },
+          {
+            label: '黄',
+            backgroundColor: '#EFCA08',
+            hoverBackgroundColor: '#EFCA08'
+          },
+          {
+            label: '绿',
+            backgroundColor: '#43AA8B',
+            hoverBackgroundColor: '#43AA8B'
+          },
+          {
+            label: '黑',
+            backgroundColor: '#253D5B',
+            hoverBackgroundColor: '#253D5B'
+          },
         ],
       }]
     },
@@ -33,33 +49,48 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            "type": "line",
-            "label": "产值（万元）",
-            "backgroundColor": "#06BCFF",
-            "data": [
-              "200",
-              "403",
-              "150",
-              "380"
+            data: [
+              200,
+              403,
+              150,
+              380
             ],
-            "showLine": true,
-            "borderColor": "rgba(129,103,255,1)",
-            "tension": 0.3
+            borderAlign: "inner",
+            borderColor: "#fff",
+            borderJoinStyle: "round",
+            borderRadius: 5,
+            borderWidth: 2,
+            circumference: 360,
+            clip: 0,
+            hoverBorderColor: "red",
+            hoverBorderWidth: 0,
+            hoverOffset: 4,
+            offset: 0,
+            rotation: -90,
+            spacing: 0,
+            weight: 200
           },
           {
-            "type": "bar",
-            "borderRadius": 8,
-            "label": "生产量（万吨）",
-            "backgroundColor": "rgba(255, 0, 0, 0.5)",
-            "borderColor": "rgba(255, 255, 255)",
-            "borderWidth": 1,
-            "pointStyle": "circle",
-            "data": [
-              "280",
-              "300",
-              "500",
-              "430"
-            ]
+            data: [
+              200,
+              403,
+              150,
+              380
+            ],
+            borderAlign: "inner",
+            borderColor: "#fff",
+            borderJoinStyle: "round",
+            borderRadius: 5,
+            borderWidth: 2,
+            circumference: 360,
+            clip: 0,
+            hoverBorderColor: "red",
+            hoverBorderWidth: 0,
+            hoverOffset: 4,
+            offset: 0,
+            rotation: -90,
+            spacing: 0,
+            weight: 200
           }
         ],
       }]
@@ -73,57 +104,9 @@ const config: ModulesStatic = {
         fieldName: "options",
         describe: "设置坐标轴属性",
         data: {
-          "indexAxis": "x",
-          "responsive": true,
-          "plugins": {
-            "tooltip": {
-              "backgroundColor": "rgba(1,66,86,1)",
-              "bodyColor": "rgba(255,255,255,1)",
-              "usePointStyle": true
-            },
-            "legend": {
-              "display": true,
-              "position": "top",
-              "labels": {
-                "color": "rgba(170,170,170,1)",
-                "usePointStyle": false
-              }
-            }
-          },
-          "scales": {
-            "x": {
-              "ticks": {
-                "color": "rgba(170,170,170,1)"
-              },
-              "grid": {
-                "display": true,
-                "borderWidth": 1,
-                "borderColor": "rgba(170,170,170,1)",
-                "lineWidth": 1,
-                "color": "rgba(170,170,170,1)",
-                "drawTicks": true,
-                "tickColor": "rgba(170,170,170,1)"
-              },
-              "min": null,
-              "max": null
-            },
-            "y": {
-              "ticks": {
-                "color": "rgba(170,170,170,1)"
-              },
-              "grid": {
-                "display": true,
-                "borderWidth": 1,
-                "borderColor": "rgba(170,170,170,1)",
-                "lineWidth": 1,
-                "color": "rgba(170,170,170,1)",
-                "drawTicks": false,
-                "tickColor": "rgba(170,170,170,1)"
-              },
-              "min": null,
-              "max": 600
-            }
-          }
+          cutout: 60,
+          radius: '100%',
+          circumference: 360,
         },
       }]
     },
