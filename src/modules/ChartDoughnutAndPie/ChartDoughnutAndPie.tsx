@@ -58,12 +58,11 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
 
   buildChart = () => {
     if (!this.canvas) return;
-
-    const config: ChartConfiguration<'pie'> = {
+    const { labels } = this.state;
+    const config: ChartConfiguration<'doughnut' | 'pie'> = {
       type: 'pie',
       data: {
         datasets: [{
-          backgroundColor: ['#FB3640', '#EFCA08', '#43AA8B', '#253D5B'],
           borderAlign: "inner",
           borderColor: "#fff",
           borderJoinStyle: "round",
@@ -72,7 +71,23 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
           circumference: 360,
           clip: 0,
           data: [30, 10, 40, 20],
-          hoverBackgroundColor: ['#F00', '#F00', '#F00', '#F00'],
+          hoverBorderColor: "red",
+          hoverBorderWidth: 0,
+          hoverOffset: 4,
+          offset: 0,
+          rotation: -90,
+          spacing: 0,
+          weight: 200
+        },{
+          
+          borderAlign: "inner",
+          borderColor: "#fff",
+          borderJoinStyle: "round",
+          borderRadius: 5,
+          borderWidth: 2,
+          circumference: 360,
+          clip: 0,
+          data: [10, 40, 20, 30],
           hoverBorderColor: "red",
           hoverBorderWidth: 0,
           hoverOffset: 4,
@@ -81,12 +96,13 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
           spacing: 0,
           weight: 200
         }],
-        labels: ['Pizza 🍕', 'Taco 🌮', 'Hot Dog 🌭', 'Sushi 🍣'],
+        labels,
       },
       options: {
         cutout: 60,
         radius: '100%',
         circumference: 360,
+        backgroundColor: ['#FB3640', '#EFCA08', '#43AA8B', '#253D5B'] as any,
       }
     };
     this.chart?.destroy();

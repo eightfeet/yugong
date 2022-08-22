@@ -1,0 +1,34 @@
+.root {
+  background-color: #eee;
+  padding: 10px;
+  :global{
+    .ant-row{
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  > div {
+    flex-shrink: 50%;
+  }
+  
+}
+
+.itemlayout {
+  color: #000;
+  display: flex;
+  >div{
+    flex-shrink: 0;
+    width: 50%;
+    justify-content: start;
+  }
+}
+
+.form {
+  >div {
+    width: 46%;
+  }
+}

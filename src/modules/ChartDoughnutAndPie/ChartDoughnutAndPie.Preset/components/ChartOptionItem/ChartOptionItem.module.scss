@@ -1,0 +1,25 @@
+.form {
+  :global {
+    .ant-form-item-control-input-content {
+      display: flex;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      .ant-form-item {
+        margin-bottom: 0;
+      }
+      >div {
+        width: 50%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+.wrap {
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  margin-bottom: 0;
+}
+
+.mgt {
+  margin-top: 10px;
+}

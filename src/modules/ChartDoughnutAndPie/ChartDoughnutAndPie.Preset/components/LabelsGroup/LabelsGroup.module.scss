@@ -1,0 +1,23 @@
+.row {
+  margin-bottom: 10px;
+  .label {
+      text-align: right;
+      line-height: 30px;
+      word-break:keep-all;/* 不换行 */
+      white-space:nowrap;/* 不换行 */
+      overflow:hidden;
+      text-overflow:ellipsis;
+  }
+}
+
+.title {
+  svg {
+    height: 20px;
+    margin-right: 10px;
+    display: block;
+    fill: currentColor;
+  }
+  color: #aaa;
+  display: flex;
+  align-items: center;
+}

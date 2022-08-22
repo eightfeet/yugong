@@ -1,0 +1,22 @@
+.root {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.icon {
+  cursor: move;
+  display: block;
+  color: #AAA;
+  width: 20px;
+  svg {
+      display: block;
+      fill: currentColor;
+  }
+}
+
+.btn {
+  margin-left: 5px;
+}
