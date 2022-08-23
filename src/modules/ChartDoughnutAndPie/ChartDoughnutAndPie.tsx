@@ -38,21 +38,21 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
   }
 
   setLabel = (label: ArgumentsArray) => {
-    const data = getArgumentsItem(label) as {labels: string; hoverBackgroundColor: string; backgroundColor: string; }[];
-    console.log('labelData', data);
-    
+    const data = getArgumentsItem(label) as {label: string; hoverBackgroundColor: string; backgroundColor: string; }[];
     this.setState({
-      labels: data.map(i => i.labels),
+      labels: data.map(i => i.label),
       hoverBackgroundColor: data.map(i => i.hoverBackgroundColor),
       backgroundColor: data.map(i => i.backgroundColor),
-
     });
   }
 
   setDataGroup = (dataGroup: ArgumentsMixed) => {
     const data = getArgumentsItem(dataGroup) as any[];
+    console.log('data', data);
+    const { hoverBackgroundColor, backgroundColor } = this.state;
+    const value =  data.map(i => ({...i, hoverBackgroundColor, backgroundColor}));
     this.setState({
-      dataGroup: data
+      dataGroup: value
     });
   }
 
@@ -65,37 +65,17 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
 
   buildChart = () => {
     if (!this.canvas) return;
-    const { labels, backgroundColor, hoverBackgroundColor } = this.state;
+    const { labels, dataGroup, options } = this.state;
     const config: ChartConfiguration<'doughnut' | 'pie'> = {
       type: 'pie',
       data: {
-        datasets: [{
-          backgroundColor,
-          hoverBackgroundColor,
-          borderAlign: "inner",
-          borderColor: "#fff",
-          borderJoinStyle: "round",
-          borderRadius: 5,
-          borderWidth: 2,
-          circumference: 360,
-          clip: 0,
-          data: [30, 10, 40, 20],
-          hoverBorderColor: "red",
-          hoverBorderWidth: 0,
-          hoverOffset: 4,
-          offset: 0,
-          rotation: -90,
-          spacing: 0,
-          weight: 200
-        }],
+        datasets: dataGroup,
         labels: labels,
       },
-      options: {
-        cutout: 60,
-        radius: '100%',
-        circumference: 360,
-      }
+      options
     };
+    console.log(config);
+    
     this.chart?.destroy();
     this.chart = new Chart(
       this.canvas,

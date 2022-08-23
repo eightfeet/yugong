@@ -19,22 +19,22 @@ const config: ModulesStatic = {
           {
             label: '红',
             backgroundColor: '#FB3640',
-            hoverBackgroundColor: '#FB3640'
+            hoverBackgroundColor: '#fb020e'
           },
           {
             label: '黄',
             backgroundColor: '#EFCA08',
-            hoverBackgroundColor: '#EFCA08'
+            hoverBackgroundColor: '#efee08'
           },
           {
             label: '绿',
             backgroundColor: '#43AA8B',
-            hoverBackgroundColor: '#43AA8B'
+            hoverBackgroundColor: '#0eb583'
           },
           {
             label: '黑',
             backgroundColor: '#253D5B',
-            hoverBackgroundColor: '#253D5B'
+            hoverBackgroundColor: '#034ca9'
           },
         ],
       }]
@@ -72,10 +72,10 @@ const config: ModulesStatic = {
           },
           {
             data: [
-              200,
-              403,
-              150,
-              380
+              100,
+              3,
+              5,
+              10
             ],
             borderAlign: "inner",
             borderColor: "#fff",

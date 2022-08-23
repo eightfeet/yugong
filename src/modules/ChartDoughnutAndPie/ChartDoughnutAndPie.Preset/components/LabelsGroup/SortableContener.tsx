@@ -15,7 +15,7 @@ class SortableContener extends Component<Props> {
   onSortEnd = ({oldIndex, newIndex}: any) => {
     const data = arrayMove(this.props.items, oldIndex, newIndex);
     const { runningData, onChange } = this.context;
-    set(runningData, runningDataPath.dataGroups_data, data);
+    set(runningData, `${runningDataPath.labels}.data`, data);
     onChange(runningData);
   };
   render() {
