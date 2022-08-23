@@ -8,6 +8,7 @@ import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/C
 import { runningDataPath } from '../..';
 import ChartConfig from '../ChartConfig';
 import DataGroupsContener from '../DataGroupsContener';
+import { fliterValues } from '../helper';
 import s from './SortableElement.module.scss';
 
 interface Props {
@@ -64,18 +65,24 @@ const SortableElement: React.FC<Props> = ({ index, item }) => {
     [index, onChange, runningData],
   );
 
-  const handleOnChange = useCallback(
+  const handleChange = useCallback(
     (e) => {
-      const values = form.getFieldsValue();
+      const values =  fliterValues(form.getFieldsValue());
+      const res = set(
+        runningData,
+        `${runningDataPath.labels}.data[${index}]`,
+        values,
+      );
+      onChange(res);
     },
-    [form],
+    [form, index, onChange, runningData],
   )
 
   return (
     <Row className={s.root}>
       <Col span={1}></Col>
       <Col span={21}>
-        <Form form={form} layout="inline" onChange={handleOnChange} initialValues={item}>
+        <Form form={form} layout="inline" onFieldsChange={handleChange} initialValues={item}>
           <Form.Item label="标签名" name="label">
             <Input style={{width: 180}} />
           </Form.Item>

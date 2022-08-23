@@ -65,7 +65,7 @@ const Color: React.FC<Props> = ({
       const width = window.innerWidth,
         height = window.innerHeight,
         sWidth = 270,
-        sHeight = 350,
+        sHeight = 390,
         X = e.screenX,
         Y = e.screenY;
 
@@ -197,6 +197,7 @@ const Color: React.FC<Props> = ({
           {renderColor()}
         </>
       ) : (
+        <>
         <Row className={s.row} gutter={4}>
           {label ? <Col className={s.label} span={span?.label || 7}>
             {label || ''}
@@ -215,10 +216,12 @@ const Color: React.FC<Props> = ({
                   <BgColorsOutlined />
                 </div>
               )}
-              {renderColor()}
+              
             </div>
           </Col>
         </Row>
+        {renderColor()}
+        </>
       )}
     </>
   );
