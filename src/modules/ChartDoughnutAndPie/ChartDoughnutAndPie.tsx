@@ -19,9 +19,7 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
     this.state = {
       labels: [],
       dataGroup: [],
-      options: {},
-      hoverBackgroundColor: [],
-      backgroundColor: []
+      options: {}
     }
     this.canvas = null;
     this.chart = null;
@@ -38,21 +36,16 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
   }
 
   setLabel = (label: ArgumentsArray) => {
-    const data = getArgumentsItem(label) as {label: string; hoverBackgroundColor: string; backgroundColor: string; }[];
+    const data = getArgumentsItem(label) as string[];
     this.setState({
-      labels: data.map(i => i.label),
-      hoverBackgroundColor: data.map(i => i.hoverBackgroundColor),
-      backgroundColor: data.map(i => i.backgroundColor),
+      labels: data
     });
   }
 
   setDataGroup = (dataGroup: ArgumentsMixed) => {
     const data = getArgumentsItem(dataGroup) as any[];
-    console.log('data', data);
-    const { hoverBackgroundColor, backgroundColor } = this.state;
-    const value =  data.map(i => ({...i, hoverBackgroundColor, backgroundColor}));
     this.setState({
-      dataGroup: value
+      dataGroup: data
     });
   }
 
@@ -65,17 +58,55 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
 
   buildChart = () => {
     if (!this.canvas) return;
-    const { labels, dataGroup, options } = this.state;
+    const { labels } = this.state;
     const config: ChartConfiguration<'doughnut' | 'pie'> = {
       type: 'pie',
       data: {
-        datasets: dataGroup,
-        labels: labels,
+        datasets: [{
+          backgroundColor: ['#FB3640', '#EFCA08', '#43AA8B', '#253D5B'],
+          hoverBackgroundColor: ['#FB3640', '#EFCA08', '#43AA8B', '#253D5B'],
+          borderAlign: "inner",
+          borderColor: "#fff",
+          borderJoinStyle: "round",
+          borderRadius: 5,
+          borderWidth: 2,
+          circumference: 360,
+          clip: 0,
+          data: [30, 10, 40, 20],
+          hoverBorderColor: "red",
+          hoverBorderWidth: 0,
+          hoverOffset: 4,
+          offset: 0,
+          rotation: -90,
+          spacing: 0,
+          weight: 200
+        },{
+          backgroundColor: ['red', 'green', 'blue', 'yellow', 'orange'],
+          hoverBackgroundColor: ['#FB3640', '#EFCA08', '#43AA8B', '#253D5B'],
+          borderAlign: "inner",
+          borderColor: "#fff",
+          borderJoinStyle: "round",
+          borderRadius: 5,
+          borderWidth: 2,
+          circumference: 360,
+          clip: 0,
+          data: [40, 10, 70, 20, 90],
+          hoverBorderColor: "red",
+          hoverBorderWidth: 0,
+          hoverOffset: 4,
+          offset: 0,
+          rotation: -90,
+          spacing: 0,
+          weight: 200
+        }],
+        labels: ['a','b','c','d'],
       },
-      options
+      options: {
+        cutout: 60,
+        radius: '100%',
+        circumference: 360,
+      }
     };
-    console.log(config);
-    
     this.chart?.destroy();
     this.chart = new Chart(
       this.canvas,
@@ -116,9 +147,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
 type State = {
   labels: string[];
   dataGroup: any[];
-  options: { [keys: string]: any };
-  hoverBackgroundColor: string[];
-  backgroundColor: string[];
+  options: { [keys: string]: any }
 }
 
 // typeof Props

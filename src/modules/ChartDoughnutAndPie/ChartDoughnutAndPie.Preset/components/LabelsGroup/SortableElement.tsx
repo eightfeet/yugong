@@ -83,7 +83,7 @@ const SortableElement: React.FC<Props> = ({ index, item }) => {
       <Col span={1}></Col>
       <Col span={21}>
         <Form form={form} layout="inline" onFieldsChange={handleChange} initialValues={item}>
-          <Form.Item label="标签名" name="label">
+          <Form.Item label="标签" name="label">
             <Input style={{width: 180}} />
           </Form.Item>
           <Form.Item label="颜色" name="backgroundColor">

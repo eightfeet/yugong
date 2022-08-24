@@ -14,7 +14,7 @@ export const runningDataPath = {
 const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
   return (
     <>
-      <LabelsGroup />
+      {/* <LabelsGroup /> */}
       {/* <DataGroups /> */}
        {/* <ChartOptions /> */}
     </>

@@ -17,25 +17,8 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            label: '红',
-            backgroundColor: '#FB3640',
-            hoverBackgroundColor: '#fb020e'
-          },
-          {
             label: '黄',
-            backgroundColor: '#EFCA08',
-            hoverBackgroundColor: '#efee08'
-          },
-          {
-            label: '绿',
-            backgroundColor: '#43AA8B',
-            hoverBackgroundColor: '#0eb583'
-          },
-          {
-            label: '黑',
-            backgroundColor: '#253D5B',
-            hoverBackgroundColor: '#034ca9'
-          },
+          }
         ],
       }]
     },
@@ -49,12 +32,6 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            data: [
-              200,
-              403,
-              150,
-              380
-            ],
             borderAlign: "inner",
             borderColor: "#fff",
             borderJoinStyle: "round",
@@ -68,29 +45,27 @@ const config: ModulesStatic = {
             offset: 0,
             rotation: -90,
             spacing: 0,
-            weight: 200
-          },
-          {
+            weight: 200,
             data: [
-              100,
-              3,
-              5,
-              10
-            ],
-            borderAlign: "inner",
-            borderColor: "#fff",
-            borderJoinStyle: "round",
-            borderRadius: 5,
-            borderWidth: 2,
-            circumference: 360,
-            clip: 0,
-            hoverBorderColor: "red",
-            hoverBorderWidth: 0,
-            hoverOffset: 4,
-            offset: 0,
-            rotation: -90,
-            spacing: 0,
-            weight: 200
+              {
+                labels: 'a', // disabled
+                data: 30, // length disabled
+                backgroundColor: "#eee", // disabled
+                hoverBackgroundColor: "#aaa" // disabled
+              },
+              {
+                labels: 'b',
+                data: 30,
+                backgroundColor: "#eee",
+                hoverBackgroundColor: "#aaa"
+              },
+              {
+                labels: 'c',
+                data: 30,
+                backgroundColor: "#eee",
+                hoverBackgroundColor: "#aaa"
+              }
+            ]
           }
         ],
       }]

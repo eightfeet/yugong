@@ -26,6 +26,9 @@ const LabelsGroup: React.FC<Props> = () => {
       const copyData = cloneDeep(runningData);
       groups.data.push({
         label: '标签名',
+        backgroundColor: '#666',
+        hoverBackgroundColor: '#666',
+        data: ''
       });
       set(copyData, runningDataPath.labels, groups);
       onChange(copyData);
