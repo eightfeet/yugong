@@ -21,19 +21,25 @@ interface Props {
 const LabelsGroup: React.FC<Props> = () => {
   const  {runningData, onChange} = useContext(CustomPresettingContext);
   const groups = get(runningData, runningDataPath.labels);
+  const dataGroupsPath = `${runningDataPath.dataGroups}.data`;
+  const dataGroups = get(runningData, dataGroupsPath);
+  
   const onPlus = useCallback(
     () => {
       const copyData = cloneDeep(runningData);
       groups.data.push({
         label: '标签名',
         backgroundColor: '#666',
-        hoverBackgroundColor: '#666',
-        data: ''
+        hoverBackgroundColor: '#666'
+      });
+      dataGroups.forEach((element: any) => {
+        element.data.push(null)
       });
       set(copyData, runningDataPath.labels, groups);
+      set(copyData, dataGroupsPath, dataGroups);
       onChange(copyData);
     },
-    [groups, onChange, runningData],
+    [dataGroups, dataGroupsPath, groups, onChange, runningData],
   )
   
   return (

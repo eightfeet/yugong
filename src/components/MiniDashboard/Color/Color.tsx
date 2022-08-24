@@ -15,9 +15,11 @@ import { throttle } from 'lodash';
 import useSafeCallback from '~/hooks/useSafeCallback';
 import ReactDOM from 'react-dom';
 import { useEvent } from 'react-use';
+import classNames from 'classnames';
 const parse = require('color-parse');
 interface Props {
   defaultValue?: string;
+  disabled?: boolean;
   value?: string;
   label?: string;
   onChange?: (result: {
@@ -37,6 +39,7 @@ const Color: React.FC<Props> = ({
   onChange,
   children,
   span,
+  disabled,
   ...other
 }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
@@ -172,6 +175,7 @@ const Color: React.FC<Props> = ({
 
   const handleClick = useCallback(
     (e) => {
+      if (disabled) return;
       const {x, y, height: h} = e.target.getBoundingClientRect();
       setDisplayColorPicker(!displayColorPicker);
       const WinWidth = window.innerWidth,
@@ -225,7 +229,7 @@ const Color: React.FC<Props> = ({
               </Col>
             ) : null}
             <Col span={span?.value || 17}>
-              <div className={s.swatch} onClick={handleClick}>
+              <div className={classNames(s.swatch, disabled ? s.disabled : null)} onClick={handleClick}>
                 {color ? (
                   <div
                     className={s.color}

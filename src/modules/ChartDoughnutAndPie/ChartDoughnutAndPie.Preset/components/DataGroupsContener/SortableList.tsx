@@ -5,8 +5,6 @@ import SortableItem from './SortableItem';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import { get, set } from 'lodash';
 import { runningDataPath } from '../..';
-import { MinusOutlined } from '@ant-design/icons';
-import s from './SortableList.module.scss';
 
 interface Props {
   data: any[],
@@ -27,24 +25,18 @@ const SortableList: React.FC<Props> = ({ data, dataGroup }) => {
     [data, onChange, path, runningData],
   )
 
-  const handleMinus = useCallback(
-    (index: number) => {
-      const res = [...data].filter((item, ind) => ind !== index);
-      set(runningData, `${path}.data`, res);
-      onChange(runningData);
-    },
-    [data, onChange, path, runningData],
-  )
-  
   return (
     <div>
       {data?.map((item, index) => <SortableItem index={index} key={index}>
         <Input
           onChange={(e) => handleChange(e.target.value, index)}
-          addonAfter={labelArr.data[index] ? <span style={{ color: '#ddd' }}>
-            {labelArr.data[index]}
-          </span> : null} value={item} />
-          <Button onClick={() => handleMinus(index)} className={s.btn} size="small" icon={<MinusOutlined />} />
+          addonAfter={
+            <span style={{ color: labelArr.data[index].backgroundColor }}>
+              {labelArr.data[index].label}
+            </span>
+          }
+          value={item}
+        />
       </SortableItem>)}
     </div>
   )
