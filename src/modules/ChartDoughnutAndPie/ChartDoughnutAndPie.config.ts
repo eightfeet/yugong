@@ -55,42 +55,7 @@ const config: ModulesStatic = {
               150,
               380
             ],
-            borderAlign: "inner",
-            borderColor: "#fff",
-            borderJoinStyle: "round",
-            borderRadius: 5,
-            borderWidth: 2,
-            circumference: 360,
-            clip: 0,
-            hoverBorderColor: "red",
-            hoverBorderWidth: 0,
-            hoverOffset: 4,
-            offset: 0,
-            rotation: -90,
-            spacing: 0,
-            weight: 200
-          },
-          {
-            data: [
-              100,
-              3,
-              5,
-              10
-            ],
-            borderAlign: "inner",
-            borderColor: "#fff",
-            borderJoinStyle: "round",
-            borderRadius: 5,
-            borderWidth: 2,
-            circumference: 360,
-            clip: 0,
-            hoverBorderColor: "red",
-            hoverBorderWidth: 0,
-            hoverOffset: 4,
-            offset: 0,
-            rotation: -90,
-            spacing: 0,
-            weight: 200
+            weight: 1000
           }
         ],
       }]

@@ -16,7 +16,7 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
     <>
       <LabelsGroup />
       <DataGroups />
-       {/* <ChartOptions /> */}
+       <ChartOptions />
     </>
   )
 }

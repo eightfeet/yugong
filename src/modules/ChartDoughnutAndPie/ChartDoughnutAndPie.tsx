@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart, { ChartConfiguration, ChartData } from 'chart.js/auto';
+import Chart, { ChartConfiguration } from 'chart.js/auto';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
@@ -66,13 +66,19 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
   buildChart = () => {
     if (!this.canvas) return;
     const { labels, dataGroup, options } = this.state;
-    const config: ChartConfiguration<'doughnut' | 'pie'> = {
+    const {cutout, radius, circumference, rotation} = options;
+    const config: ChartConfiguration<'pie'> = {
       type: 'pie',
       data: {
         datasets: dataGroup,
         labels: labels,
       },
-      options
+      options: {
+        cutout: cutout ? `${cutout}%` : 0,
+        radius: radius ? `${radius}%` : '100%',
+        circumference,
+        rotation,
+      },
     };
     console.log(config);
     

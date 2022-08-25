@@ -19,15 +19,16 @@ interface Props {
 }
 
 const DataGroups: React.FC<Props> = () => {
-  const  {runningData, onChange} = useContext(CustomPresettingContext);
+  const { runningData, onChange } = useContext(CustomPresettingContext);
   const groups = get(runningData, runningDataPath.dataGroups);
   const labels = get(runningData, `${runningDataPath.labels}.data`);
-  
+
   const onPlus = useCallback(
     () => {
       const copyData = cloneDeep(runningData);
+
       groups.data.push({
-        // 数据
+        weight: 100,
         data: labels.map(() => null)
       });
       set(copyData, runningDataPath.dataGroups, groups);
@@ -35,7 +36,7 @@ const DataGroups: React.FC<Props> = () => {
     },
     [groups, labels, onChange, runningData],
   )
-  
+
   return (
     <>
       <PageHeader title="设置数据" />

@@ -47,9 +47,9 @@ const ChartOptions: React.FC<Props> = () => {
     [handleChange, optionsData],
   )
 
-  const onChangeScales= useCallback(
-    (data, dire) => {
-      optionsData.data.scales[dire] = data;
+  const onChangeOptions= useCallback(
+    (data) => {
+      optionsData.data = data;
       handleChange(optionsData)
     },
     [handleChange, optionsData],
@@ -57,81 +57,8 @@ const ChartOptions: React.FC<Props> = () => {
   
   return (
     <>
-      <PageHeader title="设置坐标轴属性" />
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置数据方向'}
-          >
-            数据方向
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <Select placeholder="请选择数据方向" value={optionsData.data.indexAxis} onChange={onChangeDirection} style={{ width: '100%' }}>
-            <Select.Option value="x">X</Select.Option>
-            <Select.Option value="y">Y</Select.Option>
-          </Select>
-        </Col>
-      </Row>
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置图列'}
-          >
-            图列
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <Legend 
-            onChange={onChangeLegend}
-            defaultValue={optionsData.data.plugins.legend}
-          />
-        </Col>
-      </Row>
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置工具'}
-          >
-           悬浮提示
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <ChartTooltip
-            onChange={onChangeTooltip}
-            defaultValue={optionsData.data.plugins.tooltip}
-          />
-        </Col>
-      </Row>
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置X坐标'}
-          >
-            X坐标
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <ChartOptionItem onChange={data=>onChangeScales(data, 'x')} defaultValue={optionsData.data.scales.x} />
-        </Col>
-      </Row>
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置Y坐标'}
-          >
-            Y坐标
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <ChartOptionItem onChange={data=>onChangeScales(data, 'y')} defaultValue={optionsData.data.scales.y} />
-        </Col>
-      </Row>
+      <PageHeader title="全局设置" />
+      <ChartOptionItem onChange={onChangeOptions} defaultValue={optionsData.data} />
     </>
   )
 }
