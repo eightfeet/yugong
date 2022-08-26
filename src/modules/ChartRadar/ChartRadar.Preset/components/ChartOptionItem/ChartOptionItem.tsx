@@ -28,10 +28,11 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
 
   const handleChange = useCallback(
     () => {
-      const {ticks, grid, min, max, ...other } = form.getFieldsValue();
+      const {ticks, grid, angleLines, min, max, ...other } = form.getFieldsValue();
       const res = {
         ticks: fliterValues(ticks),
         grid: fliterValues(grid),
+        angleLines: fliterValues(angleLines),
         min: min ? Number(min) : null,
         max: max ? Number(max) : null,
         ...other
@@ -56,52 +57,25 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
         labelCol={{ span: 3 }}
         wrapperCol={{ span: 20 }}
       >
-
-        {/* options.scales[scaleId].grid.display */}
         <Form.Item label="显示" style={{ width: '100%' }} className={s.item} valuePropName="checked" name={["grid", "display"]}>
           <Switch size="small" />
         </Form.Item>
-        {/* options.scales[scaleId].grid.borderWidth */}
-        <Form.Item label="坐标粗细" wrapperCol={{ span: 11 }} className={s.item} name={["grid", "borderWidth"]}>
+        <Form.Item label="坐标粗细" wrapperCol={{ span: 11 }} className={s.item} name={["angleLines", "lineWidth"]}>
           <Input size="small" type="number" min={0} />
         </Form.Item>
-        {/* options.scales[scaleId].grid.borderColor */}
-        <Form.Item label="坐标颜色" className={s.item} name={["grid", "borderColor"]}>
+        <Form.Item label="坐标颜色" className={s.item} name={["angleLines", "color"]}>
           <Color />
         </Form.Item>
-        {/* options.scales[scaleId].grid.lineWidth */}
         <Form.Item label="网格粗细" wrapperCol={{ span: 11 }} className={s.item} name={["grid", "lineWidth"]}>
           <Input size="small" type="number" min={0} />
         </Form.Item>
-        {/* options.scales[scaleId].grid.color */}
         <Form.Item label="网格颜色" className={s.item} name={["grid", "color"]}>
           <Color />
         </Form.Item>
-        {/* options.scales[scaleId].grid.drawTicks */}
-        <Form.Item label="显示刻度" className={s.item} name={["grid", "drawTicks"]} valuePropName="checked">
-          <Switch size="small" />
-        </Form.Item>
-        {/* options.scales[scaleId].grid.tickColor */}
-        <Form.Item label="刻度颜色" className={s.item} name={["grid", "tickColor"]}>
+        <Form.Item label="标注颜色" className={s.item} name={['ticks', 'color']}>
           <Color />
         </Form.Item>
-      </Form.Item>
-      {/* options.scales[scaleId].ticks */}
-      <Form.Item
-        className={classNames(s.wrap, s.mgt)}
-        label={<b>标注</b>}
-        labelCol={{ span: 3 }}
-        wrapperCol={{ span: 20 }}
-      >
-        {/* options.scales[scaleId].ticks.color */}
-        <Form.Item label="颜色" className={s.item} name={['ticks', 'color']}>
-          <Color />
-        </Form.Item>
-        <Form.Item />
-        <Form.Item label="描边粗细" wrapperCol={{ span: 11 }} className={s.item} name={['ticks', 'textStrokeWidth']}>
-          <Input size="small" type="number" min={0} />
-        </Form.Item>
-        <Form.Item label="描边颜色" className={s.item} name={['ticks', 'textStrokeColor']}>
+        <Form.Item label="标注背景色" className={s.item} name={['ticks', 'backdropColor']}>
           <Color />
         </Form.Item>
       </Form.Item>
@@ -117,6 +91,9 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
         </Form.Item>
         <Form.Item label="最大值" className={s.item} name={"max"} wrapperCol={{ span: 11 }} >
           <Input size="small" type="number" />
+        </Form.Item>
+        <Form.Item label="步值" className={s.item} name={["ticks", "stepSize"]} wrapperCol={{ span: 11 }} >
+          <Input size="small" type="number" min={1} />
         </Form.Item>
       </Form.Item>
     </Form>

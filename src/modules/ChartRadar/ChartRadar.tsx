@@ -58,7 +58,7 @@ class ChartRadar extends Component<ChartRadarProps, State> {
 
   buildChart = () => {
     if (!this.canvas) return;
-    const { labels } = this.state;
+    const { labels, options } = this.state;
     const config: ChartConfiguration<'radar'> = {
       type: 'radar',
       data: {
@@ -108,37 +108,7 @@ class ChartRadar extends Component<ChartRadarProps, State> {
           spanGaps: true,
         }]
       },
-      options: {
-        scales: {
-          r: {
-            angleLines: {
-              display: true,
-              lineWidth: 2,
-              borderDash: [3, 5],
-              borderDashOffset: 20,
-              color: 'green',
-            },
-            grid: {
-              display: true,
-              color: '#ccc',
-              tickColor: 'yellow',
-              borderColor: 'yellow',
-            },
-            suggestedMin: 0,
-            suggestedMax: 100,
-            startAngle: 20,
-            ticks: {
-              stepSize: 5,
-              count: 6,
-              display: true,
-              backdropColor: '#fff',
-              color: 'red',
-              showLabelBackdrop: true,
-              backdropPadding: 2,
-            },
-          },
-        },
-      },
+      options,
     };
     this.chart?.destroy();
     this.chart = new Chart(

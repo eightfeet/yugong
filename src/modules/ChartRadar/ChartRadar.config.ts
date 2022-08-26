@@ -94,26 +94,7 @@ const config: ModulesStatic = {
             }
           },
           "scales": {
-            "x": {
-              "ticks": {
-                "color": "rgba(170,170,170,1)"
-              },
-              "grid": {
-                "display": true,
-                "borderWidth": 1,
-                "borderColor": "rgba(170,170,170,1)",
-                "lineWidth": 1,
-                "color": "rgba(170,170,170,1)",
-                "drawTicks": true,
-                "tickColor": "rgba(170,170,170,1)"
-              },
-              "min": null,
-              "max": null
-            },
-            "y": {
-              "ticks": {
-                "color": "rgba(170,170,170,1)"
-              },
+            "r": {
               "grid": {
                 "display": true,
                 "borderWidth": 1,
@@ -123,9 +104,28 @@ const config: ModulesStatic = {
                 "drawTicks": false,
                 "tickColor": "rgba(170,170,170,1)"
               },
+              angleLines: {
+                display: true,
+                lineWidth: 2,
+                borderDash: [3, 5],
+                borderDashOffset: 20,
+                color: 'green',
+              },
+              suggestedMin: 0,
+              suggestedMax: 100,
+              startAngle: 20,
+              ticks: {
+                stepSize: 5,
+                count: 6,
+                display: true,
+                backdropColor: '#fff',
+                color: 'red',
+                showLabelBackdrop: true,
+                backdropPadding: 2,
+              },
               "min": null,
               "max": 600
-            }
+            },
           }
         },
       }]

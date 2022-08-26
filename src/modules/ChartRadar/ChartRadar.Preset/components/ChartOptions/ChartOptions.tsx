@@ -57,23 +57,7 @@ const ChartOptions: React.FC<Props> = () => {
   
   return (
     <>
-      <PageHeader title="设置坐标轴属性" />
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置数据方向'}
-          >
-            数据方向
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <Select placeholder="请选择数据方向" value={optionsData.data.indexAxis} onChange={onChangeDirection} style={{ width: '100%' }}>
-            <Select.Option value="x">X</Select.Option>
-            <Select.Option value="y">Y</Select.Option>
-          </Select>
-        </Col>
-      </Row>
+      <PageHeader title="设置坐标属性" />
       <Row className={s.row} gutter={10}>
         <Col span={5} className={s.label}>
           <Tooltip
@@ -110,26 +94,13 @@ const ChartOptions: React.FC<Props> = () => {
         <Col span={5} className={s.label}>
           <Tooltip
             placement="topRight"
-            title={'设置X坐标'}
+            title={'设置网格'}
           >
-            X坐标
+            网格
           </Tooltip>
         </Col>
         <Col span={19}>
-          <ChartOptionItem onChange={data=>onChangeScales(data, 'x')} defaultValue={optionsData.data.scales.x} />
-        </Col>
-      </Row>
-      <Row className={s.row} gutter={10}>
-        <Col span={5} className={s.label}>
-          <Tooltip
-            placement="topRight"
-            title={'设置Y坐标'}
-          >
-            Y坐标
-          </Tooltip>
-        </Col>
-        <Col span={19}>
-          <ChartOptionItem onChange={data=>onChangeScales(data, 'y')} defaultValue={optionsData.data.scales.y} />
+          <ChartOptionItem onChange={data=>onChangeScales(data, 'r')} defaultValue={optionsData.data.scales.r} />
         </Col>
       </Row>
     </>
