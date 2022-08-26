@@ -61,13 +61,13 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
           <Switch size="small" />
         </Form.Item>
         <Form.Item label="坐标粗细" wrapperCol={{ span: 11 }} className={s.item} name={["angleLines", "lineWidth"]}>
-          <Input size="small" type="number" min={0} />
+          <Input size="small" type="number" min={1} />
         </Form.Item>
         <Form.Item label="坐标颜色" className={s.item} name={["angleLines", "color"]}>
           <Color />
         </Form.Item>
         <Form.Item label="网格粗细" wrapperCol={{ span: 11 }} className={s.item} name={["grid", "lineWidth"]}>
-          <Input size="small" type="number" min={0} />
+          <Input size="small" type="number" min={1} />
         </Form.Item>
         <Form.Item label="网格颜色" className={s.item} name={["grid", "color"]}>
           <Color />
