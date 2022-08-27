@@ -37,38 +37,70 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            label: 'My Second Dataset',
-            data: [28, 48, 40, 19, 96, 27, 100],
-            fill: true,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
-            pointBackgroundColor: 'rgb(54, 162, 235)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(54, 162, 235)',
-            borderCapStyle: 'butt',
-            borderDash: [3, 5],
-            borderDashOffset: 5,
-            borderJoinStyle: 'bevel',
-            borderWidth: 3,
-            hoverBackgroundColor: '',
-            hoverBorderCapStyle: 'butt',
-            hoverBorderColor: '#eee',
-            hoverBorderDash: [5, 5],
-            hoverBorderDashOffset: 10,
-            hoverBorderJoinStyle: 'bevel',
-            hoverBorderWidth: 5,
-            clip: 3,
-            order: 4,
-            tension: 0,
-            pointBorderWidth: 5,
-            pointHitRadius: 6,
-            pointHoverBorderWidth: 6,
-            pointHoverRadius: 5,
-            pointRadius: 6,
-            pointRotation: 10,
-            pointStyle: '',
-            spanGaps: true,
+            "label": "女士",
+            "data": [
+              "80",
+              "70",
+              "90",
+              "75",
+              "70",
+              "50",
+              "80"
+            ],
+            "showLine": true,
+            "fill": true,
+            "borderColor": "rgba(233,30,99,1)",
+            "backgroundColor": "rgba(233,30,99,0.19)",
+            "pointBackgroundColor": "rgba(233,30,99,1)",
+            "pointBorderColor": "rgba(255,255,255,1)",
+            "pointBorderWidth": 4,
+            "pointStyle": "circle",
+            "pointRadius": 5
+          },
+          {
+            "label": "男士",
+            "data": [
+              "30",
+              "40",
+              "50",
+              "28",
+              "70",
+              "15",
+              "80"
+            ],
+            "fill": true,
+            "backgroundColor": "rgba(54, 162, 235, 0.2)",
+            "borderColor": "rgb(54, 162, 235)",
+            "pointBackgroundColor": "rgb(54, 162, 235)",
+            "pointBorderColor": "#fff",
+            "pointHoverBackgroundColor": "#fff",
+            "pointHoverBorderColor": "rgb(54, 162, 235)",
+            "borderCapStyle": "butt",
+            "borderDash": [
+              ""
+            ],
+            "borderJoinStyle": "bevel",
+            "borderWidth": 2,
+            "hoverBackgroundColor": "",
+            "hoverBorderCapStyle": "butt",
+            "hoverBorderColor": "#eee",
+            "hoverBorderDash": [
+              5,
+              5
+            ],
+            "hoverBorderDashOffset": 10,
+            "hoverBorderJoinStyle": "bevel",
+            "hoverBorderWidth": 5,
+            "clip": 3,
+            "order": 4,
+            "tension": 0,
+            "pointBorderWidth": 5,
+            "pointHitRadius": 6,
+            "pointHoverBorderWidth": 6,
+            "pointHoverRadius": 5,
+            "pointRadius": 6,
+            "pointRotation": 10,
+            "spanGaps": true
           }
         ],
       }]
@@ -82,60 +114,82 @@ const config: ModulesStatic = {
         fieldName: "options",
         describe: "设置坐标轴属性",
         data: {
-          "responsive": true,
-          "plugins": {
-            "tooltip": {
-              "backgroundColor": "rgba(1,66,86,1)",
-              "bodyColor": "rgba(255,255,255,1)",
-              "usePointStyle": true
-            },
-            "legend": {
-              "display": true,
-              "position": "top",
-              "labels": {
-                "color": "rgba(255,0,0,1)",
-                "usePointStyle": false
-              }
-            }
-          },
-
+          "plugins": {},
           "scales": {
             "r": {
-              "grid": {
+              "axis": "r",
+              "type": "radialLinear",
+              "display": true,
+              "animate": true,
+              "position": "chartArea",
+              "angleLines": {
                 "display": true,
-                "borderWidth": 1,
-                "borderColor": "rgba(170,170,170,1)",
                 "lineWidth": 1,
-                "color": "rgba(170,170,170,1)",
-                "drawTicks": false,
-                "tickColor": "rgba(170,170,170,1)"
+                "borderDash": [],
+                "borderDashOffset": 0,
+                "color": "rgba(0,0,0,0.1)"
               },
-              pointLabels: {
-                color: 'yellow'
+              "grid": {
+                "circular": false,
+                "display": true,
+                "lineWidth": 1,
+                "drawBorder": true,
+                "drawOnChartArea": true,
+                "drawTicks": true,
+                "tickLength": 8,
+                "offset": false,
+                "borderDash": [],
+                "borderDashOffset": 0,
+                "borderWidth": 1,
+                "color": "rgba(0,0,0,0.1)",
+                "borderColor": "rgba(0,0,0,0.1)"
               },
-              angleLines: {
-                display: true,
-                lineWidth: 2,
-                borderDash: [3, 5],
-                borderDashOffset: 20,
-                color: 'green',
+              "startAngle": 0,
+              "ticks": {
+                "showLabelBackdrop": true,
+                "color": "#666",
+                "minRotation": 0,
+                "maxRotation": 50,
+                "mirror": false,
+                "textStrokeWidth": 0,
+                "textStrokeColor": "",
+                "padding": 3,
+                "display": true,
+                "autoSkip": true,
+                "autoSkipPadding": 3,
+                "labelOffset": 0,
+                "minor": {},
+                "major": {},
+                "align": "center",
+                "crossAlign": "near",
+                "backdropColor": "rgba(255, 255, 255, 0.75)",
+                "backdropPadding": 2
               },
-              suggestedMin: 0,
-              suggestedMax: 100,
-              startAngle: 80,
-              ticks: {
-                stepSize: 5,
-                count: 6,
-                display: true,
-                backdropColor: '#fff',
-                color: 'red',
-                showLabelBackdrop: true,
-                backdropPadding: 2,
+              "pointLabels": {
+                "backdropPadding": 2,
+                "display": true,
+                "font": {
+                  "size": 10
+                },
+                "padding": 5,
+                "centerPointLabels": false,
+                "color": "#666"
               },
-              "min": null,
-              "max": 600
-            },
-
+              "offset": false,
+              "reverse": false,
+              "beginAtZero": false,
+              "bounds": "ticks",
+              "grace": 0,
+              "title": {
+                "display": false,
+                "text": "",
+                "padding": {
+                  "top": 4,
+                  "bottom": 4
+                },
+                "color": "#666"
+              }
+            }
           }
         },
       }]

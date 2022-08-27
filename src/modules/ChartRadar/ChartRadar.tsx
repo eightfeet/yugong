@@ -61,55 +61,15 @@ class ChartRadar extends Component<ChartRadarProps, State> {
   buildChart = () => {
     if (!this.canvas) return;
     const { labels, options, dataGroup } = this.state;
+    console.log(labels);
+    console.log(options);
+    console.log(dataGroup);
+    
     const config: ChartConfiguration<'radar'> = {
       type: 'radar',
       data: {
         labels,
         datasets: dataGroup,
-        // datasets: [{
-        //   label: 'My First Dataset',
-        //   data: [65, 59, 90, 81, 56, 55, 40],
-        //   fill: true,
-        //   backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        //   borderColor: 'rgb(255, 99, 132)',
-        //   pointBackgroundColor: 'rgb(255, 99, 132)',
-        //   pointBorderColor: '#fff',
-        //   pointHoverBackgroundColor: '#fff',
-        //   pointHoverBorderColor: 'rgb(255, 99, 132)'
-        // }, {
-        //   label: 'My Second Dataset',
-        //   data: [28, 48, 40, 19, 96, 27, 100],
-        //   fill: true,
-        //   backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        //   borderColor: 'rgb(54, 162, 235)',
-        //   pointBackgroundColor: 'rgb(54, 162, 235)',
-        //   pointBorderColor: '#fff',
-        //   pointHoverBackgroundColor: '#fff',
-        //   pointHoverBorderColor: 'rgb(54, 162, 235)',
-        //   borderCapStyle: 'butt',
-        //   borderDash: [3, 5],
-        //   borderDashOffset: 5,
-        //   borderJoinStyle: 'bevel',
-        //   borderWidth: 3,
-        //   hoverBackgroundColor: '',
-        //   hoverBorderCapStyle: 'butt',
-        //   hoverBorderColor: '#eee',
-        //   hoverBorderDash: [5, 5],
-        //   hoverBorderDashOffset: 10,
-        //   hoverBorderJoinStyle: 'bevel',
-        //   hoverBorderWidth: 5,
-        //   clip: 3,
-        //   order: 4,
-        //   tension: 0,
-        //   pointBorderWidth: 5,
-        //   pointHitRadius: 6,
-        //   pointHoverBorderWidth: 6,
-        //   pointHoverRadius: 5,
-        //   pointRadius: 6,
-        //   pointRotation: 10,
-        //   pointStyle: '',
-        //   spanGaps: true,
-        // }]
       },
       options,
     };
