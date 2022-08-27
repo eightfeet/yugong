@@ -51,8 +51,6 @@ class ChartRadar extends Component<ChartRadarProps, State> {
 
   setOptions = (options: ArgumentsMixed) => {
     const data = getArgumentsItem(options) as any[];
-    console.log(data);
-    
     this.setState({
       options: data
     });
