@@ -1,3 +1,4 @@
+import Chart from "chart.js";
 import {
   ModulesStatic,
 } from "~/types/modules";
@@ -36,33 +37,38 @@ const config: ModulesStatic = {
         describe: "设置标签",
         data: [
           {
-            "type": "line",
-            "label": "产值（万元）",
-            "backgroundColor": "#06BCFF",
-            "data": [
-              "200",
-              "403",
-              "150",
-              "380"
-            ],
-            "showLine": true,
-            "borderColor": "rgba(129,103,255,1)",
-            "tension": 0.3
-          },
-          {
-            "type": "bar",
-            "borderRadius": 8,
-            "label": "生产量（万吨）",
-            "backgroundColor": "rgba(255, 0, 0, 0.5)",
-            "borderColor": "rgba(255, 255, 255)",
-            "borderWidth": 1,
-            "pointStyle": "circle",
-            "data": [
-              "280",
-              "300",
-              "500",
-              "430"
-            ]
+            label: 'My Second Dataset',
+            data: [28, 48, 40, 19, 96, 27, 100],
+            fill: true,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(54, 162, 235)',
+            borderCapStyle: 'butt',
+            borderDash: [3, 5],
+            borderDashOffset: 5,
+            borderJoinStyle: 'bevel',
+            borderWidth: 3,
+            hoverBackgroundColor: '',
+            hoverBorderCapStyle: 'butt',
+            hoverBorderColor: '#eee',
+            hoverBorderDash: [5, 5],
+            hoverBorderDashOffset: 10,
+            hoverBorderJoinStyle: 'bevel',
+            hoverBorderWidth: 5,
+            clip: 3,
+            order: 4,
+            tension: 0,
+            pointBorderWidth: 5,
+            pointHitRadius: 6,
+            pointHoverBorderWidth: 6,
+            pointHoverRadius: 5,
+            pointRadius: 6,
+            pointRotation: 10,
+            pointStyle: '',
+            spanGaps: true,
           }
         ],
       }]
@@ -76,7 +82,6 @@ const config: ModulesStatic = {
         fieldName: "options",
         describe: "设置坐标轴属性",
         data: {
-          "indexAxis": "x",
           "responsive": true,
           "plugins": {
             "tooltip": {
@@ -88,11 +93,12 @@ const config: ModulesStatic = {
               "display": true,
               "position": "top",
               "labels": {
-                "color": "rgba(170,170,170,1)",
+                "color": "rgba(255,0,0,1)",
                 "usePointStyle": false
               }
             }
           },
+
           "scales": {
             "r": {
               "grid": {
@@ -104,6 +110,9 @@ const config: ModulesStatic = {
                 "drawTicks": false,
                 "tickColor": "rgba(170,170,170,1)"
               },
+              pointLabels: {
+                color: 'yellow'
+              },
               angleLines: {
                 display: true,
                 lineWidth: 2,
@@ -113,7 +122,7 @@ const config: ModulesStatic = {
               },
               suggestedMin: 0,
               suggestedMax: 100,
-              startAngle: 20,
+              startAngle: 80,
               ticks: {
                 stepSize: 5,
                 count: 6,
@@ -126,6 +135,7 @@ const config: ModulesStatic = {
               "min": null,
               "max": 600
             },
+
           }
         },
       }]

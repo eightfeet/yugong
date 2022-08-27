@@ -1,7 +1,7 @@
 import React from 'react';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import ChartOptions from './components/ChartOptions';
-// import DataGroups from './components/DataGroups';
+import DataGroups from './components/DataGroups';
 import Labels from './components/Labels';
 
 export const runningDataPath = {
@@ -15,7 +15,7 @@ const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
   return (
     <>
       <Labels />
-      {/* <DataGroups /> */}
+      <DataGroups />
       <ChartOptions />
     </>
   )

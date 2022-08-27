@@ -1,0 +1,17 @@
+.root {
+  position: relative;
+  z-index: 100;
+}
+.icon {
+  position: absolute;
+  z-index: 100;
+  top: 10px;
+  svg {
+    height: 20px;
+    margin-right: 10px;
+    display: block;
+    fill: currentColor;
+    cursor: move;
+  }
+  color: #aaa;
+}
