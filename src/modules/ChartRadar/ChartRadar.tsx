@@ -61,10 +61,6 @@ class ChartRadar extends Component<ChartRadarProps, State> {
   buildChart = () => {
     if (!this.canvas) return;
     const { labels, options, dataGroup } = this.state;
-    console.log(labels);
-    console.log(options);
-    console.log(dataGroup);
-    
     const config: ChartConfiguration<'radar'> = {
       type: 'radar',
       data: {
