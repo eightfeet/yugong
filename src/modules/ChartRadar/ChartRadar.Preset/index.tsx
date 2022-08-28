@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import JsonDataEditor from '~/components/MiniDashboard/JsonDataEditor';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
 import ChartOptions from './components/ChartOptions';
 import DataGroups from './components/DataGroups';
@@ -12,8 +13,10 @@ export const runningDataPath = {
 }
 
 const Preset: React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
+  const [showCode, setShowCode] = useState(false)
   return (
     <>
+      <div onClick={() => setShowCode(true)}>显示</div>
       <Labels />
       <DataGroups />
       <ChartOptions />

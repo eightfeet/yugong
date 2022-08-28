@@ -1,18 +1,21 @@
 import { Col, PageHeader, Row, Select, Tooltip } from 'antd';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import ChartTooltip from '../Tooltip';
 import ChartOptionItem from '../ChartOptionItem';
 import Legend from '../Legend';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import s from './ChartOptions.module.scss';
-import { get, set } from 'lodash';
+import { cloneDeep, get, set } from 'lodash';
 import { runningDataPath } from '../..';
+import { CodeOutlined } from '@ant-design/icons';
+import JsonDataEditor from '~/components/MiniDashboard/JsonDataEditor';
 
 interface Props {}
 
 const ChartOptions: React.FC<Props> = () => {
   const { runningData, onChange } = useContext(CustomPresettingContext)
   const optionsData = get(runningData, runningDataPath.chartOptions);
+  const [showCode, setShowCode] = useState(false);
 
   const handleChange = useCallback(
     (value) => {
@@ -54,10 +57,20 @@ const ChartOptions: React.FC<Props> = () => {
     },
     [handleChange, optionsData],
   )
+
+  const onConfirmCode = useCallback(
+    (data) => {
+      const copyData = cloneDeep(runningData);
+      set(copyData, `${runningDataPath.chartOptions}.data`, data);
+      onChange(copyData);
+      setShowCode(false)
+    },
+    [onChange, runningData],
+  )
   
   return (
     <>
-      <PageHeader title="设置坐标轴属性" />
+      <PageHeader title="设置坐标轴属性" extra={<CodeOutlined onClick={() => setShowCode(true)} />} />
       <Row className={s.row} gutter={10}>
         <Col span={5} className={s.label}>
           <Tooltip
@@ -132,6 +145,14 @@ const ChartOptions: React.FC<Props> = () => {
           <ChartOptionItem onChange={data=>onChangeScales(data, 'y')} defaultValue={optionsData.data.scales.y} />
         </Col>
       </Row>
+      <JsonDataEditor
+        data={optionsData.data}
+        okText="确定" 
+        cancelText="取消" 
+        visible={showCode} 
+        onConfirm={onConfirmCode} 
+        onCancel={() => setShowCode(false)} 
+        title="数据编辑" />
     </>
   )
 }
