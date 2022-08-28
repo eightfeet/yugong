@@ -216,6 +216,9 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       //   static: visualSense,
       // }}
 
+      const colsWidth = window.document.body.scrollWidth/cols;
+      
+      
       return (
         <div
           id={`wrap-${item.layout?.i}`}
@@ -226,7 +229,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
           key={item.layout?.i || index}
           data-grid={item.layout}
         >
-          <Elements {...item} />
+          <Elements {...item} offsetWidth={colsWidth * (item.layout?.w || 0)} offsetHeight={rowHeight * (item.layout?.h || 0)} />
         </div>
       );
     });

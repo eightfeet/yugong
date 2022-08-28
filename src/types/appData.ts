@@ -184,6 +184,8 @@ export interface AppDataElementsTypes {
   moduleName?: string;
   api?: Api[];
   layout?: Layout;
+  offsetWidth?: number;
+  offsetHeight?: number;
 }
 
 export interface AppDataLayoutItemTypes extends AppDataElementsTypes {

@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart, { ChartConfiguration, ChartData } from 'chart.js/auto';
+import { Chart, ChartConfiguration, ChartData } from 'chart.js';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
@@ -13,7 +13,7 @@ import { isEqual } from 'lodash';
 
 class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   canvas: HTMLCanvasElement | null;
-  chart: Chart | null;
+  chart: any;
   constructor(props: ChartBarAndLineProps) {
     super(props)
     this.state = {

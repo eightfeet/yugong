@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart, { ChartConfiguration } from 'chart.js/auto';
+import {Chart, ChartConfiguration } from 'chart.js';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
@@ -81,7 +81,7 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
           legend,
           tooltip: {
             callbacks: {
-              label : (context) => {
+              label : (context: any) => {
                 return [` ${context.dataset.label || '-'}`, `${context.label || '-'}: ${context.formattedValue}`];
               }
             }

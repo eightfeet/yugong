@@ -98,6 +98,12 @@ export const CHARTS = [
     title: "ChartRadar",
     discribe: "雷达",
     icon: <Icon component={IconChartRadar} />,
+  },
+  {
+    moduleName: "CountdownTimer",
+    title: "CountdownTimer",
+    discribe: "倒计时",
+    icon: <Icon component={IconChartRadar} />,
   }
 ]
 
