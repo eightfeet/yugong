@@ -48,7 +48,6 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
 
   setDataGroup = (dataGroup: ArgumentsMixed) => {
     const data = getArgumentsItem(dataGroup) as any[];
-    console.log('data', data);
     const { hoverBackgroundColor, backgroundColor } = this.state;
     const value =  data.map(i => ({...i, hoverBackgroundColor, backgroundColor}));
     this.setState({
@@ -66,7 +65,7 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
   buildChart = () => {
     if (!this.canvas) return;
     const { labels, dataGroup, options } = this.state;
-    const {cutout, radius, circumference, rotation} = options;
+    const {cutout, radius, circumference, rotation, legend} = options;
     const config: ChartConfiguration<'pie'> = {
       type: 'pie',
       data: {
@@ -78,10 +77,18 @@ class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
         radius: radius ? `${radius}%` : '100%',
         circumference,
         rotation,
+        plugins: {
+          legend,
+          tooltip: {
+            callbacks: {
+              label : (context) => {
+                return [` ${context.dataset.label || '-'}`, `${context.label || '-'}: ${context.formattedValue}`];
+              }
+            }
+          }
+        }
       },
     };
-    console.log(config);
-    
     this.chart?.destroy();
     this.chart = new Chart(
       this.canvas,

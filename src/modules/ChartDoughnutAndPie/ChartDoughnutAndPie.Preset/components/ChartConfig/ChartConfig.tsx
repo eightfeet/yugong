@@ -58,7 +58,7 @@ const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
         </Form.Item>
 
         <Form.Item label="边宽" name="borderWidth" >
-          <Input size="small" min={0} placeholder="边宽宽度" type={'number'} />
+          <Input size="small" min={-1} placeholder="边宽宽度" type={'number'} />
         </Form.Item>
         <Form.Item label="间隔" name="spacing" >
           <Input size="small" min={0} placeholder="间隔" type={'number'} />

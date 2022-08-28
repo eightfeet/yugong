@@ -33,7 +33,9 @@ const LabelsGroup: React.FC<Props> = () => {
         hoverBackgroundColor: '#666'
       });
       dataGroups.forEach((element: any) => {
-        element.data.push(null)
+        element.data.push({
+          weight: 1000,
+        })
       });
       set(copyData, runningDataPath.labels, groups);
       set(copyData, dataGroupsPath, dataGroups);

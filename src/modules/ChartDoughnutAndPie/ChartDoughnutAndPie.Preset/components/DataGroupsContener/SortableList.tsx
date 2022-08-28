@@ -31,8 +31,8 @@ const SortableList: React.FC<Props> = ({ data, dataGroup }) => {
         <Input
           onChange={(e) => handleChange(e.target.value, index)}
           addonAfter={
-            <span style={{ color: labelArr.data[index].backgroundColor }}>
-              {labelArr.data[index].label}
+            <span style={{ color: labelArr.data[index]?.backgroundColor }}>
+              {labelArr.data[index]?.label}
             </span>
           }
           value={item}

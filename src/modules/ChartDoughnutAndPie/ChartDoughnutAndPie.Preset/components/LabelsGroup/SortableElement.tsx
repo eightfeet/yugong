@@ -1,7 +1,7 @@
 import { EditOutlined, MinusOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Button, Switch, Input, Form } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { get, set } from 'lodash';
+import { cloneDeep, get, set } from 'lodash';
 import React, { useCallback, useContext, useState } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
@@ -18,52 +18,30 @@ interface Props {
 
 const SortableElement: React.FC<Props> = ({ index, item }) => {
   const [form] = useForm();
-  const [openSetting, setOpenSetting] = useState(false);
   const { runningData, onChange } = useContext(CustomPresettingContext);
   const onMinus = useCallback(() => {
     const path = `${runningDataPath.labels}.data`;
+    const pieData = get(runningData, runningDataPath.dataGroups_data);
     const data = get(runningData, path);
-    const fliterData = data.filter((item: any, ind: number) => ind !== index);
-    const res = set(runningData, path, fliterData);
+
+    const fliterData = data.filter((item: any, ind: number) => {
+      return ind !== index;
+    });
+
+    pieData.forEach((pieDataValues: any) => {
+      const res: any[] = [];
+      pieDataValues.data.forEach((element: any, pieDataValuesIndex: number) => {
+        if (index !== pieDataValuesIndex) {
+          res.push(element)
+        }
+      })
+      pieDataValues.data = res;
+    });
+    
+    let res = set(runningData, path, fliterData);
+    res = set(res, runningDataPath.dataGroups_data, pieData);
     onChange(res);
   }, [index, onChange, runningData]);
-
-  const onChangeConfig = useCallback(
-    (e) => {
-      const data = get(
-        runningData,
-        `${runningDataPath.dataGroups_data}[${index}]`,
-      );
-      const itemRes = { ...data, ...e };
-      const res = set(
-        runningData,
-        `${runningDataPath.dataGroups_data}[${index}]`,
-        itemRes,
-      );
-      onChange(res);
-    },
-    [index, onChange, runningData],
-  );
-
-  const [editLabel, setEditLabel] = useState(false);
-
-  const onChangeLabel = useCallback(
-    (e) => {
-      setEditLabel(false);
-      const data = get(
-        runningData,
-        `${runningDataPath.dataGroups_data}[${index}]`,
-      );
-      const itemRes = { ...data, label: e.target.value };
-      const res = set(
-        runningData,
-        `${runningDataPath.dataGroups_data}[${index}]`,
-        itemRes,
-      );
-      onChange(res);
-    },
-    [index, onChange, runningData],
-  );
 
   const handleChange = useCallback(
     (e) => {

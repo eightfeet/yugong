@@ -2,7 +2,18 @@
 .wrap {
   padding: 10px;
   border: 1px solid #d9d9d9;
-  margin-bottom: 0;
+  margin-bottom: 10px;
+  :global{
+    .ant-form-item-control-input-content {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .ant-row {
+      width: 50%;
+      margin-bottom: 10px;
+      padding-right: 10px;
+    }
+  }
 }
 
 .mgt {
