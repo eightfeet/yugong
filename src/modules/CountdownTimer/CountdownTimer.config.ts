@@ -8,30 +8,20 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "onSetCounter",
-      description: '设置计数器',
+      name: "setTimmer",
+      description: '设置计时器',
       arguments: [{
         type: "mixed",
         name: "配置",
-        fieldName: "counterConfig",
+        fieldName: "timerConfig",
         describe: "设置计数器",
         data: {
-          updateInterval:0,
-          rotation:'counterclockwise',
-          trailStrokeWidth:8,
-          strokeWidth:8,
-          initialRemainingTime:10,
-          duration:100,
-          colors:"#004777",
-          trailColor:"#eee",
-          strokeLinecap: "round",
-          size: 200
+          isZh: true,
+          prefix: '距离开始时间',
+          suffix: '请耐心等待',
+          endTime: '2022-08-30 07:30'
         },
       }]
-    },
-    {
-      name: "onPlay",
-      description: '启动计数器',
     }
   ],
   /**
@@ -45,6 +35,14 @@ const config: ModulesStatic = {
     {
       name: "unmount",
       description: "卸载",
+    },
+    {
+      name: "finished",
+      description: "结束",
+    },
+    {
+      name: "waited",
+      description: "未开始",
     }
   ],
 
@@ -84,6 +82,6 @@ const config: ModulesStatic = {
   },
 };
 // export type key of events list
-export type ExposeEventsKeys = 'mount' | 'unmount' | 'click';
+export type ExposeEventsKeys = 'mount' | 'unmount' | 'finished' | 'waited';
 
 export default config;
