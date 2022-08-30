@@ -37,12 +37,12 @@ const config: ModulesStatic = {
       description: "卸载",
     },
     {
-      name: "finished",
-      description: "结束",
+      name: "waited",
+      description: "等待",
     },
     {
-      name: "waited",
-      description: "未开始",
+      name: "finished",
+      description: "完成",
     }
   ],
 
@@ -65,6 +65,9 @@ const config: ModulesStatic = {
       },
       text: {
         "backgroundGroup": {}
+      },
+      time: {
+
       }
     },
     styleDescription: [
@@ -73,12 +76,19 @@ const config: ModulesStatic = {
         value: "basic",
         children: [
           {
-            title: "时间文字",
-            value: "text"
+            title: "文字",
+            value: "text",
+            children: [
+              {
+                title: '时间',
+                value: 'time'
+              }
+            ]
           }
         ]
       }
-    ]
+    ],
+    preset: true
   },
 };
 // export type key of events list

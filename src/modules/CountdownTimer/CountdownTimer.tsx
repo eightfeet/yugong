@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
-import { getArguments, getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import { AnyObjectType, ArgumentsItem } from '~/types/appData';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './CountdownTimer.config';
@@ -23,13 +23,13 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
 
   const [remainingTime, setRemainingTime] = useState<string>();
 
-  const [isZh, setIsZh] = useState(true);
+  const [isZh, setIsZh] = useState<boolean>(true);
 
-  const [isEnded, setIsEnded] = useState(false);
+  const [isEnded, setIsEnded] = useState<boolean>();
 
-  const [prefix, setPrefix] = useState<string>('距离开抢：');
+  const [prefix, setPrefix] = useState<string>('');
 
-  const [suffix, setSuffix] = useState<string>('敬请期待！');
+  const [suffix, setSuffix] = useState<string>('');
 
   const [endTime, setEndTime] = useState<string>()
 
@@ -68,9 +68,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
         setIsEnded(true)
         return;
       }
-      if (isEnded === true) {
-        setIsEnded(false)
-      }
+
       const durationTime = dayjs.duration(diffTimes);
       const FYear = `Y${isZh ? '年' : '-'}`;
       const FMonth = `M${isZh ? '月' : '-'}`;
@@ -89,9 +87,10 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
         formatArr = [FHour, FMinute, FSecond];
       }
       const result = durationTime.format(formatArr.join(''));
-      setRemainingTime(result)
+      setRemainingTime(result);
+      setIsEnded(false);
     },
-    [isEnded, isZh],
+    [isZh],
   );
 
   useEffect(() => {
@@ -117,7 +116,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
         {isEnded || !remainingTime ?
           null :
           <div className={props.classes.text}>
-            {prefix}{remainingTime}{suffix}
+            {prefix}<span className={props.classes.time}>{remainingTime}</span>{suffix}
           </div>}
       </div>
     </Wrapper>
