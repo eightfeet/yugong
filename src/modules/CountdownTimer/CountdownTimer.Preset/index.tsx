@@ -9,7 +9,6 @@ import moment from 'moment';
 import { useForm } from 'antd/es/form/Form';
 
 const Preset:React.FC<CustomPersetProps> = ({ runningData, onChange}) => {
-  console.log(runningData);
   const path = '[0].arguments[0].data';
   const data = get(runningData, path);
   data.endTime = moment(data.endTime)
