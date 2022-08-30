@@ -105,6 +105,12 @@ export const CHARTS = [
     title: "ChartRadar",
     discribe: "雷达",
     icon: <Icon component={IconChartRadar} />,
+  },
+  {
+    moduleName: "NumberCountUp",
+    title: "NumberCountUp",
+    discribe: "滚动数字",
+    icon: <Icon component={IconChartRadar} />,
   }
 ]
 
