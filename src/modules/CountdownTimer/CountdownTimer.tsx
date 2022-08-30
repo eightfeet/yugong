@@ -72,7 +72,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
       const durationTime = dayjs.duration(diffTimes);
       const FYear = `Y${isZh ? '年' : '-'}`;
       const FMonth = `M${isZh ? '月' : '-'}`;
-      const FDay = `D${isZh ? '天 ' : ' '}`;
+      const FDay = `D${isZh ? '天 ' : 'days '}`;
       const FHour = `H${isZh ? '时' : ':'}`;
       const FMinute = `m${isZh ? '分' : ':'}`;
       const FSecond = `s${isZh ? '秒' : ''}`;

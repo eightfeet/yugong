@@ -12,6 +12,7 @@ import IconChart from "./icons/IconChart";
 import IconVideo from "./icons/IconVideo";
 import IconChartPie from "./icons/IconChartPie";
 import IconChartRadar from "./icons/IconChartRadar";
+import IconClock from "./icons/IconClock";
 
 export const BASEMODULES = [
   {
@@ -68,6 +69,12 @@ export const BASEMODULES = [
     title: "Broadcast",
     discribe: "滚动播报",
     icon: <Icon component={IconBroadcast} />,
+  },
+  {
+    moduleName: "CountdownTimer",
+    title: "CountdownTimer",
+    discribe: "倒计时",
+    icon: <Icon component={IconClock} />,
   }
 ];
 
@@ -97,12 +104,6 @@ export const CHARTS = [
     moduleName: "ChartRadar",
     title: "ChartRadar",
     discribe: "雷达",
-    icon: <Icon component={IconChartRadar} />,
-  },
-  {
-    moduleName: "CountdownTimer",
-    title: "CountdownTimer",
-    discribe: "倒计时",
     icon: <Icon component={IconChartRadar} />,
   }
 ]
