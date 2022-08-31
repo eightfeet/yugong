@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Chart, ChartConfiguration, ChartData } from 'chart.js';
+import { Chart, ChartConfiguration, ChartData, registerables } from 'chart.js';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
@@ -10,6 +10,8 @@ import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './ChartBarAndLine.config';
 import createStyles, { ClassesKey } from './ChartBarAndLine.createStyles';
 import { isEqual } from 'lodash';
+
+Chart.register(...registerables);
 
 class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
   canvas: HTMLCanvasElement | null;
@@ -44,6 +46,8 @@ class ChartBarAndLine extends Component<ChartBarAndLineProps, State> {
 
   setDataGroup = (dataGroup: ArgumentsMixed) => {
     const data = getArgumentsItem(dataGroup) as any[];
+    console.log(333, data);
+    
     this.setState({
       dataGroup: data
     });

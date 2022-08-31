@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import {Chart, ChartConfiguration } from 'chart.js';
+import {Chart, ChartConfiguration, registerables } from 'chart.js';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { ArgumentsArray, ArgumentsMixed } from '~/types/appData';
@@ -10,6 +10,8 @@ import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './ChartDoughnutAndPie.config';
 import createStyles, { ClassesKey } from './ChartDoughnutAndPie.createStyles';
 import { isEqual } from 'lodash';
+
+Chart.register(...registerables);
 
 class ChartDoughnutAndPie extends Component<ChartDoughnutAndPieProps, State> {
   canvas: HTMLCanvasElement | null;
