@@ -31,13 +31,6 @@
 
 >模拟项目(请手机扫描访问):
 
-### H5场景展示-FullPage
-
-<div style="display: flex">
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/fullpage.gif" width="320" />
-  <img src="https://www.eightfeet.cn/yugong/images/documents/template/fullpage1.png" width="149" height="122" />
-</div>
-
 ### 表单报名或调查问卷
 
 <div style="display: flex">
@@ -58,6 +51,14 @@
 <div style="display: flex">
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/animate.gif" width="320" />
   <img src="https://www.eightfeet.cn/yugong/images/documents/template/donghua1.png" width="149" height="122" />
+</div>
+
+
+### H5场景展示-FullPage
+
+<div style="display: flex">
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/fullpage.gif" width="320" />
+  <img src="https://www.eightfeet.cn/yugong/images/documents/template/fullpage1.png" width="149" height="122" />
 </div>
 
 
