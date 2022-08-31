@@ -13,6 +13,7 @@ import IconVideo from "./icons/IconVideo";
 import IconChartPie from "./icons/IconChartPie";
 import IconChartRadar from "./icons/IconChartRadar";
 import IconClock from "./icons/IconClock";
+import IconCount from "./icons/IconCount";
 
 export const BASEMODULES = [
   {
@@ -110,7 +111,7 @@ export const CHARTS = [
     moduleName: "NumberCountUp",
     title: "NumberCountUp",
     discribe: "滚动数字",
-    icon: <Icon component={IconChartRadar} />,
+    icon: <Icon component={IconCount} />,
   }
 ]
 

@@ -63,12 +63,9 @@ const config: ModulesStatic = {
       basic: {
         "backgroundGroup": {}
       },
-      text: {
-        "backgroundGroup": {}
-      },
-      time: {
-
-      }
+      text: {},
+      prefix: {},
+      suffix: {}
     },
     styleDescription: [
       {
@@ -76,14 +73,16 @@ const config: ModulesStatic = {
         value: "basic",
         children: [
           {
-            title: "文字",
+            title: "时间",
             value: "text",
-            children: [
-              {
-                title: '时间',
-                value: 'time'
-              }
-            ]
+          },
+          {
+            title: "前缀",
+            value: "prefix",
+          },
+          {
+            title: "后缀",
+            value: "suffix",
           }
         ]
       }

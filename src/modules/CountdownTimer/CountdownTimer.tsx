@@ -115,9 +115,11 @@ const CountdownTimer: React.FC<CountdownTimerProps> = (props) => {
       <div>
         {isEnded || !remainingTime ?
           null :
-          <div className={props.classes.text}>
-            {prefix}<span className={props.classes.time}>{remainingTime}</span>{suffix}
-          </div>}
+          <>
+            <span className={props.classes.prefix}>{prefix}</span>
+            <span className={props.classes.text}>{remainingTime}</span>
+            <span className={props.classes.suffix}>{suffix}</span>
+          </>}
       </div>
     </Wrapper>
   )
