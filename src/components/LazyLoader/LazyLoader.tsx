@@ -15,7 +15,7 @@ const LazyLoader: React.FC<Props> = ({ path, ...other }) => {
   // Memo缓存组件防止反复刷新
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const LazyComponent = useMemo(
-    () => lazy(() => import(`~/modules/${path}/index.ts`)),
+    () => lazy(() => import(`~/modules/${path}`)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [path, rootFontsize],
   );

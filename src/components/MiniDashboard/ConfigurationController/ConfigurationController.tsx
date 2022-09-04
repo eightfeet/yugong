@@ -49,7 +49,7 @@ const ConfigurationController = () => {
      */
     useAsyncMemo(async () => {
         if (!!type) {
-            const res = await import(`../../../modules/${type}/index.ts`);
+            const res = await import(`../../../modules/${type}`);
             setExposeFunctions(res.default.exposeFunctions);
             setIsCustom(res.default.exposeDefaultProps.preset);
             setExposeApi(res.default.exposeApi);

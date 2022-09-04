@@ -55,7 +55,7 @@ const EventItem: React.FC<Props> = ({
     for (let index = 0; index < appData.length; index++) {
       const item = appData[index];
       // 检查可选模块是否有方法导出
-      const res = await import(`../../../modules/${item.type}/index.ts`);
+      const res = await import(`../../../modules/${item.type}`);
       const { exposeFunctions } = res.default;
       if (exposeFunctions?.length) {
         list.push({
@@ -79,7 +79,7 @@ const EventItem: React.FC<Props> = ({
       if (!result) return;
       let exposeFunctions: ExposeFunctions[] = [];
       if (result.type !== "global") {
-        const res = await import(`../../../modules/${result.type}/index.ts`);
+        const res = await import(`../../../modules/${result.type}`);
         exposeFunctions = res.default.exposeFunctions;
       } else {
         exposeFunctions = Output.exposeFunctions || [];
