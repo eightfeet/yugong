@@ -8,6 +8,7 @@ import usePostMessage from '~/hooks/usePostMessage';
 import { Dispatch, RootState } from '~/redux/store';
 import { queryTemplateById } from '~/api';
 import isType from '~/core/helper/isType';
+import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 import loading from '~/core/loading';
 import s from './BeforeOutput.module.scss';
 
@@ -28,6 +29,8 @@ const BeforeOutput: React.FC<Props> = () => {
   // 获取缓存的页面数据与模块数据
   const [appDataLocalStoreData] = useLocalStorage('appData', null);
   const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
+
+  const clientRowHeight = parseInt(getResult(`${pageData.rowHeight}`));
 
   // 用于编辑模式下，观察编辑器通知，设置当前编辑路径
   const sendMessage = usePostMessage((data) => {
@@ -59,18 +62,22 @@ const BeforeOutput: React.FC<Props> = () => {
   const asyncPageData = useCallback(
     (pageData) => {
       if (pageData) {
-        updatePage(pageData);
+        const res = {
+          ...pageData,
+          ...clientRowHeight ? { clientRowHeight } : {}
+        }
+        updatePage(res);
         setIsPagedataReady(true);
         sendMessage(
           {
             tag: 'updatePage',
-            value: pageData,
+            value: res,
           },
           window.top,
         );
       }
     },
-    [sendMessage, updatePage],
+    [sendMessage, updatePage, clientRowHeight],
   );
 
   // 初始化App
@@ -109,7 +116,6 @@ const BeforeOutput: React.FC<Props> = () => {
       document.body.classList.add(s.scrollbar)
     }
   }, [isEditing])
-  
   
   // 底层数据将完全准备就绪，再放行App！
   if (!isAppdataReady || !isPagedataReady || !pageData) {

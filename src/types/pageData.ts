@@ -75,7 +75,8 @@ export interface PageData {
   TCHProcess?: {
     /**线程 */
     [threadName: string]: TCHProcessItemType[]
-  }
+  },
+  clientRowHeight?: number
 }
 
 export interface TCHProcessItemType {

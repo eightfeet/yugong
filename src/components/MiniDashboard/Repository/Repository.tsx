@@ -6,7 +6,6 @@ import { nanoid } from 'nanoid';
 import { AppDataLayoutItemTypes, AppDataModuleTypes } from '~/types/appData';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '~/redux/store';
-import { compilePlaceholderFromDataSource as getResult } from '~/core/getDataFromSource';
 
 import s from './Repository.module.less';
 import useKeyDown from '~/hooks/useKeyDown';
@@ -95,8 +94,7 @@ const Repository: React.FC = () => {
     (moduleType: AppDataModuleTypes, name?: string) => {
       let y = 0;
       // 行高
-      let rowHeight = pageData.rowHeight || GRID_DEFAULT_ROWHEIGHT;
-      if (typeof rowHeight === 'string') rowHeight = getResult(rowHeight);
+      let rowHeight = pageData.clientRowHeight || GRID_DEFAULT_ROWHEIGHT;
       
       // 滚动条高度
       const iframeNode = document.getElementById(
@@ -105,22 +103,9 @@ const Repository: React.FC = () => {
       const scrollTop =
         iframeNode?.contentDocument?.documentElement.scrollTop || 0;
       // 通过滚动条定位计算新增元素应该在当前视窗内
-      y = ((scrollTop + 100) / (rowHeight as number)) || 0;
-
-      // rowHeight : GRID_DEFAULT_ROWHEIGHT
-      // console.log('iframeNode?.scrollTop', iframeNode?.contentDocument?.documentElement.scrollTop)
-      // if (appData.length) {
-      //   const optAppData = [...appData].sort(
-      //     (a, b) => b.layout!.y - a.layout!.y
-      //   );
-      //   if (optAppData[0]) {
-      //     y = optAppData[0].layout!.y + optAppData[0].layout!.h;
-      //   }
-      // }
-      // get module's static Options
+      y = ((scrollTop + rowHeight) / (rowHeight as number)) || 0;
       const module = require(`~/modules/${moduleType}`).default as ModulesStatic;
       const { exposeDefaultProps, exposeFunctions } = module;
-      console.log('exposeFunctions', exposeFunctions);
       const mount:EventsTypeItem[] = [];
       
       const { style } = exposeDefaultProps || {};
@@ -162,7 +147,7 @@ const Repository: React.FC = () => {
       setAddedModal(undefined);
       setNewModalName(undefined);
     },
-    [onAddItem, pageData.rowHeight],
+    [onAddItem, pageData.clientRowHeight],
   );
 
   const onCreate = useCallback(

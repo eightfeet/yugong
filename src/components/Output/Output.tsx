@@ -313,6 +313,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   });
 
   const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
+  
   const cols = parseInt(getResult(`${pageData.cols}`));
   const space = parseInt(getResult(`${pageData.space}`));
   // 前置数据完全准备就绪再放行App
