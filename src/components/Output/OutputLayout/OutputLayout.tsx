@@ -19,7 +19,7 @@ import useLocalStorage from "~/hooks/useLocalStorage";
 import usePostMessage from "~/hooks/usePostMessage";
 import { eventEmitter } from "~/core/EventEmitter";
 import { backgroundGroup } from "~/compiler/compiler";
-import { cloneDeep, isEqual } from "lodash";
+import { cloneDeep } from "lodash";
 import produce from "~/core/helper/produce";
 import { createDesc } from "~/core/constants";
 

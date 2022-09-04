@@ -1,4 +1,4 @@
-import { Col, PageHeader, Row, Select, Tooltip } from 'antd';
+import { Col, PageHeader, Row, Tooltip } from 'antd';
 import React, { useCallback, useContext, useState } from 'react';
 import ChartTooltip from '../Tooltip';
 import ChartOptionItem from '../ChartOptionItem';
@@ -25,15 +25,6 @@ const ChartOptions: React.FC<Props> = () => {
     [onChange, runningData],
   )
   
-
-  const onChangeDirection = useCallback(
-    (e) => {
-      optionsData.data.indexAxis = e;
-      handleChange(optionsData)
-    },
-    [handleChange, optionsData],
-  )
-
   const onChangeLegend = useCallback(
     (legend) => {
       optionsData.data.plugins.legend = legend;

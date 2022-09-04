@@ -1,4 +1,3 @@
-import Chart from "chart.js";
 import {
   ModulesStatic,
 } from "~/types/modules";

@@ -1,4 +1,4 @@
-import { Form, Input, Radio, Select, Checkbox } from 'antd';
+import { Form, Input, Select, Checkbox } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback, useEffect, useState } from 'react';
 import Color from '~/components/MiniDashboard/Color';
@@ -24,7 +24,7 @@ interface Props {
 
 const ChartConfig: React.FC<Props> = ({ onChange, defaultValue }) => {
   const [form] = useForm();
-  const [chartType, setChartType] = useState<string>();
+  const [, setChartType] = useState<string>();
 
   useEffect(() => {
     if (defaultValue?.type) {

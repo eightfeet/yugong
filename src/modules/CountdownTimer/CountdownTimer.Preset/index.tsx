@@ -3,7 +3,6 @@ import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import React, { useCallback } from 'react';
 import { CustomPersetProps } from '~/components/MiniDashboard/Presetting/Presetting';
-import s from './CountdownTimer.Preset.module.scss';
 import { cloneDeep, get, set } from 'lodash';
 import moment from 'moment';
 import { useForm } from 'antd/es/form/Form';

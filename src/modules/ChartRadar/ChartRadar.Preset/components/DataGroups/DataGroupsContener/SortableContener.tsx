@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import arrayMove from 'array-move';
-import s from './SortableContener.module.scss';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import SortableList from './SortableList';
 import { set } from 'lodash';

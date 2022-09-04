@@ -1,6 +1,5 @@
 import { Form, Input, Select, Switch } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { fliterValues } from '../helper';

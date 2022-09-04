@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
-import { Button, Input } from 'antd';
+import { Button } from 'antd';
 import React, { useCallback, useContext } from 'react';
 import s from './DataGroupsContener.module.scss';
 import SortableContener from './SortableContener';

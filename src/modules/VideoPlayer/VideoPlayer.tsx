@@ -121,7 +121,7 @@ class VideoPlayer extends Component<VideoPlayerProps, State> {
     this.setState({ pip: !this.state.pip })
   }
 
-  handleSeekMouseDown = (e: any) => {
+  handleSeekMouseDown = () => {
     this.setState({ seeking: true })
   }
 
@@ -176,8 +176,8 @@ class VideoPlayer extends Component<VideoPlayerProps, State> {
     this.setState({ duration })
   }
 
-  handleOnReady = (e: any) => this.props.eventDispatch().onReady();
-  handleOnError = (e: any) => this.props.eventDispatch().onError();
+  handleOnReady = () => this.props.eventDispatch().onReady();
+  handleOnError = () => this.props.eventDispatch().onError();
   handleOnStart = () => this.props.eventDispatch().onStart();
 
   renderLoadButton = (url: string, label: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined) => {
@@ -194,7 +194,7 @@ class VideoPlayer extends Component<VideoPlayerProps, State> {
 
   render() {
     const { classes } = this.props;
-    const { url, playing, controls, light, volume, muted, loop, played, loaded, duration, playbackRate, pip, isInit } = this.state
+    const { url, playing, controls, light, volume, muted, loop, playbackRate, pip, isInit } = this.state
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
         {isInit ? <ReactPlayer

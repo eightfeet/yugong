@@ -1,9 +1,8 @@
-import { Form, Input, Radio, Select, Checkbox } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { fliterValues } from '../helper';
-import BorderDash from './BorderDash';
 import s from './ChartConfig.module.scss';
 
 interface Value {

@@ -1,13 +1,11 @@
-import { EditOutlined, MinusOutlined } from '@ant-design/icons';
-import { Row, Col, Card, Button, Switch, Input, Form } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Input, Form } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { cloneDeep, get, set } from 'lodash';
-import React, { useCallback, useContext, useState } from 'react';
+import { get, set } from 'lodash';
+import React, { useCallback, useContext } from 'react';
 import Color from '~/components/MiniDashboard/Color';
 import { CustomPresettingContext } from '~/components/MiniDashboard/Presetting/CustomPresettingContext';
 import { runningDataPath } from '../..';
-import ChartConfig from '../ChartConfig';
-import DataGroupsContener from '../DataGroupsContener';
 import { fliterValues } from '../helper';
 import s from './SortableElement.module.scss';
 

@@ -11,7 +11,7 @@ export const runningDataPath = {
   chartOptions: '[2].arguments[0]'
 }
 
-const Preset: React.FC<CustomPersetProps> = ({}) => {
+const Preset: React.FC<CustomPersetProps> = () => {
   return (
     <>
       <Labels />

@@ -25,7 +25,7 @@ export const sendMessage = ({tag, value}: Result, wind?: Window | null, origin =
  * @param fn Function
  */
 const usePostMessage = (fn: (result: Result) => void) => {
-    const { appData, pageData, controller, activationItem, record, runningTimes, } = useSelector((state:RootState) => state);
+    const { appData, pageData, runningTimes, } = useSelector((state:RootState) => state);
     useEffect(() => {
         const handler = (event: { data: any; }) => {
           if (fn instanceof Function) {
