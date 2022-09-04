@@ -143,7 +143,7 @@ const EventGroup: React.FC<Props> = ({
       <div className={s.divide}>
         <div className={s.title}>{curentEventInfomation.description}</div>
         <div className={s.menu}>
-          {!!value.length ? (
+          {value?.length ? (
             <Tooltip
               mouseEnterDelay={1}
               title={`${curentEventInfomation.description}事件模拟`}

@@ -9,7 +9,6 @@ import { ExposeFunctions } from '~/types/modules';
 import { TCHProcessItemType } from '~/types/pageData';
 import ArgumentsSetting from '../../ArgumentsSetting';
 import {
-  EventEmitterExpose,
   ModuleListItem,
 } from '../../EventsSetting/EventItem';
 import s from './TCHLineItem.module.scss';
@@ -78,7 +77,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
       );
       if (!result) return;
       
-      let exposeFunctions: EventEmitterExpose[] = [];
+      let exposeFunctions: ExposeFunctions[] = [];
       if (result.type !== 'global') {
         exposeFunctions = require(`~/modules/${result.type}`).default
           .exposeFunctions;
@@ -198,7 +197,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
     for (let index = 0; index < appData.length; index++) {
       const item = appData[index];
       // 检查可选模块是否有方法导出
-      const exposeFunctions: EventEmitterExpose[] =
+      const exposeFunctions: ExposeFunctions[] =
         require(`~/modules/${item.type}`).default.exposeFunctions;
       if (exposeFunctions && exposeFunctions.length > 0) {
         data.push({

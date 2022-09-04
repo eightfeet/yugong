@@ -12,16 +12,18 @@ import usePostMessage from "~/hooks/usePostMessage";
  * 如果没有则不渲染事件面板
  *
  */
-interface Props {}
+interface Props {
+  exposeEvents?: ExposeEvents[]
+}
 
-const EventsSetting: React.FC<Props> = () => {
+const EventsSetting: React.FC<Props> = ({ exposeEvents=[] }) => {
   const activationItem = useSelector(
     (state: RootState) => state.activationItem
   );
 
   const sendMessage = usePostMessage(() => {})
   
-  const { events, type, moduleId } = activationItem;
+  const { events, moduleId } = activationItem;
 
   /** 更新结果 */
   const update = useMergeAppData();
@@ -67,11 +69,9 @@ const EventsSetting: React.FC<Props> = () => {
   )
 
   if (!moduleId) return null;
-  // 当前激活项模块是否向全局发布事件，
-  const exposeEvents: ExposeEvents[] = require(`~/modules/${type}`).default
-    .exposeEvents;
+
   // 检查当前激活项模块无事件发布不做渲染，有则渲染事件编辑设置面板
-  if (exposeEvents.length === 0) return null;
+  if (!exposeEvents?.length) return null;
 
   return <div className={s.root}>
     {

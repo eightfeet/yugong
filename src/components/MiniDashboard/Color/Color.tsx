@@ -202,7 +202,7 @@ const Color: React.FC<Props> = ({
       setPickWrapStyle(style);
       createPannel();
     },
-    [createPannel, displayColorPicker],
+    [createPannel, disabled, displayColorPicker],
   );
 
   const displayColor =
