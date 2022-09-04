@@ -87,7 +87,7 @@ const ConfigurationController = () => {
                     >
                         <Presetting
                             custom={!!isCustom}
-                            exposeFunctions={exposeFunctions}
+                            // exposeFunctions={exposeFunctions}
                         />
                     </Panel>
                 ) : null}
