@@ -318,9 +318,9 @@ const Responsive: React.FC<Props> = () => {
 
   const pageSearch = stringify({ tpl: pageData.template?.id, ...runningTimes.search });
 
-  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+  const codeViewUrl = `./${pageSearch ? `?${pageSearch}` : ''}`;
 
-  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${window.location.search || '?isediting'}`
+  const viewUrl = `./../${window.location.search || '?isediting'}`
 
   return (
     <>
@@ -482,7 +482,7 @@ const Responsive: React.FC<Props> = () => {
         onCancel={() => setVisibleQrcode(false)}
         sourceData={codeViewUrl}
         title="请扫码访问"
-        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">{codeViewUrl}</a></div>}
+        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">点击前往</a></div>}
         options={{
           width: 122,
           margin: 1

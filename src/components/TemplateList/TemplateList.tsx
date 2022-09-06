@@ -203,7 +203,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   
   const pageSearch = stringify({ tpl: visibleQrcode, ...runningTimes.search });
 
-  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
+  const codeViewUrl = `./../${pageSearch ? `?${pageSearch}` : ''}`;
 
   return (
     <>
@@ -290,7 +290,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
         onCancel={() => setVisibleQrcode(0)}
         sourceData={codeViewUrl}
         title="请扫码访问"
-        info={<div className={s.viewurl}>访问地址:<a href={codeViewUrl} target={'_blank'} rel="noreferrer">{codeViewUrl}</a></div>}
+        info={<div className={s.viewurl}>访问地址：<a href={codeViewUrl} target={'_blank'} rel="noreferrer">点击前往</a></div>}
         options={{
           width: 122,
           margin: 1

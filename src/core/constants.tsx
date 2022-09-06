@@ -14,6 +14,7 @@ import IconChartPie from "./icons/IconChartPie";
 import IconChartRadar from "./icons/IconChartRadar";
 import IconClock from "./icons/IconClock";
 import IconCount from "./icons/IconCount";
+import IconMp3player from "./icons/IconMp3player";
 
 export const BASEMODULES = [
   {
@@ -47,12 +48,6 @@ export const BASEMODULES = [
     icon: <Icon component={IconSlider} />,
   },
   {
-    moduleName: "VideoPlayer",
-    title: "VideoPlayer",
-    discribe: "视频",
-    icon: <Icon component={IconVideo} />,
-  },
-  {
     moduleName: "Form",
     title: "Form",
     discribe: "表单",
@@ -76,6 +71,18 @@ export const BASEMODULES = [
     title: "CountdownTimer",
     discribe: "倒计时",
     icon: <Icon component={IconClock} />,
+  },
+  {
+    moduleName: "VideoPlayer",
+    title: "VideoPlayer",
+    discribe: "视频",
+    icon: <Icon component={IconVideo} />,
+  },
+  {
+    moduleName: "Mp3Player",
+    title: "Mp3Player",
+    discribe: "Mp3",
+    icon: <Icon component={IconMp3player} />,
   }
 ];
 
