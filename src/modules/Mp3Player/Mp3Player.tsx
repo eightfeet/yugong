@@ -35,8 +35,18 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     const { configs } = previousStates;
     if (configs) {
       this.player?.unload()
-      this.player = new Howl(configs);
-      this.player.play();
+      this.player = new Howl({
+        ...configs,
+        // 有设置自动播放时强制执行
+        onplayerror: () => {
+          if (this.state.configs?.autoplay) {
+            this.player?.once('unlock', () => {
+              this.player?.play();
+            });
+          }
+        }
+      });
+      
     }
   }
 

@@ -21,11 +21,11 @@ const config: ModulesStatic = {
           html5: true, // 强制h5播放器
           loop: true, // 循环播放
           preload: true, // 预加载
-          autoplay: false, // 自动播放
+          autoplay: true, // 自动播放
           mute: false, // 静音加载
-          sprite: {
-            'track01': [12000, 20000]
-          }, // 片段播放
+          // sprite: {
+          //   'track01': [1200, 2000]
+          // }, // 片段播放
           rate: 1 // 播放速度 0.5-4.0
         },
       }]
