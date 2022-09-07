@@ -8,14 +8,26 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "handleClick",
-      description: '点击设置文字',
+      name: "setPlayer",
+      description: '设置播放器',
       arguments: [{
-        type: "string",
-        name: "文字",
-        fieldName: "testText",
-        describe: "测试点击设置文字",
-        data: "我被改变了",
+        type: "mixed",
+        name: "设置",
+        fieldName: "configs",
+        describe: "设置播放器",
+        data: {
+          src: ['./kml.mp3', './09.mp3'], // 链接
+          volume: 1, // 音量 0-1
+          html5: true, // 强制h5播放器
+          loop: true, // 循环播放
+          preload: true, // 预加载
+          autoplay: false, // 自动播放
+          mute: false, // 静音加载
+          sprite: {
+            'track01': [12000, 20000]
+          }, // 片段播放
+          rate: 1 // 播放速度 0.5-4.0
+        },
       }]
     }
   ],

@@ -1,34 +1,48 @@
 
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import {Howl, Howler} from 'howler';
+import { Howl, Howler, HowlOptions } from 'howler';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { Dispatch, RootState } from '~/redux/store';
 import Wrapper from '../Wrapper';
 import config, { ExposeEventsKeys } from './Mp3Player.config';
 import createStyles, { ClassesKey } from './Mp3Player.createStyles';
+import { AnyObjectType, ArgumentsItem } from '~/types/appData';
+import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 
 class Mp3Player extends Component<Mp3PlayerProps, State> {
   player: Howl | undefined;
   constructor(props: Mp3PlayerProps) {
     super(props)
     this.state = {
+      configs: undefined
     }
   }
 
   componentDidMount() {
-    this.player = new Howl({
-      src: ['./kml.mp3']
-    });
-    this.player.play();
     this.props.registersFunction({
+      setPlayer: this.setPlayer
     })
     this.props.eventDispatch().mount()
   }
 
   componentWillUnmount() {
     this.props.eventDispatch().unmount();
+  }
+
+  componentDidUpdate(previousProps: AnyObjectType, previousStates: AnyObjectType) {
+    const { configs } = previousStates;
+    if (configs) {
+      this.player?.unload()
+      this.player = new Howl(configs);
+      this.player.play();
+    }
+  }
+
+  setPlayer = (params: ArgumentsItem) => {
+    const configs = getArgumentsItem(params) as HowlOptions;
+    this.setState({ configs });
   }
 
   render() {
@@ -50,6 +64,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
 
 // typeof State
 type State = {
+  configs?: HowlOptions;
 }
 
 // typeof Props
