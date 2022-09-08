@@ -29,6 +29,37 @@ const config: ModulesStatic = {
           rate: 1 // 播放速度 0.5-4.0
         },
       }]
+    },
+    {
+      name: "setPlayList",
+      description: '设置播放列表',
+      arguments: [{
+        type: "mixed",
+        name: "设置",
+        fieldName: "playList",
+        describe: "设置播放列表",
+        data: [
+          {
+            title: '卡梅拉',
+            file: './kml.mp3'
+          },
+          {
+            title: '故事',
+            file: './09.mp3'
+          }
+        ],
+      }]
+    },
+    {
+      name: "play",
+      description: '设置播放列表',
+      arguments: [{
+        type: "number",
+        name: "设置",
+        fieldName: "No",
+        describe: "设置播放列表",
+        data: '',
+      }]
     }
   ],
   /**

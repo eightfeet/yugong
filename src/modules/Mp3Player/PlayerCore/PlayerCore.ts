@@ -1,12 +1,12 @@
 import { Howl } from 'howler';
 
-interface PlayerCorePlayList {
+export interface PlayerCorePlayList {
   title: string;
   file: string;
   howl: Howl | undefined;
 }
 
-interface PlayerCoreParameTers {
+export interface PlayerCoreParameTers {
   playList: PlayerCorePlayList[];
 }
 
@@ -30,16 +30,19 @@ class PlayerCore {
       sound = data.howl = new Howl({
         src: [data.file],
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
-        onplay: () => {},
-        onload: () => {},
-        onend: () => {},
-        onpause: () => {},
-        onstop: () => {},
-        onseek: () => {},
+        onplay: () => { },
+        onload: () => { },
+        onend: () => {
+          this.skip('next');
+        },
+        onpause: () => { },
+        onstop: () => { },
+        onseek: () => { console.log(1111);},
       });
     }
     // Begin playing the sound.
     sound.play();
+    this.index = index;
   };
 
   /**
@@ -50,16 +53,44 @@ class PlayerCore {
   };
 
   /**
-   * skipTo
+   * Skip to the next or previous track.
+   * @param  {String} direction 'next' or 'prev'.
    */
-  public skipTo = () => {
+  public skip = (direction: 'next' | 'prev') => {
+    // Get the next track based on the direction of the track.
+    let index = 0;
+    if (direction === 'prev') {
+      index = this.index - 1;
+      if (index < 0) {
+        index = this.playList.length - 1;
+      }
+    } 
+
+    if (direction === 'next') {
+      index = this.index + 1;
+      if (index >= this.playList.length) {
+        index = 0;
+      }
+    }
+    
+    this.skipTo(index);
+  };
+
+  
+
+ /**
+ * Skip to a specific track based on its playlist index.
+ */
+  public skipTo = (nextIndex: number) => {
     const { playList, index } = this;
     // Stop the current track.
     if (playList[index].howl) {
       playList[index].howl?.stop();
     }
+    // Reset progress.
+    //  progress.style.width = '0%';
     // Play the new track.
-    this.play(index);
+    this.play(nextIndex);
   };
 
   /**
@@ -94,14 +125,14 @@ class PlayerCore {
    * togglePlaylist
    */
   public togglePlaylist() {
-    
+
   }
 
   /**
    * toggleVolume
    */
   public toggleVolume() {
-    
+
   }
 
   /**
@@ -109,7 +140,7 @@ class PlayerCore {
    * @param  {Number} secs Seconds to format.
    * @return {String}      Formatted time.
    */
-   public formatTime = (secs: number) => {
+  public formatTime = (secs: number) => {
     var minutes = Math.floor(secs / 60) || 0;
     var seconds = (secs - minutes * 60) || 0;
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
