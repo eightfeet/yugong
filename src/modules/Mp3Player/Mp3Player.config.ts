@@ -16,7 +16,7 @@ const config: ModulesStatic = {
         fieldName: "configs",
         describe: "设置播放器",
         data: {
-          src: ['./kml.mp3', './09.mp3'], // 链接
+          src: ['./09.mp3', './kml.mp3'], // 链接
           volume: 1, // 音量 0-1
           html5: true, // 强制h5播放器
           loop: true, // 循环播放
