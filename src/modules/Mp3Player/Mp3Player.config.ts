@@ -21,7 +21,7 @@ const config: ModulesStatic = {
           html5: true, // 强制h5播放器
           loop: true, // 循环播放
           preload: true, // 预加载
-          autoplay: true, // 自动播放
+          autoplay: false, // 自动播放
           mute: false, // 静音加载
           // sprite: {
           //   'track01': [1200, 2000]
@@ -95,36 +95,69 @@ const config: ModulesStatic = {
     },
     style: {
       basic: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 255, 34, 1)"
-        }
+        "backgroundGroup": {}
       },
-      style1: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(116, 92, 255, 1)"
-        }
-      },
-      style2: {
-        "backgroundGroup": {
-          "backgroundColor": "rgba(255, 87, 34, 1)"
-        }
-      },
+      wrap: {},
+      toolbar: {},
+      prev: {},
+      play: {},
+      pause: {},
+      next: {},
+      info: {},
+      progress: {},
+      title: {},
+      time: {}
     },
     styleDescription: [
       {
         title: "基础",
         value: "basic",
+      },
+      {
+        title: "播放器",
+        value: "wrap",
         children: [
           {
-            title: "style1Name",
-            value: "style1",
+            title: "工具条",
+            value: "toolbar",
+            children: [
+              {
+                title: "上一曲",
+                value: "prev"
+              },
+              {
+                title: "播放",
+                value: "play"
+              },{
+                title: "暂停",
+                value: "pause"
+              },
+              {
+                title: "下一曲",
+                value: "next"
+              }
+            ]
           },
           {
-            title: "style2Name",
-            value: "style2",
-          },
+            title: "播放信息",
+            value: "info",
+            children: [
+              {
+                title: "进度条",
+                value: "progress"
+              },
+              {
+                title: "标题",
+                value: "title"
+              },
+              {
+                title: "时间",
+                value: "time"
+              }
+            ]
+          }
         ]
-      }
+      },
     ]
   },
 };

@@ -11,16 +11,25 @@ import { ArgumentsItem } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import s from './Mp3Player.module.less';
 import PlayerCore from './PlayerCore';
-import { PlayerCorePlayList } from './PlayerCore/PlayerCore';
+import { OnPlayType, PlayerCorePlayList } from './PlayerCore/PlayerCore';
+import MemoPause from './icons/Pause';
+import MemoPlay from './icons/Play';
+import MemoNext from './icons/Next';
+import MemoPrev from './icons/Prev';
+import MemoTrack from './icons/Track';
+import classNames from 'classnames';
 
 class Mp3Player extends Component<Mp3PlayerProps, State> {
   player: PlayerCore | undefined;
   constructor(props: Mp3PlayerProps) {
     super(props);
     this.state = {
+      title: undefined,
+      duration: undefined,
       configs: undefined,
-      status: 'stop',
-      playList: undefined
+      playList: undefined,
+      progress: undefined,
+      isPlaying: false,
     };
   }
 
@@ -46,7 +55,10 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     const playList = getArgumentsItem(params) as PlayerCorePlayList[];
     this.setState({ playList });
     this.player = new PlayerCore({
-      playList
+      playList,
+      onPlay: this.onPlay,
+      onProgress: this.onProgress,
+      onPause: this.onPause
     });
   };
 
@@ -55,30 +67,53 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     this.player?.play(No || this.player.index)
   }
 
+  onPlay: OnPlayType = ({ title, duration }) => {
+    this.setState({ title, duration, isPlaying: true})
+  }
+
+  onPause = () => this.setState({ isPlaying: false })
+
+  onProgress = (progress: number) => {
+    this.setState({ progress })
+  }
+
   render() {
     const { classes } = this.props;
-    const { status, configs } = this.state;
+    const { configs, duration, title, progress, isPlaying } = this.state;
+    
+    const pre = Math.ceil(progress! / duration! * 100);
     if (!configs) return null;
-    return ( 
-      <Wrapper {...this.props}>
-
-        <div onClick={() => this.player?.skip('prev')}>
-          上一首
-        </div>
-        <div className={s.player} onClick={() => this.player?.play(0)}>
-          播放
-        </div>
-        <div className={s.player} onClick={() => this.player?.pause()}>
-          暂停
-        </div>
-        <div onClick={() => this.player?.skip('next')}>
-          下一首
-        </div>
-        <div className={s.player} onClick={() => this.player?.volume(0.1)}>
-          音量
-        </div>
-        <div className={s.player} onClick={() => this.player?.seek(0.5)}>
-          跳到
+    return (
+      <Wrapper {...this.props} maxWidth maxHeight>
+        <div className={classNames(s.wrap, classes.wrap)}>
+          <div className={classNames(s.player, classes.toolbar)}>
+            <div className={classNames(s.prev, classes.prev)} onClick={() => this.player?.skip('prev')}>
+              <MemoPrev />
+            </div>
+            {!isPlaying ? <div className={classNames(s.play, classes.play)} onClick={() => this.player?.play()}>
+              <MemoPlay />
+            </div> :
+              <div className={classNames(s.pause, classes.pause)} onClick={() => this.player?.pause()}>
+                <MemoPause />
+              </div>}
+            <div className={classNames(s.next, classes.next)} onClick={() => this.player?.skip('next')}>
+              <MemoNext />
+            </div>
+            {/* <div className={s.player} onClick={() => this.player?.volume(0.1)}>
+            音量
+          </div>
+          <div className={s.player} onClick={() => this.player?.seek(0.5)}>
+            跳到
+          </div> */}
+          </div>
+          {isPlaying ? <div className={classNames(s.info, classes.info)}>
+            <div className={classNames(s.progresswrap, classes.progress)}>
+              <MemoTrack width={pre || 0} />
+              {/* <div className={s.progress} style={{ width: `${progress! / duration! * 100}%` }} /> */}
+            </div>
+            <h3 className={classes.title}>{title}</h3>
+            <p className={classes.time}>{`${progress ? `${this.player?.formatTime(progress)}/` : ''}`}{this.player?.formatTime(duration!)}</p>
+          </div> : null}
         </div>
       </Wrapper>
     );
@@ -96,9 +131,11 @@ const mapDispatch = (dispatch: Dispatch) => ({
 // typeof State
 type State = {
   configs?: HowlOptions;
-  /**正在播放 */
-  status?: 'playing' | 'stop' | 'pause';
   playList?: PlayerCorePlayList[];
+  title?: string;
+  duration?: number;
+  progress?: number;
+  isPlaying?: boolean;
 };
 
 // typeof Props

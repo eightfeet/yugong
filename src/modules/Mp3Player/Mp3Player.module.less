@@ -1,4 +1,54 @@
 .player {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+  >div {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.play {
+  svg {
+    display: block;
+  }
+}
+
+.pause {
+  svg {
+    display: block;
+  }
+}
+
+.prev {
+  svg {
+    display: block;
+  }
+}
+
+.next {
+  svg {
+    display: block;
+  }
+}
+
+.info {
+  display: flex;
+  h3, p {margin: 0; padding: 0;}
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 1rem;
+}
+
+.progresswrap {
+  display: block;
+  height: 4px;
+  width: 100%;
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 }
