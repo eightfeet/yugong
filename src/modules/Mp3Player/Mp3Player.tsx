@@ -11,13 +11,14 @@ import { ArgumentsItem } from '~/types/appData';
 import { getArgumentsItem } from '~/core/getArgumentsTypeDataFromDataSource';
 import s from './Mp3Player.module.less';
 import PlayerCore from './PlayerCore';
-import { OnPlayType, PlayerCorePlayList } from './PlayerCore/PlayerCore';
+import { PlayTypeAndLoadType, PlayerCorePlayList } from './PlayerCore/PlayerCore';
 import MemoPause from './icons/Pause';
 import MemoPlay from './icons/Play';
 import MemoNext from './icons/Next';
 import MemoPrev from './icons/Prev';
 import MemoTrack from './icons/Track';
 import classNames from 'classnames';
+import MemoCD from './icons/CD';
 
 class Mp3Player extends Component<Mp3PlayerProps, State> {
   player: PlayerCore | undefined;
@@ -30,6 +31,7 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
       playList: undefined,
       progress: undefined,
       isPlaying: false,
+      isLoaded: false,
     };
   }
 
@@ -58,7 +60,8 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
       playList,
       onPlay: this.onPlay,
       onProgress: this.onProgress,
-      onPause: this.onPause
+      onPause: this.onPause,
+      onLoad: this.onLoad
     });
   };
 
@@ -67,8 +70,12 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     this.player?.play(No || this.player.index)
   }
 
-  onPlay: OnPlayType = ({ title, duration }) => {
-    this.setState({ title, duration, isPlaying: true})
+  onPlay: PlayTypeAndLoadType = ({ title, duration }) => {
+    this.setState({ title, duration, isPlaying: true })
+  }
+
+  onLoad: PlayTypeAndLoadType = ({ title, duration }) => {
+    this.setState({ title, duration, isLoaded: true })
   }
 
   onPause = () => this.setState({ isPlaying: false })
@@ -77,15 +84,21 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     this.setState({ progress })
   }
 
+  onItemPlay = (index: number) => () => {
+    this.player?.stop()
+    this.player?.play(index)
+  }
+
   render() {
     const { classes } = this.props;
-    const { configs, duration, title, progress, isPlaying } = this.state;
-    
+    const { configs, duration, title, progress, isPlaying, playList } = this.state;
+
     const pre = Math.ceil(progress! / duration! * 100);
     if (!configs) return null;
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
         <div className={classNames(s.wrap, classes.wrap)}>
+          <h3 className={classNames(s.title, classes.title)}>{title}</h3>
           <div className={classNames(s.player, classes.toolbar)}>
             <div className={classNames(s.prev, classes.prev)} onClick={() => this.player?.skip('prev')}>
               <MemoPrev />
@@ -106,14 +119,31 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
             跳到
           </div> */}
           </div>
-          {isPlaying ? <div className={classNames(s.info, classes.info)}>
+          <div className={classes.info}>
             <div className={classNames(s.progresswrap, classes.progress)}>
-              <MemoTrack width={pre || 0} />
-              {/* <div className={s.progress} style={{ width: `${progress! / duration! * 100}%` }} /> */}
+              {progress ? this.player?.formatTime(progress) : '00:00'}
+              <div className={s.progress}>
+                <MemoTrack width={pre || 0} />
+              </div>
+              {duration ? this.player?.formatTime(duration!) : '00:00'}
             </div>
-            <h3 className={classes.title}>{title}</h3>
-            <p className={classes.time}>{`${progress ? `${this.player?.formatTime(progress)}/` : ''}`}{this.player?.formatTime(duration!)}</p>
-          </div> : null}
+            <div className={classNames(s.list, classes.list)}>
+              {
+                playList?.map((item, index) => <div className={s.item} onClick={this.onItemPlay(index)}>
+                  <p className={classNames({
+                    [classes.item]: true,
+                    [s.current]: index === this.player?.index,
+                    [classes.currentitem]: index === this.player?.index,
+                  })}>
+                    <span>
+                      <MemoCD animate={index === this.player?.index && !!isPlaying} />
+                    </span>
+                    {item.title}
+                  </p>
+                </div>)
+              }
+            </div>
+          </div>
         </div>
       </Wrapper>
     );
@@ -136,6 +166,7 @@ type State = {
   duration?: number;
   progress?: number;
   isPlaying?: boolean;
+  isLoaded?: boolean;
 };
 
 // typeof Props

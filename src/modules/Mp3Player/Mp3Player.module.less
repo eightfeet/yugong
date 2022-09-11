@@ -3,10 +3,17 @@
   flex-wrap: wrap;
   justify-content: space-between;
   box-sizing: border-box;
+
   >div {
-    width: 2rem;
-    height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    flex-shrink: 0;
   }
+}
+
+p {
+  padding: 0;
+  margin: 0;
 }
 
 .play {
@@ -33,22 +40,51 @@
   }
 }
 
-.info {
-  display: flex;
-  h3, p {margin: 0; padding: 0;}
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+.item {
+  padding: 0.5rem 0;
+  p {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: all 0.5s;
+    &.current {
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    span {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+  }
   font-size: 1rem;
+  text-align: left;
 }
 
 .progresswrap {
-  display: block;
-  height: 4px;
-  width: 100%;
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: small;
+  .progress {
+    height: 4px;
+    margin: 0 0.5rem;
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
+}
+
+.title {
+  margin: 0 0 1rem 0;
+}
+
+.list {
+  margin: 1rem 0 0 0;
+  padding: 0;
 }

@@ -6,26 +6,27 @@ export interface PlayerCorePlayList {
   howl: Howl | undefined;
 }
 
+export type PlayTypeAndLoadType = ((parame: {
+  title: string;
+  duration: number;
+}, howl: Howl) => void);
+
 export interface PlayerCoreParameTers {
   playList: PlayerCorePlayList[];
-  onPlay?: OnPlayType;
+  onPlay?: PlayTypeAndLoadType;
   onProgress?: (progress: number) => void;
-  onLoad?: () => void;
+  onLoad?: PlayTypeAndLoadType;
   onEnd?: () => void;
   onPause?: () => void;
   onStop?: () => void;
 }
 
-export type OnPlayType = ((parame: {
-  title: string;
-  duration: number;
-}, howl: Howl) => void);
 
 class PlayerCore {
   playList: PlayerCorePlayList[];
   index = 0;
-  onPlay: OnPlayType | undefined;
-  onLoad: (() => void) | undefined;
+  onPlay: PlayTypeAndLoadType | undefined;
+  onLoad: PlayTypeAndLoadType | undefined;
   onEnd: (() => void) | undefined;
   onPause: (() => void) | undefined;
   onStop: (() => void) | undefined;
@@ -67,13 +68,22 @@ class PlayerCore {
           // requestAnimationFrame(self.step.bind(self));
 
         },
-        onload: () => { },
+        onload: () => {
+          // Display the duration.
+          const duration = Math.round(sound?.duration() || 0);
+          const { title, howl, } = this.playList[index!];
+          const parame = {
+            title,
+            duration,
+          }
+          this.onLoad?.(parame, howl!);
+         },
         onend: () => {
           this.skip('next');
         },
         onpause: () => this.onPause?.(),
         onstop: () => { },
-        onseek: () => { console.log(1111);},
+        onseek: () => { },
       });
     }
     // Begin playing the sound.
@@ -161,6 +171,14 @@ class PlayerCore {
     if (howl?.playing()) {
       requestAnimationFrame(this.step);
     }
+  }
+
+  /**
+   * stop
+   */
+  public stop() {
+    const howl = this.playList[this.index].howl;
+    howl?.stop();
   }
 
   /**

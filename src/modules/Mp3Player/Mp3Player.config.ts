@@ -16,7 +16,6 @@ const config: ModulesStatic = {
         fieldName: "configs",
         describe: "设置播放器",
         data: {
-          src: ['./09.mp3', './kml.mp3'], // 链接
           volume: 1, // 音量 0-1
           html5: true, // 强制h5播放器
           loop: true, // 循环播放
@@ -40,25 +39,29 @@ const config: ModulesStatic = {
         describe: "设置播放列表",
         data: [
           {
-            title: '卡梅拉',
-            file: './kml.mp3'
+            "title": "一荤一素（毛不易）",
+            "file": "https://m10.music.126.net/20220911131302/cb3722d88e28d00823817567b1f34973/yyaac/obj/wonDkMOGw6XDiTHCmMOi/14050841938/c5a2/dbcb/ca69/64ead60e4126a33be67acdbbd2ad4179.m4a"
           },
           {
-            title: '故事',
-            file: './09.mp3'
+            "title": "这世界那么多人(莫文蔚)",
+            "file": "https://m701.music.126.net/20220911125800/af0c09680cf9473a30b8706bd06c9bfe/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/14096411085/505f/4035/1567/a8b87b1f40922f95a5f1381df1b0f1a3.m4a"
           }
         ],
       }]
     },
     {
       name: "play",
-      description: '设置播放列表',
+      description: '播放',
       arguments: [{
-        type: "number",
+        type: "mixed",
         name: "设置",
         fieldName: "No",
         describe: "设置播放列表",
-        data: '',
+        data: {
+          index: 0,
+          start: 100,
+          end: 3000
+        },
       }]
     }
   ],
@@ -94,19 +97,119 @@ const config: ModulesStatic = {
       h: 5, // height
     },
     style: {
-      basic: {
+      "basic": {
         "backgroundGroup": {}
       },
-      wrap: {},
-      toolbar: {},
-      prev: {},
-      play: {},
-      pause: {},
-      next: {},
-      info: {},
-      progress: {},
-      title: {},
-      time: {}
+      "wrap": {},
+      "title": {
+        "font": {
+          "color": "rgba(156, 39, 176, 1)"
+        }
+      },
+      "toolbar": {},
+      "prev": {},
+      "play": {},
+      "pause": {},
+      "next": {},
+      "info": {},
+      "progress": {},
+      "time": {},
+      "list": {
+        "backgroundGroup": {
+          "backgroundColor": "rgba(92, 7, 243, 1)"
+        },
+        "border": {
+          "radiusTopLeft": [
+            10, ''
+          ],
+          "radiusTopRight": [
+            10, ''
+          ],
+          "radiusBottomLeft": [
+            10, ''
+          ],
+          "radiusBottomRight": [
+            10, ''
+          ]
+        },
+        "display": {
+          "padding": [
+            [
+              20,
+              ''
+            ],
+            [
+              20,
+              ''
+            ],
+            [
+              20,
+              ''
+            ],
+            [
+              20,
+              ''
+            ]
+          ]
+        },
+        "font": {
+          "color": "rgba(255, 255, 255, 1)"
+        }
+      },
+      "item": {},
+      "currentitem": {
+        "backgroundGroup": {
+          "backgroundList": [
+            {
+              "gradient": [
+                {
+                  "color": "rgb(206, 115, 110)",
+                  "transition": 1
+                },
+                {
+                  "color": "rgb(154, 63, 246)",
+                  "transition": 100
+                }
+              ],
+              "gradientDirections": "left"
+            }
+          ]
+        },
+        "border": {
+          "radiusTopLeft": [
+            10, ''
+          ],
+          "radiusTopRight": [
+            10, ''
+          ],
+          "radiusBottomLeft": [
+            10, ''
+          ],
+          "radiusBottomRight": [
+            10, ''
+          ]
+        },
+        "display": {
+          "padding": [
+            [
+              14,
+              ''
+            ],
+            [
+              14,
+              ''
+            ],
+            [
+              14,
+              ''
+            ],
+            [
+              14,
+              ''
+            ]
+          ],
+        }
+      }
     },
     styleDescription: [
       {
@@ -118,6 +221,10 @@ const config: ModulesStatic = {
         value: "wrap",
         children: [
           {
+            title: "标题",
+            value: "title"
+          },
+          {
             title: "工具条",
             value: "toolbar",
             children: [
@@ -128,7 +235,7 @@ const config: ModulesStatic = {
               {
                 title: "播放",
                 value: "play"
-              },{
+              }, {
                 title: "暂停",
                 value: "pause"
               },
@@ -147,12 +254,18 @@ const config: ModulesStatic = {
                 value: "progress"
               },
               {
-                title: "标题",
-                value: "title"
-              },
-              {
-                title: "时间",
-                value: "time"
+                title: "播放清单",
+                value: "list",
+                children: [
+                  {
+                    title: "清单项",
+                    value: "item",
+                  },
+                  {
+                    title: "正在播放项",
+                    value: "currentitem",
+                  }
+                ]
               }
             ]
           }
