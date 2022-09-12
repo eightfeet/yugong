@@ -13,7 +13,7 @@ const config: ModulesStatic = {
           name: "播放地址",
           fieldName: "url",
           describe: "设置视频链接地址",
-          data: [],
+          data: ['./mov_bbb.mp4'],
         },
         {
           type: "string",

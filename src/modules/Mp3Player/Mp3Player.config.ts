@@ -8,28 +8,6 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "setPlayer",
-      description: '设置播放器',
-      arguments: [{
-        type: "mixed",
-        name: "设置",
-        fieldName: "configs",
-        describe: "设置播放器",
-        data: {
-          volume: 1, // 音量 0-1
-          html5: true, // 强制h5播放器
-          loop: true, // 循环播放
-          preload: true, // 预加载
-          autoplay: false, // 自动播放
-          mute: false, // 静音加载
-          // sprite: {
-          //   'track01': [1200, 2000]
-          // }, // 片段播放
-          rate: 1 // 播放速度 0.5-4.0
-        },
-      }]
-    },
-    {
       name: "setPlayList",
       description: '设置播放列表',
       arguments: [{
@@ -39,12 +17,12 @@ const config: ModulesStatic = {
         describe: "设置播放列表",
         data: [
           {
-            "title": "一荤一素（毛不易）",
-            "file": "https://m10.music.126.net/20220911131302/cb3722d88e28d00823817567b1f34973/yyaac/obj/wonDkMOGw6XDiTHCmMOi/14050841938/c5a2/dbcb/ca69/64ead60e4126a33be67acdbbd2ad4179.m4a"
+            "title": "乌兰巴托的夜",
+            "file": "./wlbt.m4a"
           },
           {
-            "title": "这世界那么多人(莫文蔚)",
-            "file": "https://m701.music.126.net/20220911125800/af0c09680cf9473a30b8706bd06c9bfe/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/14096411085/505f/4035/1567/a8b87b1f40922f95a5f1381df1b0f1a3.m4a"
+            "title": "当年情",
+            "file": "./dnq.m4a"
           }
         ],
       }]
@@ -52,16 +30,25 @@ const config: ModulesStatic = {
     {
       name: "play",
       description: '播放',
+      presettable: false,
       arguments: [{
-        type: "mixed",
-        name: "设置",
+        type: "number",
+        name: "序号",
         fieldName: "No",
-        describe: "设置播放列表",
-        data: {
-          index: 0,
-          start: 100,
-          end: 3000
-        },
+        describe: "按播放列表从0排序",
+        data: '',
+      }]
+    },
+    {
+      name: "stop",
+      description: '停止',
+      presettable: false,
+      arguments: [{
+        type: "number",
+        name: "序号",
+        fieldName: "No",
+        describe: "按播放列表从0排序",
+        data: '',
       }]
     }
   ],

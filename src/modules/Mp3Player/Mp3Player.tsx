@@ -27,7 +27,6 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
     this.state = {
       title: undefined,
       duration: undefined,
-      configs: undefined,
       playList: undefined,
       progress: undefined,
       isPlaying: false,
@@ -37,9 +36,9 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
 
   componentDidMount() {
     this.props.registersFunction({
-      setPlayer: this.setPlayer,
       setPlayList: this.setPlayList,
-      play: this.play
+      play: this.play,
+      stop: this.stop,
     });
     this.props.eventDispatch().mount();
   }
@@ -47,11 +46,6 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
   componentWillUnmount() {
     this.props.eventDispatch().unmount();
   }
-
-  setPlayer = (params: ArgumentsItem) => {
-    const configs = getArgumentsItem(params) as HowlOptions;
-    this.setState({ configs });
-  };
 
   setPlayList = (params: ArgumentsItem) => {
     const playList = getArgumentsItem(params) as PlayerCorePlayList[];
@@ -64,6 +58,12 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
       onLoad: this.onLoad
     });
   };
+
+  stop = (index: ArgumentsItem) => {
+    const No = getArgumentsItem(index) as number;
+    this.player?.stop(No || this.player.index)
+  }
+
 
   play = (index: ArgumentsItem) => {
     const No = getArgumentsItem(index) as number;
@@ -91,10 +91,9 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
 
   render() {
     const { classes } = this.props;
-    const { configs, duration, title, progress, isPlaying, playList } = this.state;
-
+    const { duration, title, progress, isPlaying, playList } = this.state;
     const pre = Math.ceil(progress! / duration! * 100);
-    if (!configs) return null;
+
     return (
       <Wrapper {...this.props} maxWidth maxHeight>
         <div className={classNames(s.wrap, classes.wrap)}>
@@ -112,12 +111,6 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
             <div className={classNames(s.next, classes.next)} onClick={() => this.player?.skip('next')}>
               <MemoNext />
             </div>
-            {/* <div className={s.player} onClick={() => this.player?.volume(0.1)}>
-            音量
-          </div>
-          <div className={s.player} onClick={() => this.player?.seek(0.5)}>
-            跳到
-          </div> */}
           </div>
           <div className={classes.info}>
             <div className={classNames(s.progresswrap, classes.progress)}>
@@ -129,7 +122,7 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
             </div>
             <div className={classNames(s.list, classes.list)}>
               {
-                playList?.map((item, index) => <div className={s.item} onClick={this.onItemPlay(index)}>
+                playList?.map((item, index) => <div className={s.item} key={index} onClick={this.onItemPlay(index)}>
                   <p className={classNames({
                     [classes.item]: true,
                     [s.current]: index === this.player?.index,
@@ -160,7 +153,6 @@ const mapDispatch = (dispatch: Dispatch) => ({
 
 // typeof State
 type State = {
-  configs?: HowlOptions;
   playList?: PlayerCorePlayList[];
   title?: string;
   duration?: number;

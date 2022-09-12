@@ -176,8 +176,8 @@ class PlayerCore {
   /**
    * stop
    */
-  public stop() {
-    const howl = this.playList[this.index].howl;
+  public stop(index?: number) {
+    const howl = this.playList[index || this.index]?.howl;
     howl?.stop();
   }
 
