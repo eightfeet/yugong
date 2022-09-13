@@ -1,5 +1,8 @@
+import { Form, Input } from 'antd';
 import React from 'react';
 import s from './DataElement.module.scss';
+
+const FormItem = Form.Item;
 
 interface Props {
   index: number;
@@ -11,10 +14,14 @@ interface Props {
 
 const DataElement:React.FC<Props> = ({ item }) => {
   return (
-    <div>
-      {item.title}
-      {item.file}
-    </div>
+    <Form className={s.form}>
+      <FormItem label="名称" className={s.formitem}>
+        <Input value={item.title} />
+      </FormItem>
+      <FormItem label="路径" className={s.formitem}>
+        <Input value={item.file} />
+      </FormItem>
+    </Form>
   )
 }
 
