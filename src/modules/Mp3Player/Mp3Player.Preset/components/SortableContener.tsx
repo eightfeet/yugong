@@ -10,12 +10,14 @@ interface Props {
   items: any[]
 }
 
+const path = '[0].arguments[0].data';
+
 class SortableContener extends Component<Props> {
   static contextType = CustomPresettingContext;
   onSortEnd = ({oldIndex, newIndex}: any) => {
     const data = arrayMove(this.props.items, oldIndex, newIndex);
     const { runningData, onChange } = this.context;
-    // set(runningData, runningDataPath.dataGroups_data, data);
+    set(runningData, path, data);
     onChange(runningData);
   };
   render() {
