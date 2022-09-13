@@ -258,7 +258,8 @@ const config: ModulesStatic = {
           }
         ]
       },
-    ]
+    ],
+    preset: true
   },
 };
 // export type key of events list
