@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { HowlOptions } from 'howler';
 import PresetModule from '~/components/PresetModule';
 import { ModuleBaseProps } from '~/components/PresetModule/PresetModule';
 import { Dispatch, RootState } from '~/redux/store';
