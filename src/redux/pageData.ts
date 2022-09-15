@@ -37,6 +37,7 @@ const defaultData: PageData = {
   onLoadApi: [],
   globalApi: [],
   mountEnvents: [],
+  usergestureEnvents: [],
   unmountEnvents: [],
   cols: localPageData.cols || GRID_DEFAULT_COLS,
   rowHeight: localPageData.rowHeight,

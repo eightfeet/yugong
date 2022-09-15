@@ -6,6 +6,10 @@
       "description": "初始化"
     },
     {
+      "name": "usergesture",
+      "description": "首次用户交互"
+    },
+    {
       "name": "unmount",
       "description": "卸载"
     }

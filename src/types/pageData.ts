@@ -50,6 +50,8 @@ export interface PageData {
   globalApi?: Api[];
   /* 挂载事件 */
   mountEnvents?: EventsTypeItem[];
+  /* 首次交互 */
+  usergestureEnvents?: EventsTypeItem[];
   /* 卸载事件 */
   unmountEnvents?: EventsTypeItem[];
   /* 百度统计Id */

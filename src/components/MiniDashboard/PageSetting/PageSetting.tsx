@@ -89,6 +89,9 @@ const Pagesetting: React.FC<Props> = () => {
         if (envinfo.name === "mount") {
           draft.mountEnvents = data;
         }
+        if (envinfo.name === "usergesture") {
+          draft.usergestureEnvents = data;
+        }
         if (envinfo.name === "unmount") {
           draft.unmountEnvents = data;
         }

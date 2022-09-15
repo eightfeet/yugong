@@ -248,7 +248,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   // 全局未做uuid前缀处理，这里需要手动加上global标签
   const [, eventEmitter] = useLifeCycle(
     'global',
-    { mount: '初始化', unmount: '卸载' },
+    { mount: '初始化', unmount: '卸载', usergesture: '首次交互' },
     {
       injectGlobal,
       redirect,
@@ -312,6 +312,20 @@ const Output: OutputModules<Props> = ({ pageData }) => {
     }
   });
 
+  // 首次交互
+  const [firstInteraction, setFirstInteraction] = useState(false);
+  const onFirstInteraction = useCallback(
+    () => {
+      if (!firstInteraction && eventEmitter) {
+        // 事件处理
+        const emitList: EventsTypeItem[] = pageData.usergestureEnvents || [];
+        setFirstInteraction(true);
+        eventEmitter.emit(emitList);
+      }
+    },
+    [eventEmitter, firstInteraction, pageData],
+  )
+
   const rowHeight = parseInt(getResult(`${pageData.rowHeight}`));
   
   const cols = parseInt(getResult(`${pageData.cols}`));
@@ -322,7 +336,7 @@ const Output: OutputModules<Props> = ({ pageData }) => {
   }
 
   return (
-    <div>
+    <div onPointerDown={onFirstInteraction}>
       <OutputLayout
         rootFontsize={rootFontsize}
         rowHeight={rowHeight >= 0 ? rowHeight : GRID_DEFAULT_ROWHEIGHT}
