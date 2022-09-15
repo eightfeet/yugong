@@ -80,6 +80,15 @@ const Wrapper: React.FC<Props> = ({
     }
   }, [refWrap, currentLayout?.w, currentLayout?.h]);
 
+  // 视窗事件
+  useEffect(() => {
+    if (inView) {
+      console.log('进入视图');
+    } else {
+      console.log('离开视图');
+    }
+  }, [inView])
+
   /**
    * 图层被触发
    */
