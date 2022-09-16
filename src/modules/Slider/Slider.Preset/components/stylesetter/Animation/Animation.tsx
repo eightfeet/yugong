@@ -58,9 +58,14 @@ const Animation: React.FC<Props> = () => {
             </Col>
             <Col span={17}>
               <AntSelect
+                showSearch
                 className={s.antselect}
                 value={animation?.animationName}
+                optionFilterProp="children"
                 onChange={onChangeAnimation('animationName')}
+                filterOption={(input, option) =>
+                  (option!.children as unknown as string)?.toLowerCase()?.includes(input.toLowerCase())
+                }
               >
                 {Object.keys(animationDisc).map((key) => (
                   <AntSelect.OptGroup key={key} label={key}>
