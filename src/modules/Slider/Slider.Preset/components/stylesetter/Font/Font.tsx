@@ -75,8 +75,6 @@ const Font: React.FC<Props> = () => {
       }
       fontData[type] = value;
       setFontData({ ...fontData });
-      console.log(555, fontData);
-      
       if (context.onChange instanceof Function) {
         context.onChange(fontData, "font");
       }
