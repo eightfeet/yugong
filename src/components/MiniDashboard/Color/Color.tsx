@@ -63,8 +63,7 @@ const Color: React.FC<Props> = ({
     } else {
       setColor(undefined);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [defaultValue, value]);
 
   const removePannel = useCallback(
     () => {
