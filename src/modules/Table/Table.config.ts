@@ -157,6 +157,14 @@ const config: ModulesStatic = {
       description: '卸载',
     },
     {
+      "name": "inView",
+      "description": "进入视窗"
+    },
+    {
+      "name": "outView",
+      "description": "离开视窗"
+    },
+    {
       name: 'pullDown',
       description: '移动端下拉',
     },

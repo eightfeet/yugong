@@ -12,7 +12,11 @@ interface Props extends AppDataElementsTypes {
   maxWidth?: boolean;
   maxHeight?: boolean;
   itemAlign?: 'top' | 'center' | 'bottom';
-  visible?: boolean
+  visible?: boolean;
+  eventDispatch?: () => {
+    inView: Function;
+    outView: Function;
+  };
 }
 
 const Wrapper: React.FC<Props> = ({
@@ -24,6 +28,8 @@ const Wrapper: React.FC<Props> = ({
   moduleId,
   itemAlign = 'center',
   visible = true,
+  eventDispatch,
+  ...other
 }) => {
   // Wrapper 自身的样式
   const [basicStyle, setBasicStyle] = useState<{ [keys: string]: any }>({});
@@ -83,11 +89,11 @@ const Wrapper: React.FC<Props> = ({
   // 视窗事件
   useEffect(() => {
     if (inView) {
-      console.log('进入视图');
+      eventDispatch?.()?.inView?.();
     } else {
-      console.log('离开视图');
+      eventDispatch?.()?.outView?.();
     }
-  }, [inView])
+  }, [eventDispatch, inView])
 
   /**
    * 图层被触发

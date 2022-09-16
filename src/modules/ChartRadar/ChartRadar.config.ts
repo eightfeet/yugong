@@ -205,6 +205,14 @@ const config: ModulesStatic = {
     {
       name: "unmount",
       description: "卸载",
+    },
+    {
+      "name": "inView",
+      "description": "进入视窗"
+    },
+    {
+      "name": "outView",
+      "description": "离开视窗"
     }
   ],
 

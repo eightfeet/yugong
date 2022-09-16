@@ -22,6 +22,8 @@ interface CurrentEventEmitter {
 export type EventsDispatch<T = {}> = T & {
   mount: Function;
   unmount: Function;
+  inView: Function;
+  outView: Function;
 }
 
 export default function PresetModule<T extends PresetModuleProps = PresetModuleProps>(

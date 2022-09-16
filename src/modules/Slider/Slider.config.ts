@@ -133,6 +133,14 @@ const config: ModulesStatic = {
       description: '卸载',
     },
     {
+      "name": "inView",
+      "description": "进入视窗"
+    },
+    {
+      "name": "outView",
+      "description": "离开视窗"
+    },
+    {
       name: 'afterChange',
       description: '页面切换',
     },
