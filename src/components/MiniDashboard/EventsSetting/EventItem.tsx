@@ -36,11 +36,14 @@ const EventItem: React.FC<Props> = ({
   onMinus,
   moduleUuid,
   dispatchedFunctions,
-  arguments: injectArgs,
   onChange,
+  ...props
 }) => {
   const appData = useSelector((state: RootState) => state.appData);
   const [currentModuleUuid, setCurrentModuleUuid] = useState<string>(moduleUuid);
+  const [currentDispatchedFunctions, setCurrentDispatchedFunctions] = useState<string | undefined>(dispatchedFunctions);
+  const [currentArguments, setCurrentArguments] = useState(props.arguments || [])
+
   const [form] = useForm();
 
   /**根据模块id来查询运行时模块清单选项 */
@@ -66,10 +69,11 @@ const EventItem: React.FC<Props> = ({
       }
     }
     return list;
-  }, [currentModuleUuid]);
+  }, [appData]);
 
   /**根据模块id选项来查询模块下的方法 */
-  const [functionList, setFunctionList] = useState<ExposeFunctions[]>([])
+  const [functionList, setFunctionList] = useState<ExposeFunctions[]>([]);
+  
   const getFunctionList = useCallback(async (currentModuleUuid) => {
     if (currentModuleUuid) {
       // 获取模块type
@@ -89,44 +93,59 @@ const EventItem: React.FC<Props> = ({
   }, [moduleList]);
 
   useEffect(() => {
-    getFunctionList(currentModuleUuid);
-  }, [getFunctionList, currentModuleUuid]);
-
-  const [currentDispatchedFunctions, setCurrentDispatchedFunctions] = useState<string>();
-  const onFieldsChange = useCallback(() => {
-    const { moduleUuid } = form.getFieldsValue();
-    if (currentModuleUuid !== moduleUuid) {
-      form.setFieldsValue({ dispatchedFunctions: null })
+    if(moduleUuid) {
+      getFunctionList(moduleUuid)
     }
-    const { dispatchedFunctions } = form.getFieldsValue();
-    setCurrentDispatchedFunctions(dispatchedFunctions);
-    setCurrentModuleUuid(moduleUuid);
-  }, [currentModuleUuid, form]);
 
-  const onSaveArgs = useCallback(
-    (e) => {
-      setArgumentsVisible(false)
-      form.setFieldsValue({ arguments: e })
+  }, [moduleUuid, getFunctionList])
+  
+  const onChangeData = useCallback(
+    () => {
+      console.log('currentArguments', currentArguments);
+      
       if (onChange instanceof Function) {
         const values = form.getFieldsValue();
         onChange(values);
       }
     },
-    [form, onChange],
+    [currentArguments, form, onChange],
+  )
+  
+
+  const onFieldsChange = useCallback((e) => {
+    const { moduleUuid, dispatchedFunctions } = form.getFieldsValue();
+    const { name } = e[0];
+    const isDispatchedFunctions = name[0] === 'dispatchedFunctions';
+    const isModuleUuid = name[0] === 'moduleUuid';
+
+    if (isModuleUuid) {
+      setCurrentModuleUuid(moduleUuid);
+      getFunctionList(moduleUuid);
+      form.setFieldsValue({ dispatchedFunctions: null })
+    }
+
+    if (isDispatchedFunctions) {
+      setCurrentDispatchedFunctions(dispatchedFunctions);
+      const res = functionList.find(Item => Item.name === dispatchedFunctions);
+    }
+
+    if (moduleUuid && dispatchedFunctions) {
+      onChangeData();
+    }
+  }, [form, functionList, getFunctionList, onChangeData]);
+
+  const onSaveArgs = useCallback(
+    (e) => {
+      setArgumentsVisible(false);
+      form.setFieldsValue({ arguments: e });
+      onChangeData();
+    },
+    [form, onChangeData],
   )
 
   const [argumentsVisiblet, setArgumentsVisible] = useState(false);
-  const { arguments: args } = functionList.find(Item => Item.name === currentDispatchedFunctions || dispatchedFunctions) || {};
-
-  useEffect(() => {
-    if (currentDispatchedFunctions && currentModuleUuid && !args?.length) {
-      onChange({
-        moduleUuid: currentModuleUuid,
-        dispatchedFunctions: currentDispatchedFunctions
-      })
-    }
-  }, [currentModuleUuid, currentDispatchedFunctions, onChange, args?.length])
-    
+  
+  console.log(5555, currentArguments);
   return (
     <>
       <Form
@@ -134,7 +153,7 @@ const EventItem: React.FC<Props> = ({
         initialValues={{
           moduleUuid: currentModuleUuid,
           dispatchedFunctions,
-          arguments: injectArgs,
+          arguments: currentArguments,
         }}
         className={s.root}
         form={form}
@@ -182,7 +201,7 @@ const EventItem: React.FC<Props> = ({
               <Button
                 icon={<SettingOutlined />}
                 onClick={() => setArgumentsVisible(true)}
-                disabled={!args?.length}
+                disabled={!currentArguments?.length}
                 className={s.arg}
               >
                 参数
@@ -190,7 +209,6 @@ const EventItem: React.FC<Props> = ({
             </Form.Item>
           </Input.Group>
         </Form.Item>
-        <Form.Item noStyle name="arguments" ><Input hidden /></Form.Item>
         <Form.Item style={{ width: '2%', textAlign: 'center' }}>
           <Button
             size="small"
@@ -202,10 +220,11 @@ const EventItem: React.FC<Props> = ({
         title="参数设置"
         visible={argumentsVisiblet}
         onOk={onSaveArgs}
-        argumentsData={injectArgs}
-        initArgumentData={injectArgs?.length ? injectArgs : args}
+        argumentsData={currentArguments}
+        initArgumentData={currentArguments}
         onCancel={() => setArgumentsVisible(false)}
       />
+      {JSON.stringify(currentArguments)}
     </>
   );
 };

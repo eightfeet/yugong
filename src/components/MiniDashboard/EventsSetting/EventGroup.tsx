@@ -104,10 +104,7 @@ const EventGroup: React.FC<Props> = ({
    * 新增事件执行
    */
   const onPlus = useCallback(() => {
-    const newItem: any = {
-      moduleUuid: '',
-      dispatchedFunctions: '',
-    };
+    const newItem: any = {};
     currentModuleEvents.push(newItem);
     handleOnChange(currentModuleEvents);
   }, [currentModuleEvents, handleOnChange]);
