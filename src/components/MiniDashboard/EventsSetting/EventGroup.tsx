@@ -30,11 +30,11 @@ export interface EventDataList {
   /**
    * 模块名
    */
-  moduleUuid: string;
+  moduleUuid?: string;
   /**
    * 模块发布的方法
    */
-  dispatchedFunctions: string;
+  dispatchedFunctions?: string;
   /**
    * 模块发布的方法对应的参数
    */
@@ -59,10 +59,10 @@ const EventGroup: React.FC<Props> = ({
    */
   useEffect(() => {
     const eventDataList = value.map((event) => {
-      const selectData = event.name.split('/');
+      const [ moduleUuid, dispatchedFunctions ] = event.name.split('/');
       const result = {
-        moduleUuid: selectData[0],
-        dispatchedFunctions: selectData[1],
+        moduleUuid: moduleUuid !== 'undefined' ? moduleUuid : undefined,
+        dispatchedFunctions: dispatchedFunctions !== 'undefined' ? moduleUuid : undefined,
         arguments: event.arguments || [],
       };
       return result;

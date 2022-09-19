@@ -245,7 +245,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
         <Input.Group compact>
           <Form.Item noStyle>
             <Select
-              style={{ width: '190px' }}
+              style={{ width: '180px' }}
               showSearch
               placeholder="请选择"
               value={point}
@@ -261,7 +261,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
           <div className={s.bridge}>=</div>
           <Form.Item noStyle>
             <Select
-              style={{ width: '190px' }}
+              style={{ width: '180px' }}
               placeholder="状态"
               value={status}
               suffixIcon={<div style={{ fontSize: 14 }}>时</div>}
@@ -283,7 +283,7 @@ const TCHLineItem: React.FC<Props> = ({ points, process, line, onChange, onRemov
           <Form.Item noStyle>
             <Select
               value={dispatch || null}
-              style={{ width: '165px' }}
+              style={{ width: '145px' }}
               className={s.selecter}
               placeholder="请选择方法"
               onChange={onChangeDispatchedFunctions}

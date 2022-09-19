@@ -40,9 +40,7 @@ const EventItem: React.FC<Props> = ({
   ...props
 }) => {
   const appData = useSelector((state: RootState) => state.appData);
-  const [currentModuleUuid, setCurrentModuleUuid] = useState<string>(moduleUuid);
-  const [currentDispatchedFunctions, setCurrentDispatchedFunctions] = useState<string | undefined>(dispatchedFunctions);
-  const [currentArguments, setCurrentArguments] = useState(props.arguments || [])
+  const [currentModuleUuid, setCurrentModuleUuid] = useState<string | undefined>(moduleUuid);
 
   const [form] = useForm();
 
@@ -101,16 +99,13 @@ const EventItem: React.FC<Props> = ({
   
   const onChangeData = useCallback(
     () => {
-      console.log('currentArguments', currentArguments);
-      
       if (onChange instanceof Function) {
         const values = form.getFieldsValue();
         onChange(values);
       }
     },
-    [currentArguments, form, onChange],
+    [form, onChange],
   )
-  
 
   const onFieldsChange = useCallback((e) => {
     const { moduleUuid, dispatchedFunctions } = form.getFieldsValue();
@@ -125,8 +120,8 @@ const EventItem: React.FC<Props> = ({
     }
 
     if (isDispatchedFunctions) {
-      setCurrentDispatchedFunctions(dispatchedFunctions);
       const res = functionList.find(Item => Item.name === dispatchedFunctions);
+      if (res?.arguments) form.setFieldsValue({arguments: res.arguments})
     }
 
     if (moduleUuid && dispatchedFunctions) {
@@ -144,8 +139,8 @@ const EventItem: React.FC<Props> = ({
   )
 
   const [argumentsVisiblet, setArgumentsVisible] = useState(false);
+  const currentArguments = form.getFieldValue('arguments');
   
-  console.log(5555, currentArguments);
   return (
     <>
       <Form
@@ -153,7 +148,7 @@ const EventItem: React.FC<Props> = ({
         initialValues={{
           moduleUuid: currentModuleUuid,
           dispatchedFunctions,
-          arguments: currentArguments,
+          arguments: props.arguments || [],
         }}
         className={s.root}
         form={form}
@@ -197,6 +192,7 @@ const EventItem: React.FC<Props> = ({
                 ))}
               </Select>
             </Form.Item>
+            <Form.Item noStyle name="arguments" ><Input hidden /></Form.Item>
             <Form.Item noStyle>
               <Button
                 icon={<SettingOutlined />}
@@ -224,7 +220,6 @@ const EventItem: React.FC<Props> = ({
         initArgumentData={currentArguments}
         onCancel={() => setArgumentsVisible(false)}
       />
-      {JSON.stringify(currentArguments)}
     </>
   );
 };
