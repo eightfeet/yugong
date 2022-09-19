@@ -62,7 +62,7 @@ const EventGroup: React.FC<Props> = ({
       const [ moduleUuid, dispatchedFunctions ] = event.name.split('/');
       const result = {
         moduleUuid: moduleUuid !== 'undefined' ? moduleUuid : undefined,
-        dispatchedFunctions: dispatchedFunctions !== 'undefined' ? moduleUuid : undefined,
+        dispatchedFunctions: dispatchedFunctions !== 'undefined' ? dispatchedFunctions : undefined,
         arguments: event.arguments || [],
       };
       return result;

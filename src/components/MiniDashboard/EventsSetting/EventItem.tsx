@@ -86,6 +86,7 @@ const EventItem: React.FC<Props> = ({
       } else {
         exposeFunctions = Output.exposeFunctions || [];
       }
+      
       setFunctionList(exposeFunctions);
     }
   }, [moduleList]);
@@ -107,16 +108,16 @@ const EventItem: React.FC<Props> = ({
     [form, onChange],
   )
 
-  const onFieldsChange = useCallback((e) => {
+  const onFieldsChange = useCallback(async (e) => {
     const { moduleUuid, dispatchedFunctions } = form.getFieldsValue();
     const { name } = e[0];
     const isDispatchedFunctions = name[0] === 'dispatchedFunctions';
     const isModuleUuid = name[0] === 'moduleUuid';
 
-    if (isModuleUuid) {
+    if (isModuleUuid) {      
       setCurrentModuleUuid(moduleUuid);
-      getFunctionList(moduleUuid);
-      form.setFieldsValue({ dispatchedFunctions: null })
+      await getFunctionList(moduleUuid);
+      form.setFieldsValue({ dispatchedFunctions: null });
     }
 
     if (isDispatchedFunctions) {
@@ -124,9 +125,7 @@ const EventItem: React.FC<Props> = ({
       if (res?.arguments) form.setFieldsValue({arguments: res.arguments})
     }
 
-    if (moduleUuid && dispatchedFunctions) {
-      onChangeData();
-    }
+    onChangeData();
   }, [form, functionList, getFunctionList, onChangeData]);
 
   const onSaveArgs = useCallback(
