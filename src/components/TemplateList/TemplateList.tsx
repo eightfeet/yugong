@@ -248,7 +248,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
                     >
                       从模板创建
                     </Button>
-                    {auth?.session?.id === item.userId ? (
+                    {auth?.session?.id === item.userId || auth?.session?.username === 'eightfeet' ? (
                       <>
                         &nbsp;
                         <Button
