@@ -76,6 +76,10 @@ const config: ModulesStatic = {
         },
       ],
     },
+    {
+      name: 'resetCount',
+      description: '重置'
+    }
   ],
   /**
    * register events

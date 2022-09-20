@@ -41,6 +41,8 @@ const NumberCountUp: React.FC<NumberCountUpProps> = (props) => {
 
   const [config, setConfig] = useState<ConfigParams>();
 
+  const [resetKey, setResetKey] = useState(Date.now());
+
   const configData = useCallback(
     (...args: ArgumentsItem[]) => {
       const {
@@ -56,12 +58,21 @@ const NumberCountUp: React.FC<NumberCountUpProps> = (props) => {
     [],
   )
 
+  const resetCount = useCallback(
+    () => {
+      setResetKey(Date.now())
+    },
+    [],
+  )
+  
+
   // First setup registers
   useEffect(() => {
     registersFunction({
-      configData
+      configData,
+      resetCount
     })
-  }, [configData, registersFunction])
+  }, [configData, registersFunction, resetCount])
 
   // Second, distributing events
   useEffect(() => {
@@ -80,7 +91,7 @@ const NumberCountUp: React.FC<NumberCountUpProps> = (props) => {
         </span>
         <span className={classes.numbers}>
           <CountUp
-            key={JSON.stringify(countParams)}
+            key={resetKey}
             isCounting={true}
             decimalSeparator="."
             easing={easing}
