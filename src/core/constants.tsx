@@ -15,6 +15,7 @@ import IconChartRadar from "./icons/IconChartRadar";
 import IconClock from "./icons/IconClock";
 import IconCount from "./icons/IconCount";
 import IconMp3player from "./icons/IconMp3player";
+import IconMp3Sprite from "./icons/IconMp3Sprite";
 
 export const BASEMODULES = [
   {
@@ -83,6 +84,12 @@ export const BASEMODULES = [
     title: "Mp3Player",
     discribe: "Mp3",
     icon: <Icon component={IconMp3player} />,
+  },
+  {
+    moduleName: "Mp3Sprite",
+    title: "Mp3Sprite",
+    discribe: "音频切片",
+    icon: <Icon component={IconMp3Sprite} />,
   }
 ];
 

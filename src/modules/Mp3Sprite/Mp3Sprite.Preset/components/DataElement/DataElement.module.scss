@@ -1,0 +1,12 @@
+.formitem {
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.form{
+  background-color: #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+}
