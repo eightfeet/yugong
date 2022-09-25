@@ -8,23 +8,31 @@ const config: ModulesStatic = {
    */
   exposeFunctions: [
     {
-      name: "setPlayList",
-      description: '设置播放列表',
+      name: "setPlayData",
+      description: '设置',
       arguments: [{
+        type: "string",
+        name: "音频地址",
+        fieldName: "mp3address",
+        describe: "设置音频地址",
+        data: "./wlbt.m4a",
+      },{
         type: "mixed",
-        name: "设置",
-        fieldName: "playList",
-        describe: "设置播放列表",
+        name: "音频片段",
+        fieldName: "sprite",
+        describe: "设置音频地址",
         data: [
           {
-            "title": "乌兰巴托的夜",
-            "file": "./wlbt.m4a"
+            name: 'track1',
+            start: 0,
+            duration: 2000,
           },
           {
-            "title": "当年情",
-            "file": "./dnq.m4a"
+            name: 'track2',
+            start: 2000,
+            duration: 2000,
           }
-        ],
+        ]
       }]
     },
     {
@@ -263,7 +271,7 @@ const config: ModulesStatic = {
         ]
       },
     ],
-    preset: true
+    preset: false
   },
 };
 // export type key of events list

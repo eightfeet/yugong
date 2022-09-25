@@ -11,9 +11,12 @@ interface Props {
   data: any[];
 }
 
-const path = '[0].arguments[0].data';
+const path = '[0].arguments[1].data';
 
 const SortableList: React.FC<Props> = ({ data }) => {
+  console.log(data);
+  
+  return null
 
   const { runningData, onChange } = useContext(CustomPresettingContext);
 

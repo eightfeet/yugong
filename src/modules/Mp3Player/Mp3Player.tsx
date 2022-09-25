@@ -113,11 +113,17 @@ class Mp3Player extends Component<Mp3PlayerProps, State> {
           </div>
           <div className={classes.info}>
             <div className={classNames(s.progresswrap, classes.progress)}>
-              {progress ? this.player?.formatTime(progress) : '00:00'}
               <div className={s.progress}>
                 <MemoTrack width={pre || 0} />
               </div>
-              {duration ? this.player?.formatTime(duration!) : '00:00'}
+              <div className={s.progressnum}>
+                <span>
+                  {progress ? this.player?.formatTime(progress) : '00:00'}
+                </span>
+                <span>
+                  {duration ? this.player?.formatTime(duration!) : '00:00'}
+                </span>
+              </div>
             </div>
             <div className={classNames(s.list, classes.list)}>
               {
