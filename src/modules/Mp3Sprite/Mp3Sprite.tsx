@@ -161,10 +161,10 @@ class Mp3Sprite extends Component<Mp3SpriteProps, State> {
               </div>
               <div className={s.progressnum}>
                 <span>
-                  {nowTime || 0}ms
+                  {nowTime || playList?.[currentIndex]?.start || 0}ms
                 </span>
                 <span>
-                  {(playList?.[currentIndex].start || 0) + (playList?.[currentIndex].duration || 0)}ms
+                  {(playList?.[currentIndex]?.start || 0) + (playList?.[currentIndex]?.duration || 0)}ms
                 </span>
               </div>
             </div>

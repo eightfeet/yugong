@@ -10,8 +10,9 @@ const FormItem = Form.Item;
 interface Props {
   index: number;
   item: {
-    title:string;
-    file: string;
+    name:string;
+    start: number;
+    duration: number
   };
 }
 
@@ -21,21 +22,24 @@ const DataElement:React.FC<Props> = ({ item, index }) => {
   
   const onChangeFields = useCallback(
     () => {
-      const path = `[0].arguments[0].data[${index}]`;
-      const values = form.getFieldsValue();
-      const res = set(runningData, path, values);
+      const path = `[0].arguments[1].data[${index}]`;
+      const { name, start, duration } = form.getFieldsValue();
+      const res = set(runningData, path, { name, start: Number(start), duration: Number(duration) });
       onChange(res);
     },
     [form, index, onChange, runningData],
   )
 
   return (
-    <Form form={form} className={s.form} onFieldsChange={onChangeFields} initialValues={item}>
-      <FormItem label="名称" name="title" className={s.formitem}>
+    <Form form={form} className={s.form} onFieldsChange={onChangeFields} initialValues={item} labelCol={{span:4}}>
+      <FormItem label="名称" name="name" className={s.formitem} >
         <Input  />
       </FormItem>
-      <FormItem label="路径" name="file" className={s.formitem}>
-        <Input value={item.file} />
+      <FormItem label="开始时间" name="start" className={s.formitem} >
+        <Input type="number" min={0} suffix="ms" />
+      </FormItem>
+      <FormItem label="持续时长" name="duration" className={s.formitem}>
+        <Input type="number" min={0} suffix="ms" />
       </FormItem>
     </Form>
   )

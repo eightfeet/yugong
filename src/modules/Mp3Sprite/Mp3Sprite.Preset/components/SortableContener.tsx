@@ -10,7 +10,7 @@ interface Props {
   items: any[]
 }
 
-const path = '[0].arguments[0].data';
+const path = '[0].arguments[1].data';
 
 class SortableContener extends Component<Props> {
   static contextType = CustomPresettingContext;

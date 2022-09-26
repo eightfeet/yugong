@@ -14,10 +14,6 @@ interface Props {
 const path = '[0].arguments[1].data';
 
 const SortableList: React.FC<Props> = ({ data }) => {
-  console.log(data);
-  
-  return null
-
   const { runningData, onChange } = useContext(CustomPresettingContext);
 
   const onMinus = useCallback(
