@@ -82,7 +82,7 @@ export const BASEMODULES = [
   {
     moduleName: "Mp3Player",
     title: "Mp3Player",
-    discribe: "Mp3",
+    discribe: "音频",
     icon: <Icon component={IconMp3player} />,
   },
   {
