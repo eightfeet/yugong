@@ -1,6 +1,6 @@
 import * as React from "react";
 
-function Track({ width }: { width: number }) {
+function Track({ width }: { width: number|string }) {
   // ${width}
   return (
     <svg viewBox="0 0 100 0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

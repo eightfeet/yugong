@@ -99,14 +99,23 @@ class Mp3Sprite extends Component<Mp3SpriteProps, State> {
     }
   }
 
-  stop = (index: ArgumentsItem) => {
-    const No = getArgumentsItem(index) as number;
-    this.player?.stop(No)
+  stop = () => {
+    this.player?.stop();
+    this.setState({ isPlaying: false })
   }
 
   play = (spriteName: ArgumentsItem) => {
     const sprite = getArgumentsItem(spriteName) as string;
-    this.player?.play(sprite)
+    const { playList } = this.state;
+    let index = -1;
+    playList?.some((item, ind) => {
+      const current = item.name === sprite;
+      if (current) index = ind
+      return current
+    })
+    if (index >= 0) {
+      this.onItemPlay(index)();
+    }
   }
 
   onPause = () => this.setState({ isPlaying: false })

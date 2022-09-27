@@ -40,10 +40,10 @@ const config: ModulesStatic = {
       description: '播放',
       presettable: false,
       arguments: [{
-        type: "number",
-        name: "序号",
-        fieldName: "No",
-        describe: "按播放列表从0排序",
+        type: "string",
+        name: "片段名称",
+        fieldName: "name",
+        describe: "播放的片段名称",
         data: '',
       }]
     },
@@ -51,13 +51,6 @@ const config: ModulesStatic = {
       name: "stop",
       description: '停止',
       presettable: false,
-      arguments: [{
-        type: "number",
-        name: "序号",
-        fieldName: "No",
-        describe: "按播放列表从0排序",
-        data: '',
-      }]
     }
   ],
   /**
