@@ -177,7 +177,7 @@ class Mp3Sprite extends Component<Mp3SpriteProps, State> {
                 </span>
               </div>
             </div>
-            <div className={classNames(s.list, classes.list)}>
+            {playList?.length ? <div className={classNames(s.list, classes.list)}>
               {
                 playList?.map((item, index) => <div className={s.item} key={index} onClick={this.onItemPlay(index)}>
                   <p className={classNames({
@@ -192,7 +192,7 @@ class Mp3Sprite extends Component<Mp3SpriteProps, State> {
                   </p>
                 </div>)
               }
-            </div>
+            </div> : null}
           </div>
         </div>
       </Wrapper>

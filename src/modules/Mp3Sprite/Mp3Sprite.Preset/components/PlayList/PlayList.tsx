@@ -36,10 +36,11 @@ const PlayList:React.FC<Props> = () => {
 
   const onChangeMp3 = useCallback(
     (e) => {
-      console.log(e.target.value);
-      
+      const copyData = cloneDeep(runningData);
+      set(copyData, pathUrl, e.target.value);
+      onChange(copyData);
     },
-    [],
+    [onChange, runningData],
   )
 
   return (
