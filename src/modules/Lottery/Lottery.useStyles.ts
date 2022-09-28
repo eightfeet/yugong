@@ -4,10 +4,9 @@ import styleCompiler from "~/compiler";
 import { createUseStyles } from "react-jss";
 import { GameMap } from "~/components/Game/useGame";
 import { buildGamesStyle, buildPublicModalStyle } from "./helper";
-import { addImportant } from "~/core/helper/toStyles";
 
 const getParames = (id: string, moduleId: string, style: any, type: keyof GameMap) => ({
-  [`& .${moduleId}_gameroot`]: addImportant(styleCompiler(style.gameroot).style || {}),
+  [`& .gametarget${moduleId}_gameroot`]: styleCompiler(style.gameroot).style || {},
   ...buildPublicModalStyle(id, "successmodal", style),
   ...buildPublicModalStyle(id, "failedmodal", style),
   ...buildPublicModalStyle(id, "addressmodal", style),
