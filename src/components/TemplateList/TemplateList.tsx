@@ -203,7 +203,7 @@ const TemplateList: React.FC<Props> = ({ onSelectedTemplate }) => {
   
   const pageSearch = stringify({ tpl: visibleQrcode, ...runningTimes.search });
 
-  const codeViewUrl = `./../${pageSearch ? `?${pageSearch}` : ''}`;
+  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
 
   return (
     <>

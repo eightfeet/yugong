@@ -318,9 +318,9 @@ const Responsive: React.FC<Props> = () => {
 
   const pageSearch = stringify({ tpl: pageData.template?.id, ...runningTimes.search });
 
-  const codeViewUrl = `./${pageSearch ? `?${pageSearch}` : ''}`;
+  const codeViewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${pageSearch ? `?${pageSearch}` : ''}`;
 
-  const viewUrl = `./../${window.location.search || '?isediting'}`
+  const viewUrl = `${process.env.REACT_APP_SITE_PATH || ''}${window.location.search || '?isediting'}`;
 
   return (
     <>
