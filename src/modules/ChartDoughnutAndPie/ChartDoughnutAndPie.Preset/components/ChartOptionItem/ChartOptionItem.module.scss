@@ -3,13 +3,14 @@
   padding: 10px;
   border: 1px solid #d9d9d9;
   margin-bottom: 10px;
+  width: 100%;
   :global{
     .ant-form-item-control-input-content {
       display: flex;
       flex-wrap: wrap;
     }
     .ant-row {
-      width: 50%;
+      width: 100%;
       margin-bottom: 10px;
       padding-right: 10px;
     }
@@ -18,4 +19,9 @@
 
 .mgt {
   margin-top: 10px;
+}
+
+.item {
+width: 50% !important;
+margin-bottom: 0 !important;
 }

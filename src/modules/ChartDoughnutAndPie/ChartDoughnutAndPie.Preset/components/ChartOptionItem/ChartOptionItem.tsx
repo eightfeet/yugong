@@ -40,8 +40,6 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
         max: max ? Number(max) : null,
         ...other
       }
-      console.log(7777, res);
-
       onChange?.(res);
     },
     [form, onChange],
@@ -56,11 +54,11 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
       form={form}
     >
       <Form.Item label={<b>图例</b>} className={s.wrap}>
-        <Form.Item label="显示" name={["legend", "display"]} valuePropName="checked">
+        <Form.Item className={s.item} label="显示" name={["legend", "display"]} valuePropName="checked">
           <Switch size="small" />
         </Form.Item>
         {/* options.plugins.legend.position */}
-        <Form.Item label="位置" name={["legend", "position"]}>
+        <Form.Item className={s.item} label="位置" name={["legend", "position"]}>
           <Select size="small" style={{ width: "100px" }}>
             <Select.Option value="top">上</Select.Option>
             <Select.Option value="bottom">下</Select.Option>
@@ -68,10 +66,11 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
             <Select.Option value="right">右</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label="文字颜色" name={["legend", "labels", "color"]}>
+        <Form.Item className={s.item} label="文字颜色" name={["legend", "labels", "color"]}>
           <Color />
         </Form.Item>
         <Form.Item
+        className={s.item} 
           label="数据节点样式"
           name={["legend", "labels", "usePointStyle"]}
           valuePropName="checked"
@@ -80,17 +79,17 @@ const ChartOptionItem: React.FC<Props> = ({ defaultValue, onChange }) => {
         </Form.Item>
       </Form.Item>
       <Form.Item label={<b>图形</b>} className={s.wrap}>
-        <Form.Item label="半径" name="radius">
+        <Form.Item label="半径" name="radius" className={s.item} >
           <Input type="number" min={0} max={100} addonAfter="%" />
         </Form.Item>
-        <Form.Item label="空心半径" name="cutout">
+        <Form.Item label="空心半径" name="cutout" className={s.item} >
           <Input type="number" min={0} max={100} addonAfter="%" />
         </Form.Item>
 
-        <Form.Item label="完整角度" name="circumference">
+        <Form.Item label="完整角度" name="circumference" className={s.item} >
           <Input type="number" min={0} max={360} addonAfter="deg" />
         </Form.Item>
-        <Form.Item label="旋转角度" name="rotation">
+        <Form.Item label="旋转角度" name="rotation" className={s.item} >
           <Input type="number" addonAfter="deg" />
         </Form.Item>
       </Form.Item>
