@@ -30,7 +30,8 @@ const BeforeOutput: React.FC<Props> = () => {
   const [appDataLocalStoreData] = useLocalStorage('appData', null);
   const [pageDataLocalStoreData] = useLocalStorage('pageData', null);
 
-  const clientRowHeight = parseInt(getResult(`${pageData.rowHeight}`));
+  // 获取并计算栅格行高数据
+  const clientRowHeight = parseInt(getResult(`${pageDataLocalStoreData.rowHeight || pageData.rowHeight}`));
 
   // 用于编辑模式下，观察编辑器通知，设置当前编辑路径
   const sendMessage = usePostMessage((data) => {
