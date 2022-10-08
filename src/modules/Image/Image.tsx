@@ -31,7 +31,6 @@ const Image: React.FC<ImageProps> = (props) => {
   // 设置图片地址
   const setImg = useCallback((img: ArgumentsObject) => {
     const data = getArgumentsItem(img);
-    console.log(data);
     setImgUrl(data as ImgUrl);
   }, []);
 
