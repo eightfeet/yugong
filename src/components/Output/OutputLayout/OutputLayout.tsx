@@ -65,7 +65,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     (state: RootState) => state.controller
   );
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   // 缓存
   const [, setAppdataLocalStorage] = useLocalStorage("appData", null);
 
@@ -163,9 +163,11 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
   const generateStyle = useCallback(() => {
     const style = {
       ...backgroundGroup(pageData.style?.backgroundGroup || {}).result,
+      maxWidth: pageData.maxWidth || 'unset',
+      minWidth: pageData.minWidth || 'unset'
     };
     return style;
-  }, [pageData.style?.backgroundGroup]);
+  }, [pageData.maxWidth, pageData.minWidth, pageData.style?.backgroundGroup]);
 
   // 同步runningTimeData
   useEffect(() => {
@@ -262,7 +264,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     <div className={s.layout} ref={ref} style={generateStyle()}>
       {isEditing ? (
         <GridLine
-          width={window.document.body.offsetWidth}
+          width={ref.current?.offsetWidth || document.body.offsetWidth}
           cols={cols}
           rowHeight={rowHeight}
           height={document.body.scrollHeight}

@@ -66,6 +66,10 @@ export interface PageData {
   windowWidth?: number;
   /** window width */
   windowHeight?: number;
+  /** 最小宽度 */
+  minWidth?: number;
+  /** 最大宽度 */
+  maxWidth?: number;
   /**模板信息 */
   template?: Template;
   /** 页面线程 */

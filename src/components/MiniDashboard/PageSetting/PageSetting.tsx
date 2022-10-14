@@ -173,6 +173,28 @@ const Pagesetting: React.FC<Props> = () => {
     [handleUpdatePage, pageData]
   );
 
+  const onChangeMaxWidth = useCallback(
+    (e) => {
+      const optPageData = produce(pageData, draft => {
+        draft.maxWidth = e;
+      }, createDesc('页面', '设置客户端最大展示宽度'));
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
+
+  const onChangeMinWidth = useCallback(
+    (e) => {
+      const optPageData = produce(pageData, draft => {
+        draft.minWidth = e;
+      }, createDesc('页面', '设置客户端最小展示宽度'));
+      handleUpdatePage(optPageData);
+    },
+    [handleUpdatePage, pageData]
+  );
+
+  
+
   const onChangeApi = useCallback(
     (data) => {
       const optPageData = produce(pageData, draft => {
@@ -401,6 +423,41 @@ const Pagesetting: React.FC<Props> = () => {
               </Col>
             </Row>
           ) : null}
+          <Row gutter={4} className={s.row}>
+              <Col className={s.label} span={4}>
+                最大宽度：
+              </Col>
+              <Col span={7}>
+                <InputNumber
+                  value={pageData.maxWidth}
+                  onChange={onChangeMaxWidth}
+                  placeholder="px 不填写时不做限制"
+                  className={s.num}
+                />
+              </Col>
+              <Col className={s.info} span={1}>
+                <Tooltip title={<div>设置客户端页面最大展示宽度，不填写时不做限制</div>}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </Col>
+              <Col className={s.label} span={4}>
+                最小宽度：
+              </Col>
+              <Col span={7}>
+                <InputNumber
+                  min={5}
+                  value={pageData.minWidth}
+                  onChange={onChangeMinWidth}
+                  placeholder="px 不填写时不做限制"
+                  className={s.num}
+                />
+              </Col>
+              <Col className={s.info} span={1}>
+                <Tooltip title={<div>设置客户端页面最小展示宽度，不填写时不做限制</div>}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </Col>
+            </Row>
           <StyleContext.Provider
             value={{
               onChange,

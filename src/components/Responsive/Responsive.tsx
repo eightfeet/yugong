@@ -42,6 +42,7 @@ import { saveRecord } from '~/core/helper/produce';
 import QrcodeModal from '../QrcodeModal';
 import { stringify } from 'query-string';
 import loading from '~/core/loading';
+import RulerBar from './RulerBar';
 interface Props { }
 const Responsive: React.FC<Props> = () => {
   useEffect(() => {
@@ -412,6 +413,7 @@ const Responsive: React.FC<Props> = () => {
             </div>
           </div>
           <Ruler onChange={onChangeRule} />
+          <RulerBar />
           <Drawer
             className={s.drawer}
             title="页面设置"
