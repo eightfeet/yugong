@@ -22,7 +22,6 @@ import { Dispatch, RootState } from '~/redux/store';
 import MiniDashboard from '../MiniDashboard';
 import s from './Responsive.module.less';
 import Draggable from 'react-draggable';
-import Ruler from './Ruler';
 import Repository from '../MiniDashboard/Repository';
 import PageSetting from '../MiniDashboard/PageSetting';
 import CreateProject from '../CreateProject';
@@ -43,6 +42,7 @@ import QrcodeModal from '../QrcodeModal';
 import { stringify } from 'query-string';
 import loading from '~/core/loading';
 import RulerBar from './RulerBar';
+import { getSize } from './constants';
 interface Props { }
 const Responsive: React.FC<Props> = () => {
   useEffect(() => {
@@ -93,6 +93,8 @@ const Responsive: React.FC<Props> = () => {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [hideIframe, sethideIframe] = useState(true);
   const [visibleQrcode, setVisibleQrcode] = useState(false);
+  const [displayInfo, setDisplayInfo] = useState<{ name: string; width: number; height: number }[]>([]);
+  const [currentDisplayInfo, setCurrentDisplayInfo] = useState<{ name: string; width: number; height: number }>();
 
   // 创建postmessage通信 usePostMessage收集数据 redux 更新数据
   const sendMessage = usePostMessage(({ tag, value }) => {
@@ -182,15 +184,28 @@ const Responsive: React.FC<Props> = () => {
     );
   }, [sendMessage, win, appData]);
 
-  const onChangeRule = (
-    width: number,
-    height: number = window.innerHeight - 140,
-  ) => {
+  useEffect(() => {
+    const size = getSize(pageData.minWidth, pageData.maxWidth);
+    setDisplayInfo(size);
+    if (pageData.minWidth) {
+      setCurrentDisplayInfo(size[0])
+    } else {
+      setCurrentDisplayInfo(size[2])
+    }
+  }, [pageData.maxWidth, pageData.minWidth])
+  
+
+  const onChangeSize = (
+    item: { width: number, height: number, name: string }) => {
+    const { width,
+      height,
+    } = item;
+    setCurrentDisplayInfo(item)
     setWindowWidth(width);
-    setWindowHeight(height);
+    setWindowHeight(height === -1 ? (window.innerHeight - 140) : height);
     const optPageData = { ...pageData };
     optPageData.windowWidth = width;
-    optPageData.windowHeight = height;
+    optPageData.windowHeight = height === -1 ? (window.innerHeight - 140) : height;
     setLocalPageData(optPageData);
     if (win) {
       sendMessage({ tag: 'updatePage', value: true }, win);
@@ -297,7 +312,7 @@ const Responsive: React.FC<Props> = () => {
         console.error(error);
         loading.hide();
       }
-      
+
     },
     [
       appData,
@@ -385,7 +400,7 @@ const Responsive: React.FC<Props> = () => {
               >
                 组件
               </Button>
-              
+
               <Undo />
               &nbsp;
               <a href="https://github.com/eightfeet/yugong">
@@ -412,8 +427,7 @@ const Responsive: React.FC<Props> = () => {
 
             </div>
           </div>
-          <Ruler onChange={onChangeRule} />
-          <RulerBar />
+          <RulerBar data={displayInfo} current={currentDisplayInfo} onChange={onChangeSize} />
           <Drawer
             className={s.drawer}
             title="页面设置"
@@ -453,7 +467,10 @@ const Responsive: React.FC<Props> = () => {
                     pageData.windowWidth === -1
                       ? `100%`
                       : `${pageData.windowWidth}px`,
-                  height: `${pageData.windowHeight}px`,
+                  height:
+                    pageData.windowHeight === -1
+                      ? `100%`
+                      : `${pageData.windowHeight}px`,
                 }}
               >
                 <LoadingAnimate />

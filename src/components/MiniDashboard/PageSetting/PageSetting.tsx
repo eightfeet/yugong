@@ -37,7 +37,7 @@ import TotalControlHub from "../TotalControlHub";
 const Option = Select.Option;
 const { Panel } = Collapse;
 
-interface Props {}
+interface Props { }
 
 const units = ["px", "rem"];
 
@@ -96,7 +96,7 @@ const Pagesetting: React.FC<Props> = () => {
           draft.unmountEnvents = data;
         }
       }, createDesc('页面', `修改${envinfo.name}事件`));
-      
+
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -110,9 +110,28 @@ const Pagesetting: React.FC<Props> = () => {
       if (type === 'backgroundGroup') {
         const optPageData = produce(pageData, draft => {
           draft.style = {
+            ...draft.style,
             backgroundGroup: result
           }
         }, createDesc('页面', '修改背景样式'));
+        handleUpdatePage(optPageData);
+      }
+    },
+    [handleUpdatePage, pageData]
+  );
+
+  const onChangeBaseBackground = useCallback(
+    (
+      result: any,
+      type: StyleType
+    ) => {
+      if (type === 'backgroundGroup') {
+        const optPageData = produce(pageData, draft => {
+          draft.style = {
+            ...draft.style,
+            baseBackgroundGroup: result
+          }
+        }, createDesc('页面', '修改衬底样式'));
         handleUpdatePage(optPageData);
       }
     },
@@ -128,7 +147,7 @@ const Pagesetting: React.FC<Props> = () => {
         if (type === "toUnit") {
           draft.toUnit = e;
         }
-  
+
         if (draft.unit !== "rem" && draft.toUnit !== "rem") {
           delete draft.UIWidth;
           delete draft.baseFont;
@@ -193,7 +212,7 @@ const Pagesetting: React.FC<Props> = () => {
     [handleUpdatePage, pageData]
   );
 
-  
+
 
   const onChangeApi = useCallback(
     (data) => {
@@ -232,7 +251,7 @@ const Pagesetting: React.FC<Props> = () => {
       const optPageData = produce(pageData, draft => {
         draft.rowHeight = e.target.value;
       }, createDesc('页面', '修改删格行高'));
-      
+
       handleUpdatePage(optPageData);
     },
     [handleUpdatePage, pageData]
@@ -276,6 +295,11 @@ const Pagesetting: React.FC<Props> = () => {
   const getDefaultData = useCallback(
     (type: StyleType) => pageData.style?.backgroundGroup || {},
     [pageData.style?.backgroundGroup]
+  );
+
+  const getDefaultBaseData = useCallback(
+    (type: StyleType) => pageData.style?.baseBackgroundGroup || {},
+    [pageData.style?.baseBackgroundGroup]
   );
 
   return (
@@ -424,54 +448,70 @@ const Pagesetting: React.FC<Props> = () => {
             </Row>
           ) : null}
           <Row gutter={4} className={s.row}>
-              <Col className={s.label} span={4}>
-                最大宽度：
-              </Col>
-              <Col span={7}>
-                <InputNumber
-                  value={pageData.maxWidth}
-                  onChange={onChangeMaxWidth}
-                  placeholder="px 不填写时不做限制"
-                  className={s.num}
-                />
-              </Col>
-              <Col className={s.info} span={1}>
-                <Tooltip title={<div>设置客户端页面最大展示宽度，不填写时不做限制</div>}>
-                  <InfoCircleOutlined />
-                </Tooltip>
-              </Col>
-              <Col className={s.label} span={4}>
-                最小宽度：
-              </Col>
-              <Col span={7}>
-                <InputNumber
-                  min={5}
-                  value={pageData.minWidth}
-                  onChange={onChangeMinWidth}
-                  placeholder="px 不填写时不做限制"
-                  className={s.num}
-                />
-              </Col>
-              <Col className={s.info} span={1}>
-                <Tooltip title={<div>设置客户端页面最小展示宽度，不填写时不做限制</div>}>
-                  <InfoCircleOutlined />
-                </Tooltip>
-              </Col>
-            </Row>
+            <Col className={s.label} span={4}>
+              最小宽度：
+            </Col>
+            <Col span={7}>
+              <InputNumber
+                min={5}
+                value={pageData.minWidth}
+                onChange={onChangeMinWidth}
+                placeholder="px 不填写时不做限制"
+                className={s.num}
+              />
+            </Col>
+            <Col className={s.info} span={1}>
+              <Tooltip title={<div>设置客户端页面最小展示宽度，不填写时不做限制</div>}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </Col>
+            <Col className={s.label} span={4}>
+              最大宽度：
+            </Col>
+            <Col span={7}>
+              <InputNumber
+                value={pageData.maxWidth}
+                onChange={onChangeMaxWidth}
+                placeholder="px 不填写时不做限制"
+                className={s.num}
+              />
+            </Col>
+            <Col className={s.info} span={1}>
+              <Tooltip title={<div>设置客户端页面最大展示宽度，不填写时不做限制</div>}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </Col>
+
+          </Row>
           <StyleContext.Provider
             value={{
               onChange,
               getDefaultData
             }}
           >
-          <Row gutter={4} className={s.row}>
-            <Col span={24}>
-              <div className={s.bg}>
-                <BackgroundGroup />
-              </div>
-            </Col>
-            <Col span={1} />
-          </Row>
+            <Row gutter={4} className={s.row}>
+              <Col span={24}>
+                <div className={s.bg}>
+                  <BackgroundGroup />
+                </div>
+              </Col>
+              <Col span={1} />
+            </Row>
+          </StyleContext.Provider>
+          <StyleContext.Provider
+            value={{
+              onChange: onChangeBaseBackground,
+              getDefaultData: getDefaultBaseData
+            }}
+          >
+            <Row gutter={4} className={s.row}>
+              <Col span={24}>
+                <div className={s.bg}>
+                  <BackgroundGroup title="衬底" />
+                </div>
+              </Col>
+              <Col span={1} />
+            </Row>
           </StyleContext.Provider>
         </Panel>
         <Panel header="Api" key="pagemount">
@@ -501,7 +541,7 @@ const Pagesetting: React.FC<Props> = () => {
                       : pageData.unmountEnvents || []
                   }
                   curentEventInfomation={item}
-                  onPlay={() => {}}
+                  onPlay={() => { }}
                   onChange={onChangeEnv}
                 />
               ))}
@@ -510,7 +550,7 @@ const Pagesetting: React.FC<Props> = () => {
         </Panel>
         <Panel header="线程" key="tch">
           <div className={s.tch}>
-              <TotalControlHub updatePage={handleUpdatePage} />
+            <TotalControlHub updatePage={handleUpdatePage} />
           </div>
         </Panel>
         <Panel header="百度统计" key="pagecounter">
@@ -529,7 +569,7 @@ const Pagesetting: React.FC<Props> = () => {
           </Row>
         </Panel>
         <Panel header="数据视图" key="pagedata">
-          <ReactJson src={{pageData, appData}} collapsed={1} name="project" />
+          <ReactJson src={{ pageData, appData }} collapsed={1} name="project" />
         </Panel>
       </Collapse>
       <RunningTimesModal

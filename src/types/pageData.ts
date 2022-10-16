@@ -44,6 +44,7 @@ export interface PageData {
     backgroundCommon?: BackgroundCommonTypesOfStyleItems;
     backgroundGradient?: BackgroundGradientTypesOfStyleItems;
     backgroundGroup?: BackgroundGroupTypesOfStyleItems;
+    baseBackgroundGroup?: BackgroundGroupTypesOfStyleItems;
   };
   /* api */
   onLoadApi?: Api[];

@@ -169,6 +169,15 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
     return style;
   }, [pageData.maxWidth, pageData.minWidth, pageData.style?.backgroundGroup]);
 
+  const generateBaseBgStyle = useCallback(
+    () => {
+      const style = backgroundGroup(pageData.style?.baseBackgroundGroup || {}).result;
+      return style;
+    },
+    [pageData.style?.baseBackgroundGroup],
+  )
+  
+
   // 同步runningTimeData
   useEffect(() => {
     sendMessage(
@@ -261,6 +270,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
   );
 
   return (
+    <div style={generateBaseBgStyle()}>
     <div className={s.layout} ref={ref} style={generateStyle()}>
       {isEditing ? (
         <GridLine
@@ -273,6 +283,7 @@ const OutputLayout: React.FC<LayoutProps> = ({ rowHeight, cols, space }) => {
       ) : null}
       {renderNoDisplay()}
       <>{renderGridLayout()}</>
+    </div>
     </div>
   );
 };

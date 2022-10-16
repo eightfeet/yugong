@@ -2,5 +2,27 @@
   background-color: #dedede;
   font-size: 12px;
   line-height: 16px;
+  height: 16px;
   margin-top: 1px;
+  position: relative;
+  width: 100%;
+}
+
+.item {
+  border-right: 2px solid #fff;
+  position: absolute;
+  height: 100%;
+}
+
+.size {
+  text-indent: 10px;
+  line-height: 16px;
+  color: rgb(150, 150, 150);
+  position: relative;
+  z-index: 20;
+  width: 200px;
+}
+
+.hoverbg {
+  background-color: #ccc;
 }

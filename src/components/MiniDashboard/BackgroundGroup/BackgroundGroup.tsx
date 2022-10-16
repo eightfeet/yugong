@@ -10,9 +10,10 @@ import { StyleContext } from "~/context/StyleContext";
 
 interface Props {
   updateKey?: string;
+  title?: string
 }
 
-const Backgroundgroup: React.FC<Props> = () => {
+const Backgroundgroup: React.FC<Props> = ({ title }) => {
   const context = useContext(StyleContext);
 
   const [backgroundList, setBackgroundList] = useState<
@@ -108,14 +109,14 @@ const Backgroundgroup: React.FC<Props> = () => {
       <Row className={s.row}>
         <Col span={12}>
           <Color
-            label="背景颜色"
+            label={`${title || '背景'}颜色`}
             onChange={onChangeBackgroundColor}
             defaultValue={backgroundColor}
           />
         </Col>
         <Col span={12} className={s.add}>
           <Button size="small" icon={<PlusOutlined />} onClick={onPlus}>
-            添加其他背景属性
+            添加其他{title || '背景'}属性
           </Button>
         </Col>
       </Row>
