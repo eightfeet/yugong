@@ -84,6 +84,21 @@ const config: ModulesStatic = {
           data: "1",
         },
       ]
+    },
+    {
+      name: "play",
+      description: '播放',
+      presettable: false,
+    },
+    {
+      name: "stop",
+      description: '停止',
+      presettable: false,
+    },
+    {
+      name: "pause",
+      description: '暂停',
+      presettable: false,
     }
   ],
   /**
@@ -97,6 +112,14 @@ const config: ModulesStatic = {
     {
       name: "unmount",
       description: "卸载",
+    },
+    {
+      "name": "inView",
+      "description": "进入视窗"
+    },
+    {
+      "name": "outView",
+      "description": "离开视窗"
     },
     {
       name: "onReady",
@@ -139,7 +162,8 @@ const config: ModulesStatic = {
     },
     style: {
       basic: {},
-      player: {}
+      player: {},
+      playerwrap: {}
     },
     styleDescription: [
       {
@@ -147,8 +171,12 @@ const config: ModulesStatic = {
         value: "basic",
       },
       {
-        title: "播放器",
-        value: "player",
+        title: "播放器包裹层",
+        value: "playerwrap",
+        children: [{
+          title: "播放器",
+          value: "player",
+        }]
       }
     ]
   },
