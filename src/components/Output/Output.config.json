@@ -116,6 +116,23 @@
       ]
     },
     {
+      "name": "globalLoading",
+      "description": "全局Loading",
+      "arguments":[
+        {
+          "type": "string",
+          "fieldName": "status",
+          "name": "全局Loading",
+          "select": {
+            "show": "显示",
+            "hide": "隐藏",
+            "reset": "重置"
+          },
+          "data": ""
+        }
+      ]
+    },
+    {
       "name": "globalMessage",
       "description": "消息广播",
       "arguments": [
